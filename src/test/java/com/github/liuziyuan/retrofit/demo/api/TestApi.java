@@ -1,7 +1,6 @@
 package com.github.liuziyuan.retrofit.demo.api;
 
 import com.github.liuziyuan.retrofit.annotation.RetrofitBuilder;
-import com.github.liuziyuan.retrofit.demo.MyOkHttpClient;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
@@ -12,7 +11,6 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
  */
 @RetrofitBuilder(baseUrl = "http://localhost:8080",
         addConverterFactory = {GsonConverterFactory.class, JacksonConverterFactory.class},
-        addCallAdapterFactory = {RxJavaCallAdapterFactory.class},
-        client = MyOkHttpClient.class)
+        addCallAdapterFactory = {RxJavaCallAdapterFactory.class})
 public class TestApi {
 }
