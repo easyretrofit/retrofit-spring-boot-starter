@@ -2,6 +2,7 @@ package com.github.liuziyuan.retrofit.demo.api;
 
 import com.github.liuziyuan.retrofit.annotation.RetrofitBuilder;
 import com.github.liuziyuan.retrofit.annotation.RetrofitInterceptor;
+import com.github.liuziyuan.retrofit.demo.MyRetrofitInterceptor1;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
@@ -13,6 +14,6 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 @RetrofitBuilder(baseUrl = "http://localhost:8080",
         addConverterFactory = {GsonConverterFactory.class, JacksonConverterFactory.class},
         addCallAdapterFactory = {RxJavaCallAdapterFactory.class})
-@RetrofitInterceptor
+@RetrofitInterceptor(handler = MyRetrofitInterceptor1.class)
 public class TestApi {
 }
