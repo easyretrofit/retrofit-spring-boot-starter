@@ -1,6 +1,6 @@
 package com.github.liuziyuan.retrofit.annotation;
 
-import com.github.liuziyuan.retrofit.extension.builder.OkHttpClientBuilder;
+import com.github.liuziyuan.retrofit.extension.OkHttpClientBuilder;
 import retrofit2.CallAdapter;
 import retrofit2.Converter;
 

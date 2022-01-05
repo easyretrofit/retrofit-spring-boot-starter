@@ -1,4 +1,4 @@
-package com.github.liuziyuan.retrofit.context;
+package com.github.liuziyuan.retrofit.model;
 
 /**
  * @author liuziyuan

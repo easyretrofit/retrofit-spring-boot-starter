@@ -1,6 +1,7 @@
 package com.github.liuziyuan.retrofit.demo.api;
 
 import com.github.liuziyuan.retrofit.annotation.RetrofitBuilder;
+import com.github.liuziyuan.retrofit.annotation.RetrofitInterceptor;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
@@ -12,5 +13,6 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 @RetrofitBuilder(baseUrl = "http://localhost:8080",
         addConverterFactory = {GsonConverterFactory.class, JacksonConverterFactory.class},
         addCallAdapterFactory = {RxJavaCallAdapterFactory.class})
+@RetrofitInterceptor
 public class TestApi {
 }

@@ -1,6 +1,6 @@
 package com.github.liuziyuan.retrofit;
 
-import com.github.liuziyuan.retrofit.context.RetrofitClientBean;
+import com.github.liuziyuan.retrofit.model.RetrofitClientBean;
 
 /**
  * @author liuziyuan

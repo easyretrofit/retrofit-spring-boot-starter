@@ -1,5 +1,8 @@
 package com.github.liuziyuan.retrofit.annotation;
 
+import com.github.liuziyuan.retrofit.RetrofitResourceDefinitionRegistry;
+import org.springframework.context.annotation.Import;
+
 import java.lang.annotation.*;
 
 /**
@@ -9,6 +12,7 @@ import java.lang.annotation.*;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
+@Import({RetrofitResourceDefinitionRegistry.class})
 public @interface EnableRetrofit {
 
     /**
@@ -21,7 +25,15 @@ public @interface EnableRetrofit {
 
     /**
      * Scan base package paths of retrofit resources
+     *
      * @return basePackages
      */
     String[] basePackages() default {};
+
+    /**
+     * Scan base package paths by classes of retrofit resources
+     *
+     * @return basePackages
+     */
+    Class<?>[] basePackageClasses() default {};
 }
