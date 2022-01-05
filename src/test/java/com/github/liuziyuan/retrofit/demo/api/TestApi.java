@@ -15,5 +15,5 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
         addConverterFactory = {GsonConverterFactory.class, JacksonConverterFactory.class},
         addCallAdapterFactory = {RxJavaCallAdapterFactory.class})
 @RetrofitInterceptor(handler = MyRetrofitInterceptor1.class)
-public class TestApi {
+public interface TestApi {
 }

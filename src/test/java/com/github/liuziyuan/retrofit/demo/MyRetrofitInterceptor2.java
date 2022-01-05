@@ -1,4 +1,4 @@
-package com.github.liuziyuan.retrofit;
+package com.github.liuziyuan.retrofit.demo;
 
 import com.github.liuziyuan.retrofit.extension.BaseInterceptor;
 import okhttp3.Response;
