@@ -1,4 +1,4 @@
-package com.github.liuziyuan.retrofit.builder;
+package com.github.liuziyuan.retrofit.extension.builder;
 
 /**
  * @author liuziyuan

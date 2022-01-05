@@ -1,6 +1,6 @@
 package com.github.liuziyuan.retrofit.demo;
 
-import com.github.liuziyuan.retrofit.builder.OkHttpClientBuilder;
+import com.github.liuziyuan.retrofit.extension.builder.OkHttpClientBuilder;
 import okhttp3.OkHttpClient;
 
 /**
