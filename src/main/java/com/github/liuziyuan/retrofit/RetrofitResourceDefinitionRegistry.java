@@ -51,11 +51,11 @@ public class RetrofitResourceDefinitionRegistry implements ImportBeanDefinitionR
 
     @Override
     public void setEnvironment(Environment environment) {
-
+        this.environment = environment;
     }
 
     @Override
     public void setResourceLoader(ResourceLoader resourceLoader) {
-
+        this.resourceLoader = resourceLoader;
     }
 }
