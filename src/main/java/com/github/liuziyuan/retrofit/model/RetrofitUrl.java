@@ -27,6 +27,13 @@ public class RetrofitUrl {
         realPrefixUrl = getRealPrefixUrl(realBaseUrl);
     }
 
+    public RetrofitUrl(RetrofitUrl source) {
+        this.inputBaseUrl = source.getInputBaseUrl();
+        this.realPrefixUrl = source.getRealPrefixUrl();
+        this.realHostUrl = source.getRealHostUrl();
+        this.realBaseUrl = source.getRealBaseUrl();
+    }
+
     @SneakyThrows
     private String getRealHostUrl(String realBaseUrl) {
         if (realBaseUrl != null || realBaseUrl.length() == 0) {

@@ -8,6 +8,7 @@ public class RetrofitServiceBean {
 
     private Class<?> selfClazz;
     private Class<?> parentClazz;
+    private RetrofitUrl retrofitUrl;
     private RetrofitClientBean retrofitClientBean;
 
     public RetrofitClientBean getRetrofitClientBean() {
@@ -15,6 +16,7 @@ public class RetrofitServiceBean {
     }
 
     void setRetrofitClientBean(RetrofitClientBean retrofitClientBean) {
+        this.retrofitUrl = new RetrofitUrl(retrofitClientBean.getUrl());
         this.retrofitClientBean = retrofitClientBean;
     }
 
