@@ -1,6 +1,7 @@
 package com.github.liuziyuan.retrofit;
 
 import com.github.liuziyuan.retrofit.annotation.EnableRetrofit;
+import com.github.liuziyuan.retrofit.factory.RetrofitResourceBuilder;
 import com.github.liuziyuan.retrofit.factory.RetrofitResourceScanner;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -18,6 +19,7 @@ import org.springframework.util.StringUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -45,7 +47,9 @@ public class RetrofitResourceDefinitionRegistry implements ImportBeanDefinitionR
         basePackages.addAll(Arrays.stream(annoAttrs.getStringArray("value")).filter(StringUtils::hasText).collect(Collectors.toList()));
         basePackages.addAll(Arrays.stream(annoAttrs.getStringArray("basePackages")).filter(StringUtils::hasText).collect(Collectors.toList()));
         basePackages.addAll(Arrays.stream(annoAttrs.getClassArray("basePackageClasses")).map(ClassUtils::getPackageName).collect(Collectors.toList()));
-        scanner.doScan(StringUtils.toStringArray(basePackages));
+        final Set<Class<?>> retrofitBuilderClassSet = scanner.doScan(StringUtils.toStringArray(basePackages));
+        RetrofitResourceBuilder builder = new RetrofitResourceBuilder(retrofitBuilderClassSet, environment);
+        builder.build();
 
     }
 

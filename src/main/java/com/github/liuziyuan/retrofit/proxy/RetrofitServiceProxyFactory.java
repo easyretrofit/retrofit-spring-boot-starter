@@ -28,7 +28,7 @@ public class RetrofitServiceProxyFactory<T> implements FactoryBean<T>, Applicati
 
     @Override
     public T getObject() throws Exception {
-        String retrofitInstanceName = retrofitServiceBean.getClientBean().getRetrofitInstanceName();
+        String retrofitInstanceName = retrofitServiceBean.getRetrofitClientBean().getRetrofitInstanceName();
         Retrofit retrofit = (Retrofit) applicationContext.getBean(retrofitInstanceName);
         T t = retrofit.create(interfaceType);
         InvocationHandler handler = new RetrofitServiceProxy<>(t);

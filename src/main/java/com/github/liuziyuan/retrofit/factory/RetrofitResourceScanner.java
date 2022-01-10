@@ -15,6 +15,8 @@ import java.util.stream.Collectors;
  */
 public class RetrofitResourceScanner {
 
+
+
     public Set<Class<?>> doScan(String... basePackages) {
         ConfigurationBuilder configuration;
         if (basePackages.length == 0) {
