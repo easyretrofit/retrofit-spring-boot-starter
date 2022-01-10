@@ -2,6 +2,7 @@ package com.github.liuziyuan.retrofit.demo.api;
 
 import com.github.liuziyuan.retrofit.annotation.RetrofitBuilder;
 import com.github.liuziyuan.retrofit.annotation.RetrofitInterceptor;
+import com.github.liuziyuan.retrofit.demo.MyOkHttpClient;
 import com.github.liuziyuan.retrofit.demo.MyRetrofitInterceptor2;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -14,7 +15,8 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 
 @RetrofitBuilder(baseUrl = "${app.hello-inherit.base-url}",
         addConverterFactory = {GsonConverterFactory.class, JacksonConverterFactory.class},
-        addCallAdapterFactory = {RxJavaCallAdapterFactory.class})
+        addCallAdapterFactory = {RxJavaCallAdapterFactory.class},
+        client = MyOkHttpClient.class)
 @RetrofitInterceptor(handler = MyRetrofitInterceptor2.class)
 public class HelloInheritApi {
 }

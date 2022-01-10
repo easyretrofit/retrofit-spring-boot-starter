@@ -52,6 +52,7 @@ public class RetrofitResourceBuilder {
                 for (RetrofitClientBean retrofitClientBean : retrofitClientBeanList) {
                     if (retrofitServiceBean.getParentClazz().getSimpleName().equals(retrofitClientBean.getSelfClazz().getSimpleName())) {
                         retrofitClientBean.addRetrofitServiceBean(retrofitServiceBean);
+                        break;
                     }
                 }
             }
