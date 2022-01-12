@@ -17,7 +17,6 @@ public class RetrofitClientBean {
     private String realHostUrl;
     private RetrofitBuilder retrofitBuilder;
     private List<RetrofitInterceptor> interceptors;
-    private Class<?> selfClazz;
     private List<RetrofitServiceBean> retrofitServices;
 
     public RetrofitClientBean() {
@@ -39,10 +38,6 @@ public class RetrofitClientBean {
 
     void setInterceptors(List<RetrofitInterceptor> interceptors) {
         this.interceptors = interceptors;
-    }
-
-    void setSelfClazz(Class<?> clazz) {
-        this.selfClazz = clazz;
     }
 
     void addInterceptor(RetrofitInterceptor retrofitInterceptor) {
@@ -67,10 +62,6 @@ public class RetrofitClientBean {
 
     public List<RetrofitInterceptor> getInterceptors() {
         return interceptors;
-    }
-
-    public Class<?> getSelfClazz() {
-        return selfClazz;
     }
 
     public List<RetrofitServiceBean> getRetrofitServices() {
