@@ -48,8 +48,8 @@ public class RetrofitResourceDefinitionRegistry implements ImportBeanDefinitionR
         basePackages.addAll(Arrays.stream(annoAttrs.getStringArray("basePackages")).filter(StringUtils::hasText).collect(Collectors.toList()));
         basePackages.addAll(Arrays.stream(annoAttrs.getClassArray("basePackageClasses")).map(ClassUtils::getPackageName).collect(Collectors.toList()));
         final Set<Class<?>> retrofitBuilderClassSet = scanner.doScan(StringUtils.toStringArray(basePackages));
-        RetrofitResourceBuilder builder = new RetrofitResourceBuilder(retrofitBuilderClassSet, environment);
-        builder.build();
+        RetrofitResourceBuilder builder = new RetrofitResourceBuilder(environment);
+        builder.build(retrofitBuilderClassSet);
 
     }
 

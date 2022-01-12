@@ -14,7 +14,7 @@ import java.util.UUID;
 public class RetrofitClientBean {
 
     private String retrofitInstanceName;
-    private RetrofitUrl url;
+    private String realHostUrl;
     private RetrofitBuilder retrofitBuilder;
     private List<RetrofitInterceptor> interceptors;
     private Class<?> selfClazz;
@@ -29,8 +29,8 @@ public class RetrofitClientBean {
         this.retrofitInstanceName = retrofitInstanceName + "-" + UUID.randomUUID();
     }
 
-    void setUrl(RetrofitUrl url) {
-        this.url = url;
+    void setRealHostUrl(String realHostUrl) {
+        this.realHostUrl = realHostUrl;
     }
 
     void setRetrofitBuilder(RetrofitBuilder retrofitBuilder) {
@@ -51,15 +51,14 @@ public class RetrofitClientBean {
 
     public void addRetrofitServiceBean(RetrofitServiceBean retrofitServiceBean) {
         retrofitServices.add(retrofitServiceBean);
-        retrofitServiceBean.setRetrofitClientBean(this);
     }
 
     public String getRetrofitInstanceName() {
         return retrofitInstanceName;
     }
 
-    public RetrofitUrl getUrl() {
-        return url;
+    public String getRealHostUrl() {
+        return realHostUrl;
     }
 
     public RetrofitBuilder getRetrofitBuilder() {
