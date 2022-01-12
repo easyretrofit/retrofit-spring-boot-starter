@@ -7,6 +7,7 @@ import com.github.liuziyuan.retrofit.model.RetrofitServiceBeanHandler;
 import org.springframework.core.env.Environment;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -16,11 +17,11 @@ import java.util.Set;
  */
 public class RetrofitResourceBuilder {
 
-    private List<RetrofitClientBean> retrofitClientBeanList;
+    private Set<RetrofitClientBean> retrofitClientBeanList;
     private Environment environment;
 
     public RetrofitResourceBuilder(Environment environment) {
-        retrofitClientBeanList = new ArrayList<>();
+        retrofitClientBeanList = new HashSet<>();
         this.environment = environment;
     }
 
@@ -40,8 +41,8 @@ public class RetrofitResourceBuilder {
         return retrofitServiceBeanList;
     }
 
-    private List<RetrofitClientBean> setRetrofitClientBeanList(List<RetrofitServiceBean> serviceBeanList) {
-        List<RetrofitClientBean> clientBeanList = new ArrayList<>();
+    private Set<RetrofitClientBean> setRetrofitClientBeanList(List<RetrofitServiceBean> serviceBeanList) {
+        Set<RetrofitClientBean> clientBeanList = new HashSet<>();
         RetrofitClientBeanHandler retrofitClientBeanHandler;
         for (RetrofitServiceBean serviceBean : serviceBeanList) {
             retrofitClientBeanHandler = new RetrofitClientBeanHandler(clientBeanList, serviceBean);

@@ -2,35 +2,36 @@ package com.github.liuziyuan.retrofit.model;
 
 import retrofit2.Retrofit;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author liuziyuan
  * @date 1/6/2022 3:53 PM
  */
 public class RetrofitClientBeanHandler implements Handler<RetrofitClientBean> {
-    private List<RetrofitClientBean> clientBeanList;
+    private Set<RetrofitClientBean> clientBeanList;
     private RetrofitServiceBean serviceBean;
 
-    public RetrofitClientBeanHandler(List<RetrofitClientBean> clientBeanList, RetrofitServiceBean serviceBean) {
+    public RetrofitClientBeanHandler(Set<RetrofitClientBean> clientBeanList, RetrofitServiceBean serviceBean) {
         this.clientBeanList = clientBeanList;
         this.serviceBean = serviceBean;
     }
 
     @Override
     public RetrofitClientBean generate() {
-        RetrofitClientBean clientBean = null;
+        RetrofitClientBean clientBean;
         if (isNewRetrofitClient(serviceBean, clientBeanList)) {
             clientBean = new RetrofitClientBean();
             clientBean.setRetrofitBuilder(serviceBean.getRetrofitBuilder());
             clientBean.setInterceptors(serviceBean.getInterceptors());
             clientBean.setRealHostUrl(serviceBean.getRetrofitUrl().getRealHostUrl());
             clientBean.setRetrofitInstanceName(Retrofit.class.getSimpleName());
+            return clientBean;
         }
-        return clientBean;
+        return null;
     }
 
-    private boolean isNewRetrofitClient(RetrofitServiceBean serviceBean, List<RetrofitClientBean> clientBeanList) {
+    private boolean isNewRetrofitClient(RetrofitServiceBean serviceBean, Set<RetrofitClientBean> clientBeanList) {
         if (clientBeanList.isEmpty()) {
             return true;
         }
