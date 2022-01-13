@@ -42,12 +42,14 @@ public class RetrofitResourceBuilder {
 
     private List<RetrofitClientBean> setRetrofitClientBeanList(List<RetrofitServiceBean> serviceBeanList) {
         List<RetrofitClientBean> clientBeanList = new ArrayList<>();
-        RetrofitClientBeanHandler retrofitClientBeanHandler;
+        RetrofitClientBeanHandler clientBeanHandler;
         for (RetrofitServiceBean serviceBean : serviceBeanList) {
-            retrofitClientBeanHandler = new RetrofitClientBeanHandler(clientBeanList, serviceBean);
-            final RetrofitClientBean retrofitClientBean = retrofitClientBeanHandler.generate();
+            clientBeanHandler = new RetrofitClientBeanHandler(clientBeanList, serviceBean);
+            final RetrofitClientBean retrofitClientBean = clientBeanHandler.generate();
             if (retrofitClientBean != null) {
-                clientBeanList.add(retrofitClientBean);
+                if (!clientBeanList.stream().anyMatch(clientBean -> clientBean.getRetrofitInstanceName().equals(retrofitClientBean.getRetrofitInstanceName()))) {
+                    clientBeanList.add(retrofitClientBean);
+                }
             }
         }
         return clientBeanList;
