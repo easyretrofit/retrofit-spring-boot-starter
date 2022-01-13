@@ -46,6 +46,7 @@ public class RetrofitClientBeanHandler implements Handler<RetrofitClientBean> {
         return null;
     }
 
+
     private boolean isSameHostUrl(RetrofitClientBean clientBean, RetrofitServiceBean serviceBean) {
         return serviceBean.getRetrofitUrl().getRealHostUrl().equals(clientBean.getRealHostUrl());
     }
