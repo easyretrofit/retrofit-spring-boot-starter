@@ -40,14 +40,6 @@ public class RetrofitClientBean {
         this.interceptors = interceptors;
     }
 
-    void addInterceptor(RetrofitInterceptor retrofitInterceptor) {
-        interceptors.add(retrofitInterceptor);
-    }
-
-    public void addRetrofitServiceBean(RetrofitServiceBean retrofitServiceBean) {
-        retrofitServices.add(retrofitServiceBean);
-    }
-
     public String getRetrofitInstanceName() {
         return retrofitInstanceName;
     }
@@ -68,5 +60,9 @@ public class RetrofitClientBean {
         return retrofitServices;
     }
 
+    void addRetrofitServiceBean(RetrofitServiceBean retrofitServiceBean) {
+        retrofitServices.add(retrofitServiceBean);
+        retrofitServiceBean.setRetrofitClientBean(this);
+    }
 
 }

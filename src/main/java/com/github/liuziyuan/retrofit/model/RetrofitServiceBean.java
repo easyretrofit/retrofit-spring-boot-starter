@@ -3,7 +3,6 @@ package com.github.liuziyuan.retrofit.model;
 import com.github.liuziyuan.retrofit.annotation.RetrofitBuilder;
 import com.github.liuziyuan.retrofit.annotation.RetrofitInterceptor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,15 +16,19 @@ public class RetrofitServiceBean {
     private RetrofitUrl retrofitUrl;
     private RetrofitBuilder retrofitBuilder;
     private List<RetrofitInterceptor> interceptors;
+
+    public void setRetrofitClientBean(RetrofitClientBean retrofitClientBean) {
+        this.retrofitClientBean = retrofitClientBean;
+        this.retrofitBuilder = retrofitClientBean.getRetrofitBuilder();
+        this.interceptors = retrofitClientBean.getInterceptors();
+    }
+
     private RetrofitClientBean retrofitClientBean;
 
     public RetrofitClientBean getRetrofitClientBean() {
         return retrofitClientBean;
     }
 
-    void setRetrofitClientBean() {
-        this.interceptors = new ArrayList<>();
-    }
 
     public Class<?> getSelfClazz() {
         return selfClazz;
