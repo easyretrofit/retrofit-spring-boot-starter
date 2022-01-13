@@ -22,4 +22,10 @@ public abstract class OkHttpClientBuilder extends BaseBuilder<OkHttpClient> {
         okHttpClientBuilder = new OkHttpClient.Builder();
         return builder(okHttpClientBuilder).build();
     }
+
+    public OkHttpClient.Builder getOkHttpClientBuilder() {
+        return okHttpClientBuilder;
+    }
+
+
 }

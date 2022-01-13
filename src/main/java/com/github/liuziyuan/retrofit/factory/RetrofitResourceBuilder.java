@@ -29,6 +29,11 @@ public class RetrofitResourceBuilder {
         retrofitClientBeanList = setRetrofitClientBeanList(retrofitServiceBeanList);
     }
 
+    public List<RetrofitClientBean> getRetrofitClientBeanList() {
+        return retrofitClientBeanList;
+    }
+
+
     private List<RetrofitServiceBean> setRetrofitServiceBeanList(Set<Class<?>> retrofitBuilderClassSet) {
         List<RetrofitServiceBean> retrofitServiceBeanList = new ArrayList<>();
         RetrofitServiceBeanHandler serviceBeanHandler;
