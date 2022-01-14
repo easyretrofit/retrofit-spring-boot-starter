@@ -18,5 +18,5 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
         addCallAdapterFactory = {RxJavaCallAdapterFactory.class},
         client = MyOkHttpClient.class)
 @RetrofitInterceptor(handler = MyRetrofitInterceptor2.class)
-public class HelloInheritApi {
+public interface HelloInheritApi {
 }
