@@ -1,9 +1,9 @@
 package com.github.liuziyuan.retrofit;
 
-import com.github.liuziyuan.retrofit.resource.RetrofitClientBeanHandler;
-import com.github.liuziyuan.retrofit.resource.RetrofitServiceBeanHandler;
 import com.github.liuziyuan.retrofit.resource.RetrofitClientBean;
+import com.github.liuziyuan.retrofit.resource.RetrofitClientBeanHandler;
 import com.github.liuziyuan.retrofit.resource.RetrofitServiceBean;
+import com.github.liuziyuan.retrofit.resource.RetrofitServiceBeanHandler;
 import org.springframework.core.env.Environment;
 
 import java.util.ArrayList;
@@ -51,10 +51,8 @@ public class RetrofitResourceBuilder {
         for (RetrofitServiceBean serviceBean : serviceBeanList) {
             clientBeanHandler = new RetrofitClientBeanHandler(clientBeanList, serviceBean);
             final RetrofitClientBean retrofitClientBean = clientBeanHandler.generate();
-            if (retrofitClientBean != null) {
-                if (!clientBeanList.stream().anyMatch(clientBean -> clientBean.getRetrofitInstanceName().equals(retrofitClientBean.getRetrofitInstanceName()))) {
-                    clientBeanList.add(retrofitClientBean);
-                }
+            if (retrofitClientBean != null && clientBeanList.stream().noneMatch(clientBean -> clientBean.getRetrofitInstanceName().equals(retrofitClientBean.getRetrofitInstanceName()))) {
+                clientBeanList.add(retrofitClientBean);
             }
         }
         return clientBeanList;

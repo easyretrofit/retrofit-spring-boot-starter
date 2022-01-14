@@ -7,20 +7,18 @@ import com.github.liuziyuan.retrofit.handler.CallAdapterFactoryHandler;
 import com.github.liuziyuan.retrofit.handler.ConverterFactoryHandler;
 import com.github.liuziyuan.retrofit.handler.OkHttpClientBuilderHandler;
 import com.github.liuziyuan.retrofit.handler.OkHttpInterceptorHandler;
+import com.github.liuziyuan.retrofit.proxy.RetrofitServiceProxyFactory;
 import com.github.liuziyuan.retrofit.resource.RetrofitClientBean;
 import com.github.liuziyuan.retrofit.resource.RetrofitServiceBean;
-import com.github.liuziyuan.retrofit.proxy.RetrofitServiceProxyFactory;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import org.springframework.beans.factory.support.*;
 import org.springframework.context.EnvironmentAware;
-import org.springframework.context.ResourceLoaderAware;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.env.Environment;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.CollectionUtils;
@@ -37,10 +35,9 @@ import java.util.stream.Collectors;
  * @date 1/5/2022 11:22 AM
  */
 @Slf4j
-public class RetrofitResourceDefinitionRegistry implements ImportBeanDefinitionRegistrar, ResourceLoaderAware, EnvironmentAware {
+public class RetrofitResourceDefinitionRegistry implements ImportBeanDefinitionRegistrar, EnvironmentAware {
 
     private Environment environment;
-    private ResourceLoader resourceLoader;
 
     @Override
     public void registerBeanDefinitions(AnnotationMetadata metadata, BeanDefinitionRegistry registry) {
@@ -52,7 +49,7 @@ public class RetrofitResourceDefinitionRegistry implements ImportBeanDefinitionR
 
     void registerRetrofitResourceBeanDefinitions(AnnotationAttributes annoAttrs, BeanDefinitionRegistry registry) {
         RetrofitResourceScanner scanner = new RetrofitResourceScanner();
-        List<String> basePackages = new ArrayList();
+        List<String> basePackages = new ArrayList<>();
         basePackages.addAll(Arrays.stream(annoAttrs.getStringArray("value")).filter(StringUtils::hasText).collect(Collectors.toList()));
         basePackages.addAll(Arrays.stream(annoAttrs.getStringArray("basePackages")).filter(StringUtils::hasText).collect(Collectors.toList()));
         basePackages.addAll(Arrays.stream(annoAttrs.getClassArray("basePackageClasses")).map(ClassUtils::getPackageName).collect(Collectors.toList()));
@@ -177,8 +174,4 @@ public class RetrofitResourceDefinitionRegistry implements ImportBeanDefinitionR
         this.environment = environment;
     }
 
-    @Override
-    public void setResourceLoader(ResourceLoader resourceLoader) {
-        this.resourceLoader = resourceLoader;
-    }
 }

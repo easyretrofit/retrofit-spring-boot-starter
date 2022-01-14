@@ -10,6 +10,9 @@ public class RetrofitUtils {
 
     private static final String SUFFIX = "/";
 
+    private RetrofitUtils() {
+    }
+
     public static String convertBaseUrl(String baseUrl, Environment environment) {
         baseUrl = environment.resolveRequiredPlaceholders(baseUrl);
         // 解析baseUrl占位符

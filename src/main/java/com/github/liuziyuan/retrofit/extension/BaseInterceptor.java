@@ -1,5 +1,6 @@
 package com.github.liuziyuan.retrofit.extension;
 
+import okhttp3.Interceptor;
 import okhttp3.Response;
 import retrofit2.internal.EverythingIsNonNull;
 
