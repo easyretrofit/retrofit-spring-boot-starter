@@ -30,7 +30,7 @@ public class RetrofitResourceScanner {
         final Set<Class<?>> classSet = reflections.getTypesAnnotatedWith(RetrofitBuilder.class);
         for (Class<?> clazz : classSet) {
             if (!clazz.isInterface()) {
-                throw new ProxyTypeIsNotInterfaceException("Clazz " + clazz.getName() + " requires an interface type");
+                throw new ProxyTypeIsNotInterfaceException("[" + clazz.getName() + "] requires an interface type");
             }
         }
         return classSet;
