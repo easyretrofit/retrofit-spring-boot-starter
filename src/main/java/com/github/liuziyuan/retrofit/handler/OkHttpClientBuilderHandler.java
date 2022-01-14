@@ -1,5 +1,6 @@
 package com.github.liuziyuan.retrofit.handler;
 
+import com.github.liuziyuan.retrofit.Handler;
 import com.github.liuziyuan.retrofit.extension.OkHttpClientBuilder;
 import lombok.SneakyThrows;
 import okhttp3.OkHttpClient;

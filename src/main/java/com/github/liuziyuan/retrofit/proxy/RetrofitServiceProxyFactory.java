@@ -1,6 +1,6 @@
 package com.github.liuziyuan.retrofit.proxy;
 
-import com.github.liuziyuan.retrofit.model.RetrofitServiceBean;
+import com.github.liuziyuan.retrofit.resource.RetrofitServiceBean;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;

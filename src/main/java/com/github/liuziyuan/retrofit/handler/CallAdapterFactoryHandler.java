@@ -1,5 +1,6 @@
 package com.github.liuziyuan.retrofit.handler;
 
+import com.github.liuziyuan.retrofit.Handler;
 import lombok.SneakyThrows;
 import retrofit2.CallAdapter;
 

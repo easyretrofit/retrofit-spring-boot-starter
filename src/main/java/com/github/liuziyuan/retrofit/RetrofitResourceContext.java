@@ -1,6 +1,6 @@
 package com.github.liuziyuan.retrofit;
 
-import com.github.liuziyuan.retrofit.model.RetrofitClientBean;
+import com.github.liuziyuan.retrofit.resource.RetrofitClientBean;
 
 import java.util.ArrayList;
 import java.util.List;

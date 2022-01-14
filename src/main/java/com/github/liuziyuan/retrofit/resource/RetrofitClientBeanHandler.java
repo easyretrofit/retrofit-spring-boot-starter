@@ -1,7 +1,6 @@
-package com.github.liuziyuan.retrofit.handler;
+package com.github.liuziyuan.retrofit.resource;
 
-import com.github.liuziyuan.retrofit.model.RetrofitClientBean;
-import com.github.liuziyuan.retrofit.model.RetrofitServiceBean;
+import com.github.liuziyuan.retrofit.Handler;
 import retrofit2.CallAdapter;
 import retrofit2.Converter;
 import retrofit2.Retrofit;

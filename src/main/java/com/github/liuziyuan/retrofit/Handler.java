@@ -1,4 +1,4 @@
-package com.github.liuziyuan.retrofit.handler;
+package com.github.liuziyuan.retrofit;
 
 /**
  * @author liuziyuan

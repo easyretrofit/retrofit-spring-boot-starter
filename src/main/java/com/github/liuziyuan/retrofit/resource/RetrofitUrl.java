@@ -1,4 +1,4 @@
-package com.github.liuziyuan.retrofit.model;
+package com.github.liuziyuan.retrofit.resource;
 
 import com.github.liuziyuan.retrofit.util.RetrofitUtils;
 import lombok.Getter;

@@ -1,7 +1,10 @@
-package com.github.liuziyuan.retrofit.model;
+package com.github.liuziyuan.retrofit.resource;
 
 import com.github.liuziyuan.retrofit.annotation.RetrofitBuilder;
 import com.github.liuziyuan.retrofit.annotation.RetrofitInterceptor;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +14,8 @@ import java.util.UUID;
  * @author liuziyuan
  * @date 12/31/2021 3:46 PM
  */
+@Getter
+@Setter(AccessLevel.PACKAGE)
 public class RetrofitClientBean {
 
     private String retrofitInstanceName;
@@ -26,38 +31,6 @@ public class RetrofitClientBean {
 
     public void setRetrofitInstanceName(String retrofitInstanceName) {
         this.retrofitInstanceName = retrofitInstanceName + "-" + UUID.randomUUID();
-    }
-
-    public void setRealHostUrl(String realHostUrl) {
-        this.realHostUrl = realHostUrl;
-    }
-
-    public void setRetrofitBuilder(RetrofitBuilder retrofitBuilder) {
-        this.retrofitBuilder = retrofitBuilder;
-    }
-
-    public void setInterceptors(List<RetrofitInterceptor> interceptors) {
-        this.interceptors = interceptors;
-    }
-
-    public String getRetrofitInstanceName() {
-        return retrofitInstanceName;
-    }
-
-    public String getRealHostUrl() {
-        return realHostUrl;
-    }
-
-    public RetrofitBuilder getRetrofitBuilder() {
-        return retrofitBuilder;
-    }
-
-    public List<RetrofitInterceptor> getInterceptors() {
-        return interceptors;
-    }
-
-    public List<RetrofitServiceBean> getRetrofitServices() {
-        return retrofitServices;
     }
 
     public void addRetrofitServiceBean(RetrofitServiceBean retrofitServiceBean) {
