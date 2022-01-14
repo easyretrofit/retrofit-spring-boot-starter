@@ -1,6 +1,6 @@
 package com.github.liuziyuan.retrofit.annotation;
 
-import com.github.liuziyuan.retrofit.extension.OkHttpClientBuilder;
+import com.github.liuziyuan.retrofit.extension.BaseOkHttpClientBuilder;
 import retrofit2.CallAdapter;
 import retrofit2.Converter;
 
@@ -20,6 +20,6 @@ public @interface RetrofitBuilder {
 
     Class<? extends Converter.Factory>[] addConverterFactory() default {};
 
-    Class<? extends OkHttpClientBuilder> client() default OkHttpClientBuilder.class;
+    Class<? extends BaseOkHttpClientBuilder> client() default BaseOkHttpClientBuilder.class;
 
 }

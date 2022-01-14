@@ -6,7 +6,7 @@ import okhttp3.OkHttpClient;
  * @author liuziyuan
  * @date 12/31/2021 12:57 PM
  */
-public abstract class OkHttpClientBuilder extends BaseBuilder<OkHttpClient.Builder> {
+public abstract class BaseOkHttpClientBuilder extends BaseBuilder<OkHttpClient.Builder> {
 
     /**
      * provide OkHttpClient.Builder to complete the OkHttpClient creation

@@ -1,7 +1,7 @@
 package com.github.liuziyuan.retrofit.handler;
 
 import com.github.liuziyuan.retrofit.demo.MyOkHttpClient;
-import com.github.liuziyuan.retrofit.extension.OkHttpClientBuilder;
+import com.github.liuziyuan.retrofit.extension.BaseOkHttpClientBuilder;
 import okhttp3.OkHttpClient;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
  */
 class OkHttpClientBuilderHandlerTest {
 
-    private Class<? extends OkHttpClientBuilder> okHttpClientBuilder;
+    private Class<? extends BaseOkHttpClientBuilder> okHttpClientBuilder;
     private OkHttpClientBuilderHandler okHttpClientBuilderHandler;
 
     @BeforeEach
