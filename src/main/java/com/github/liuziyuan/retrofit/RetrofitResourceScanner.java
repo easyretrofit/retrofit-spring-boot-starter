@@ -1,4 +1,4 @@
-package com.github.liuziyuan.retrofit.factory;
+package com.github.liuziyuan.retrofit;
 
 import com.github.liuziyuan.retrofit.annotation.RetrofitBuilder;
 import org.reflections.Reflections;

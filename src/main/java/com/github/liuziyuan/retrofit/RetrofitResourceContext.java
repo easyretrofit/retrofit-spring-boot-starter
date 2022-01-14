@@ -9,7 +9,8 @@ import java.util.List;
  * @author liuziyuan
  * @date 12/31/2021 3:34 PM
  */
-public class RetrofitResourceContext {
+public final class RetrofitResourceContext {
+
 
     private List<RetrofitClientBean> retrofitClients;
 
@@ -17,7 +18,12 @@ public class RetrofitResourceContext {
         retrofitClients = new ArrayList<>();
     }
 
-    void addRetrofitClients(RetrofitClientBean retrofitClient) {
-        retrofitClients.add(retrofitClient);
+    void setRetrofitClients(List<RetrofitClientBean> retrofitClients) {
+        this.retrofitClients = retrofitClients;
     }
+
+    List<RetrofitClientBean> getRetrofitClients() {
+        return retrofitClients;
+    }
+
 }

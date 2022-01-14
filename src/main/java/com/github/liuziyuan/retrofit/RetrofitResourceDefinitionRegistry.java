@@ -3,8 +3,6 @@ package com.github.liuziyuan.retrofit;
 import com.github.liuziyuan.retrofit.annotation.EnableRetrofit;
 import com.github.liuziyuan.retrofit.annotation.RetrofitBuilder;
 import com.github.liuziyuan.retrofit.annotation.RetrofitInterceptor;
-import com.github.liuziyuan.retrofit.factory.RetrofitResourceBuilder;
-import com.github.liuziyuan.retrofit.factory.RetrofitResourceScanner;
 import com.github.liuziyuan.retrofit.handler.CallAdapterFactoryHandler;
 import com.github.liuziyuan.retrofit.handler.ConverterFactoryHandler;
 import com.github.liuziyuan.retrofit.handler.OkHttpClientBuilderHandler;
@@ -62,7 +60,16 @@ public class RetrofitResourceDefinitionRegistry implements ImportBeanDefinitionR
         RetrofitResourceBuilder retrofitResourceBuilder = new RetrofitResourceBuilder(environment);
         retrofitResourceBuilder.build(retrofitBuilderClassSet);
         final List<RetrofitClientBean> retrofitClientBeanList = retrofitResourceBuilder.getRetrofitClientBeanList();
+        RetrofitResourceContext context = new RetrofitResourceContext();
+        context.setRetrofitClients(retrofitClientBeanList);
         BeanDefinitionBuilder builder;
+        //registry RetrofitResourceContext
+        if (!context.getRetrofitClients().isEmpty()) {
+            builder = BeanDefinitionBuilder.genericBeanDefinition(RetrofitResourceContext.class);
+            GenericBeanDefinition definition = (GenericBeanDefinition) builder.getRawBeanDefinition();
+            registry.registerBeanDefinition(RetrofitResourceContext.class.getName(), definition);
+        }
+        //registry Retrofit
         for (RetrofitClientBean clientBean : retrofitClientBeanList) {
             builder = BeanDefinitionBuilder.genericBeanDefinition(Retrofit.class, () -> {
                 final Retrofit.Builder retrofitBuilder = getRetrofitBuilder(clientBean);
@@ -74,6 +81,7 @@ public class RetrofitResourceDefinitionRegistry implements ImportBeanDefinitionR
             definition.addQualifier(qualifier);
             registry.registerBeanDefinition(clientBean.getRetrofitInstanceName(), definition);
         }
+        //registry proxy interface of retrofit
         for (RetrofitClientBean clientBean : retrofitClientBeanList) {
             for (RetrofitServiceBean serviceBean : clientBean.getRetrofitServices()) {
                 builder = BeanDefinitionBuilder.genericBeanDefinition(serviceBean.getSelfClazz());
