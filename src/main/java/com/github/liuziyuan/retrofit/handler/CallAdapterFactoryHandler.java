@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
  * @date 1/14/2022 10:33 AM
  */
 public class CallAdapterFactoryHandler implements Handler<CallAdapter.Factory> {
-    private Class<? extends CallAdapter.Factory> callAdapterFactoryClass;
+    private final Class<? extends CallAdapter.Factory> callAdapterFactoryClass;
 
     public CallAdapterFactoryHandler(Class<? extends CallAdapter.Factory> callAdapterFactoryClass) {
         this.callAdapterFactoryClass = callAdapterFactoryClass;

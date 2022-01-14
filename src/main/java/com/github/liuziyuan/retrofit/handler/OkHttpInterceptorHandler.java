@@ -10,7 +10,7 @@ import okhttp3.Interceptor;
  * @date 1/14/2022 11:43 AM
  */
 public class OkHttpInterceptorHandler implements Handler<Interceptor> {
-    private Class<? extends BaseInterceptor> interceptorClass;
+    private final Class<? extends BaseInterceptor> interceptorClass;
 
     public OkHttpInterceptorHandler(Class<? extends BaseInterceptor> interceptorClass) {
         this.interceptorClass = interceptorClass;
@@ -19,7 +19,6 @@ public class OkHttpInterceptorHandler implements Handler<Interceptor> {
     @SneakyThrows
     @Override
     public Interceptor generate() {
-        final BaseInterceptor interceptor = interceptorClass.newInstance();
-        return interceptor;
+        return interceptorClass.newInstance();
     }
 }

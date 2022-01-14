@@ -10,7 +10,7 @@ import okhttp3.OkHttpClient;
  * @date 1/14/2022 11:16 AM
  */
 public class OkHttpClientBuilderHandler implements Handler<OkHttpClient.Builder> {
-    private Class<? extends OkHttpClientBuilder> okHttpClientBuilder;
+    private final Class<? extends OkHttpClientBuilder> okHttpClientBuilder;
 
     public OkHttpClientBuilderHandler(Class<? extends OkHttpClientBuilder> okHttpClientBuilder) {
         this.okHttpClientBuilder = okHttpClientBuilder;
@@ -19,7 +19,6 @@ public class OkHttpClientBuilderHandler implements Handler<OkHttpClient.Builder>
     @SneakyThrows
     @Override
     public OkHttpClient.Builder generate() {
-        final OkHttpClientBuilder okHttpClientBuilder = this.okHttpClientBuilder.newInstance();
-        return okHttpClientBuilder.executeBuild();
+        return this.okHttpClientBuilder.newInstance().executeBuild();
     }
 }

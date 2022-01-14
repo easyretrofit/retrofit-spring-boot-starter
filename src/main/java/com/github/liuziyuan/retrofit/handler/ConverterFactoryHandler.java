@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
  * @date 1/14/2022 10:31 AM
  */
 public class ConverterFactoryHandler implements Handler<Converter.Factory> {
-    private Class<? extends Converter.Factory> converterFactoryClass;
+    private final Class<? extends Converter.Factory> converterFactoryClass;
 
     public ConverterFactoryHandler(Class<? extends Converter.Factory> converterFactoryClass) {
         this.converterFactoryClass = converterFactoryClass;
