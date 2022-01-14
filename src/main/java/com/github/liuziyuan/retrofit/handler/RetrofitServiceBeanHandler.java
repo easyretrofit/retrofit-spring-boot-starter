@@ -9,6 +9,7 @@ import org.springframework.core.env.Environment;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -57,9 +58,7 @@ public class RetrofitServiceBeanHandler implements Handler<RetrofitServiceBean> 
         for (Annotation annotation : annotations) {
             if (annotation instanceof Interceptors) {
                 RetrofitInterceptor[] values = ((Interceptors) annotation).value();
-                for (RetrofitInterceptor interceptor : values) {
-                    retrofitInterceptorAnnotations.add(interceptor);
-                }
+                Collections.addAll(retrofitInterceptorAnnotations, values);
             } else if (annotation instanceof RetrofitInterceptor) {
                 retrofitInterceptorAnnotations.add((RetrofitInterceptor) annotation);
             }

@@ -1,6 +1,7 @@
 package com.github.liuziyuan.retrofit.handler;
 
 import com.github.liuziyuan.retrofit.extension.OkHttpClientBuilder;
+import lombok.SneakyThrows;
 import okhttp3.OkHttpClient;
 
 /**
@@ -14,16 +15,10 @@ public class OkHttpClientBuilderHandler implements Handler<OkHttpClient.Builder>
         this.okHttpClientBuilder = okHttpClientBuilder;
     }
 
+    @SneakyThrows
     @Override
     public OkHttpClient.Builder generate() {
-        try {
-            final OkHttpClientBuilder okHttpClientBuilder = this.okHttpClientBuilder.newInstance();
-            return okHttpClientBuilder.executeBuild();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return null;
+        final OkHttpClientBuilder okHttpClientBuilder = this.okHttpClientBuilder.newInstance();
+        return okHttpClientBuilder.executeBuild();
     }
 }

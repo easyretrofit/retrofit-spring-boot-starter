@@ -1,8 +1,8 @@
 package com.github.liuziyuan.retrofit.handler;
 
+import lombok.SneakyThrows;
 import retrofit2.CallAdapter;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -16,19 +16,11 @@ public class CallAdapterFactoryHandler implements Handler<CallAdapter.Factory> {
         this.callAdapterFactoryClass = callAdapterFactoryClass;
     }
 
+    @SneakyThrows
     @Override
     public CallAdapter.Factory generate() {
-        try {
-            final Method createMethod = callAdapterFactoryClass.getDeclaredMethod("create");
-            final Object invoke = createMethod.invoke(null);
-            return (CallAdapter.Factory) invoke;
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return null;
+        final Method createMethod = callAdapterFactoryClass.getDeclaredMethod("create");
+        final Object invoke = createMethod.invoke(null);
+        return (CallAdapter.Factory) invoke;
     }
 }

@@ -1,6 +1,7 @@
 package com.github.liuziyuan.retrofit.handler;
 
 import com.github.liuziyuan.retrofit.extension.BaseInterceptor;
+import lombok.SneakyThrows;
 import okhttp3.Interceptor;
 
 /**
@@ -14,16 +15,10 @@ public class OkHttpInterceptorHandler implements Handler<Interceptor> {
         this.interceptorClass = interceptorClass;
     }
 
+    @SneakyThrows
     @Override
     public Interceptor generate() {
-        try {
-            final BaseInterceptor interceptor = interceptorClass.newInstance();
-            return interceptor;
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return null;
+        final BaseInterceptor interceptor = interceptorClass.newInstance();
+        return interceptor;
     }
 }

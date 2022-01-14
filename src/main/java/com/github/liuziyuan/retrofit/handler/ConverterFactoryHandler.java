@@ -1,8 +1,8 @@
 package com.github.liuziyuan.retrofit.handler;
 
+import lombok.SneakyThrows;
 import retrofit2.Converter;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -16,19 +16,11 @@ public class ConverterFactoryHandler implements Handler<Converter.Factory> {
         this.converterFactoryClass = converterFactoryClass;
     }
 
+    @SneakyThrows
     @Override
     public Converter.Factory generate() {
-        try {
-            final Method createMethod = converterFactoryClass.getDeclaredMethod("create");
-            final Object invoke = createMethod.invoke(null);
-            return (Converter.Factory) invoke;
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return null;
+        final Method createMethod = converterFactoryClass.getDeclaredMethod("create");
+        final Object invoke = createMethod.invoke(null);
+        return (Converter.Factory) invoke;
     }
 }
