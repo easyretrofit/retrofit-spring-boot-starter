@@ -1,8 +1,7 @@
 package com.github.liuziyuan.retrofit.extension;
 
 import okhttp3.Response;
-
-import java.io.IOException;
+import retrofit2.internal.EverythingIsNonNull;
 
 /**
  * @author liuziyuan
@@ -11,9 +10,16 @@ import java.io.IOException;
 public abstract class BaseInterceptor implements Interceptor {
 
     @Override
-    public final Response intercept(Chain chain) throws IOException {
+    @EverythingIsNonNull
+    public final Response intercept(Chain chain) {
         return executeIntercept(chain);
     }
 
+    /**
+     * execute intercept for OKHttpClient Interceptor
+     *
+     * @param chain Chain
+     * @return Response
+     */
     protected abstract Response executeIntercept(Chain chain);
 }
