@@ -34,7 +34,7 @@ public class RetrofitServiceBean {
         return selfClazz;
     }
 
-    void setSelfClazz(Class<?> selfClazz) {
+    public void setSelfClazz(Class<?> selfClazz) {
         this.selfClazz = selfClazz;
     }
 
@@ -42,7 +42,7 @@ public class RetrofitServiceBean {
         return parentClazz;
     }
 
-    void setParentClazz(Class<?> parentClazz) {
+    public void setParentClazz(Class<?> parentClazz) {
         this.parentClazz = parentClazz;
     }
 
@@ -50,7 +50,7 @@ public class RetrofitServiceBean {
         return retrofitUrl;
     }
 
-    void setRetrofitUrl(RetrofitUrl retrofitUrl) {
+    public void setRetrofitUrl(RetrofitUrl retrofitUrl) {
         this.retrofitUrl = retrofitUrl;
     }
 
@@ -59,7 +59,7 @@ public class RetrofitServiceBean {
         return retrofitBuilder;
     }
 
-    void setRetrofitBuilder(RetrofitBuilder retrofitBuilder) {
+    public void setRetrofitBuilder(RetrofitBuilder retrofitBuilder) {
         this.retrofitBuilder = retrofitBuilder;
     }
 
@@ -67,7 +67,7 @@ public class RetrofitServiceBean {
         return interceptors;
     }
 
-    void setInterceptors(List<RetrofitInterceptor> interceptors) {
+    public void setInterceptors(List<RetrofitInterceptor> interceptors) {
         this.interceptors = interceptors;
     }
 

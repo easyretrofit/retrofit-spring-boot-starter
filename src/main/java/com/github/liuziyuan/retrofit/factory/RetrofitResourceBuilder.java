@@ -1,9 +1,9 @@
 package com.github.liuziyuan.retrofit.factory;
 
 import com.github.liuziyuan.retrofit.model.RetrofitClientBean;
-import com.github.liuziyuan.retrofit.model.RetrofitClientBeanHandler;
+import com.github.liuziyuan.retrofit.handler.RetrofitClientBeanHandler;
 import com.github.liuziyuan.retrofit.model.RetrofitServiceBean;
-import com.github.liuziyuan.retrofit.model.RetrofitServiceBeanHandler;
+import com.github.liuziyuan.retrofit.handler.RetrofitServiceBeanHandler;
 import org.springframework.core.env.Environment;
 
 import java.util.ArrayList;

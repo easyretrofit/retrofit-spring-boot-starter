@@ -140,7 +140,7 @@ public class RetrofitResourceDefinitionRegistry implements ImportBeanDefinitionR
     private List<CallAdapter.Factory> getCallAdapterFactories(Class<? extends CallAdapter.Factory>[] callAdapterFactoryClasses) {
         List<CallAdapter.Factory> callAdapterFactories = new ArrayList<>();
         for (Class<? extends CallAdapter.Factory> callAdapterFactoryClass : callAdapterFactoryClasses) {
-            final CallAdapter.Factory factory = callAdapterFactoryClass.newInstance();
+            CallAdapter.Factory factory = callAdapterFactoryClass.newInstance();
             callAdapterFactories.add(factory);
         }
         return callAdapterFactories;
@@ -150,7 +150,7 @@ public class RetrofitResourceDefinitionRegistry implements ImportBeanDefinitionR
     private List<Converter.Factory> getConverterFactories(Class<? extends Converter.Factory>[] converterFactoryClasses) {
         List<Converter.Factory> converterFactories = new ArrayList<>();
         for (Class<? extends Converter.Factory> converterFactoryClass : converterFactoryClasses) {
-            final Converter.Factory factory = converterFactoryClass.newInstance();
+            Converter.Factory factory = converterFactoryClass.newInstance();
             converterFactories.add(factory);
         }
         return converterFactories;

@@ -24,19 +24,19 @@ public class RetrofitClientBean {
         this.retrofitServices = new ArrayList<>();
     }
 
-    void setRetrofitInstanceName(String retrofitInstanceName) {
+    public void setRetrofitInstanceName(String retrofitInstanceName) {
         this.retrofitInstanceName = retrofitInstanceName + "-" + UUID.randomUUID();
     }
 
-    void setRealHostUrl(String realHostUrl) {
+    public void setRealHostUrl(String realHostUrl) {
         this.realHostUrl = realHostUrl;
     }
 
-    void setRetrofitBuilder(RetrofitBuilder retrofitBuilder) {
+    public void setRetrofitBuilder(RetrofitBuilder retrofitBuilder) {
         this.retrofitBuilder = retrofitBuilder;
     }
 
-    void setInterceptors(List<RetrofitInterceptor> interceptors) {
+    public void setInterceptors(List<RetrofitInterceptor> interceptors) {
         this.interceptors = interceptors;
     }
 
@@ -60,7 +60,7 @@ public class RetrofitClientBean {
         return retrofitServices;
     }
 
-    void addRetrofitServiceBean(RetrofitServiceBean retrofitServiceBean) {
+    public void addRetrofitServiceBean(RetrofitServiceBean retrofitServiceBean) {
         retrofitServices.add(retrofitServiceBean);
         retrofitServiceBean.setRetrofitClientBean(this);
     }
