@@ -19,6 +19,9 @@ public class OkHttpClientBuilderHandler implements Handler<OkHttpClient.Builder>
     @SneakyThrows
     @Override
     public OkHttpClient.Builder generate() {
+        if (okHttpClientBuilder.getName().equals(BaseOkHttpClientBuilder.class.getName())) {
+            return new OkHttpClient.Builder();
+        }
         return this.okHttpClientBuilder.newInstance().executeBuild();
     }
 }

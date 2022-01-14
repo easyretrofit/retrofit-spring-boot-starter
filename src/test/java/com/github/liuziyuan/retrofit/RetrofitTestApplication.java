@@ -9,8 +9,8 @@ import retrofit2.Retrofit;
  * @author liuziyuan
  * @date 12/24/2021 5:51 PM
  */
-//@EnableRetrofit("com.github.liuziyuan.retrofit.demo.api")
-@EnableRetrofit
+@EnableRetrofit("com.github.liuziyuan.retrofit.demo.api")
+//@EnableRetrofit
 @SpringBootApplication
 public class RetrofitTestApplication {
     public static void main(String[] args) {
