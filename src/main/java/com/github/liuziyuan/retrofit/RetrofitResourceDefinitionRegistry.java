@@ -3,6 +3,7 @@ package com.github.liuziyuan.retrofit;
 import com.github.liuziyuan.retrofit.annotation.EnableRetrofit;
 import com.github.liuziyuan.retrofit.annotation.RetrofitBuilder;
 import com.github.liuziyuan.retrofit.annotation.RetrofitInterceptor;
+import com.github.liuziyuan.retrofit.extension.UrlOverWriteInterceptor;
 import com.github.liuziyuan.retrofit.handler.CallAdapterFactoryHandler;
 import com.github.liuziyuan.retrofit.handler.ConverterFactoryHandler;
 import com.github.liuziyuan.retrofit.handler.OkHttpClientBuilderHandler;
@@ -14,11 +15,16 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.support.*;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.EnvironmentAware;
+import org.springframework.context.ResourceLoaderAware;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.CollectionUtils;
@@ -35,9 +41,12 @@ import java.util.stream.Collectors;
  * @date 1/5/2022 11:22 AM
  */
 @Slf4j
-public class RetrofitResourceDefinitionRegistry implements ImportBeanDefinitionRegistrar, EnvironmentAware {
+public class RetrofitResourceDefinitionRegistry implements ImportBeanDefinitionRegistrar, EnvironmentAware, ApplicationContextAware, ResourceLoaderAware {
 
+    RetrofitResourceContext context = new RetrofitResourceContext();
     private Environment environment;
+    private ApplicationContext applicationContext;
+    private ResourceLoader resourceLoader;
 
     @Override
     public void registerBeanDefinitions(AnnotationMetadata metadata, BeanDefinitionRegistry registry) {
@@ -57,8 +66,10 @@ public class RetrofitResourceDefinitionRegistry implements ImportBeanDefinitionR
         RetrofitResourceBuilder retrofitResourceBuilder = new RetrofitResourceBuilder(environment);
         retrofitResourceBuilder.build(retrofitBuilderClassSet);
         final List<RetrofitClientBean> retrofitClientBeanList = retrofitResourceBuilder.getRetrofitClientBeanList();
-        RetrofitResourceContext context = new RetrofitResourceContext();
         context.setRetrofitClients(retrofitClientBeanList);
+        context.setApplicationContext(applicationContext);
+        context.setEnvironment(environment);
+        context.setResourceLoader(resourceLoader);
         BeanDefinitionBuilder builder;
         //registry RetrofitResourceContext
         if (!context.getRetrofitClients().isEmpty()) {
@@ -125,12 +136,13 @@ public class RetrofitResourceDefinitionRegistry implements ImportBeanDefinitionR
         OkHttpClientBuilderHandler okHttpClientBuilderHandler;
         if (retrofitBuilder.client() != null) {
             okHttpClientBuilderHandler = new OkHttpClientBuilderHandler(retrofitBuilder.client());
-            final OkHttpClient.Builder generatedOkHttpClientBuilder = okHttpClientBuilderHandler.generate();
-            okHttpClientBuilder = generatedOkHttpClientBuilder;
+            okHttpClientBuilder = okHttpClientBuilderHandler.generate();
         } else {
             okHttpClientBuilder = new OkHttpClient.Builder();
         }
+        okHttpClientBuilder.addInterceptor(new UrlOverWriteInterceptor(context));
         final List<Interceptor> okHttpInterceptors = getOkHttpInterceptor(interceptors);
+
         okHttpInterceptors.forEach(okHttpClientBuilder::addInterceptor);
         builder.client(okHttpClientBuilder.build());
     }
@@ -140,7 +152,7 @@ public class RetrofitResourceDefinitionRegistry implements ImportBeanDefinitionR
         List<Interceptor> interceptorList = new ArrayList<>();
         OkHttpInterceptorHandler okHttpInterceptorHandler;
         for (RetrofitInterceptor interceptor : interceptors) {
-            okHttpInterceptorHandler = new OkHttpInterceptorHandler(interceptor.handler());
+            okHttpInterceptorHandler = new OkHttpInterceptorHandler(interceptor.handler(), context);
             final Interceptor generateInterceptor = okHttpInterceptorHandler.generate();
             interceptorList.add(generateInterceptor);
         }
@@ -174,4 +186,13 @@ public class RetrofitResourceDefinitionRegistry implements ImportBeanDefinitionR
         this.environment = environment;
     }
 
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
+
+    @Override
+    public void setResourceLoader(ResourceLoader resourceLoader) {
+        this.resourceLoader = resourceLoader;
+    }
 }

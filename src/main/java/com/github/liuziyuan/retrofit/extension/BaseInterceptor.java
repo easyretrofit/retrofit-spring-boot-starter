@@ -1,5 +1,6 @@
 package com.github.liuziyuan.retrofit.extension;
 
+import com.github.liuziyuan.retrofit.RetrofitResourceContext;
 import okhttp3.Interceptor;
 import okhttp3.Response;
 import retrofit2.internal.EverythingIsNonNull;
@@ -9,6 +10,12 @@ import retrofit2.internal.EverythingIsNonNull;
  * @date 1/5/2022 5:37 PM
  */
 public abstract class BaseInterceptor implements Interceptor {
+
+    protected RetrofitResourceContext context;
+
+    public BaseInterceptor(RetrofitResourceContext context) {
+        this.context = context;
+    }
 
     @Override
     @EverythingIsNonNull
