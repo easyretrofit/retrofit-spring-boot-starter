@@ -13,8 +13,8 @@ import java.util.List;
  * @date 1/6/2022 3:53 PM
  */
 public class RetrofitClientBeanHandler implements Handler<RetrofitClientBean> {
-    private List<RetrofitClientBean> clientBeanList;
-    private RetrofitServiceBean serviceBean;
+    private final List<RetrofitClientBean> clientBeanList;
+    private final RetrofitServiceBean serviceBean;
 
     public RetrofitClientBeanHandler(List<RetrofitClientBean> clientBeanList, RetrofitServiceBean serviceBean) {
         this.clientBeanList = clientBeanList;
@@ -73,14 +73,9 @@ public class RetrofitClientBeanHandler implements Handler<RetrofitClientBean> {
             serviceBeanConverterFactoryList.add(clazz.getSimpleName());
         }
 
-        if (clientBeanRetrofitBuilderOkHttpClientSimpleName.equals(serviceBeanRetrofitBuilderOkHttpClientSimpleName) &&
+        return clientBeanRetrofitBuilderOkHttpClientSimpleName.equals(serviceBeanRetrofitBuilderOkHttpClientSimpleName) &&
                 clientBeanCallAdapterFactoryList.containsAll(serviceBeanCallAdapterFactoryList) && serviceBeanCallAdapterFactoryList.containsAll(clientBeanCallAdapterFactoryList) &&
-                clientBeanConverterFactoryList.containsAll(serviceBeanConverterFactoryList) && serviceBeanConverterFactoryList.containsAll(clientBeanConverterFactoryList)
-        ) {
-            return true;
-        } else {
-            return false;
-        }
+                clientBeanConverterFactoryList.containsAll(serviceBeanConverterFactoryList) && serviceBeanConverterFactoryList.containsAll(clientBeanConverterFactoryList);
     }
 
     private boolean isSameInterceptors(RetrofitClientBean clientBean, RetrofitServiceBean serviceBean) {
@@ -88,12 +83,8 @@ public class RetrofitClientBeanHandler implements Handler<RetrofitClientBean> {
         clientBean.getInterceptors().forEach(i -> clientBeanInterceptorSimpleNameList.add(i.handler().getSimpleName()));
         List<String> serviceBeanInterceptorSimpleNameList = new ArrayList<>();
         serviceBean.getInterceptors().forEach(i -> serviceBeanInterceptorSimpleNameList.add(i.handler().getSimpleName()));
-        if (clientBeanInterceptorSimpleNameList.containsAll(serviceBeanInterceptorSimpleNameList) &&
-                serviceBeanInterceptorSimpleNameList.containsAll(clientBeanInterceptorSimpleNameList)) {
-            return true;
-        } else {
-            return false;
-        }
+        return clientBeanInterceptorSimpleNameList.containsAll(serviceBeanInterceptorSimpleNameList) &&
+                serviceBeanInterceptorSimpleNameList.containsAll(clientBeanInterceptorSimpleNameList);
     }
 
 }

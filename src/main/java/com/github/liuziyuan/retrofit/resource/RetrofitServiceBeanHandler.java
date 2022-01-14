@@ -1,9 +1,9 @@
 package com.github.liuziyuan.retrofit.resource;
 
+import com.github.liuziyuan.retrofit.Handler;
 import com.github.liuziyuan.retrofit.annotation.Interceptors;
 import com.github.liuziyuan.retrofit.annotation.RetrofitBuilder;
 import com.github.liuziyuan.retrofit.annotation.RetrofitInterceptor;
-import com.github.liuziyuan.retrofit.Handler;
 import org.springframework.core.env.Environment;
 
 import java.lang.annotation.Annotation;
@@ -16,8 +16,8 @@ import java.util.List;
  * @date 1/6/2022 3:54 PM
  */
 public class RetrofitServiceBeanHandler implements Handler<RetrofitServiceBean> {
-    private Class<?> clazz;
-    private Environment environment;
+    private final Class<?> clazz;
+    private final Environment environment;
 
     public RetrofitServiceBeanHandler(Class<?> clazz, Environment environment) {
         this.clazz = clazz;
