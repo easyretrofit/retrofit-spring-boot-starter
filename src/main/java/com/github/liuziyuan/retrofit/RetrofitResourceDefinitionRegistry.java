@@ -3,9 +3,12 @@ package com.github.liuziyuan.retrofit;
 import com.github.liuziyuan.retrofit.annotation.EnableRetrofit;
 import com.github.liuziyuan.retrofit.annotation.RetrofitBuilder;
 import com.github.liuziyuan.retrofit.annotation.RetrofitInterceptor;
-import com.github.liuziyuan.retrofit.extension.OkHttpClientBuilder;
 import com.github.liuziyuan.retrofit.factory.RetrofitResourceBuilder;
 import com.github.liuziyuan.retrofit.factory.RetrofitResourceScanner;
+import com.github.liuziyuan.retrofit.handler.CallAdapterFactoryHandler;
+import com.github.liuziyuan.retrofit.handler.ConverterFactoryHandler;
+import com.github.liuziyuan.retrofit.handler.OkHttpClientBuilderHandler;
+import com.github.liuziyuan.retrofit.handler.OkHttpInterceptorHandler;
 import com.github.liuziyuan.retrofit.model.RetrofitClientBean;
 import com.github.liuziyuan.retrofit.model.RetrofitServiceBean;
 import com.github.liuziyuan.retrofit.proxy.RetrofitServiceProxyFactory;
@@ -21,7 +24,6 @@ import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
-import org.springframework.stereotype.Component;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -37,7 +39,6 @@ import java.util.stream.Collectors;
  * @date 1/5/2022 11:22 AM
  */
 @Slf4j
-@Component
 public class RetrofitResourceDefinitionRegistry implements ImportBeanDefinitionRegistrar, ResourceLoaderAware, EnvironmentAware {
 
     private Environment environment;
@@ -116,9 +117,11 @@ public class RetrofitResourceDefinitionRegistry implements ImportBeanDefinitionR
         final RetrofitBuilder retrofitBuilder = clientBean.getRetrofitBuilder();
         final List<RetrofitInterceptor> interceptors = clientBean.getInterceptors();
         OkHttpClient.Builder okHttpClientBuilder;
+        OkHttpClientBuilderHandler okHttpClientBuilderHandler;
         if (retrofitBuilder.client() != null) {
-            final OkHttpClientBuilder reflectOkHttpClientBuilder = retrofitBuilder.client().newInstance();
-            okHttpClientBuilder = reflectOkHttpClientBuilder.getOkHttpClientBuilder();
+            okHttpClientBuilderHandler = new OkHttpClientBuilderHandler(retrofitBuilder.client());
+            final OkHttpClient.Builder generatedOkHttpClientBuilder = okHttpClientBuilderHandler.generate();
+            okHttpClientBuilder = generatedOkHttpClientBuilder;
         } else {
             okHttpClientBuilder = new OkHttpClient.Builder();
         }
@@ -130,8 +133,11 @@ public class RetrofitResourceDefinitionRegistry implements ImportBeanDefinitionR
     @SneakyThrows
     private List<Interceptor> getOkHttpInterceptor(List<RetrofitInterceptor> interceptors) {
         List<Interceptor> interceptorList = new ArrayList<>();
+        OkHttpInterceptorHandler okHttpInterceptorHandler;
         for (RetrofitInterceptor interceptor : interceptors) {
-            interceptorList.add(interceptor.handler().newInstance());
+            okHttpInterceptorHandler = new OkHttpInterceptorHandler(interceptor.handler());
+            final Interceptor generateInterceptor = okHttpInterceptorHandler.generate();
+            interceptorList.add(generateInterceptor);
         }
         return interceptorList;
     }
@@ -139,9 +145,10 @@ public class RetrofitResourceDefinitionRegistry implements ImportBeanDefinitionR
     @SneakyThrows
     private List<CallAdapter.Factory> getCallAdapterFactories(Class<? extends CallAdapter.Factory>[] callAdapterFactoryClasses) {
         List<CallAdapter.Factory> callAdapterFactories = new ArrayList<>();
+        CallAdapterFactoryHandler adapterFactoryHandler;
         for (Class<? extends CallAdapter.Factory> callAdapterFactoryClass : callAdapterFactoryClasses) {
-            CallAdapter.Factory factory = callAdapterFactoryClass.newInstance();
-            callAdapterFactories.add(factory);
+            adapterFactoryHandler = new CallAdapterFactoryHandler(callAdapterFactoryClass);
+            callAdapterFactories.add(adapterFactoryHandler.generate());
         }
         return callAdapterFactories;
     }
@@ -149,9 +156,10 @@ public class RetrofitResourceDefinitionRegistry implements ImportBeanDefinitionR
     @SneakyThrows
     private List<Converter.Factory> getConverterFactories(Class<? extends Converter.Factory>[] converterFactoryClasses) {
         List<Converter.Factory> converterFactories = new ArrayList<>();
+        ConverterFactoryHandler converterFactoryHandler;
         for (Class<? extends Converter.Factory> converterFactoryClass : converterFactoryClasses) {
-            Converter.Factory factory = converterFactoryClass.newInstance();
-            converterFactories.add(factory);
+            converterFactoryHandler = new ConverterFactoryHandler(converterFactoryClass);
+            converterFactories.add(converterFactoryHandler.generate());
         }
         return converterFactories;
     }

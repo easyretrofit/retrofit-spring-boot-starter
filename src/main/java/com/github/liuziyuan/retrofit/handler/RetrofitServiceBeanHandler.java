@@ -3,7 +3,6 @@ package com.github.liuziyuan.retrofit.handler;
 import com.github.liuziyuan.retrofit.annotation.Interceptors;
 import com.github.liuziyuan.retrofit.annotation.RetrofitBuilder;
 import com.github.liuziyuan.retrofit.annotation.RetrofitInterceptor;
-import com.github.liuziyuan.retrofit.model.Handler;
 import com.github.liuziyuan.retrofit.model.RetrofitServiceBean;
 import com.github.liuziyuan.retrofit.model.RetrofitUrl;
 import org.springframework.core.env.Environment;
