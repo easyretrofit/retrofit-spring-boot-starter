@@ -20,6 +20,4 @@ import retrofit2.http.GET;
 @RetrofitInterceptor(handler = MyRetrofitInterceptor1.class)
 @RetrofitInterceptor(handler = MyRetrofitInterceptor2.class)
 public interface TestApi {
-    @GET("/v1/test/")
-    Call<String> test();
 }

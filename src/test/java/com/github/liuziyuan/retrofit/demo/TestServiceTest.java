@@ -7,6 +7,8 @@ import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.mock.BehaviorDelegate;
@@ -22,7 +24,10 @@ class TestServiceTest extends BaseTest {
     @InjectMocks
     private TestService testService;
 
-    private MockTestService mockTestService;
+    @Mock
+    private TestInheritApi testInheritApi;
+
+    private MockTestApi mockTestApi;
 
     @BeforeEach
     void setUp() {
@@ -32,34 +37,30 @@ class TestServiceTest extends BaseTest {
         MockRetrofit mockRetrofit =
                 new MockRetrofit.Builder(retrofit).networkBehavior(behavior).build();
         BehaviorDelegate<TestInheritApi> delegate = mockRetrofit.create(TestInheritApi.class);
-        mockTestService = new MockTestService(delegate);
+        mockTestApi = new MockTestApi(delegate);
     }
 
     @SneakyThrows
     @Test
     void test1() {
 
-        final Call<String> call = mockTestService.test1();
-        final String body = call.execute().body();
-        Assert.assertEquals(body, "hello");
+        final Call<String> call = mockTestApi.test1();
+        Mockito.when(testInheritApi.test1()).thenReturn(call);
+        final String test = testService.test();
+        Assert.assertEquals(test, "hello");
     }
 
-    class MockTestService implements TestInheritApi {
+    class MockTestApi implements TestInheritApi {
         private BehaviorDelegate<TestInheritApi> delegate;
 
-        public MockTestService(BehaviorDelegate<TestInheritApi> delegate) {
-
+        public MockTestApi(BehaviorDelegate<TestInheritApi> delegate) {
+            this.delegate = delegate;
         }
 
         @Override
         public Call<String> test1() {
             String result = "hello";
             return delegate.returningResponse(result).test1();
-        }
-
-        @Override
-        public Call<String> test() {
-            return null;
         }
     }
 }
