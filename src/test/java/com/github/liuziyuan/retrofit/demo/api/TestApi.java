@@ -4,9 +4,11 @@ import com.github.liuziyuan.retrofit.annotation.RetrofitBuilder;
 import com.github.liuziyuan.retrofit.annotation.RetrofitInterceptor;
 import com.github.liuziyuan.retrofit.demo.MyRetrofitInterceptor1;
 import com.github.liuziyuan.retrofit.demo.MyRetrofitInterceptor2;
+import retrofit2.Call;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
+import retrofit2.http.GET;
 
 /**
  * @author liuziyuan
@@ -18,4 +20,6 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 @RetrofitInterceptor(handler = MyRetrofitInterceptor1.class)
 @RetrofitInterceptor(handler = MyRetrofitInterceptor2.class)
 public interface TestApi {
+    @GET("/v1/test/")
+    Call<String> test();
 }

@@ -9,7 +9,7 @@ import retrofit2.http.GET;
  * @date 1/5/2022 4:57 PM
  */
 
-public interface TestInheritApi extends TestApi {
-    @GET("/v1/test1/")
-    Call<String> test1();
+public interface TestInheritApi2 extends TestApi {
+    @GET("/v1/test2/")
+    Call<String> test2();
 }

@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.support.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -43,7 +44,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class RetrofitResourceDefinitionRegistry implements ImportBeanDefinitionRegistrar, EnvironmentAware, ApplicationContextAware, ResourceLoaderAware {
 
-    RetrofitResourceContext context = new RetrofitResourceContext();
+    private RetrofitResourceContext context;
     private Environment environment;
     private ApplicationContext applicationContext;
     private ResourceLoader resourceLoader;
@@ -57,6 +58,7 @@ public class RetrofitResourceDefinitionRegistry implements ImportBeanDefinitionR
     }
 
     void registerRetrofitResourceBeanDefinitions(AnnotationAttributes annoAttrs, BeanDefinitionRegistry registry) {
+        context = new RetrofitResourceContext();
         RetrofitResourceScanner scanner = new RetrofitResourceScanner();
         List<String> basePackages = new ArrayList<>();
         basePackages.addAll(Arrays.stream(annoAttrs.getStringArray("value")).filter(StringUtils::hasText).collect(Collectors.toList()));
@@ -73,7 +75,7 @@ public class RetrofitResourceDefinitionRegistry implements ImportBeanDefinitionR
         BeanDefinitionBuilder builder;
         //registry RetrofitResourceContext
         if (!context.getRetrofitClients().isEmpty()) {
-            builder = BeanDefinitionBuilder.genericBeanDefinition(RetrofitResourceContext.class);
+            builder = BeanDefinitionBuilder.genericBeanDefinition(RetrofitResourceContext.class, () -> context);
             GenericBeanDefinition definition = (GenericBeanDefinition) builder.getRawBeanDefinition();
             registry.registerBeanDefinition(RetrofitResourceContext.class.getName(), definition);
         }
@@ -96,6 +98,8 @@ public class RetrofitResourceDefinitionRegistry implements ImportBeanDefinitionR
                 GenericBeanDefinition definition = (GenericBeanDefinition) builder.getRawBeanDefinition();
                 definition.getConstructorArgumentValues().addGenericArgumentValue(Objects.requireNonNull(definition.getBeanClassName()));
                 definition.getConstructorArgumentValues().addGenericArgumentValue(serviceBean);
+                definition.addQualifier(new AutowireCandidateQualifier(Qualifier.class, serviceBean.getSelfClazz().getName()));
+                definition.setAutowireMode(GenericBeanDefinition.AUTOWIRE_BY_TYPE);
                 definition.setBeanClass(RetrofitServiceProxyFactory.class);
                 registry.registerBeanDefinition(serviceBean.getSelfClazz().getName(), definition);
             }
