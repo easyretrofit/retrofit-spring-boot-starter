@@ -1,7 +1,7 @@
 # retrofit-spring-boot-starter
 ## Why is there another retrofit-spring-boot-starter
 
-First of all, thank [lianjiatech](https://github.com/LianjiaTech/retrofit-spring-boot-starter) for providing an almost perfect project of retrofit-spring-boot-starter.
+First of all, thank [lianjiatech](https://github.com/LianjiaTech/retrofit-spring-boot-starter) for providing an almost perfect project of [retrofit-spring-boot-starter](https://github.com/LianjiaTech/retrofit-spring-boot-starter).
 
 However, in use, I found that it will create a retrofit instance for each API Interface file, which in my opinion is a waste of resources. After reading the code, I think it is difficult to modify the original basis in a short time, so I repeated a wheel.
 
