@@ -1,6 +1,6 @@
 package com.github.liuziyuan.retrofit.annotation;
 
-import com.github.liuziyuan.retrofit.RetrofitResourceDefinitionRegistry;
+import com.github.liuziyuan.retrofit.RetrofitResourceImportDefinitionRegistry;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;
@@ -12,7 +12,7 @@ import java.lang.annotation.*;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
-@Import({RetrofitResourceDefinitionRegistry.class})
+@Import({RetrofitResourceImportDefinitionRegistry.class})
 public @interface EnableRetrofit {
 
     /**
