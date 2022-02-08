@@ -44,7 +44,7 @@ public interface TestApi {
 pls keep app.test.base-url on your resources config file,
 baseUrl can also be a URL as http://xxx or https://xxx
 
-3. add other attributes for  `@RetrofitBuilder`
+3. add other attributes for  `@RetrofitBuilder`, if you need
 ```
 @RetrofitBuilder(baseUrl = "${app.test.base-url}",  
   addConverterFactory = {GsonConverterFactory.class, JacksonConverterFactory.class},  
@@ -58,7 +58,7 @@ public interface TestApi {
     Call<Result> test();  
 }
 ```
-your  custom OKHttpClient need extends BaseOkHttpClientBuilder
+and your custom OKHttpClient need extends BaseOkHttpClientBuilder
 ```
 public class MyOkHttpClient extends BaseOkHttpClientBuilder {  
   
@@ -68,7 +68,9 @@ public class MyOkHttpClient extends BaseOkHttpClientBuilder {
   }  
 }
 ```
-and you could add your custom OKHttpClient  Interceptor
+and you could add your custom OKHttpClient Interceptor, pls extends BaseInterceptor, RetrofitResourceContext provides enough content for you to use
+
+
 ```
 public class MyRetrofitInterceptor2 extends BaseInterceptor {  
     public MyRetrofitInterceptor2(RetrofitResourceContext context) {  
