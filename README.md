@@ -10,7 +10,7 @@ In my work, the team will use retrofit as the API of BFF layer HTTP client to re
 You can see the effect I want from the fourth step of introduction
 
 ## How to use it
-1. add `@EnableRetrofit` to your Spring boot Starter Class
+1. add `@EnableRetrofit` to your Spring boot Starter Class, create a config class for Retrofit
 ```
 @EnableRetrofit  
 @Slf4j  
@@ -19,6 +19,18 @@ public class HelloApplication extends SpringBootServletInitializer {
         SpringApplication.run(HelloApplication.class, args);  
   }  
 }
+```
+You can specify basepackage. By default, all files in the directory where the starter class file is located will be scanned
+
+```
+@Configuration
+public class RetrofitConfig {
+    @Bean
+    public RetrofitResourceDefinitionRegistry retrofitResourceDefinitionRegistry() {
+        return new RetrofitResourceDefinitionRegistry();
+    }
+}
+
 ```
 2. create an Interface file, and use `@RetrofitBuilder`
  ```
