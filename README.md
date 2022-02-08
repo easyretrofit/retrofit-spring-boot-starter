@@ -29,7 +29,7 @@ public interface TestApi {
     Call<Result> test();  
 }
 ```
-pls keep app.test.base-url on your resources config file
+pls keep app.test.base-url on your resources config file,
 baseUrl can also be a URL as http://xxx or https://xxx
 
 3. add other attributes for  `@RetrofitBuilder`
