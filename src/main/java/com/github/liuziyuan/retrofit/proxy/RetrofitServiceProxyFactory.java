@@ -13,7 +13,6 @@ import java.lang.reflect.Proxy;
 
 /**
  * @author liuziyuan
- * @date 12/31/2021 3:31 PM
  */
 @Slf4j
 public class RetrofitServiceProxyFactory<T> implements FactoryBean<T>, ApplicationContextAware {

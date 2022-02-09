@@ -7,7 +7,6 @@ import retrofit2.internal.EverythingIsNonNull;
 
 /**
  * @author liuziyuan
- * @date 1/5/2022 5:37 PM
  */
 public abstract class BaseInterceptor implements Interceptor {
 

@@ -2,7 +2,6 @@ package com.github.liuziyuan.retrofit.extension;
 
 /**
  * @author liuziyuan
- * @date 12/31/2021 12:47 PM
  */
 public abstract class BaseBuilder<T> implements Builder<T> {
 

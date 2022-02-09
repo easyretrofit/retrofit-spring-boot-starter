@@ -4,7 +4,6 @@ import org.springframework.core.env.Environment;
 
 /**
  * @author liuziyuan
- * @date 12/10/2021 4:11 PM
  */
 public class RetrofitUtils {
 

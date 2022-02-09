@@ -12,7 +12,6 @@ import org.springframework.context.ApplicationContextAware;
 
 /**
  * @author liuziyuan
- * @date 2/8/2022 3:07 PM
  */
 public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistryPostProcessor, ApplicationContextAware {
 

@@ -10,7 +10,6 @@ import java.util.List;
 
 /**
  * @author liuziyuan
- * @date 1/6/2022 3:53 PM
  */
 public class RetrofitClientBeanHandler implements Handler<RetrofitClientBean> {
     private final List<RetrofitClientBean> clientBeanList;

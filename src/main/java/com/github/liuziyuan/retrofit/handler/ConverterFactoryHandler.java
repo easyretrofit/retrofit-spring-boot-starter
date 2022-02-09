@@ -8,7 +8,6 @@ import java.lang.reflect.Method;
 
 /**
  * @author liuziyuan
- * @date 1/14/2022 10:31 AM
  */
 public class ConverterFactoryHandler implements Handler<Converter.Factory> {
     private final Class<? extends Converter.Factory> converterFactoryClass;

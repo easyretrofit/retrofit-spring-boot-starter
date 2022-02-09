@@ -36,7 +36,6 @@ import java.util.stream.Collectors;
 
 /**
  * @author liuziyuan
- * @date 1/5/2022 11:22 AM
  */
 @Slf4j
 public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefinitionRegistrar, EnvironmentAware, ResourceLoaderAware {

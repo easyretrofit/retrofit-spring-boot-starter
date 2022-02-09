@@ -4,7 +4,6 @@ import okhttp3.OkHttpClient;
 
 /**
  * @author liuziyuan
- * @date 12/31/2021 12:57 PM
  */
 public abstract class BaseOkHttpClientBuilder extends BaseBuilder<OkHttpClient.Builder> {
 

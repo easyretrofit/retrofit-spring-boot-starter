@@ -11,7 +11,6 @@ import java.net.URL;
 
 /**
  * @author liuziyuan
- * @date 1/6/2022 4:20 PM
  */
 @Getter
 public class RetrofitUrl {

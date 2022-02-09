@@ -8,7 +8,6 @@ import java.lang.reflect.Method;
 
 /**
  * @author liuziyuan
- * @date 1/14/2022 10:33 AM
  */
 public class CallAdapterFactoryHandler implements Handler<CallAdapter.Factory> {
     private final Class<? extends CallAdapter.Factory> callAdapterFactoryClass;

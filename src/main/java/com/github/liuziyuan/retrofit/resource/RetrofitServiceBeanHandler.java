@@ -13,7 +13,6 @@ import java.util.List;
 
 /**
  * @author liuziyuan
- * @date 1/6/2022 3:54 PM
  */
 public class RetrofitServiceBeanHandler implements Handler<RetrofitServiceBean> {
     private final Class<?> clazz;

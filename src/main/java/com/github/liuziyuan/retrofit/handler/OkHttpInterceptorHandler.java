@@ -10,7 +10,6 @@ import java.lang.reflect.Constructor;
 
 /**
  * @author liuziyuan
- * @date 1/14/2022 11:43 AM
  */
 public class OkHttpInterceptorHandler implements Handler<Interceptor> {
     private final Class<? extends BaseInterceptor> interceptorClass;

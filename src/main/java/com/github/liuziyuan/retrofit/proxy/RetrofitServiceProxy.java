@@ -5,7 +5,6 @@ import java.lang.reflect.Method;
 
 /**
  * @author liuziyuan
- * @date 12/31/2021 3:27 PM
  */
 public class RetrofitServiceProxy<T> implements InvocationHandler {
 

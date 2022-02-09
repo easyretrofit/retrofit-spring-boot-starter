@@ -7,7 +7,6 @@ import java.lang.annotation.*;
 
 /**
  * @author liuziyuan
- * @date 12/24/2021 5:38 PM
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
