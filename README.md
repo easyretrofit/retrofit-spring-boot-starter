@@ -62,7 +62,7 @@ and your custom OKHttpClient need extends BaseOkHttpClientBuilder
 ```
 public class MyOkHttpClient extends BaseOkHttpClientBuilder {  
   
-    @Override  
+  @Override  
   public OkHttpClient.Builder builder(OkHttpClient.Builder builder) {  
         return builder;  
   }  
@@ -77,7 +77,7 @@ public class MyRetrofitInterceptor2 extends BaseInterceptor {
         super(context);  
   }  
   
-    @SneakyThrows  
+ @SneakyThrows  
  @Override  protected Response executeIntercept(Chain chain) {  
         Request request = chain.request();  
  return chain.proceed(request);  
