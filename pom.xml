@@ -6,8 +6,30 @@
     <groupId>io.github.liuziyuan</groupId>
     <artifactId>retrofit-spring-boot-starter</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>retrofit-spring-boot-starter</name>
+
+    <name>${project.groupId}:${project.artifactId}</name>
     <description>retrofit-spring-boot-starter</description>
+    <url>https://github.com/liuziyuan/retrofit-spring-boot-starter</url>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/liuziyuan/retrofit-spring-boot-starter/tree/main</url>
+        <connection>scm:git:git://github.com/liuziyuan/retrofit-spring-boot-starter.git</connection>
+        <developerConnection>scm:git:ssh://github.com/liuziyuan/retrofit-spring-boot-starter.git</developerConnection>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>liuziyuan</name>
+            <email>liuziyuan.room@gmail.com</email>
+        </developer>
+    </developers>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
