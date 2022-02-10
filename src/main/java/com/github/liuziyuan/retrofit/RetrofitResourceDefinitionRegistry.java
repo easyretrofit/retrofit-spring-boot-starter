@@ -17,20 +17,17 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
 
     private ApplicationContext applicationContext;
 
-
     @Override
     public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry beanDefinitionRegistry) throws BeansException {
     }
 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-
-        RetrofitResourceContext context = (RetrofitResourceContext) beanFactory.getBean(RetrofitResourceContext.class.getName());
-        context.setApplicationContext(applicationContext);
-
         BeanDefinitionRegistry beanDefinitionRegistry = (BeanDefinitionRegistry) beanFactory;
         final BeanDefinition beanDefinition = beanDefinitionRegistry.getBeanDefinition(RetrofitResourceContext.class.getName());
         if (beanDefinition != null) {
+            RetrofitResourceContext context = (RetrofitResourceContext) beanFactory.getBean(RetrofitResourceContext.class.getName());
+            context.setApplicationContext(applicationContext);
             beanDefinitionRegistry.removeBeanDefinition(RetrofitResourceContext.class.getName());
             BeanDefinitionBuilder builder;
             builder = BeanDefinitionBuilder.genericBeanDefinition(RetrofitResourceContext.class, () -> context);
