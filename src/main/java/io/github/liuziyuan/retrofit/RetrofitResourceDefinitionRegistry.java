@@ -11,7 +11,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 /**
+ * Retrofit Resources Definition and Registry
  * @author liuziyuan
+ *
  */
 public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistryPostProcessor, ApplicationContextAware {
 
@@ -24,12 +26,12 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
         BeanDefinitionRegistry beanDefinitionRegistry = (BeanDefinitionRegistry) beanFactory;
-        final BeanDefinition beanDefinition = beanDefinitionRegistry.getBeanDefinition(RetrofitResourceContext.class.getName());
-        if (beanDefinition != null) {
+        final BeanDefinition retrofitResourceContextBeanDefinition = beanDefinitionRegistry.getBeanDefinition(RetrofitResourceContext.class.getName());
+        BeanDefinitionBuilder builder;
+        if (retrofitResourceContextBeanDefinition != null) {
             RetrofitResourceContext context = (RetrofitResourceContext) beanFactory.getBean(RetrofitResourceContext.class.getName());
             context.setApplicationContext(applicationContext);
             beanDefinitionRegistry.removeBeanDefinition(RetrofitResourceContext.class.getName());
-            BeanDefinitionBuilder builder;
             builder = BeanDefinitionBuilder.genericBeanDefinition(RetrofitResourceContext.class, () -> context);
             GenericBeanDefinition definition = (GenericBeanDefinition) builder.getRawBeanDefinition();
             beanDefinitionRegistry.registerBeanDefinition(RetrofitResourceContext.class.getName(), definition);
