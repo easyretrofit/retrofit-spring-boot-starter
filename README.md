@@ -11,7 +11,7 @@ You can see the effect I want from the fourth step of introduction
 
 ## How to use it
 1. add retrofit-spring-boot-starter dependency to maven pom.xml 
-```aidl
+```
 <dependency>
    <groupId>io.github.liuziyuan</groupId>
    <artifactId>retrofit-spring-boot-starter</artifactId>
