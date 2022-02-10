@@ -10,7 +10,15 @@ In my work, the team will use retrofit as the API of BFF layer HTTP client to re
 You can see the effect I want from the fourth step of introduction
 
 ## How to use it
-1. add `@EnableRetrofit` to your Spring boot Starter Class, create a config class for Retrofit
+1. add retrofit-spring-boot-starter dependency to maven pom.xml 
+```aidl
+<dependency>
+   <groupId>io.github.liuziyuan</groupId>
+   <artifactId>retrofit-spring-boot-starter</artifactId>
+   <version>0.0.1</version>
+</dependency>
+```
+2. add `@EnableRetrofit` to your Spring boot Starter Class, create a config class for Retrofit
 ```
 @EnableRetrofit  
 @Slf4j  
@@ -20,7 +28,7 @@ public class HelloApplication extends SpringBootServletInitializer {
   }  
 }
 ```
-You can specify basepackage. By default, all files in the directory where the starter class file is located will be scanned
+You can specify basepackage like `@EnableRetrofit(basePackages = "xxx.demo.api")`, api is your retrofit API folder name. By default, all files in the directory where the starter class file is located will be scanned
 
 ```
 @Configuration
@@ -32,7 +40,7 @@ public class RetrofitConfig {
 }
 
 ```
-2. create an Interface file, and use `@RetrofitBuilder`
+3. create an Interface file, and use `@RetrofitBuilder`
  ```
 @RetrofitBuilder(baseUrl = "${app.test.base-url}")  
 public interface TestApi {  
@@ -44,7 +52,7 @@ public interface TestApi {
 pls keep app.test.base-url on your resources config file,
 baseUrl can also be a URL as http://xxx or https://xxx
 
-3. add other attributes for  `@RetrofitBuilder`, if you need
+4. add other attributes for  `@RetrofitBuilder`, if you need
 ```
 @RetrofitBuilder(baseUrl = "${app.test.base-url}",  
   addConverterFactory = {GsonConverterFactory.class, JacksonConverterFactory.class},  
@@ -85,7 +93,7 @@ public class MyRetrofitInterceptor2 extends BaseInterceptor {
 }
 ```
 
-4. If you have hundreds of Interface method, it is from a source  Base URL ,  and you want your code structure to be more orderly and look consistent with the source service structure，you could do this ,
+5. If you have hundreds of Interface method, it is from a source  Base URL ,  and you want your code structure to be more orderly and look consistent with the source service structure，you could do this ,
    Define an empty Interface file
  ```
 @RetrofitBuilder(baseUrl = "${app.test.base-url}",  
@@ -106,7 +114,7 @@ public interface TestInheritApi extends TestApi {
     Call<Result> test1();  
 }
 ```
-5. Use Retrofit API On Controller
+6. Use Retrofit API On Controller
 ```
 @Slf4j  
 @RestController  
