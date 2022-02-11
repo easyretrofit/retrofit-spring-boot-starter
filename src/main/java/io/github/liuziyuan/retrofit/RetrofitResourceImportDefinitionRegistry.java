@@ -80,9 +80,7 @@ public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefin
                 return retrofitBuilder.build();
             });
             AbstractBeanDefinition definition = builder.getRawBeanDefinition();
-            AutowireCandidateQualifier qualifier = new AutowireCandidateQualifier(Retrofit.class);
-            qualifier.setAttribute("value", clientBean.getRetrofitInstanceName());
-            definition.addQualifier(qualifier);
+            definition.addQualifier(new AutowireCandidateQualifier(Qualifier.class, clientBean.getRetrofitInstanceName()));
             registry.registerBeanDefinition(clientBean.getRetrofitInstanceName(), definition);
         }
         //registry proxy interface of retrofit
