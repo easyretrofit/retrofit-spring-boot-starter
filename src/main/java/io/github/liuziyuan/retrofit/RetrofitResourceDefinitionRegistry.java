@@ -31,6 +31,7 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+
         BeanDefinitionRegistry beanDefinitionRegistry = (BeanDefinitionRegistry) beanFactory;
         final BeanDefinition retrofitResourceContextBeanDefinition = beanDefinitionRegistry.getBeanDefinition(RetrofitResourceContext.class.getName());
         BeanDefinitionBuilder builder;
@@ -44,6 +45,30 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
                 GenericBeanDefinition definition = (GenericBeanDefinition) builder.getRawBeanDefinition();
                 beanDefinitionRegistry.registerBeanDefinition(RetrofitResourceContext.class.getName(), definition);
                 retrofitClientBeanList = context.getRetrofitClients();
+            }
+            //registry Retrofit
+            for (RetrofitClientBean clientBean : retrofitClientBeanList) {
+                builder = BeanDefinitionBuilder.genericBeanDefinition(Retrofit.class, () -> {
+                    RetrofitBuilderHandler retrofitBuilderHandler = new RetrofitBuilderHandler(clientBean, context);
+                    final Retrofit.Builder retrofitBuilder = retrofitBuilderHandler.generate();
+                    return retrofitBuilder.build();
+                });
+                GenericBeanDefinition definition = (GenericBeanDefinition) builder.getRawBeanDefinition();
+                definition.addQualifier(new AutowireCandidateQualifier(Qualifier.class, clientBean.getRetrofitInstanceName()));
+                beanDefinitionRegistry.registerBeanDefinition(clientBean.getRetrofitInstanceName(), definition);
+            }
+            //registry proxy interface of retrofit
+            for (RetrofitClientBean clientBean : retrofitClientBeanList) {
+                for (RetrofitServiceBean serviceBean : clientBean.getRetrofitServices()) {
+                    builder = BeanDefinitionBuilder.genericBeanDefinition(serviceBean.getSelfClazz());
+                    GenericBeanDefinition definition = (GenericBeanDefinition) builder.getRawBeanDefinition();
+                    definition.getConstructorArgumentValues().addGenericArgumentValue(Objects.requireNonNull(definition.getBeanClassName()));
+                    definition.getConstructorArgumentValues().addGenericArgumentValue(serviceBean);
+                    definition.addQualifier(new AutowireCandidateQualifier(Qualifier.class, serviceBean.getSelfClazz().getName()));
+                    definition.setAutowireMode(GenericBeanDefinition.AUTOWIRE_BY_TYPE);
+                    definition.setBeanClass(RetrofitServiceProxyFactory.class);
+                    beanDefinitionRegistry.registerBeanDefinition(serviceBean.getSelfClazz().getName(), definition);
+                }
             }
 
         }

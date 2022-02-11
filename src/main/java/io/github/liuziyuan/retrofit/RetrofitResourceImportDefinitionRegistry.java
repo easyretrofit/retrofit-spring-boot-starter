@@ -70,30 +70,6 @@ public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefin
             GenericBeanDefinition definition = (GenericBeanDefinition) builder.getRawBeanDefinition();
             registry.registerBeanDefinition(RetrofitResourceContext.class.getName(), definition);
         }
-        //registry Retrofit
-        for (RetrofitClientBean clientBean : retrofitClientBeanList) {
-            builder = BeanDefinitionBuilder.genericBeanDefinition(Retrofit.class, () -> {
-                RetrofitBuilderHandler retrofitBuilderHandler = new RetrofitBuilderHandler(clientBean, context);
-                final Retrofit.Builder retrofitBuilder = retrofitBuilderHandler.generate();
-                return retrofitBuilder.build();
-            });
-            AbstractBeanDefinition definition = builder.getRawBeanDefinition();
-            definition.addQualifier(new AutowireCandidateQualifier(Qualifier.class, clientBean.getRetrofitInstanceName()));
-            registry.registerBeanDefinition(clientBean.getRetrofitInstanceName(), definition);
-        }
-        //registry proxy interface of retrofit
-        for (RetrofitClientBean clientBean : retrofitClientBeanList) {
-            for (RetrofitServiceBean serviceBean : clientBean.getRetrofitServices()) {
-                builder = BeanDefinitionBuilder.genericBeanDefinition(serviceBean.getSelfClazz());
-                GenericBeanDefinition definition = (GenericBeanDefinition) builder.getRawBeanDefinition();
-                definition.getConstructorArgumentValues().addGenericArgumentValue(Objects.requireNonNull(definition.getBeanClassName()));
-                definition.getConstructorArgumentValues().addGenericArgumentValue(serviceBean);
-                definition.addQualifier(new AutowireCandidateQualifier(Qualifier.class, serviceBean.getSelfClazz().getName()));
-                definition.setAutowireMode(GenericBeanDefinition.AUTOWIRE_BY_TYPE);
-                definition.setBeanClass(RetrofitServiceProxyFactory.class);
-                registry.registerBeanDefinition(serviceBean.getSelfClazz().getName(), definition);
-            }
-        }
     }
 
     @Override
