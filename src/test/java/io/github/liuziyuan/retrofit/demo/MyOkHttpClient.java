@@ -11,7 +11,7 @@ import java.time.Duration;
  * @author liuziyuan
  * @date 12/31/2021 11:54 AM
  */
-//@Component
+@Component
 public class MyOkHttpClient extends BaseOkHttpClientBuilder {
 
     @Value("${okhttpclient.timeout}")
