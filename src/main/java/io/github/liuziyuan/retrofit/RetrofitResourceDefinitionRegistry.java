@@ -38,14 +38,8 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
         if (retrofitResourceContextBeanDefinition != null) {
             RetrofitResourceContext context = (RetrofitResourceContext) beanFactory.getBean(RetrofitResourceContext.class.getName());
             context.setApplicationContext(applicationContext);
-            beanDefinitionRegistry.removeBeanDefinition(RetrofitResourceContext.class.getName());
-            List<RetrofitClientBean> retrofitClientBeanList = null;
-            if (!context.getRetrofitClients().isEmpty()) {
-                builder = BeanDefinitionBuilder.genericBeanDefinition(RetrofitResourceContext.class, () -> context);
-                GenericBeanDefinition definition = (GenericBeanDefinition) builder.getRawBeanDefinition();
-                beanDefinitionRegistry.registerBeanDefinition(RetrofitResourceContext.class.getName(), definition);
-                retrofitClientBeanList = context.getRetrofitClients();
-            }
+            beanFactory.autowireBean(context);
+            List<RetrofitClientBean> retrofitClientBeanList = context.getRetrofitClients();
             //registry Retrofit
             for (RetrofitClientBean clientBean : retrofitClientBeanList) {
                 builder = BeanDefinitionBuilder.genericBeanDefinition(Retrofit.class, () -> {
