@@ -1,7 +1,7 @@
 package io.github.liuziyuan.retrofit.handler;
 
 import io.github.liuziyuan.retrofit.RetrofitResourceContext;
-import io.github.liuziyuan.retrofit.demo.MyRetrofitInterceptor1;
+import io.github.liuziyuan.retrofit.demo.MyRetrofitInterceptor2;
 import io.github.liuziyuan.retrofit.extension.BaseInterceptor;
 import okhttp3.Interceptor;
 import org.junit.Assert;
@@ -20,7 +20,7 @@ class OkHttpInterceptorHandlerTest {
 
     @BeforeEach
     void setUp() {
-        interceptorClass = MyRetrofitInterceptor1.class;
+        interceptorClass = MyRetrofitInterceptor2.class;
         context = new RetrofitResourceContext();
     }
 
