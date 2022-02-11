@@ -4,6 +4,7 @@ import io.github.liuziyuan.retrofit.Handler;
 import io.github.liuziyuan.retrofit.RetrofitResourceContext;
 import io.github.liuziyuan.retrofit.annotation.RetrofitBuilder;
 import io.github.liuziyuan.retrofit.annotation.RetrofitInterceptor;
+import io.github.liuziyuan.retrofit.extension.BaseInterceptor;
 import io.github.liuziyuan.retrofit.extension.BaseOkHttpClientBuilder;
 import io.github.liuziyuan.retrofit.extension.UrlOverWriteInterceptor;
 import io.github.liuziyuan.retrofit.resource.RetrofitClientBean;
@@ -91,7 +92,13 @@ public class RetrofitBuilderHandler implements Handler<Retrofit.Builder> {
         List<Interceptor> interceptorList = new ArrayList<>();
         OkHttpInterceptorHandler okHttpInterceptorHandler;
         for (RetrofitInterceptor interceptor : interceptors) {
-            okHttpInterceptorHandler = new OkHttpInterceptorHandler(interceptor.handler(), context);
+            BaseInterceptor componentInterceptor = null;
+            try {
+                componentInterceptor = context.getApplicationContext().getBean(interceptor.handler());
+            } catch (NoSuchBeanDefinitionException ex) {
+
+            }
+            okHttpInterceptorHandler = new OkHttpInterceptorHandler(interceptor.handler(), context, componentInterceptor);
             final Interceptor generateInterceptor = okHttpInterceptorHandler.generate();
             interceptorList.add(generateInterceptor);
         }

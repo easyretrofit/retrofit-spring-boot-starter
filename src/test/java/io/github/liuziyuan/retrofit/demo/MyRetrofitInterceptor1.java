@@ -2,20 +2,28 @@ package io.github.liuziyuan.retrofit.demo;
 
 import io.github.liuziyuan.retrofit.RetrofitResourceContext;
 import io.github.liuziyuan.retrofit.extension.BaseInterceptor;
+import lombok.SneakyThrows;
+import okhttp3.Request;
 import okhttp3.Response;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.io.IOException;
 
 /**
  * @author liuziyuan
  * @date 1/5/2022 5:41 PM
  */
+@Component
 public class MyRetrofitInterceptor1 extends BaseInterceptor {
 
-    public MyRetrofitInterceptor1(RetrofitResourceContext context) {
-        super(context);
-    }
+    @Autowired
+    private RetrofitResourceContext context;
 
+    @SneakyThrows
     @Override
     protected Response executeIntercept(Chain chain) {
-        return null;
+        Request request = chain.request();
+        return chain.proceed(request);
     }
 }

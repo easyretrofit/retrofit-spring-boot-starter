@@ -14,17 +14,26 @@ import java.lang.reflect.Constructor;
 public class OkHttpInterceptorHandler implements Handler<Interceptor> {
     private final Class<? extends BaseInterceptor> interceptorClass;
     private RetrofitResourceContext resourceContext;
+    private BaseInterceptor componentInterceptor;
 
-    public OkHttpInterceptorHandler(Class<? extends BaseInterceptor> interceptorClass, RetrofitResourceContext resourceContext) {
+    public OkHttpInterceptorHandler(Class<? extends BaseInterceptor> interceptorClass, RetrofitResourceContext resourceContext, BaseInterceptor componentInterceptor) {
         this.interceptorClass = interceptorClass;
         this.resourceContext = resourceContext;
+        this.componentInterceptor = componentInterceptor;
     }
 
     @SneakyThrows
     @Override
     public Interceptor generate() {
-        Constructor<? extends BaseInterceptor> constructor = interceptorClass.getConstructor(RetrofitResourceContext.class);
-        BaseInterceptor interceptor = constructor.newInstance(resourceContext);
-        return interceptor;
+        if (componentInterceptor != null) {
+            return componentInterceptor;
+        }
+        if (interceptorClass != null) {
+            Constructor<? extends BaseInterceptor> constructor = interceptorClass.getConstructor(RetrofitResourceContext.class);
+            BaseInterceptor interceptor = constructor.newInstance(resourceContext);
+            return interceptor;
+        }
+        return null;
+
     }
 }

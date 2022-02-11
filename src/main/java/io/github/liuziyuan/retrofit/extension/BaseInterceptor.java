@@ -12,6 +12,9 @@ public abstract class BaseInterceptor implements Interceptor {
 
     protected RetrofitResourceContext context;
 
+    public BaseInterceptor() {
+    }
+
     public BaseInterceptor(RetrofitResourceContext context) {
         this.context = context;
     }

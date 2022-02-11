@@ -26,7 +26,7 @@ class OkHttpInterceptorHandlerTest {
 
     @Test
     void generate() {
-        okHttpInterceptorHandler = new OkHttpInterceptorHandler(interceptorClass, context);
+        okHttpInterceptorHandler = new OkHttpInterceptorHandler(interceptorClass, context, null);
         final Interceptor generate = okHttpInterceptorHandler.generate();
         Assert.assertNotNull(generate);
     }

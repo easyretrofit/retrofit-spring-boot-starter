@@ -2,6 +2,8 @@ package io.github.liuziyuan.retrofit.demo;
 
 import io.github.liuziyuan.retrofit.RetrofitResourceContext;
 import io.github.liuziyuan.retrofit.extension.BaseInterceptor;
+import lombok.SneakyThrows;
+import okhttp3.Request;
 import okhttp3.Response;
 
 /**
@@ -14,8 +16,10 @@ public class MyRetrofitInterceptor2 extends BaseInterceptor {
         super(context);
     }
 
+    @SneakyThrows
     @Override
     protected Response executeIntercept(Chain chain) {
-        return null;
+        Request request = chain.request();
+        return chain.proceed(request);
     }
 }
