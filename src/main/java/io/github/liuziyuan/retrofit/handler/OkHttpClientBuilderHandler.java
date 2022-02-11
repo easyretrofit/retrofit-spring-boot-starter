@@ -9,18 +9,27 @@ import okhttp3.OkHttpClient;
  * @author liuziyuan
  */
 public class OkHttpClientBuilderHandler implements Handler<OkHttpClient.Builder> {
-    private final Class<? extends BaseOkHttpClientBuilder> okHttpClientBuilder;
+    private Class<? extends BaseOkHttpClientBuilder> okHttpClientBuilderClazz;
+    private OkHttpClient.Builder componentOkHttpClientBuilder;
 
-    public OkHttpClientBuilderHandler(Class<? extends BaseOkHttpClientBuilder> okHttpClientBuilder) {
-        this.okHttpClientBuilder = okHttpClientBuilder;
+    public OkHttpClientBuilderHandler(Class<? extends BaseOkHttpClientBuilder> okHttpClientBuilderClazz, OkHttpClient.Builder componentOkHttpClientBuilder) {
+        this.okHttpClientBuilderClazz = okHttpClientBuilderClazz;
+        this.componentOkHttpClientBuilder = componentOkHttpClientBuilder;
     }
 
     @SneakyThrows
     @Override
     public OkHttpClient.Builder generate() {
-        if (okHttpClientBuilder.getName().equals(BaseOkHttpClientBuilder.class.getName())) {
-            return new OkHttpClient.Builder();
+        if (componentOkHttpClientBuilder != null) {
+            return componentOkHttpClientBuilder;
         }
-        return this.okHttpClientBuilder.newInstance().executeBuild();
+        if (okHttpClientBuilderClazz != null) {
+            if (okHttpClientBuilderClazz.getName().equals(BaseOkHttpClientBuilder.class.getName())) {
+                return new OkHttpClient.Builder();
+            } else {
+                return this.okHttpClientBuilderClazz.newInstance().executeBuild();
+            }
+        }
+        return null;
     }
 }

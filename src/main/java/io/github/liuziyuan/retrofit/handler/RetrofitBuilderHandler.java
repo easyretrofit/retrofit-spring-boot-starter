@@ -4,11 +4,13 @@ import io.github.liuziyuan.retrofit.Handler;
 import io.github.liuziyuan.retrofit.RetrofitResourceContext;
 import io.github.liuziyuan.retrofit.annotation.RetrofitBuilder;
 import io.github.liuziyuan.retrofit.annotation.RetrofitInterceptor;
+import io.github.liuziyuan.retrofit.extension.BaseOkHttpClientBuilder;
 import io.github.liuziyuan.retrofit.extension.UrlOverWriteInterceptor;
 import io.github.liuziyuan.retrofit.resource.RetrofitClientBean;
 import lombok.SneakyThrows;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.util.CollectionUtils;
 import retrofit2.CallAdapter;
 import retrofit2.Converter;
@@ -62,7 +64,17 @@ public class RetrofitBuilderHandler implements Handler<Retrofit.Builder> {
         OkHttpClient.Builder okHttpClientBuilder;
         OkHttpClientBuilderHandler okHttpClientBuilderHandler;
         if (retrofitBuilder.client() != null) {
-            okHttpClientBuilderHandler = new OkHttpClientBuilderHandler(retrofitBuilder.client());
+            BaseOkHttpClientBuilder baseOkHttpClientBuilder = null;
+            OkHttpClient.Builder componentOkHttpClientBuilder = null;
+            try {
+                baseOkHttpClientBuilder = context.getApplicationContext().getBean(retrofitBuilder.client());
+            } catch (NoSuchBeanDefinitionException ex) {
+
+            }
+            if (baseOkHttpClientBuilder != null) {
+                componentOkHttpClientBuilder = baseOkHttpClientBuilder.build();
+            }
+            okHttpClientBuilderHandler = new OkHttpClientBuilderHandler(retrofitBuilder.client(), componentOkHttpClientBuilder);
             okHttpClientBuilder = okHttpClientBuilderHandler.generate();
         } else {
             okHttpClientBuilder = new OkHttpClient.Builder();

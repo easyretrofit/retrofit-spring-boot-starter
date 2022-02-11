@@ -23,7 +23,7 @@ class OkHttpClientBuilderHandlerTest {
 
     @Test
     void generate() {
-        okHttpClientBuilderHandler = new OkHttpClientBuilderHandler(okHttpClientBuilder);
+        okHttpClientBuilderHandler = new OkHttpClientBuilderHandler(okHttpClientBuilder, null);
         final OkHttpClient.Builder generate = okHttpClientBuilderHandler.generate();
         Assert.assertNotNull(generate.build());
     }
