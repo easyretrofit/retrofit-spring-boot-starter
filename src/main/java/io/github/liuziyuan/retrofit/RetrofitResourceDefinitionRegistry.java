@@ -40,7 +40,7 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
             context.setApplicationContext(applicationContext);
             beanFactory.autowireBean(context);
             List<RetrofitClientBean> retrofitClientBeanList = context.getRetrofitClients();
-            //registry Retrofit
+            //registry Retrofit object
             for (RetrofitClientBean clientBean : retrofitClientBeanList) {
                 builder = BeanDefinitionBuilder.genericBeanDefinition(Retrofit.class, () -> {
                     RetrofitBuilderHandler retrofitBuilderHandler = new RetrofitBuilderHandler(clientBean, context);
@@ -51,7 +51,7 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
                 definition.addQualifier(new AutowireCandidateQualifier(Qualifier.class, clientBean.getRetrofitInstanceName()));
                 beanDefinitionRegistry.registerBeanDefinition(clientBean.getRetrofitInstanceName(), definition);
             }
-            //registry proxy interface of retrofit
+            //registry  proxy object of retrofit api interface
             for (RetrofitClientBean clientBean : retrofitClientBeanList) {
                 for (RetrofitServiceBean serviceBean : clientBean.getRetrofitServices()) {
                     builder = BeanDefinitionBuilder.genericBeanDefinition(serviceBean.getSelfClazz());
