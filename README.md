@@ -15,7 +15,7 @@ You can see the effect I want from the fourth step of introduction
 <dependency>
    <groupId>io.github.liuziyuan</groupId>
    <artifactId>retrofit-spring-boot-starter</artifactId>
-   <version>0.0.1</version>
+   <version>0.0.2</version>
 </dependency>
 ```
 2. add `@EnableRetrofit` to your Spring boot Starter Class, create a config class for Retrofit
@@ -68,6 +68,7 @@ public interface TestApi {
 ```
 and your custom OKHttpClient need extends BaseOkHttpClientBuilder
 ```
+@Component
 public class MyOkHttpClient extends BaseOkHttpClientBuilder {  
   
   @Override  
@@ -80,15 +81,13 @@ and you could add your custom OKHttpClient Interceptor, pls extends BaseIntercep
 
 
 ```
+@Component
 public class MyRetrofitInterceptor2 extends BaseInterceptor {  
-    public MyRetrofitInterceptor2(RetrofitResourceContext context) {  
-        super(context);  
-  }  
   
  @SneakyThrows  
  @Override  protected Response executeIntercept(Chain chain) {  
         Request request = chain.request();  
- return chain.proceed(request);  
+        return chain.proceed(request);  
   }  
 }
 ```
