@@ -1,0 +1,45 @@
+package io.github.liuziyuan.retrofit;
+
+import io.github.liuziyuan.retrofit.resource.RetrofitClientBean;
+import io.github.liuziyuan.retrofit.resource.RetrofitServiceBean;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.env.Environment;
+import org.springframework.core.io.ResourceLoader;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+/**
+ * @author liuziyuan
+ */
+@Getter
+@Setter(AccessLevel.PACKAGE)
+public final class RetrofitResourceContext {
+
+    private Environment environment;
+    private ApplicationContext applicationContext;
+    private ResourceLoader resourceLoader;
+    private List<RetrofitClientBean> retrofitClients;
+    private HashMap<String, RetrofitServiceBean> retrofitServices;
+
+    public RetrofitResourceContext() {
+        retrofitClients = new ArrayList<>();
+    }
+
+    void setRetrofitClients(List<RetrofitClientBean> retrofitClients) {
+        this.retrofitClients = retrofitClients;
+    }
+
+    List<RetrofitClientBean> getRetrofitClients() {
+        return retrofitClients;
+    }
+
+    public RetrofitServiceBean getRetrofitServiceBean(String currentClass) {
+        return retrofitServices.get(currentClass);
+    }
+
+}
