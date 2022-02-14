@@ -10,6 +10,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -23,6 +24,7 @@ public final class RetrofitResourceContext {
     private ApplicationContext applicationContext;
     private ResourceLoader resourceLoader;
     private List<RetrofitClientBean> retrofitClients;
+    private HashMap<String, RetrofitServiceBean> retrofitServices;
 
     public RetrofitResourceContext() {
         retrofitClients = new ArrayList<>();
@@ -37,14 +39,7 @@ public final class RetrofitResourceContext {
     }
 
     public RetrofitServiceBean getRetrofitServiceBean(String currentClass) {
-        for (RetrofitClientBean retrofitClient : retrofitClients) {
-            for (RetrofitServiceBean retrofitService : retrofitClient.getRetrofitServices()) {
-                if (retrofitService.getSelfClazz().getName().equals(currentClass)) {
-                    return retrofitService;
-                }
-            }
-        }
-        return null;
+        return retrofitServices.get(currentClass);
     }
 
 }

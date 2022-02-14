@@ -1,19 +1,12 @@
 package io.github.liuziyuan.retrofit;
 
 import io.github.liuziyuan.retrofit.annotation.EnableRetrofit;
-import io.github.liuziyuan.retrofit.annotation.RetrofitBuilder;
-import io.github.liuziyuan.retrofit.annotation.RetrofitInterceptor;
-import io.github.liuziyuan.retrofit.extension.UrlOverWriteInterceptor;
-import io.github.liuziyuan.retrofit.handler.*;
-import io.github.liuziyuan.retrofit.proxy.RetrofitServiceProxyFactory;
 import io.github.liuziyuan.retrofit.resource.RetrofitClientBean;
 import io.github.liuziyuan.retrofit.resource.RetrofitServiceBean;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.support.*;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
@@ -22,11 +15,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.ClassUtils;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-import retrofit2.CallAdapter;
-import retrofit2.Converter;
-import retrofit2.Retrofit;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -60,7 +49,9 @@ public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefin
         RetrofitResourceBuilder retrofitResourceBuilder = new RetrofitResourceBuilder(environment);
         retrofitResourceBuilder.build(retrofitBuilderClassSet);
         final List<RetrofitClientBean> retrofitClientBeanList = retrofitResourceBuilder.getRetrofitClientBeanList();
+        final HashMap<String, RetrofitServiceBean> retrofitServiceBeanHashMap = retrofitResourceBuilder.getRetrofitServiceBeanHashMap();
         context.setRetrofitClients(retrofitClientBeanList);
+        context.setRetrofitServices(retrofitServiceBeanHashMap);
         context.setEnvironment(environment);
         context.setResourceLoader(resourceLoader);
         BeanDefinitionBuilder builder;
