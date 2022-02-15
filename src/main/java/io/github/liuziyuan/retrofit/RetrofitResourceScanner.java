@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
+ * Scan retrofit API resources using @RetrofitBuilder
  * @author liuziyuan
  */
 public class RetrofitResourceScanner {

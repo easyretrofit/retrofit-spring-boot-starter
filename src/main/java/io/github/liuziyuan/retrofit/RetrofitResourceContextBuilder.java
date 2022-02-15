@@ -12,16 +12,17 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * the builder of Retrofit resource context, used to assemble all the retrofit resource
  * @author liuziyuan
  */
-public class RetrofitResourceBuilder {
+public class RetrofitResourceContextBuilder {
 
     private List<RetrofitClientBean> retrofitClientBeanList;
 
     private HashMap<String, RetrofitServiceBean> retrofitServiceBeanHashMap;
     private final Environment environment;
 
-    public RetrofitResourceBuilder(Environment environment) {
+    public RetrofitResourceContextBuilder(Environment environment) {
         retrofitClientBeanList = new ArrayList<>();
         retrofitServiceBeanHashMap = new HashMap<>();
         this.environment = environment;

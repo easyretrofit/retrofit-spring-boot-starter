@@ -21,6 +21,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
+ * When @EnableRetrofit is used, this class will generate the RetrofitResourceContext object according to the Annotation, and define and register it in the spring container
  * @author liuziyuan
  */
 @Slf4j
@@ -46,10 +47,10 @@ public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefin
         basePackages.addAll(Arrays.stream(annoAttrs.getStringArray("basePackages")).filter(StringUtils::hasText).collect(Collectors.toList()));
         basePackages.addAll(Arrays.stream(annoAttrs.getClassArray("basePackageClasses")).map(ClassUtils::getPackageName).collect(Collectors.toList()));
         final Set<Class<?>> retrofitBuilderClassSet = scanner.doScan(StringUtils.toStringArray(basePackages));
-        RetrofitResourceBuilder retrofitResourceBuilder = new RetrofitResourceBuilder(environment);
-        retrofitResourceBuilder.build(retrofitBuilderClassSet);
-        final List<RetrofitClientBean> retrofitClientBeanList = retrofitResourceBuilder.getRetrofitClientBeanList();
-        final HashMap<String, RetrofitServiceBean> retrofitServiceBeanHashMap = retrofitResourceBuilder.getRetrofitServiceBeanHashMap();
+        RetrofitResourceContextBuilder retrofitResourceContextBuilder = new RetrofitResourceContextBuilder(environment);
+        retrofitResourceContextBuilder.build(retrofitBuilderClassSet);
+        final List<RetrofitClientBean> retrofitClientBeanList = retrofitResourceContextBuilder.getRetrofitClientBeanList();
+        final HashMap<String, RetrofitServiceBean> retrofitServiceBeanHashMap = retrofitResourceContextBuilder.getRetrofitServiceBeanHashMap();
         context.setRetrofitClients(retrofitClientBeanList);
         context.setRetrofitServices(retrofitServiceBeanHashMap);
         context.setEnvironment(environment);

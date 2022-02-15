@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
+ * The top structure contains all the objects created in the starter
  * @author liuziyuan
  */
 @Getter

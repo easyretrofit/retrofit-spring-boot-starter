@@ -10,6 +10,7 @@ import org.springframework.util.StringUtils;
 import java.net.URL;
 
 /**
+ * RetrofitUrl object
  * @author liuziyuan
  */
 @Getter

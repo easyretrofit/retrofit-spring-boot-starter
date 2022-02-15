@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * generate RetrofitClientBean object
  * @author liuziyuan
  */
 public class RetrofitClientBeanHandler implements Handler<RetrofitClientBean> {

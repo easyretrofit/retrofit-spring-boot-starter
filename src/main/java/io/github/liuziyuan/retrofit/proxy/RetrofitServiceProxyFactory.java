@@ -12,6 +12,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 
 /**
+ * The proxy factory of RetrofitServiceBean
  * @author liuziyuan
  */
 @Slf4j

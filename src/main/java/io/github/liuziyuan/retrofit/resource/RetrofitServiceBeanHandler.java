@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * generate RetrofitServiceBean object
  * @author liuziyuan
  */
 public class RetrofitServiceBeanHandler implements Handler<RetrofitServiceBean> {

@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Retrofit Resources Definition and Registry
+ * Retrofit Resources Definition and Registry, including Retrofit objects and Retrofit API objects of dynamic proxy
  *
  * @author liuziyuan
  */

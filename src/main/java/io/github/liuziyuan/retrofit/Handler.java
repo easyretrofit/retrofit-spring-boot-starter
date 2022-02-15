@@ -1,6 +1,7 @@
 package io.github.liuziyuan.retrofit;
 
 /**
+ * Generate interface used internally
  * @author liuziyuan
  */
 public interface Handler<T> {
