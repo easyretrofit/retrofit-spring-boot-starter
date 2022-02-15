@@ -15,7 +15,7 @@ You can see the effect I want from the fourth step of introduction
 <dependency>
    <groupId>io.github.liuziyuan</groupId>
    <artifactId>retrofit-spring-boot-starter</artifactId>
-   <version>0.0.2</version>
+   <version>0.0.3</version>
 </dependency>
 ```
 2. add `@EnableRetrofit` to your Spring boot Starter Class, create a config class for Retrofit
@@ -28,7 +28,7 @@ public class HelloApplication extends SpringBootServletInitializer {
   }  
 }
 ```
-You can specify basepackage like `@EnableRetrofit(basePackages = "xxx.demo.api")`, api is your retrofit API folder name. By default, all files in the directory where the starter class file is located will be scanned
+You can specify basepackage like `@EnableRetrofit(basePackages = "xxx.demo.api")`, "xxx.demo.api" is your retrofit APIs folder name. By default, all files in the directory where the starter class file is located will be scanned
 
 ```
 @Configuration
@@ -49,8 +49,8 @@ public interface TestApi {
     Call<Result> test();  
 }
 ```
-pls keep app.test.base-url on your resources config file,
-baseUrl can also be a URL as http://xxx or https://xxx
+pls keep app.test.base-url on your resources' config file,
+baseUrl can also be a URL as http://localhost:8080
 
 4. add other attributes for  `@RetrofitBuilder`, if you need
 ```
@@ -66,6 +66,7 @@ public interface TestApi {
     Call<Result> test();  
 }
 ```
+
 and your custom OKHttpClient need extends BaseOkHttpClientBuilder
 ```
 @Component
@@ -77,8 +78,7 @@ public class MyOkHttpClient extends BaseOkHttpClientBuilder {
   }  
 }
 ```
-and you could add your custom OKHttpClient Interceptor, pls extends BaseInterceptor, RetrofitResourceContext provides enough content for you to use
-
+and you could add your custom OKHttpClient Interceptor, pls extends BaseInterceptor
 
 ```
 @Component
@@ -91,8 +91,14 @@ public class MyRetrofitInterceptor2 extends BaseInterceptor {
   }  
 }
 ```
+and you could set include,exclude and sort on @RetrofitInterceptor like `@RetrofitInterceptor(handler = MyRetrofitInterceptor2.class, exclude = {"/v1/test/"})`
 
-5. If you have hundreds of Interface method, it is from a source  Base URL ,  and you want your code structure to be more orderly and look consistent with the source service structure，you could do this ,
+When exclude is used, the corresponding API will ignore this interceptor.
+
+When you use sort, please ensure that all interceptors use sort, because by default, sort is 0. You can ensure the execution order of your interceptors through int type.
+By default, the interceptor is loaded from top to bottom.
+
+5. If you have hundreds of Interface method, it is from a same source Base URL, and you want your code structure to be more orderly and look consistent with the source service structure, you could do this ,
    Define an empty Interface file
  ```
 @RetrofitBuilder(baseUrl = "${app.test.base-url}",  
@@ -120,25 +126,27 @@ public interface TestInheritApi extends TestApi {
 @RequestMapping("/v1/hello")  
 public class HelloController {  
   @Autowired  
-//    @Qualifier("com.liuziyuan.demo.api.TestApi2")  
+//    @Qualifier("io.liuziyuan.demo.api.TestApi2")  
   private TestApi2 api2;
   ```
+
+Yes, Congratulations, your code should work normally
+
 
 If you inject the Interface and the inherited Interface at the same time, the following errors may occur
 
 ```
 Description:
 
-Field api in com.liuziyuan.demo.controller.HelloController required a single bean, but 2 were found:
-	- com.liuziyuan.demo.api.TestApi: defined in null
-	- com.liuziyuan.demo.api.TestInheritApi: defined in null
-
+Field api in io.liuziyuan.demo.controller.HelloController required a single bean, but 2 were found:
+	- io.liuziyuan.demo.api.TestApi: defined in null
+	- io.liuziyuan.demo.api.TestInheritApi: defined in null
 
 Action:
 
 Consider marking one of the beans as @Primary, updating the consumer to accept multiple beans, or using @Qualifier to identify the bean that should be consumed
 ```
-So, you need use @Qualifier("com.liuziyuan.demo.api.TestApi")
+So, you need use @Qualifier("io.liuziyuan.demo.api.TestApi")
 
 Each API interface in the project has been set with the qualifier attribute, so you do not do anything.
 
