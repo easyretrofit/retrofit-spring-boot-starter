@@ -12,4 +12,10 @@ import java.lang.annotation.*;
 @Repeatable(Interceptors.class)
 public @interface RetrofitInterceptor {
     Class<? extends BaseInterceptor> handler();
+
+    String[] include() default {"/**"};
+
+    String[] exclude() default {};
+
+    int sort() default 0;
 }

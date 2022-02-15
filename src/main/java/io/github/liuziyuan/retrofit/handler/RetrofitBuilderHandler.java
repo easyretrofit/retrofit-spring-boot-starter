@@ -18,6 +18,7 @@ import retrofit2.Converter;
 import retrofit2.Retrofit;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -91,6 +92,7 @@ public class RetrofitBuilderHandler implements Handler<Retrofit.Builder> {
     private List<Interceptor> getOkHttpInterceptors(List<RetrofitInterceptor> interceptors) {
         List<Interceptor> interceptorList = new ArrayList<>();
         OkHttpInterceptorHandler okHttpInterceptorHandler;
+        interceptors.sort(Comparator.comparing(RetrofitInterceptor::sort));
         for (RetrofitInterceptor interceptor : interceptors) {
             BaseInterceptor componentInterceptor = null;
             try {
@@ -98,7 +100,7 @@ public class RetrofitBuilderHandler implements Handler<Retrofit.Builder> {
             } catch (NoSuchBeanDefinitionException ex) {
 
             }
-            okHttpInterceptorHandler = new OkHttpInterceptorHandler(interceptor.handler(), context, componentInterceptor);
+            okHttpInterceptorHandler = new OkHttpInterceptorHandler(interceptor, context, componentInterceptor);
             final Interceptor generateInterceptor = okHttpInterceptorHandler.generate();
             interceptorList.add(generateInterceptor);
         }
