@@ -6,6 +6,7 @@ import lombok.SneakyThrows;
 import okhttp3.OkHttpClient;
 
 /**
+ * Generate OkHttpClientBuilder instance
  * @author liuziyuan
  */
 public class OkHttpClientBuilderHandler implements Handler<OkHttpClient.Builder> {

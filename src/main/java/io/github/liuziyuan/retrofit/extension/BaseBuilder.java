@@ -1,6 +1,7 @@
 package io.github.liuziyuan.retrofit.extension;
 
 /**
+ * abstract class of Builder
  * @author liuziyuan
  */
 public abstract class BaseBuilder<T> implements Builder<T> {

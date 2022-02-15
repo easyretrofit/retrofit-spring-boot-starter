@@ -5,6 +5,7 @@ import io.github.liuziyuan.retrofit.extension.BaseInterceptor;
 import java.lang.annotation.*;
 
 /**
+ * Annotation of OkHttpClient Interceptor
  * @author liuziyuan
  */
 @Retention(RetentionPolicy.RUNTIME)

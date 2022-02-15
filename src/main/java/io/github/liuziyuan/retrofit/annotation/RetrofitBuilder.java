@@ -7,6 +7,7 @@ import retrofit2.Converter;
 import java.lang.annotation.*;
 
 /**
+ * Annotation of Retrofit.Builder
  * @author liuziyuan
  */
 @Documented

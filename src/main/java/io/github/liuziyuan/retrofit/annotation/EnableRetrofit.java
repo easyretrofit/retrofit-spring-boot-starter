@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Import;
 import java.lang.annotation.*;
 
 /**
+ * Enable application to use retrofit-spring-boot-starter
  * @author liuziyuan
  */
 @Documented

@@ -22,6 +22,8 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
+ * Generate RetrofitBuilder instance
+ *
  * @author liuziyuan
  */
 public class RetrofitBuilderHandler implements Handler<Retrofit.Builder> {
@@ -94,11 +96,11 @@ public class RetrofitBuilderHandler implements Handler<Retrofit.Builder> {
         OkHttpInterceptorHandler okHttpInterceptorHandler;
         interceptors.sort(Comparator.comparing(RetrofitInterceptor::sort));
         for (RetrofitInterceptor interceptor : interceptors) {
-            BaseInterceptor componentInterceptor = null;
+            BaseInterceptor componentInterceptor;
             try {
                 componentInterceptor = context.getApplicationContext().getBean(interceptor.handler());
             } catch (NoSuchBeanDefinitionException ex) {
-
+                componentInterceptor = null;
             }
             okHttpInterceptorHandler = new OkHttpInterceptorHandler(interceptor, context, componentInterceptor);
             final Interceptor generateInterceptor = okHttpInterceptorHandler.generate();

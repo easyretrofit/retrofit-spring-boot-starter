@@ -10,6 +10,7 @@ import org.springframework.util.PathMatcher;
 import retrofit2.internal.EverythingIsNonNull;
 
 /**
+ * Abstract class of Interceptor, The custom interceptor needs to inherit it
  * @author liuziyuan
  */
 public abstract class BaseInterceptor implements Interceptor {

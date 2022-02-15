@@ -7,6 +7,7 @@ import retrofit2.Converter;
 import java.lang.reflect.Method;
 
 /**
+ * Generate ConverterFactory instance
  * @author liuziyuan
  */
 public class ConverterFactoryHandler implements Handler<Converter.Factory> {

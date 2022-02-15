@@ -7,6 +7,7 @@ import retrofit2.CallAdapter;
 import java.lang.reflect.Method;
 
 /**
+ * Generate CallAdapterFactory instance
  * @author liuziyuan
  */
 public class CallAdapterFactoryHandler implements Handler<CallAdapter.Factory> {

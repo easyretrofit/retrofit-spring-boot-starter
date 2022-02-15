@@ -10,6 +10,7 @@ import okhttp3.Interceptor;
 import java.lang.reflect.Constructor;
 
 /**
+ * Generate OkHttpInterceptor instance
  * @author liuziyuan
  */
 public class OkHttpInterceptorHandler implements Handler<Interceptor> {
