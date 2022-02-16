@@ -1,9 +1,9 @@
 package io.github.liuziyuan.retrofit;
 
 import io.github.liuziyuan.retrofit.resource.RetrofitClientBean;
-import io.github.liuziyuan.retrofit.resource.RetrofitClientBeanHandler;
+import io.github.liuziyuan.retrofit.resource.RetrofitClientBeanGenerator;
 import io.github.liuziyuan.retrofit.resource.RetrofitServiceBean;
-import io.github.liuziyuan.retrofit.resource.RetrofitServiceBeanHandler;
+import io.github.liuziyuan.retrofit.resource.RetrofitServiceBeanGenerator;
 import org.springframework.core.env.Environment;
 
 import java.util.ArrayList;
@@ -40,9 +40,9 @@ public class RetrofitResourceContextBuilder {
 
     private List<RetrofitServiceBean> setRetrofitServiceBeanList(Set<Class<?>> retrofitBuilderClassSet) {
         List<RetrofitServiceBean> retrofitServiceBeanList = new ArrayList<>();
-        RetrofitServiceBeanHandler serviceBeanHandler;
+        RetrofitServiceBeanGenerator serviceBeanHandler;
         for (Class<?> clazz : retrofitBuilderClassSet) {
-            serviceBeanHandler = new RetrofitServiceBeanHandler(clazz, environment);
+            serviceBeanHandler = new RetrofitServiceBeanGenerator(clazz, environment);
             final RetrofitServiceBean serviceBean = serviceBeanHandler.generate();
             retrofitServiceBeanList.add(serviceBean);
         }
@@ -51,9 +51,9 @@ public class RetrofitResourceContextBuilder {
 
     private List<RetrofitClientBean> setRetrofitClientBeanList(List<RetrofitServiceBean> serviceBeanList) {
         List<RetrofitClientBean> clientBeanList = new ArrayList<>();
-        RetrofitClientBeanHandler clientBeanHandler;
+        RetrofitClientBeanGenerator clientBeanHandler;
         for (RetrofitServiceBean serviceBean : serviceBeanList) {
-            clientBeanHandler = new RetrofitClientBeanHandler(clientBeanList, serviceBean);
+            clientBeanHandler = new RetrofitClientBeanGenerator(clientBeanList, serviceBean);
             final RetrofitClientBean retrofitClientBean = clientBeanHandler.generate();
             if (retrofitClientBean != null && clientBeanList.stream().noneMatch(clientBean -> clientBean.getRetrofitInstanceName().equals(retrofitClientBean.getRetrofitInstanceName()))) {
                 clientBeanList.add(retrofitClientBean);

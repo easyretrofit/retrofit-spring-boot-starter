@@ -1,6 +1,6 @@
 package io.github.liuziyuan.retrofit.resource;
 
-import io.github.liuziyuan.retrofit.Handler;
+import io.github.liuziyuan.retrofit.Generator;
 import io.github.liuziyuan.retrofit.annotation.Interceptors;
 import io.github.liuziyuan.retrofit.annotation.RetrofitBuilder;
 import io.github.liuziyuan.retrofit.annotation.RetrofitInterceptor;
@@ -15,11 +15,11 @@ import java.util.List;
  * generate RetrofitServiceBean object
  * @author liuziyuan
  */
-public class RetrofitServiceBeanHandler implements Handler<RetrofitServiceBean> {
+public class RetrofitServiceBeanGenerator implements Generator<RetrofitServiceBean> {
     private final Class<?> clazz;
     private final Environment environment;
 
-    public RetrofitServiceBeanHandler(Class<?> clazz, Environment environment) {
+    public RetrofitServiceBeanGenerator(Class<?> clazz, Environment environment) {
         this.clazz = clazz;
         this.environment = environment;
     }

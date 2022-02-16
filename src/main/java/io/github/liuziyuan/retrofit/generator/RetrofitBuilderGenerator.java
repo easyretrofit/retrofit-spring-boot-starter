@@ -1,6 +1,6 @@
-package io.github.liuziyuan.retrofit.handler;
+package io.github.liuziyuan.retrofit.generator;
 
-import io.github.liuziyuan.retrofit.Handler;
+import io.github.liuziyuan.retrofit.Generator;
 import io.github.liuziyuan.retrofit.RetrofitResourceContext;
 import io.github.liuziyuan.retrofit.annotation.RetrofitBuilder;
 import io.github.liuziyuan.retrofit.annotation.RetrofitInterceptor;
@@ -26,11 +26,11 @@ import java.util.List;
  *
  * @author liuziyuan
  */
-public class RetrofitBuilderHandler implements Handler<Retrofit.Builder> {
+public class RetrofitBuilderGenerator implements Generator<Retrofit.Builder> {
     private RetrofitClientBean clientBean;
     private RetrofitResourceContext context;
 
-    public RetrofitBuilderHandler(RetrofitClientBean clientBean, RetrofitResourceContext context) {
+    public RetrofitBuilderGenerator(RetrofitClientBean clientBean, RetrofitResourceContext context) {
         this.clientBean = clientBean;
         this.context = context;
     }
@@ -66,7 +66,7 @@ public class RetrofitBuilderHandler implements Handler<Retrofit.Builder> {
         final RetrofitBuilder retrofitBuilder = clientBean.getRetrofitBuilder();
         final List<RetrofitInterceptor> interceptors = clientBean.getInterceptors();
         OkHttpClient.Builder okHttpClientBuilder;
-        OkHttpClientBuilderHandler okHttpClientBuilderHandler;
+        OkHttpClientBuilderGenerator okHttpClientBuilderGenerator;
         if (retrofitBuilder.client() != null) {
             BaseOkHttpClientBuilder baseOkHttpClientBuilder = null;
             OkHttpClient.Builder componentOkHttpClientBuilder = null;
@@ -78,8 +78,8 @@ public class RetrofitBuilderHandler implements Handler<Retrofit.Builder> {
             if (baseOkHttpClientBuilder != null) {
                 componentOkHttpClientBuilder = baseOkHttpClientBuilder.build();
             }
-            okHttpClientBuilderHandler = new OkHttpClientBuilderHandler(retrofitBuilder.client(), componentOkHttpClientBuilder);
-            okHttpClientBuilder = okHttpClientBuilderHandler.generate();
+            okHttpClientBuilderGenerator = new OkHttpClientBuilderGenerator(retrofitBuilder.client(), componentOkHttpClientBuilder);
+            okHttpClientBuilder = okHttpClientBuilderGenerator.generate();
         } else {
             okHttpClientBuilder = new OkHttpClient.Builder();
         }
@@ -93,7 +93,7 @@ public class RetrofitBuilderHandler implements Handler<Retrofit.Builder> {
     @SneakyThrows
     private List<Interceptor> getOkHttpInterceptors(List<RetrofitInterceptor> interceptors) {
         List<Interceptor> interceptorList = new ArrayList<>();
-        OkHttpInterceptorHandler okHttpInterceptorHandler;
+        OkHttpInterceptorGenerator okHttpInterceptorGenerator;
         interceptors.sort(Comparator.comparing(RetrofitInterceptor::sort));
         for (RetrofitInterceptor interceptor : interceptors) {
             BaseInterceptor componentInterceptor;
@@ -102,8 +102,8 @@ public class RetrofitBuilderHandler implements Handler<Retrofit.Builder> {
             } catch (NoSuchBeanDefinitionException ex) {
                 componentInterceptor = null;
             }
-            okHttpInterceptorHandler = new OkHttpInterceptorHandler(interceptor, context, componentInterceptor);
-            final Interceptor generateInterceptor = okHttpInterceptorHandler.generate();
+            okHttpInterceptorGenerator = new OkHttpInterceptorGenerator(interceptor, context, componentInterceptor);
+            final Interceptor generateInterceptor = okHttpInterceptorGenerator.generate();
             interceptorList.add(generateInterceptor);
         }
         return interceptorList;
@@ -112,9 +112,9 @@ public class RetrofitBuilderHandler implements Handler<Retrofit.Builder> {
     @SneakyThrows
     private List<CallAdapter.Factory> getCallAdapterFactories(Class<? extends CallAdapter.Factory>[] callAdapterFactoryClasses) {
         List<CallAdapter.Factory> callAdapterFactories = new ArrayList<>();
-        CallAdapterFactoryHandler adapterFactoryHandler;
+        CallAdapterFactoryGenerator adapterFactoryHandler;
         for (Class<? extends CallAdapter.Factory> callAdapterFactoryClass : callAdapterFactoryClasses) {
-            adapterFactoryHandler = new CallAdapterFactoryHandler(callAdapterFactoryClass);
+            adapterFactoryHandler = new CallAdapterFactoryGenerator(callAdapterFactoryClass);
             callAdapterFactories.add(adapterFactoryHandler.generate());
         }
         return callAdapterFactories;
@@ -123,10 +123,10 @@ public class RetrofitBuilderHandler implements Handler<Retrofit.Builder> {
     @SneakyThrows
     private List<Converter.Factory> getConverterFactories(Class<? extends Converter.Factory>[] converterFactoryClasses) {
         List<Converter.Factory> converterFactories = new ArrayList<>();
-        ConverterFactoryHandler converterFactoryHandler;
+        ConverterFactoryGenerator converterFactoryGenerator;
         for (Class<? extends Converter.Factory> converterFactoryClass : converterFactoryClasses) {
-            converterFactoryHandler = new ConverterFactoryHandler(converterFactoryClass);
-            converterFactories.add(converterFactoryHandler.generate());
+            converterFactoryGenerator = new ConverterFactoryGenerator(converterFactoryClass);
+            converterFactories.add(converterFactoryGenerator.generate());
         }
         return converterFactories;
     }

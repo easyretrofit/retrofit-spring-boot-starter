@@ -1,4 +1,4 @@
-package io.github.liuziyuan.retrofit.handler;
+package io.github.liuziyuan.retrofit.generator;
 
 import io.github.liuziyuan.retrofit.demo.MyOkHttpClient;
 import io.github.liuziyuan.retrofit.extension.BaseOkHttpClientBuilder;
@@ -11,10 +11,10 @@ import org.junit.jupiter.api.Test;
  * @author liuziyuan
  * @date 1/14/2022 11:31 AM
  */
-class OkHttpClientBuilderHandlerTest {
+class OkHttpClientBuilderGeneratorTest {
 
     private Class<? extends BaseOkHttpClientBuilder> okHttpClientBuilder;
-    private OkHttpClientBuilderHandler okHttpClientBuilderHandler;
+    private OkHttpClientBuilderGenerator okHttpClientBuilderGenerator;
 
     @BeforeEach
     void setUp() {
@@ -23,8 +23,8 @@ class OkHttpClientBuilderHandlerTest {
 
     @Test
     void generate() {
-        okHttpClientBuilderHandler = new OkHttpClientBuilderHandler(okHttpClientBuilder, null);
-        final OkHttpClient.Builder generate = okHttpClientBuilderHandler.generate();
+        okHttpClientBuilderGenerator = new OkHttpClientBuilderGenerator(okHttpClientBuilder, null);
+        final OkHttpClient.Builder generate = okHttpClientBuilderGenerator.generate();
         Assert.assertNotNull(generate.build());
     }
 }

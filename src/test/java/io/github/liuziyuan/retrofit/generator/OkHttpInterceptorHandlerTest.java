@@ -1,13 +1,4 @@
-package io.github.liuziyuan.retrofit.handler;
-
-import io.github.liuziyuan.retrofit.RetrofitResourceContext;
-import io.github.liuziyuan.retrofit.annotation.RetrofitInterceptor;
-import io.github.liuziyuan.retrofit.demo.MyRetrofitInterceptor2;
-import io.github.liuziyuan.retrofit.extension.BaseInterceptor;
-import okhttp3.Interceptor;
-import org.junit.Assert;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+package io.github.liuziyuan.retrofit.generator;
 
 /**
  * @author liuziyuan

@@ -1,6 +1,6 @@
-package io.github.liuziyuan.retrofit.handler;
+package io.github.liuziyuan.retrofit.generator;
 
-import io.github.liuziyuan.retrofit.Handler;
+import io.github.liuziyuan.retrofit.Generator;
 import io.github.liuziyuan.retrofit.extension.BaseCallBackExecutor;
 
 import java.util.concurrent.Executor;
@@ -8,11 +8,11 @@ import java.util.concurrent.Executor;
 /**
  * @author liuziyuan
  */
-public class CallBackExecutorHandler implements Handler<Executor> {
+public class CallBackExecutorGenerator implements Generator<Executor> {
     private Class<? extends BaseCallBackExecutor> callBackExecutorClazz;
     private Executor executor;
 
-    public CallBackExecutorHandler(Class<? extends BaseCallBackExecutor> callBackExecutorClazz, Executor executor) {
+    public CallBackExecutorGenerator(Class<? extends BaseCallBackExecutor> callBackExecutorClazz, Executor executor) {
         this.callBackExecutorClazz = callBackExecutorClazz;
         this.executor = executor;
     }

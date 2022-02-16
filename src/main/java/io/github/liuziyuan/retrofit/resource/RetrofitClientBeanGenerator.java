@@ -1,6 +1,6 @@
 package io.github.liuziyuan.retrofit.resource;
 
-import io.github.liuziyuan.retrofit.Handler;
+import io.github.liuziyuan.retrofit.Generator;
 import retrofit2.CallAdapter;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
@@ -12,11 +12,11 @@ import java.util.List;
  * generate RetrofitClientBean object
  * @author liuziyuan
  */
-public class RetrofitClientBeanHandler implements Handler<RetrofitClientBean> {
+public class RetrofitClientBeanGenerator implements Generator<RetrofitClientBean> {
     private final List<RetrofitClientBean> clientBeanList;
     private final RetrofitServiceBean serviceBean;
 
-    public RetrofitClientBeanHandler(List<RetrofitClientBean> clientBeanList, RetrofitServiceBean serviceBean) {
+    public RetrofitClientBeanGenerator(List<RetrofitClientBean> clientBeanList, RetrofitServiceBean serviceBean) {
         this.clientBeanList = clientBeanList;
         this.serviceBean = serviceBean;
     }

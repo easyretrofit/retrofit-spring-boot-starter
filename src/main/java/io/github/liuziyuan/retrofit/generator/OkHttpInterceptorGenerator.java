@@ -1,6 +1,6 @@
-package io.github.liuziyuan.retrofit.handler;
+package io.github.liuziyuan.retrofit.generator;
 
-import io.github.liuziyuan.retrofit.Handler;
+import io.github.liuziyuan.retrofit.Generator;
 import io.github.liuziyuan.retrofit.RetrofitResourceContext;
 import io.github.liuziyuan.retrofit.annotation.RetrofitInterceptor;
 import io.github.liuziyuan.retrofit.extension.BaseInterceptor;
@@ -13,13 +13,13 @@ import java.lang.reflect.Constructor;
  * Generate OkHttpInterceptor instance
  * @author liuziyuan
  */
-public class OkHttpInterceptorHandler implements Handler<Interceptor> {
+public class OkHttpInterceptorGenerator implements Generator<Interceptor> {
     private final Class<? extends BaseInterceptor> interceptorClass;
     private RetrofitInterceptor retrofitInterceptor;
     private RetrofitResourceContext resourceContext;
     private BaseInterceptor interceptor;
 
-    public OkHttpInterceptorHandler(RetrofitInterceptor retrofitInterceptor, RetrofitResourceContext resourceContext, BaseInterceptor componentInterceptor) {
+    public OkHttpInterceptorGenerator(RetrofitInterceptor retrofitInterceptor, RetrofitResourceContext resourceContext, BaseInterceptor componentInterceptor) {
         this.retrofitInterceptor = retrofitInterceptor;
         this.interceptorClass = retrofitInterceptor.handler();
         this.resourceContext = resourceContext;

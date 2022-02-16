@@ -1,4 +1,4 @@
-package io.github.liuziyuan.retrofit.handler;
+package io.github.liuziyuan.retrofit.generator;
 
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,10 +10,10 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
  * @author liuziyuan
  * @date 1/14/2022 10:53 AM
  */
-class CallAdapterFactoryHandlerTest {
+class CallAdapterFactoryGeneratorTest {
 
     private Class<? extends CallAdapter.Factory> callAdapterFactoryClass;
-    private CallAdapterFactoryHandler callAdapterFactoryHandler;
+    private CallAdapterFactoryGenerator callAdapterFactoryGenerator;
 
     @BeforeEach
     void setUp() {
@@ -22,8 +22,8 @@ class CallAdapterFactoryHandlerTest {
 
     @Test
     void generate() {
-        callAdapterFactoryHandler = new CallAdapterFactoryHandler(callAdapterFactoryClass);
-        final CallAdapter.Factory factory = callAdapterFactoryHandler.generate();
+        callAdapterFactoryGenerator = new CallAdapterFactoryGenerator(callAdapterFactoryClass);
+        final CallAdapter.Factory factory = callAdapterFactoryGenerator.generate();
         Assert.assertEquals(factory.getClass().getSimpleName(), callAdapterFactoryClass.getSimpleName());
     }
 }

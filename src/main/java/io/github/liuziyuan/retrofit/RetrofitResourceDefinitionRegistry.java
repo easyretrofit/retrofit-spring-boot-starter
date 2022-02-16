@@ -1,6 +1,6 @@
 package io.github.liuziyuan.retrofit;
 
-import io.github.liuziyuan.retrofit.handler.RetrofitBuilderHandler;
+import io.github.liuziyuan.retrofit.generator.RetrofitBuilderGenerator;
 import io.github.liuziyuan.retrofit.proxy.RetrofitServiceProxyFactory;
 import io.github.liuziyuan.retrofit.resource.RetrofitClientBean;
 import io.github.liuziyuan.retrofit.resource.RetrofitServiceBean;
@@ -43,8 +43,8 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
             //registry Retrofit object
             for (RetrofitClientBean clientBean : retrofitClientBeanList) {
                 builder = BeanDefinitionBuilder.genericBeanDefinition(Retrofit.class, () -> {
-                    RetrofitBuilderHandler retrofitBuilderHandler = new RetrofitBuilderHandler(clientBean, context);
-                    final Retrofit.Builder retrofitBuilder = retrofitBuilderHandler.generate();
+                    RetrofitBuilderGenerator retrofitBuilderGenerator = new RetrofitBuilderGenerator(clientBean, context);
+                    final Retrofit.Builder retrofitBuilder = retrofitBuilderGenerator.generate();
                     return retrofitBuilder.build();
                 });
                 GenericBeanDefinition definition = (GenericBeanDefinition) builder.getRawBeanDefinition();

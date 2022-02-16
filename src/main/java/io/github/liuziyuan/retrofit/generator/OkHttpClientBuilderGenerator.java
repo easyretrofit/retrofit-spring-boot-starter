@@ -1,6 +1,6 @@
-package io.github.liuziyuan.retrofit.handler;
+package io.github.liuziyuan.retrofit.generator;
 
-import io.github.liuziyuan.retrofit.Handler;
+import io.github.liuziyuan.retrofit.Generator;
 import io.github.liuziyuan.retrofit.extension.BaseOkHttpClientBuilder;
 import lombok.SneakyThrows;
 import okhttp3.OkHttpClient;
@@ -9,11 +9,11 @@ import okhttp3.OkHttpClient;
  * Generate OkHttpClientBuilder instance
  * @author liuziyuan
  */
-public class OkHttpClientBuilderHandler implements Handler<OkHttpClient.Builder> {
+public class OkHttpClientBuilderGenerator implements Generator<OkHttpClient.Builder> {
     private Class<? extends BaseOkHttpClientBuilder> okHttpClientBuilderClazz;
     private OkHttpClient.Builder componentOkHttpClientBuilder;
 
-    public OkHttpClientBuilderHandler(Class<? extends BaseOkHttpClientBuilder> okHttpClientBuilderClazz, OkHttpClient.Builder componentOkHttpClientBuilder) {
+    public OkHttpClientBuilderGenerator(Class<? extends BaseOkHttpClientBuilder> okHttpClientBuilderClazz, OkHttpClient.Builder componentOkHttpClientBuilder) {
         this.okHttpClientBuilderClazz = okHttpClientBuilderClazz;
         this.componentOkHttpClientBuilder = componentOkHttpClientBuilder;
     }

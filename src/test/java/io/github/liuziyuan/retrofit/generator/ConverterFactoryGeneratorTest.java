@@ -1,4 +1,4 @@
-package io.github.liuziyuan.retrofit.handler;
+package io.github.liuziyuan.retrofit.generator;
 
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,9 +10,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @author liuziyuan
  * @date 1/14/2022 11:04 AM
  */
-class ConverterFactoryHandlerTest {
+class ConverterFactoryGeneratorTest {
     private Class<? extends Converter.Factory> converterFactoryClass;
-    private ConverterFactoryHandler converterFactoryHandler;
+    private ConverterFactoryGenerator converterFactoryGenerator;
 
     @BeforeEach
     void setUp() {
@@ -21,8 +21,8 @@ class ConverterFactoryHandlerTest {
 
     @Test
     void generate() {
-        converterFactoryHandler = new ConverterFactoryHandler(converterFactoryClass);
-        final Converter.Factory factory = converterFactoryHandler.generate();
+        converterFactoryGenerator = new ConverterFactoryGenerator(converterFactoryClass);
+        final Converter.Factory factory = converterFactoryGenerator.generate();
         Assert.assertEquals(factory.getClass().getSimpleName(), converterFactoryClass.getSimpleName());
     }
 }
