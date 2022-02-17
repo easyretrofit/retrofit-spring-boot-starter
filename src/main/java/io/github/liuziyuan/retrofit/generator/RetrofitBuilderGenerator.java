@@ -4,10 +4,7 @@ import io.github.liuziyuan.retrofit.Generator;
 import io.github.liuziyuan.retrofit.RetrofitResourceContext;
 import io.github.liuziyuan.retrofit.annotation.RetrofitBuilder;
 import io.github.liuziyuan.retrofit.annotation.RetrofitInterceptor;
-import io.github.liuziyuan.retrofit.extension.BaseCallBackExecutorBuilder;
-import io.github.liuziyuan.retrofit.extension.BaseInterceptor;
-import io.github.liuziyuan.retrofit.extension.BaseOkHttpClientBuilder;
-import io.github.liuziyuan.retrofit.extension.UrlOverWriteInterceptor;
+import io.github.liuziyuan.retrofit.extension.*;
 import io.github.liuziyuan.retrofit.resource.RetrofitClientBean;
 import lombok.SneakyThrows;
 import okhttp3.Interceptor;
@@ -153,11 +150,17 @@ public class RetrofitBuilderGenerator implements Generator<Retrofit.Builder> {
     }
 
     @SneakyThrows
-    private List<Converter.Factory> getConverterFactories(Class<? extends Converter.Factory>[] converterFactoryClasses) {
+    private List<Converter.Factory> getConverterFactories(Class<? extends BaseConverterFactoryBuilder>[] converterFactoryBuilderClasses) {
         List<Converter.Factory> converterFactories = new ArrayList<>();
         ConverterFactoryGenerator converterFactoryGenerator;
-        for (Class<? extends Converter.Factory> converterFactoryClass : converterFactoryClasses) {
-            converterFactoryGenerator = new ConverterFactoryGenerator(converterFactoryClass);
+        for (Class<? extends BaseConverterFactoryBuilder> converterFactoryBuilderClazz : converterFactoryBuilderClasses) {
+            BaseConverterFactoryBuilder baseCallBackExecutorBuilder;
+            try {
+                baseCallBackExecutorBuilder = context.getApplicationContext().getBean(converterFactoryBuilderClazz);
+                converterFactoryGenerator = new ConverterFactoryGenerator(converterFactoryBuilderClazz, baseCallBackExecutorBuilder.executeBuild());
+            } catch (NoSuchBeanDefinitionException ex) {
+                converterFactoryGenerator = new ConverterFactoryGenerator(converterFactoryBuilderClazz, null);
+            }
             converterFactories.add(converterFactoryGenerator.generate());
         }
         return converterFactories;

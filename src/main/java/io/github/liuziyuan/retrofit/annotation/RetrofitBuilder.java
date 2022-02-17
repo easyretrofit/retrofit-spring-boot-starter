@@ -1,6 +1,7 @@
 package io.github.liuziyuan.retrofit.annotation;
 
 import io.github.liuziyuan.retrofit.extension.BaseCallBackExecutorBuilder;
+import io.github.liuziyuan.retrofit.extension.BaseConverterFactoryBuilder;
 import io.github.liuziyuan.retrofit.extension.BaseOkHttpClientBuilder;
 import okhttp3.HttpUrl;
 import retrofit2.CallAdapter;
@@ -72,7 +73,7 @@ public @interface RetrofitBuilder {
 
     Class<? extends CallAdapter.Factory>[] addCallAdapterFactory() default {};
 
-    Class<? extends Converter.Factory>[] addConverterFactory() default {};
+    Class<? extends BaseConverterFactoryBuilder>[] addConverterFactory() default {};
 
     Class<? extends BaseOkHttpClientBuilder> client() default BaseOkHttpClientBuilder.class;
 

@@ -1,8 +1,8 @@
 package io.github.liuziyuan.retrofit.resource;
 
 import io.github.liuziyuan.retrofit.Generator;
+import io.github.liuziyuan.retrofit.extension.BaseConverterFactoryBuilder;
 import retrofit2.CallAdapter;
-import retrofit2.Converter;
 import retrofit2.Retrofit;
 
 import java.util.ArrayList;
@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * generate RetrofitClientBean object
+ *
  * @author liuziyuan
  */
 public class RetrofitClientBeanGenerator implements Generator<RetrofitClientBean> {
@@ -59,7 +60,7 @@ public class RetrofitClientBeanGenerator implements Generator<RetrofitClientBean
             clientBeanCallAdapterFactoryList.add(clazz.getSimpleName());
         }
         List<String> clientBeanConverterFactoryList = new ArrayList<>();
-        for (Class<? extends Converter.Factory> clazz : clientBean.getRetrofitBuilder().addConverterFactory()) {
+        for (Class<? extends BaseConverterFactoryBuilder> clazz : clientBean.getRetrofitBuilder().addConverterFactory()) {
             clientBeanConverterFactoryList.add(clazz.getSimpleName());
         }
 
@@ -69,7 +70,7 @@ public class RetrofitClientBeanGenerator implements Generator<RetrofitClientBean
             serviceBeanCallAdapterFactoryList.add(clazz.getSimpleName());
         }
         List<String> serviceBeanConverterFactoryList = new ArrayList<>();
-        for (Class<? extends Converter.Factory> clazz : serviceBean.getRetrofitBuilder().addConverterFactory()) {
+        for (Class<? extends BaseConverterFactoryBuilder> clazz : serviceBean.getRetrofitBuilder().addConverterFactory()) {
             serviceBeanConverterFactoryList.add(clazz.getSimpleName());
         }
 
