@@ -1,7 +1,7 @@
 package io.github.liuziyuan.retrofit.annotation;
 
-import io.github.liuziyuan.retrofit.extension.BaseOkHttpClientBuilder;
 import io.github.liuziyuan.retrofit.extension.BaseCallBackExecutor;
+import io.github.liuziyuan.retrofit.extension.BaseOkHttpClientBuilder;
 import okhttp3.HttpUrl;
 import retrofit2.CallAdapter;
 import retrofit2.Converter;
@@ -67,7 +67,6 @@ public @interface RetrofitBuilder {
      * <p>Base URL: http://example.com<br>
      * Endpoint: //github.com/square/retrofit/<br>
      * Result: http://github.com/square/retrofit/ (note the scheme stays 'http')
-     *
      */
     String baseUrl() default "";
 
@@ -79,5 +78,5 @@ public @interface RetrofitBuilder {
 
     Class<? extends BaseCallBackExecutor> callbackExecutor() default BaseCallBackExecutor.class;
 
-    boolean validateEagerly() default false;
+    boolean validateEagerly();
 }

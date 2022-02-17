@@ -4,6 +4,7 @@ import io.github.liuziyuan.retrofit.Generator;
 import io.github.liuziyuan.retrofit.RetrofitResourceContext;
 import io.github.liuziyuan.retrofit.annotation.RetrofitBuilder;
 import io.github.liuziyuan.retrofit.annotation.RetrofitInterceptor;
+import io.github.liuziyuan.retrofit.extension.BaseCallBackExecutor;
 import io.github.liuziyuan.retrofit.extension.BaseInterceptor;
 import io.github.liuziyuan.retrofit.extension.BaseOkHttpClientBuilder;
 import io.github.liuziyuan.retrofit.extension.UrlOverWriteInterceptor;
@@ -20,6 +21,7 @@ import retrofit2.Retrofit;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.Executor;
 
 /**
  * Generate RetrofitBuilder instance
@@ -29,23 +31,52 @@ import java.util.List;
 public class RetrofitBuilderGenerator implements Generator<Retrofit.Builder> {
     private RetrofitClientBean clientBean;
     private RetrofitResourceContext context;
+    private Retrofit.Builder builder;
 
     public RetrofitBuilderGenerator(RetrofitClientBean clientBean, RetrofitResourceContext context) {
+        builder = new Retrofit.Builder();
         this.clientBean = clientBean;
         this.context = context;
     }
 
     @Override
     public Retrofit.Builder generate() {
-        Retrofit.Builder builder = new Retrofit.Builder();
-        builder.baseUrl(clientBean.getRealHostUrl());
-        setRetrofitCallAdapterFactory(clientBean, builder);
-        setRetrofitConverterFactory(clientBean, builder);
-        setRetrofitOkHttpClient(clientBean, builder);
+        setBaseUrl();
+        setRetrofitCallAdapterFactory();
+        setRetrofitConverterFactory();
+        setCallBackExecutor();
+        setValidateEagerly();
+        setRetrofitOkHttpClient();
         return builder;
     }
 
-    private void setRetrofitCallAdapterFactory(RetrofitClientBean clientBean, Retrofit.Builder builder) {
+    private void setBaseUrl() {
+        builder.baseUrl(clientBean.getRealHostUrl());
+    }
+
+    private void setValidateEagerly() {
+        final RetrofitBuilder retrofitBuilder = clientBean.getRetrofitBuilder();
+        final boolean validateEagerly = retrofitBuilder.validateEagerly();
+        builder.validateEagerly(validateEagerly);
+    }
+
+    private void setCallBackExecutor() {
+        final RetrofitBuilder retrofitBuilder = clientBean.getRetrofitBuilder();
+        final Class<? extends BaseCallBackExecutor> callbackExecutorClazz = retrofitBuilder.callbackExecutor();
+        BaseCallBackExecutor callBackExecutorInstance = null;
+        try {
+            callBackExecutorInstance = context.getApplicationContext().getBean(callbackExecutorClazz);
+        } catch (NoSuchBeanDefinitionException ex) {
+
+        }
+        CallBackExecutorGenerator callBackExecutorGenerator = new CallBackExecutorGenerator(callbackExecutorClazz, callBackExecutorInstance);
+        final Executor executor = callBackExecutorGenerator.generate();
+        if (executor != null) {
+            builder.callbackExecutor(executor);
+        }
+    }
+
+    private void setRetrofitCallAdapterFactory() {
         final RetrofitBuilder retrofitBuilder = clientBean.getRetrofitBuilder();
         final List<CallAdapter.Factory> callAdapterFactories = getCallAdapterFactories(retrofitBuilder.addCallAdapterFactory());
         if (!CollectionUtils.isEmpty(callAdapterFactories)) {
@@ -53,7 +84,7 @@ public class RetrofitBuilderGenerator implements Generator<Retrofit.Builder> {
         }
     }
 
-    private void setRetrofitConverterFactory(RetrofitClientBean clientBean, Retrofit.Builder builder) {
+    private void setRetrofitConverterFactory() {
         final RetrofitBuilder retrofitBuilder = clientBean.getRetrofitBuilder();
         final List<Converter.Factory> converterFactories = getConverterFactories(retrofitBuilder.addConverterFactory());
         if (!CollectionUtils.isEmpty(converterFactories)) {
@@ -62,7 +93,7 @@ public class RetrofitBuilderGenerator implements Generator<Retrofit.Builder> {
     }
 
     @SneakyThrows
-    private void setRetrofitOkHttpClient(RetrofitClientBean clientBean, Retrofit.Builder builder) {
+    private void setRetrofitOkHttpClient() {
         final RetrofitBuilder retrofitBuilder = clientBean.getRetrofitBuilder();
         final List<RetrofitInterceptor> interceptors = clientBean.getInterceptors();
         OkHttpClient.Builder okHttpClientBuilder;
@@ -130,6 +161,5 @@ public class RetrofitBuilderGenerator implements Generator<Retrofit.Builder> {
         }
         return converterFactories;
     }
-
 
 }
