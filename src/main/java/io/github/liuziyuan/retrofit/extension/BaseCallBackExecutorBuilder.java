@@ -7,6 +7,10 @@ import java.util.concurrent.Executor;
  */
 public abstract class BaseCallBackExecutorBuilder extends BaseBuilder<Executor> {
 
+    /**
+     * build retrofit callBackExecutor
+     * @return Executor
+     */
     public abstract Executor buildCallBackExecutor();
 
     @Override
