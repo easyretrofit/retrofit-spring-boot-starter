@@ -78,5 +78,5 @@ public @interface RetrofitBuilder {
 
     Class<? extends BaseCallBackExecutor> callbackExecutor() default BaseCallBackExecutor.class;
 
-    boolean validateEagerly();
+    boolean validateEagerly() default false;
 }
