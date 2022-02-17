@@ -7,6 +7,7 @@ import io.github.liuziyuan.retrofit.annotation.RetrofitInterceptor;
 import io.github.liuziyuan.retrofit.extension.*;
 import io.github.liuziyuan.retrofit.resource.RetrofitClientBean;
 import lombok.SneakyThrows;
+import okhttp3.Call;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -44,8 +45,10 @@ public class RetrofitBuilderGenerator implements Generator<Retrofit.Builder> {
         setCallBackExecutor();
         setValidateEagerly();
         setRetrofitOkHttpClient();
+        setCallFactory();
         return builder;
     }
+
 
     private void setBaseUrl() {
         builder.baseUrl(clientBean.getRealHostUrl());
@@ -57,16 +60,33 @@ public class RetrofitBuilderGenerator implements Generator<Retrofit.Builder> {
         builder.validateEagerly(validateEagerly);
     }
 
+    private void setCallFactory() {
+        final RetrofitBuilder retrofitBuilder = clientBean.getRetrofitBuilder();
+        final Class<? extends BaseCallFactoryBuilder> callFactoryBuilderClazz = retrofitBuilder.callFactory();
+        BaseCallFactoryBuilder baseCallFactoryBuilder;
+        CallFactoryGenerator callFactoryGenerator;
+        try {
+            baseCallFactoryBuilder = context.getApplicationContext().getBean(callFactoryBuilderClazz);
+            callFactoryGenerator = new CallFactoryGenerator(callFactoryBuilderClazz, baseCallFactoryBuilder.executeBuild());
+        } catch (NoSuchBeanDefinitionException ex) {
+            callFactoryGenerator = new CallFactoryGenerator(callFactoryBuilderClazz, null);
+        }
+        final Call.Factory factory = callFactoryGenerator.generate();
+        if (factory != null) {
+            builder.callFactory(factory);
+        }
+    }
+
     private void setCallBackExecutor() {
         final RetrofitBuilder retrofitBuilder = clientBean.getRetrofitBuilder();
-        final Class<? extends BaseCallBackExecutorBuilder> callbackExecutorClazz = retrofitBuilder.callbackExecutor();
+        final Class<? extends BaseCallBackExecutorBuilder> callbackExecutorBuilderClazz = retrofitBuilder.callbackExecutor();
         BaseCallBackExecutorBuilder baseCallBackExecutorBuilder;
         CallBackExecutorGenerator callBackExecutorGenerator;
         try {
-            baseCallBackExecutorBuilder = context.getApplicationContext().getBean(callbackExecutorClazz);
-            callBackExecutorGenerator = new CallBackExecutorGenerator(callbackExecutorClazz, baseCallBackExecutorBuilder.executeBuild());
+            baseCallBackExecutorBuilder = context.getApplicationContext().getBean(callbackExecutorBuilderClazz);
+            callBackExecutorGenerator = new CallBackExecutorGenerator(callbackExecutorBuilderClazz, baseCallBackExecutorBuilder.executeBuild());
         } catch (NoSuchBeanDefinitionException ex) {
-            callBackExecutorGenerator = new CallBackExecutorGenerator(callbackExecutorClazz, null);
+            callBackExecutorGenerator = new CallBackExecutorGenerator(callbackExecutorBuilderClazz, null);
         }
         final Executor executor = callBackExecutorGenerator.generate();
         if (executor != null) {

@@ -31,8 +31,8 @@ public class ConverterFactoryGenerator implements Generator<Converter.Factory> {
             if (baseConverterFactoryBuilderClazzName.equals(converterFactoryBuilderClazzName)) {
                 return null;
             } else {
-                final BaseConverterFactoryBuilder baseConverterFactoryBuilder = baseConverterFactoryBuilderClazz.newInstance();
-                return baseConverterFactoryBuilder.executeBuild();
+                final BaseConverterFactoryBuilder builder = baseConverterFactoryBuilderClazz.newInstance();
+                return builder.executeBuild();
             }
         }
         return null;

@@ -31,8 +31,8 @@ public class CallAdapterFactoryGenerator implements Generator<CallAdapter.Factor
             if (baseCallAdapterFactoryBuilderClazzName.equals(callAdapterFactoryBuilderClazzName)) {
                 return null;
             } else {
-                final BaseCallAdapterFactoryBuilder baseCallAdapterFactoryBuilder = baseCallAdapterFactoryBuilderClazz.newInstance();
-                return baseCallAdapterFactoryBuilder.executeBuild();
+                final BaseCallAdapterFactoryBuilder builder = baseCallAdapterFactoryBuilderClazz.newInstance();
+                return builder.executeBuild();
             }
         }
         return null;

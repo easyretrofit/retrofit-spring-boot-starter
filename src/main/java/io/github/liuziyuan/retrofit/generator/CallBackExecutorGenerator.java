@@ -30,8 +30,8 @@ public class CallBackExecutorGenerator implements Generator<Executor> {
             if (baseCallBackExecutorClazzName.equals(callBackExecutorClazzName)) {
                 return null;
             } else {
-                final BaseCallBackExecutorBuilder baseCallBackExecutorBuilder = callBackExecutorBuilderClazz.newInstance();
-                return baseCallBackExecutorBuilder.executeBuild();
+                final BaseCallBackExecutorBuilder builder = callBackExecutorBuilderClazz.newInstance();
+                return builder.executeBuild();
             }
         }
         return null;
