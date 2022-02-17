@@ -6,8 +6,9 @@ import io.github.liuziyuan.retrofit.extension.BaseCallBackExecutor;
  * @author liuziyuan
  */
 public class MyCallBackExecutor extends BaseCallBackExecutor {
-    @Override
-    public void execute(Runnable command) {
 
+    @Override
+    public void executeCallBack(Runnable command) {
+        
     }
 }

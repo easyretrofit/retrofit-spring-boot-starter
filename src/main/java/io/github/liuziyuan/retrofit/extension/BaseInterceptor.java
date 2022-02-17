@@ -11,6 +11,7 @@ import retrofit2.internal.EverythingIsNonNull;
 
 /**
  * Abstract class of Interceptor, The custom interceptor needs to inherit it
+ *
  * @author liuziyuan
  */
 public abstract class BaseInterceptor implements Interceptor {
@@ -21,10 +22,10 @@ public abstract class BaseInterceptor implements Interceptor {
     private PathMatcher pathMatcher = new AntPathMatcher();
 
 
-    public BaseInterceptor() {
+    protected BaseInterceptor() {
     }
 
-    public BaseInterceptor(RetrofitResourceContext context) {
+    protected BaseInterceptor(RetrofitResourceContext context) {
         this.context = context;
     }
 

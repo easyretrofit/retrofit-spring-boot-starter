@@ -10,8 +10,8 @@ import java.util.concurrent.Executor;
  * @author liuziyuan
  */
 public class CallBackExecutorGenerator implements Generator<Executor> {
-    private Class<? extends BaseCallBackExecutor> callBackExecutorClazz;
-    private Executor executor;
+    private final Class<? extends BaseCallBackExecutor> callBackExecutorClazz;
+    private final Executor executor;
 
     public CallBackExecutorGenerator(Class<? extends BaseCallBackExecutor> callBackExecutorClazz, Executor executor) {
         this.callBackExecutorClazz = callBackExecutorClazz;
@@ -25,7 +25,9 @@ public class CallBackExecutorGenerator implements Generator<Executor> {
             return executor;
         }
         if (callBackExecutorClazz != null) {
-            if (BaseCallBackExecutor.class.getName().equals(callBackExecutorClazz.getName())) {
+            final String baseCallBackExecutorClazzName = BaseCallBackExecutor.class.getName();
+            final String callBackExecutorClazzName = callBackExecutorClazz.getName();
+            if (baseCallBackExecutorClazzName.equals(callBackExecutorClazzName)) {
                 return null;
             } else {
                 return callBackExecutorClazz.newInstance();

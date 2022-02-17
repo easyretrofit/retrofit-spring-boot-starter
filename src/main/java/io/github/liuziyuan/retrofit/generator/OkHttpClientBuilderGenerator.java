@@ -7,6 +7,7 @@ import okhttp3.OkHttpClient;
 
 /**
  * Generate OkHttpClientBuilder instance
+ *
  * @author liuziyuan
  */
 public class OkHttpClientBuilderGenerator implements Generator<OkHttpClient.Builder> {
@@ -25,7 +26,9 @@ public class OkHttpClientBuilderGenerator implements Generator<OkHttpClient.Buil
             return componentOkHttpClientBuilder;
         }
         if (okHttpClientBuilderClazz != null) {
-            if (okHttpClientBuilderClazz.getName().equals(BaseOkHttpClientBuilder.class.getName())) {
+            final String okHttpClientBuilderClazzName = okHttpClientBuilderClazz.getName();
+            final String baseOkHttpClientBuilderClazzName = BaseOkHttpClientBuilder.class.getName();
+            if (okHttpClientBuilderClazzName.equals(baseOkHttpClientBuilderClazzName)) {
                 return new OkHttpClient.Builder();
             } else {
                 return this.okHttpClientBuilderClazz.newInstance().executeBuild();

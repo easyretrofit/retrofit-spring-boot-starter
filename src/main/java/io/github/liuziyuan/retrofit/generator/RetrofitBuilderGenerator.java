@@ -63,11 +63,11 @@ public class RetrofitBuilderGenerator implements Generator<Retrofit.Builder> {
     private void setCallBackExecutor() {
         final RetrofitBuilder retrofitBuilder = clientBean.getRetrofitBuilder();
         final Class<? extends BaseCallBackExecutor> callbackExecutorClazz = retrofitBuilder.callbackExecutor();
-        BaseCallBackExecutor callBackExecutorInstance = null;
+        BaseCallBackExecutor callBackExecutorInstance;
         try {
             callBackExecutorInstance = context.getApplicationContext().getBean(callbackExecutorClazz);
         } catch (NoSuchBeanDefinitionException ex) {
-
+            callBackExecutorInstance = null;
         }
         CallBackExecutorGenerator callBackExecutorGenerator = new CallBackExecutorGenerator(callbackExecutorClazz, callBackExecutorInstance);
         final Executor executor = callBackExecutorGenerator.generate();
@@ -99,12 +99,12 @@ public class RetrofitBuilderGenerator implements Generator<Retrofit.Builder> {
         OkHttpClient.Builder okHttpClientBuilder;
         OkHttpClientBuilderGenerator okHttpClientBuilderGenerator;
         if (retrofitBuilder.client() != null) {
-            BaseOkHttpClientBuilder baseOkHttpClientBuilder = null;
+            BaseOkHttpClientBuilder baseOkHttpClientBuilder;
             OkHttpClient.Builder componentOkHttpClientBuilder = null;
             try {
                 baseOkHttpClientBuilder = context.getApplicationContext().getBean(retrofitBuilder.client());
             } catch (NoSuchBeanDefinitionException ex) {
-
+                baseOkHttpClientBuilder = null;
             }
             if (baseOkHttpClientBuilder != null) {
                 componentOkHttpClientBuilder = baseOkHttpClientBuilder.build();
