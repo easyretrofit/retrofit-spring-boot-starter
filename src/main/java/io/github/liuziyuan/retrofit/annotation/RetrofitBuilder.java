@@ -1,11 +1,10 @@
 package io.github.liuziyuan.retrofit.annotation;
 
+import io.github.liuziyuan.retrofit.extension.BaseCallAdapterFactoryBuilder;
 import io.github.liuziyuan.retrofit.extension.BaseCallBackExecutorBuilder;
 import io.github.liuziyuan.retrofit.extension.BaseConverterFactoryBuilder;
 import io.github.liuziyuan.retrofit.extension.BaseOkHttpClientBuilder;
 import okhttp3.HttpUrl;
-import retrofit2.CallAdapter;
-import retrofit2.Converter;
 import retrofit2.http.GET;
 
 import java.lang.annotation.*;
@@ -71,7 +70,7 @@ public @interface RetrofitBuilder {
      */
     String baseUrl() default "";
 
-    Class<? extends CallAdapter.Factory>[] addCallAdapterFactory() default {};
+    Class<? extends BaseCallAdapterFactoryBuilder>[] addCallAdapterFactory() default {};
 
     Class<? extends BaseConverterFactoryBuilder>[] addConverterFactory() default {};
 

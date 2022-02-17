@@ -2,11 +2,7 @@ package io.github.liuziyuan.retrofit.demo.api;
 
 import io.github.liuziyuan.retrofit.annotation.RetrofitBuilder;
 import io.github.liuziyuan.retrofit.annotation.RetrofitInterceptor;
-import io.github.liuziyuan.retrofit.demo.GsonConverterFactoryBuilder;
-import io.github.liuziyuan.retrofit.demo.JacksonConverterFactoryBuilder;
-import io.github.liuziyuan.retrofit.demo.MyRetrofitInterceptor1;
-import io.github.liuziyuan.retrofit.demo.MyRetrofitInterceptor2;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import io.github.liuziyuan.retrofit.demo.*;
 
 /**
  * @author liuziyuan
@@ -14,7 +10,7 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
  */
 @RetrofitBuilder(baseUrl = "${app.test.base-url}",
         addConverterFactory = {GsonConverterFactoryBuilder.class, JacksonConverterFactoryBuilder.class},
-        addCallAdapterFactory = {RxJavaCallAdapterFactory.class})
+        addCallAdapterFactory = {RxJavaCallAdapterFactoryBuilder.class})
 @RetrofitInterceptor(handler = MyRetrofitInterceptor1.class)
 @RetrofitInterceptor(handler = MyRetrofitInterceptor2.class)
 public interface TestApi {

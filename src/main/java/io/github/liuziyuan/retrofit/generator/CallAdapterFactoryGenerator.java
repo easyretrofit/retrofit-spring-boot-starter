@@ -1,27 +1,40 @@
 package io.github.liuziyuan.retrofit.generator;
 
 import io.github.liuziyuan.retrofit.Generator;
+import io.github.liuziyuan.retrofit.extension.BaseCallAdapterFactoryBuilder;
 import lombok.SneakyThrows;
 import retrofit2.CallAdapter;
 
-import java.lang.reflect.Method;
-
 /**
  * Generate CallAdapterFactory instance
+ *
  * @author liuziyuan
  */
 public class CallAdapterFactoryGenerator implements Generator<CallAdapter.Factory> {
-    private final Class<? extends CallAdapter.Factory> callAdapterFactoryClass;
+    private final Class<? extends BaseCallAdapterFactoryBuilder> baseCallAdapterFactoryBuilderClazz;
+    private final CallAdapter.Factory factory;
 
-    public CallAdapterFactoryGenerator(Class<? extends CallAdapter.Factory> callAdapterFactoryClass) {
-        this.callAdapterFactoryClass = callAdapterFactoryClass;
+    public CallAdapterFactoryGenerator(Class<? extends BaseCallAdapterFactoryBuilder> baseCallAdapterFactoryBuilderClazz, CallAdapter.Factory factory) {
+        this.baseCallAdapterFactoryBuilderClazz = baseCallAdapterFactoryBuilderClazz;
+        this.factory = factory;
     }
 
     @SneakyThrows
     @Override
     public CallAdapter.Factory generate() {
-        final Method createMethod = callAdapterFactoryClass.getDeclaredMethod("create");
-        final Object invoke = createMethod.invoke(null);
-        return (CallAdapter.Factory) invoke;
+        if (factory != null) {
+            return factory;
+        }
+        if (baseCallAdapterFactoryBuilderClazz != null) {
+            final String baseCallAdapterFactoryBuilderClazzName = BaseCallAdapterFactoryBuilder.class.getName();
+            final String callAdapterFactoryBuilderClazzName = baseCallAdapterFactoryBuilderClazz.getName();
+            if (baseCallAdapterFactoryBuilderClazzName.equals(callAdapterFactoryBuilderClazzName)) {
+                return null;
+            } else {
+                final BaseCallAdapterFactoryBuilder baseCallAdapterFactoryBuilder = baseCallAdapterFactoryBuilderClazz.newInstance();
+                return baseCallAdapterFactoryBuilder.executeBuild();
+            }
+        }
+        return null;
     }
 }

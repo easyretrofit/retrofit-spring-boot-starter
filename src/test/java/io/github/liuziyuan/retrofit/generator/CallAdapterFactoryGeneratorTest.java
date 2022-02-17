@@ -1,5 +1,6 @@
 package io.github.liuziyuan.retrofit.generator;
 
+import io.github.liuziyuan.retrofit.demo.RxJavaCallAdapterFactoryBuilder;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,18 +13,18 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
  */
 class CallAdapterFactoryGeneratorTest {
 
-    private Class<? extends CallAdapter.Factory> callAdapterFactoryClass;
+    private Class<RxJavaCallAdapterFactoryBuilder> rxJavaCallAdapterFactoryBuilderClazz;
     private CallAdapterFactoryGenerator callAdapterFactoryGenerator;
 
     @BeforeEach
     void setUp() {
-        callAdapterFactoryClass = RxJavaCallAdapterFactory.class;
+        rxJavaCallAdapterFactoryBuilderClazz = RxJavaCallAdapterFactoryBuilder.class;
     }
 
     @Test
     void generate() {
-        callAdapterFactoryGenerator = new CallAdapterFactoryGenerator(callAdapterFactoryClass);
+        callAdapterFactoryGenerator = new CallAdapterFactoryGenerator(rxJavaCallAdapterFactoryBuilderClazz, null);
         final CallAdapter.Factory factory = callAdapterFactoryGenerator.generate();
-        Assert.assertEquals(factory.getClass().getSimpleName(), callAdapterFactoryClass.getSimpleName());
+        Assert.assertEquals(factory.getClass().getSimpleName(), RxJavaCallAdapterFactory.class.getSimpleName());
     }
 }

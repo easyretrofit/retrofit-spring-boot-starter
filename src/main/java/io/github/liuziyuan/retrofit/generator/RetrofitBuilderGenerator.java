@@ -139,12 +139,18 @@ public class RetrofitBuilderGenerator implements Generator<Retrofit.Builder> {
     }
 
     @SneakyThrows
-    private List<CallAdapter.Factory> getCallAdapterFactories(Class<? extends CallAdapter.Factory>[] callAdapterFactoryClasses) {
+    private List<CallAdapter.Factory> getCallAdapterFactories(Class<? extends BaseCallAdapterFactoryBuilder>[] callAdapterFactoryClasses) {
         List<CallAdapter.Factory> callAdapterFactories = new ArrayList<>();
-        CallAdapterFactoryGenerator adapterFactoryHandler;
-        for (Class<? extends CallAdapter.Factory> callAdapterFactoryClass : callAdapterFactoryClasses) {
-            adapterFactoryHandler = new CallAdapterFactoryGenerator(callAdapterFactoryClass);
-            callAdapterFactories.add(adapterFactoryHandler.generate());
+        CallAdapterFactoryGenerator callAdapterFactoryGenerator;
+        for (Class<? extends BaseCallAdapterFactoryBuilder> callAdapterFactoryClazz : callAdapterFactoryClasses) {
+            BaseCallAdapterFactoryBuilder baseCallAdapterFactoryBuilder;
+            try {
+                baseCallAdapterFactoryBuilder = context.getApplicationContext().getBean(callAdapterFactoryClazz);
+                callAdapterFactoryGenerator = new CallAdapterFactoryGenerator(callAdapterFactoryClazz, baseCallAdapterFactoryBuilder.executeBuild());
+            } catch (NoSuchBeanDefinitionException ex) {
+                callAdapterFactoryGenerator = new CallAdapterFactoryGenerator(callAdapterFactoryClazz, null);
+            }
+            callAdapterFactories.add(callAdapterFactoryGenerator.generate());
         }
         return callAdapterFactories;
     }

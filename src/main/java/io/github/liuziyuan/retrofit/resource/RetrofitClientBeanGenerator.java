@@ -1,8 +1,8 @@
 package io.github.liuziyuan.retrofit.resource;
 
 import io.github.liuziyuan.retrofit.Generator;
+import io.github.liuziyuan.retrofit.extension.BaseCallAdapterFactoryBuilder;
 import io.github.liuziyuan.retrofit.extension.BaseConverterFactoryBuilder;
-import retrofit2.CallAdapter;
 import retrofit2.Retrofit;
 
 import java.util.ArrayList;
@@ -56,7 +56,7 @@ public class RetrofitClientBeanGenerator implements Generator<RetrofitClientBean
     private boolean isSameRetrofitBuilder(RetrofitClientBean clientBean, RetrofitServiceBean serviceBean) {
         final String clientBeanRetrofitBuilderOkHttpClientSimpleName = clientBean.getRetrofitBuilder().client().getSimpleName();
         List<String> clientBeanCallAdapterFactoryList = new ArrayList<>();
-        for (Class<? extends CallAdapter.Factory> clazz : clientBean.getRetrofitBuilder().addCallAdapterFactory()) {
+        for (Class<? extends BaseCallAdapterFactoryBuilder> clazz : clientBean.getRetrofitBuilder().addCallAdapterFactory()) {
             clientBeanCallAdapterFactoryList.add(clazz.getSimpleName());
         }
         List<String> clientBeanConverterFactoryList = new ArrayList<>();
@@ -66,7 +66,7 @@ public class RetrofitClientBeanGenerator implements Generator<RetrofitClientBean
 
         final String serviceBeanRetrofitBuilderOkHttpClientSimpleName = serviceBean.getRetrofitBuilder().client().getSimpleName();
         List<String> serviceBeanCallAdapterFactoryList = new ArrayList<>();
-        for (Class<? extends CallAdapter.Factory> clazz : serviceBean.getRetrofitBuilder().addCallAdapterFactory()) {
+        for (Class<? extends BaseCallAdapterFactoryBuilder> clazz : serviceBean.getRetrofitBuilder().addCallAdapterFactory()) {
             serviceBeanCallAdapterFactoryList.add(clazz.getSimpleName());
         }
         List<String> serviceBeanConverterFactoryList = new ArrayList<>();
