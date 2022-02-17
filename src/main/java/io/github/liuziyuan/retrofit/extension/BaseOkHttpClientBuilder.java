@@ -14,12 +14,12 @@ public abstract class BaseOkHttpClientBuilder extends BaseBuilder<OkHttpClient.B
      * @param builder OkHttpClient.Builder
      * @return OkHttpClient.Builder
      */
-    public abstract OkHttpClient.Builder builder(OkHttpClient.Builder builder);
+    public abstract OkHttpClient.Builder buildOkHttpClientBuilder(OkHttpClient.Builder builder);
 
     @Override
     public final OkHttpClient.Builder executeBuild() {
         OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder();
-        return builder(okHttpClientBuilder);
+        return buildOkHttpClientBuilder(okHttpClientBuilder);
     }
 
 

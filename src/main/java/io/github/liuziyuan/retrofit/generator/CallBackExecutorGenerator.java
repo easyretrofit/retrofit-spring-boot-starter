@@ -1,7 +1,7 @@
 package io.github.liuziyuan.retrofit.generator;
 
 import io.github.liuziyuan.retrofit.Generator;
-import io.github.liuziyuan.retrofit.extension.BaseCallBackExecutor;
+import io.github.liuziyuan.retrofit.extension.BaseCallBackExecutorBuilder;
 import lombok.SneakyThrows;
 
 import java.util.concurrent.Executor;
@@ -10,11 +10,11 @@ import java.util.concurrent.Executor;
  * @author liuziyuan
  */
 public class CallBackExecutorGenerator implements Generator<Executor> {
-    private final Class<? extends BaseCallBackExecutor> callBackExecutorClazz;
+    private final Class<? extends BaseCallBackExecutorBuilder> callBackExecutorBuilderClazz;
     private final Executor executor;
 
-    public CallBackExecutorGenerator(Class<? extends BaseCallBackExecutor> callBackExecutorClazz, Executor executor) {
-        this.callBackExecutorClazz = callBackExecutorClazz;
+    public CallBackExecutorGenerator(Class<? extends BaseCallBackExecutorBuilder> callBackExecutorBuilderClazz, Executor executor) {
+        this.callBackExecutorBuilderClazz = callBackExecutorBuilderClazz;
         this.executor = executor;
     }
 
@@ -24,13 +24,14 @@ public class CallBackExecutorGenerator implements Generator<Executor> {
         if (executor != null) {
             return executor;
         }
-        if (callBackExecutorClazz != null) {
-            final String baseCallBackExecutorClazzName = BaseCallBackExecutor.class.getName();
-            final String callBackExecutorClazzName = callBackExecutorClazz.getName();
+        if (callBackExecutorBuilderClazz != null) {
+            final String baseCallBackExecutorClazzName = BaseCallBackExecutorBuilder.class.getName();
+            final String callBackExecutorClazzName = callBackExecutorBuilderClazz.getName();
             if (baseCallBackExecutorClazzName.equals(callBackExecutorClazzName)) {
                 return null;
             } else {
-                return callBackExecutorClazz.newInstance();
+                final BaseCallBackExecutorBuilder baseCallBackExecutorBuilder = callBackExecutorBuilderClazz.newInstance();
+                return baseCallBackExecutorBuilder.executeBuild();
             }
         }
         return null;

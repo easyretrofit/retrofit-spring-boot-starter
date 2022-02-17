@@ -4,7 +4,7 @@ import io.github.liuziyuan.retrofit.Generator;
 import io.github.liuziyuan.retrofit.RetrofitResourceContext;
 import io.github.liuziyuan.retrofit.annotation.RetrofitBuilder;
 import io.github.liuziyuan.retrofit.annotation.RetrofitInterceptor;
-import io.github.liuziyuan.retrofit.extension.BaseCallBackExecutor;
+import io.github.liuziyuan.retrofit.extension.BaseCallBackExecutorBuilder;
 import io.github.liuziyuan.retrofit.extension.BaseInterceptor;
 import io.github.liuziyuan.retrofit.extension.BaseOkHttpClientBuilder;
 import io.github.liuziyuan.retrofit.extension.UrlOverWriteInterceptor;
@@ -62,14 +62,15 @@ public class RetrofitBuilderGenerator implements Generator<Retrofit.Builder> {
 
     private void setCallBackExecutor() {
         final RetrofitBuilder retrofitBuilder = clientBean.getRetrofitBuilder();
-        final Class<? extends BaseCallBackExecutor> callbackExecutorClazz = retrofitBuilder.callbackExecutor();
-        BaseCallBackExecutor callBackExecutorInstance;
+        final Class<? extends BaseCallBackExecutorBuilder> callbackExecutorClazz = retrofitBuilder.callbackExecutor();
+        BaseCallBackExecutorBuilder baseCallBackExecutorBuilder;
+        CallBackExecutorGenerator callBackExecutorGenerator;
         try {
-            callBackExecutorInstance = context.getApplicationContext().getBean(callbackExecutorClazz);
+            baseCallBackExecutorBuilder = context.getApplicationContext().getBean(callbackExecutorClazz);
+            callBackExecutorGenerator = new CallBackExecutorGenerator(callbackExecutorClazz, baseCallBackExecutorBuilder.executeBuild());
         } catch (NoSuchBeanDefinitionException ex) {
-            callBackExecutorInstance = null;
+            callBackExecutorGenerator = new CallBackExecutorGenerator(callbackExecutorClazz, null);
         }
-        CallBackExecutorGenerator callBackExecutorGenerator = new CallBackExecutorGenerator(callbackExecutorClazz, callBackExecutorInstance);
         final Executor executor = callBackExecutorGenerator.generate();
         if (executor != null) {
             builder.callbackExecutor(executor);

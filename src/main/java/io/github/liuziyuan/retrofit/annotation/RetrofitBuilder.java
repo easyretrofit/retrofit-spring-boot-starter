@@ -1,6 +1,6 @@
 package io.github.liuziyuan.retrofit.annotation;
 
-import io.github.liuziyuan.retrofit.extension.BaseCallBackExecutor;
+import io.github.liuziyuan.retrofit.extension.BaseCallBackExecutorBuilder;
 import io.github.liuziyuan.retrofit.extension.BaseOkHttpClientBuilder;
 import okhttp3.HttpUrl;
 import retrofit2.CallAdapter;
@@ -76,7 +76,7 @@ public @interface RetrofitBuilder {
 
     Class<? extends BaseOkHttpClientBuilder> client() default BaseOkHttpClientBuilder.class;
 
-    Class<? extends BaseCallBackExecutor> callbackExecutor() default BaseCallBackExecutor.class;
+    Class<? extends BaseCallBackExecutorBuilder> callbackExecutor() default BaseCallBackExecutorBuilder.class;
 
     boolean validateEagerly() default false;
 }

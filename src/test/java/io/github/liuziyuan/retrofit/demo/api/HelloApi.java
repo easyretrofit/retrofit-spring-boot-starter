@@ -2,7 +2,7 @@ package io.github.liuziyuan.retrofit.demo.api;
 
 import io.github.liuziyuan.retrofit.annotation.RetrofitBuilder;
 import io.github.liuziyuan.retrofit.annotation.RetrofitInterceptor;
-import io.github.liuziyuan.retrofit.demo.MyCallBackExecutor;
+import io.github.liuziyuan.retrofit.demo.MyCallBackExecutorBuilder;
 import io.github.liuziyuan.retrofit.demo.MyRetrofitInterceptor1;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -16,7 +16,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 @RetrofitBuilder(baseUrl = "${app.hello.base-url}",
         addConverterFactory = {GsonConverterFactory.class, JacksonConverterFactory.class},
         addCallAdapterFactory = {RxJavaCallAdapterFactory.class},
-        callbackExecutor = MyCallBackExecutor.class)
+        callbackExecutor = MyCallBackExecutorBuilder.class)
 @RetrofitInterceptor(handler = MyRetrofitInterceptor1.class)
 public interface HelloApi {
 }
