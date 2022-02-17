@@ -11,12 +11,13 @@ import java.lang.reflect.Constructor;
 
 /**
  * Generate OkHttpInterceptor instance
+ *
  * @author liuziyuan
  */
 public class OkHttpInterceptorGenerator implements Generator<Interceptor> {
     private final Class<? extends BaseInterceptor> interceptorClass;
-    private RetrofitInterceptor retrofitInterceptor;
-    private RetrofitResourceContext resourceContext;
+    private final RetrofitInterceptor retrofitInterceptor;
+    private final RetrofitResourceContext resourceContext;
     private BaseInterceptor interceptor;
 
     public OkHttpInterceptorGenerator(RetrofitInterceptor retrofitInterceptor, RetrofitResourceContext resourceContext, BaseInterceptor componentInterceptor) {
@@ -30,8 +31,14 @@ public class OkHttpInterceptorGenerator implements Generator<Interceptor> {
     @Override
     public Interceptor generate() {
         if (interceptor == null && interceptorClass != null) {
-            Constructor<? extends BaseInterceptor> constructor = interceptorClass.getConstructor(RetrofitResourceContext.class);
-            BaseInterceptor interceptorInstance = constructor.newInstance(resourceContext);
+            Constructor<? extends BaseInterceptor> constructor;
+            BaseInterceptor interceptorInstance;
+            try {
+                constructor = interceptorClass.getConstructor(RetrofitResourceContext.class);
+                interceptorInstance = constructor.newInstance(resourceContext);
+            } catch (NoSuchMethodException exception) {
+                interceptorInstance = interceptorClass.newInstance();
+            }
             interceptor = interceptorInstance;
         }
         if (interceptor != null) {
