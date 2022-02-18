@@ -117,7 +117,7 @@ public class HelloController {
 }
 ```
 
-You can refer to retrofit-spring-boot-starter-sample-quickstart & retrofit-spring-boot-starter-sample-backend-services
+You can refer to [retrofit-spring-boot-starter-sample-quickstart](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-quickstart) & [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-backend-services)
 
 ### Yes, Congratulations, your code should work normally.
 
@@ -295,8 +295,8 @@ When exclude is used, the corresponding API will ignore this interceptor.
 When you use sort, please ensure that all interceptors use sort, because by default, sort is 0. You can ensure the
 execution order of your interceptors through int type. **_By default, the interceptor is loaded from top to bottom._**
 
-You can refer to retrofit-spring-boot-starter-sample-retrofitbuilder &
-retrofit-spring-boot-starter-sample-backend-services
+You can refer to [retrofit-spring-boot-starter-sample-retrofitbuilder](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-retrofitbuilder) &
+[retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-backend-services)
 
 ### Interface inheritance
 
@@ -333,7 +333,7 @@ public interface HelloApi extends BaseApi {
 
 Please try not to use the parent class in the injected place
 
-You can refer to retrofit-spring-boot-starter-sample-inherit & retrofit-spring-boot-starter-sample-backend-services
+You can refer to [retrofit-spring-boot-starter-sample-inherit](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-inherit) & [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-backend-services)
 
 **Warning:**
 If you inject the parent Interface and the inherited Interface at the same place, the following errors may occur
@@ -376,4 +376,4 @@ public class HelloController {
 ### Single Retrofit instance 
 Create a single Retrofit instance When the Retrofit configuration is the same and only the prefix part of the `baseUrl` is different
 
-You can refer to retrofit-spring-boot-starter-sample-single-instance & retrofit-spring-boot-starter-sample-backend-services
+You can refer to [retrofit-spring-boot-starter-sample-single-instance](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-single-instance) & [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-backend-services)
