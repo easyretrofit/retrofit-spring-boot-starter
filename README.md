@@ -285,7 +285,7 @@ When you only want to set the interceptor without making other modifications to 
 the `client = OkHttpClientBuilder.class` property of `@RetrofitBuilder` and There is no need to customize your
 OKHttpClient
 
-### Set include,exclude and sort for @RetrofitInterceptor
+### Set include,exclude,type and sort for @RetrofitInterceptor
 
 you could set include,exclude and sort properties in @RetrofitInterceptor
 like `@RetrofitInterceptor(handler = MyRetrofitInterceptor.class, exclude = {"/v1/hello/*"})`
@@ -294,6 +294,8 @@ When exclude is used, the corresponding API will ignore this interceptor.
 
 When you use sort, please ensure that all interceptors use sort, because by default, sort is 0. You can ensure the
 execution order of your interceptors through int type. **_By default, the interceptor is loaded from top to bottom._**
+
+When you use type, type is an Interceptor Enum , You can specify whether this interceptor is to be `addInterceptor()` or `addNetworkInterceptor()` in OkHttpClient
 
 You can refer to [retrofit-spring-boot-starter-sample-retrofitbuilder](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-retrofitbuilder) &
 [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-backend-services)
