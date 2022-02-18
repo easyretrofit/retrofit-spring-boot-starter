@@ -9,6 +9,7 @@ import lombok.Setter;
 import java.util.List;
 
 /**
+ * Each API interface file corresponds to a RetrofitServiceBean
  * @author liuziyuan
  */
 @Getter

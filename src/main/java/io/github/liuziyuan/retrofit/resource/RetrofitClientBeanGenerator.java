@@ -1,21 +1,23 @@
 package io.github.liuziyuan.retrofit.resource;
 
-import io.github.liuziyuan.retrofit.Handler;
-import retrofit2.CallAdapter;
-import retrofit2.Converter;
+import io.github.liuziyuan.retrofit.Generator;
+import io.github.liuziyuan.retrofit.extension.BaseCallAdapterFactoryBuilder;
+import io.github.liuziyuan.retrofit.extension.BaseConverterFactoryBuilder;
 import retrofit2.Retrofit;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * generate RetrofitClientBean object
+ *
  * @author liuziyuan
  */
-public class RetrofitClientBeanHandler implements Handler<RetrofitClientBean> {
+public class RetrofitClientBeanGenerator implements Generator<RetrofitClientBean> {
     private final List<RetrofitClientBean> clientBeanList;
     private final RetrofitServiceBean serviceBean;
 
-    public RetrofitClientBeanHandler(List<RetrofitClientBean> clientBeanList, RetrofitServiceBean serviceBean) {
+    public RetrofitClientBeanGenerator(List<RetrofitClientBean> clientBeanList, RetrofitServiceBean serviceBean) {
         this.clientBeanList = clientBeanList;
         this.serviceBean = serviceBean;
     }
@@ -52,27 +54,38 @@ public class RetrofitClientBeanHandler implements Handler<RetrofitClientBean> {
     }
 
     private boolean isSameRetrofitBuilder(RetrofitClientBean clientBean, RetrofitServiceBean serviceBean) {
-        final String clientBeanRetrofitBuilderOkHttpClientSimpleName = clientBean.getRetrofitBuilder().client().getSimpleName();
+        final String clientBeanRetrofitBuilderOkHttpClientSimpleName = clientBean.getRetrofitBuilder().client().getName();
+        final String clientBeanCallBackExecutorName = clientBean.getRetrofitBuilder().callbackExecutor().getName();
+        final String clientBeanCallFactoryName = clientBean.getRetrofitBuilder().callFactory().getName();
+        final boolean clientBeanValidateEagerly = clientBean.getRetrofitBuilder().validateEagerly();
+
+
         List<String> clientBeanCallAdapterFactoryList = new ArrayList<>();
-        for (Class<? extends CallAdapter.Factory> clazz : clientBean.getRetrofitBuilder().addCallAdapterFactory()) {
+        for (Class<? extends BaseCallAdapterFactoryBuilder> clazz : clientBean.getRetrofitBuilder().addCallAdapterFactory()) {
             clientBeanCallAdapterFactoryList.add(clazz.getSimpleName());
         }
         List<String> clientBeanConverterFactoryList = new ArrayList<>();
-        for (Class<? extends Converter.Factory> clazz : clientBean.getRetrofitBuilder().addConverterFactory()) {
+        for (Class<? extends BaseConverterFactoryBuilder> clazz : clientBean.getRetrofitBuilder().addConverterFactory()) {
             clientBeanConverterFactoryList.add(clazz.getSimpleName());
         }
 
-        final String serviceBeanRetrofitBuilderOkHttpClientSimpleName = serviceBean.getRetrofitBuilder().client().getSimpleName();
+        final String serviceBeanRetrofitBuilderOkHttpClientSimpleName = serviceBean.getRetrofitBuilder().client().getName();
+        final String serviceBeanCallBackExecutorName = serviceBean.getRetrofitBuilder().callbackExecutor().getName();
+        final String serviceBeanCallFactoryName = serviceBean.getRetrofitBuilder().callFactory().getName();
+        final boolean serviceBeanValidateEagerly = serviceBean.getRetrofitBuilder().validateEagerly();
         List<String> serviceBeanCallAdapterFactoryList = new ArrayList<>();
-        for (Class<? extends CallAdapter.Factory> clazz : serviceBean.getRetrofitBuilder().addCallAdapterFactory()) {
+        for (Class<? extends BaseCallAdapterFactoryBuilder> clazz : serviceBean.getRetrofitBuilder().addCallAdapterFactory()) {
             serviceBeanCallAdapterFactoryList.add(clazz.getSimpleName());
         }
         List<String> serviceBeanConverterFactoryList = new ArrayList<>();
-        for (Class<? extends Converter.Factory> clazz : serviceBean.getRetrofitBuilder().addConverterFactory()) {
+        for (Class<? extends BaseConverterFactoryBuilder> clazz : serviceBean.getRetrofitBuilder().addConverterFactory()) {
             serviceBeanConverterFactoryList.add(clazz.getSimpleName());
         }
 
         return clientBeanRetrofitBuilderOkHttpClientSimpleName.equals(serviceBeanRetrofitBuilderOkHttpClientSimpleName) &&
+                clientBeanCallBackExecutorName.equals(serviceBeanCallBackExecutorName) &&
+                clientBeanCallFactoryName.equals(serviceBeanCallFactoryName) &&
+                clientBeanValidateEagerly == serviceBeanValidateEagerly &&
                 clientBeanCallAdapterFactoryList.containsAll(serviceBeanCallAdapterFactoryList) && serviceBeanCallAdapterFactoryList.containsAll(clientBeanCallAdapterFactoryList) &&
                 clientBeanConverterFactoryList.containsAll(serviceBeanConverterFactoryList) && serviceBeanConverterFactoryList.containsAll(clientBeanConverterFactoryList);
     }

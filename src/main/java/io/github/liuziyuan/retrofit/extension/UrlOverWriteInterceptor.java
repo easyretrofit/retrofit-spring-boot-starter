@@ -12,6 +12,7 @@ import retrofit2.Invocation;
 import java.util.*;
 
 /**
+ * Create a retrofit object with the same HostURL. Therefore, the interceptor will overwrite the URL every time it requests to fill in the prefix part of the URL
  * @author liuziyuan
  */
 public class UrlOverWriteInterceptor extends BaseInterceptor {

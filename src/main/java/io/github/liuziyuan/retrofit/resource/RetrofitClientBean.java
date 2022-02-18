@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
+ * RetrofitServiceBean with the same @RetrofitBuilder are aggregated into RetrofitClientBean
  * @author liuziyuan
  */
 @Getter

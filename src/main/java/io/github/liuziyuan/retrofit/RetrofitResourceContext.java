@@ -10,10 +10,12 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
+ * The top structure contains all the objects created in the starter
+ *
  * @author liuziyuan
  */
 @Getter
@@ -24,7 +26,7 @@ public final class RetrofitResourceContext {
     private ApplicationContext applicationContext;
     private ResourceLoader resourceLoader;
     private List<RetrofitClientBean> retrofitClients;
-    private HashMap<String, RetrofitServiceBean> retrofitServices;
+    private Map<String, RetrofitServiceBean> retrofitServices;
 
     public RetrofitResourceContext() {
         retrofitClients = new ArrayList<>();

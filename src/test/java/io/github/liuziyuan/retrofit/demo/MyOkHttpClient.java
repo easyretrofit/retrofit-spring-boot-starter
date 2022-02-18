@@ -18,7 +18,7 @@ public class MyOkHttpClient extends BaseOkHttpClientBuilder {
     private int timeout;
 
     @Override
-    public OkHttpClient.Builder builder(OkHttpClient.Builder builder) {
+    public OkHttpClient.Builder buildOkHttpClientBuilder(OkHttpClient.Builder builder) {
         return builder.connectTimeout(Duration.ofMillis(timeout));
     }
 }
