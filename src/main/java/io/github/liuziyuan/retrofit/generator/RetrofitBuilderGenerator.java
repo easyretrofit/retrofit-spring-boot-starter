@@ -2,6 +2,7 @@ package io.github.liuziyuan.retrofit.generator;
 
 import io.github.liuziyuan.retrofit.Generator;
 import io.github.liuziyuan.retrofit.RetrofitResourceContext;
+import io.github.liuziyuan.retrofit.annotation.InterceptorType;
 import io.github.liuziyuan.retrofit.annotation.RetrofitBuilder;
 import io.github.liuziyuan.retrofit.annotation.RetrofitInterceptor;
 import io.github.liuziyuan.retrofit.extension.*;
@@ -133,27 +134,30 @@ public class RetrofitBuilderGenerator implements Generator<Retrofit.Builder> {
             okHttpClientBuilder = new OkHttpClient.Builder();
         }
         okHttpClientBuilder.addInterceptor(new UrlOverWriteInterceptor(context));
-        final List<Interceptor> okHttpInterceptors = getOkHttpInterceptors(interceptors);
-
-        okHttpInterceptors.forEach(okHttpClientBuilder::addInterceptor);
+        final List<Interceptor> okHttpDefaultInterceptors = getOkHttpInterceptors(interceptors, InterceptorType.DEFAULT);
+        final List<Interceptor> okHttpNetworkInterceptors = getOkHttpInterceptors(interceptors, InterceptorType.NETWORK);
+        okHttpDefaultInterceptors.forEach(okHttpClientBuilder::addInterceptor);
+        okHttpNetworkInterceptors.forEach(okHttpClientBuilder::addNetworkInterceptor);
         builder.client(okHttpClientBuilder.build());
     }
 
     @SneakyThrows
-    private List<Interceptor> getOkHttpInterceptors(List<RetrofitInterceptor> interceptors) {
+    private List<Interceptor> getOkHttpInterceptors(List<RetrofitInterceptor> interceptors, InterceptorType type) {
         List<Interceptor> interceptorList = new ArrayList<>();
         OkHttpInterceptorGenerator okHttpInterceptorGenerator;
         interceptors.sort(Comparator.comparing(RetrofitInterceptor::sort));
         for (RetrofitInterceptor interceptor : interceptors) {
-            BaseInterceptor componentInterceptor;
-            try {
-                componentInterceptor = context.getApplicationContext().getBean(interceptor.handler());
-            } catch (NoSuchBeanDefinitionException ex) {
-                componentInterceptor = null;
+            if (interceptor.type() == type) {
+                BaseInterceptor componentInterceptor;
+                try {
+                    componentInterceptor = context.getApplicationContext().getBean(interceptor.handler());
+                } catch (NoSuchBeanDefinitionException ex) {
+                    componentInterceptor = null;
+                }
+                okHttpInterceptorGenerator = new OkHttpInterceptorGenerator(interceptor, context, componentInterceptor);
+                final Interceptor generateInterceptor = okHttpInterceptorGenerator.generate();
+                interceptorList.add(generateInterceptor);
             }
-            okHttpInterceptorGenerator = new OkHttpInterceptorGenerator(interceptor, context, componentInterceptor);
-            final Interceptor generateInterceptor = okHttpInterceptorGenerator.generate();
-            interceptorList.add(generateInterceptor);
         }
         return interceptorList;
     }

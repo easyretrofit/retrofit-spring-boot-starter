@@ -6,6 +6,7 @@ import java.lang.annotation.*;
 
 /**
  * Annotation of OkHttpClient Interceptor
+ *
  * @author liuziyuan
  */
 @Retention(RetentionPolicy.RUNTIME)
@@ -13,6 +14,8 @@ import java.lang.annotation.*;
 @Repeatable(Interceptors.class)
 public @interface RetrofitInterceptor {
     Class<? extends BaseInterceptor> handler();
+
+    InterceptorType type() default InterceptorType.DEFAULT;
 
     String[] include() default {"/**"};
 
