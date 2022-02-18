@@ -373,4 +373,7 @@ public class HelloController {
 }
 ```
 
+### Single Retrofit instance 
+Create a single Retrofit instance When the Retrofit configuration is the same and only the prefix part of the `baseUrl` is different
 
+You can refer to retrofit-spring-boot-starter-sample-single-instance & retrofit-spring-boot-starter-sample-backend-services
