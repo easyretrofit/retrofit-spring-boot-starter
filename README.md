@@ -85,7 +85,7 @@ app:
     url: http://localhost:8080/
 ```
 
-Pls keep app.test.base-url on your resources' config file, baseUrl can also be a URL as http://localhost:8080/
+Pls keep app.hello.url on your resources' config file, baseUrl can also be a URL as `http://localhost:8080/`
 
 Create a custom ConverterFactoryBuilder and inherit BaseConverterFactoryBuilder
 
