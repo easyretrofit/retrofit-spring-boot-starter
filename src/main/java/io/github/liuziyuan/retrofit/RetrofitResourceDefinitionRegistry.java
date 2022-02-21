@@ -33,7 +33,15 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-
+        log.info("\n" +
+                "__________        __                 _____.__  __   \n" +
+                "\\______   \\ _____/  |________  _____/ ____\\__|/  |_ \n" +
+                " |       _// __ \\   __\\_  __ \\/  _ \\   __\\|  \\   __\\\n" +
+                " |    |   \\  ___/|  |  |  | \\(  <_> )  |  |  ||  |  \n" +
+                " |____|_  /\\___  >__|  |__|   \\____/|__|  |__||__|  \n" +
+                "        \\/     \\/                                   \n" +
+                "::Retrofit Spring Boot Starter ::          ({})\n" +
+                "::Retrofit ::                              ({})\n", "v0.0.5", "v2.9.0");
         BeanDefinitionRegistry beanDefinitionRegistry = (BeanDefinitionRegistry) beanFactory;
         BeanDefinitionBuilder builder;
         RetrofitResourceContext context = (RetrofitResourceContext) beanFactory.getBean(RetrofitResourceContext.class.getName());
@@ -64,18 +72,7 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
                 beanDefinitionRegistry.registerBeanDefinition(serviceBean.getSelfClazz().getName(), definition);
             }
         }
-
-        log.info("\n" +
-                "__________        __                 _____.__  __   \n" +
-                "\\______   \\ _____/  |________  _____/ ____\\__|/  |_ \n" +
-                " |       _// __ \\   __\\_  __ \\/  _ \\   __\\|  \\   __\\\n" +
-                " |    |   \\  ___/|  |  |  | \\(  <_> )  |  |  ||  |  \n" +
-                " |____|_  /\\___  >__|  |__|   \\____/|__|  |__||__|  \n" +
-                "        \\/     \\/                                   \n" +
-                "::Retrofit Spring Boot Starter ::          ({})\n" +
-                "::Retrofit ::                              ({})\n", "v0.0.5", "v2.9.0");
         setLog(context);
-
     }
 
     @Override
@@ -87,7 +84,7 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
         for (RetrofitClientBean retrofitClient : context.getRetrofitClients()) {
             final String retrofitInstanceName = retrofitClient.getRetrofitInstanceName();
             final String realHostUrl = retrofitClient.getRealHostUrl();
-            log.info("---Retrofit Client : HostURL: {}, Retrofit instance name: {}", realHostUrl, retrofitInstanceName);
+            log.debug("---Retrofit Client : HostURL: {}, Retrofit instance name: {}", realHostUrl, retrofitInstanceName);
             for (RetrofitServiceBean retrofitService : retrofitClient.getRetrofitServices()) {
                 final Class<?> selfClazz = retrofitService.getSelfClazz();
                 final Class<?> parentClazz = retrofitService.getParentClazz();
@@ -95,9 +92,8 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
                 if (!parentClazz.getName().equals(selfClazz.getName())) {
                     parentClazzName = parentClazz.getName();
                 }
-                log.info("|--API Services: Interface name: {} , Parent Interface name: {}", selfClazz.getName(), parentClazzName);
+                log.debug("|--API Services: Interface name: {} , Parent Interface name: {}", selfClazz.getName(), parentClazzName);
             }
         }
-
     }
 }
