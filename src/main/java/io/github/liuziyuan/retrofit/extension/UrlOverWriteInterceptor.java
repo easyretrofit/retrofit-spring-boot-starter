@@ -38,7 +38,7 @@ public class UrlOverWriteInterceptor extends BaseInterceptor {
         for (Annotation annotation : method.getDeclaredAnnotations()) {
             try {
                 RetrofitHttpAnnotationEnum retrofitHttpAnnotationEnum = RetrofitHttpAnnotationEnum.valueOf("HTTP_" + annotation.annotationType().getSimpleName());
-                String value = null;
+                String value;
                 switch (retrofitHttpAnnotationEnum) {
                     case HTTP_GET:
                         value = method.getAnnotation(GET.class).value();
@@ -68,7 +68,7 @@ public class UrlOverWriteInterceptor extends BaseInterceptor {
                 } else {
                     try {
                         new URL(value);
-                        // full URL , do not need proceed
+                        // full URL , do not need to proceed
                         return chain.proceed(request);
                     } catch (MalformedURLException exception) {
                         // overwrite URL predix
