@@ -60,11 +60,11 @@ public class RetrofitConfig {
 
 ```
 
-### Create an Interface file, and use `@RetrofitBuilder` , If your called API is JSON type, you need to use `GsonConverterFactory`
+### Create an Interface file, and use `@RetrofitBuilder`
 
 ```java
 
-@RetrofitBuilder(baseUrl = "${app.hello.url}", addConverterFactory = {GsonConvertFactoryBuilder.class})
+@RetrofitBuilder(baseUrl = "${app.hello.url}")
 public interface HelloApi {
     /**
      * call hello API method of backend service
@@ -73,7 +73,7 @@ public interface HelloApi {
      * @return
      */
     @GET("v1/hello/{message}")
-    Call<HelloBean> hello(@Path("message") String message);
+    Call<ResponseBody> hello(@Path("message") String message);
 }
 ```
 
@@ -87,17 +87,6 @@ app:
 
 Pls keep app.hello.url on your resources' config file, baseUrl can also be a URL as `http://localhost:8080/`
 
-Create a custom ConverterFactoryBuilder and inherit BaseConverterFactoryBuilder
-
-```java
-public class GsonConvertFactoryBuilder extends BaseConverterFactoryBuilder {
-    @Override
-    public Converter.Factory buildConverterFactory() {
-        return GsonConverterFactory.create();
-    }
-}
-```
-
 ### Use Retrofit API in Controller
 
 ```java
@@ -110,14 +99,16 @@ public class HelloController {
     private HelloApi helloApi;
 
     @GetMapping("/{message}")
-    public ResponseEntity<HelloBean> hello(@PathVariable String message) throws IOException {
-        final HelloBean body = helloApi.hello(message).execute().body();
-        return ResponseEntity.ok(body);
+    public ResponseEntity<String> hello(@PathVariable String message) throws IOException {
+        final ResponseBody body = helloApi.hello(message).execute().body();
+        return ResponseEntity.ok(body.string());
     }
 }
 ```
 
-You can refer to [retrofit-spring-boot-starter-sample-quickstart](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-quickstart) & [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-backend-services)
+You can refer
+to [retrofit-spring-boot-starter-sample-quickstart](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-quickstart)
+& [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-backend-services)
 
 ### Yes, Congratulations, your code should work normally.
 
@@ -295,9 +286,12 @@ When `exclude` is used, the corresponding API will ignore this interceptor.
 When you use `sort`, please ensure that all interceptors use sort, because by default, sort is 0. You can ensure the
 execution order of your interceptors through int type. **_By default, the interceptor is loaded from top to bottom._**
 
-When you use `type`, type is an Interceptor Enum , You can specify whether this interceptor is to be `addInterceptor()` or `addNetworkInterceptor()` in OkHttpClient
+When you use `type`, type is an Interceptor Enum , You can specify whether this interceptor is to be `addInterceptor()`
+or `addNetworkInterceptor()` in OkHttpClient
 
-You can refer to [retrofit-spring-boot-starter-sample-retrofitbuilder](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-retrofitbuilder) &
+You can refer
+to [retrofit-spring-boot-starter-sample-retrofitbuilder](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-retrofitbuilder)
+&
 [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-backend-services)
 
 ### Interface inheritance
@@ -335,7 +329,9 @@ public interface HelloApi extends BaseApi {
 
 Please try not to use the parent class in the injected place
 
-You can refer to [retrofit-spring-boot-starter-sample-inherit](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-inherit) & [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-backend-services)
+You can refer
+to [retrofit-spring-boot-starter-sample-inherit](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-inherit)
+& [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-backend-services)
 
 **Warning:**
 If you inject the parent Interface and the inherited Interface at the same place, the following errors may occur
@@ -375,7 +371,11 @@ public class HelloController {
 }
 ```
 
-### Single Retrofit instance 
-Create a single Retrofit instance When the Retrofit configuration is the same and only the prefix part of the `baseUrl` is different
+### Single Retrofit instance
 
-You can refer to [retrofit-spring-boot-starter-sample-single-instance](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-single-instance) & [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-backend-services)
+Create a single Retrofit instance When the Retrofit configuration is the same and only the prefix part of the `baseUrl`
+is different
+
+You can refer
+to [retrofit-spring-boot-starter-sample-single-instance](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-single-instance)
+& [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-backend-services)
