@@ -26,6 +26,8 @@ import java.util.Objects;
  */
 public class UrlOverWriteInterceptor extends BaseInterceptor {
 
+    private static final String SLASH = "/";
+
     public UrlOverWriteInterceptor(RetrofitResourceContext context) {
         super(context);
     }
@@ -36,48 +38,11 @@ public class UrlOverWriteInterceptor extends BaseInterceptor {
         Request request = chain.request();
         final Method method = Objects.requireNonNull(request.tag(Invocation.class)).method();
         for (Annotation annotation : method.getDeclaredAnnotations()) {
-            try {
-                RetrofitHttpAnnotationEnum retrofitHttpAnnotationEnum = RetrofitHttpAnnotationEnum.valueOf("HTTP_" + annotation.annotationType().getSimpleName());
-                String value;
-                switch (retrofitHttpAnnotationEnum) {
-                    case HTTP_GET:
-                        value = method.getAnnotation(GET.class).value();
-                        break;
-                    case HTTP_POST:
-                        value = method.getAnnotation(POST.class).value();
-                        break;
-                    case HTTP_PUT:
-                        value = method.getAnnotation(PUT.class).value();
-                        break;
-                    case HTTP_DELETE:
-                        value = method.getAnnotation(DELETE.class).value();
-                        break;
-                    case HTTP_PATCH:
-                        value = method.getAnnotation(PATCH.class).value();
-                        break;
-                    case HTTP_OPTIONS:
-                        value = method.getAnnotation(OPTIONS.class).value();
-                        break;
-                    default:
-                        value = "";
-                        break;
-                }
-                if (value.startsWith("/")) {
-                    // begin '/'，ignore prefix of baseUrl
-                    return chain.proceed(request);
-                } else {
-                    try {
-                        new URL(value);
-                        // full URL , do not need to proceed
-                        return chain.proceed(request);
-                    } catch (MalformedURLException exception) {
-                        // overwrite URL predix
-                        final HttpUrl.Builder httpUrlBuilder = this.setNonSlashEndpoint(request, method);
-                        return chain.proceed(request.newBuilder().url(httpUrlBuilder.build()).build());
-                    }
-                }
-            } catch (IllegalArgumentException illegalArgumentException) {
-                continue;
+            RetrofitHttpAnnotationEnum retrofitHttpAnnotationEnum;
+            retrofitHttpAnnotationEnum = RetrofitHttpAnnotationEnum.valueOf("HTTP_" + annotation.annotationType().getSimpleName());
+            final String value = getHttpAnnotationValue(method, retrofitHttpAnnotationEnum);
+            if (StringUtils.isNotEmpty(value)) {
+                return chain.proceed(setRequest(value, request, method));
             }
         }
         return chain.proceed(request);
@@ -98,6 +63,57 @@ public class UrlOverWriteInterceptor extends BaseInterceptor {
         pathPrefixes.forEach(httpUrlBuilder::addPathSegment);
         pathSegments.forEach(httpUrlBuilder::addPathSegment);
         return httpUrlBuilder;
+    }
+
+    private String getHttpAnnotationValue(Method method, RetrofitHttpAnnotationEnum retrofitHttpAnnotationEnum) {
+        String value;
+        switch (retrofitHttpAnnotationEnum) {
+            case HTTP_GET:
+                value = method.getAnnotation(GET.class).value();
+                break;
+            case HTTP_POST:
+                value = method.getAnnotation(POST.class).value();
+                break;
+            case HTTP_PUT:
+                value = method.getAnnotation(PUT.class).value();
+                break;
+            case HTTP_DELETE:
+                value = method.getAnnotation(DELETE.class).value();
+                break;
+            case HTTP_PATCH:
+                value = method.getAnnotation(PATCH.class).value();
+                break;
+            case HTTP_OPTIONS:
+                value = method.getAnnotation(OPTIONS.class).value();
+                break;
+            case HTTP_HEAD:
+                value = method.getAnnotation(HEAD.class).value();
+                break;
+            case HTTP_HTTP:
+                value = method.getAnnotation(HTTP.class).path();
+                break;
+            default:
+                value = StringUtils.EMPTY;
+                break;
+        }
+        return value;
+    }
+
+    private Request setRequest(String value, Request request, Method method) {
+        if (value.startsWith(SLASH)) {
+            // begin '/'，ignore prefix of baseUrl
+            return request;
+        } else {
+            try {
+                new URL(value);
+                // full URL , do not need to proceed
+                return request;
+            } catch (MalformedURLException exception) {
+                // overwrite URL predix
+                final HttpUrl.Builder httpUrlBuilder = this.setNonSlashEndpoint(request, method);
+                return request.newBuilder().url(httpUrlBuilder.build()).build();
+            }
+        }
     }
 
 }

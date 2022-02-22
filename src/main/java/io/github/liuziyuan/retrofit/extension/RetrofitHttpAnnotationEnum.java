@@ -8,7 +8,7 @@ import java.lang.annotation.Annotation;
  * @author liuziyuan
  */
 public enum RetrofitHttpAnnotationEnum {
-    HTTP_GET(GET.class), HTTP_POST(POST.class), HTTP_PUT(PUT.class), HTTP_DELETE(DELETE.class), HTTP_PATCH(PATCH.class), HTTP_OPTIONS(OPTIONS.class);
+    HTTP_GET(GET.class), HTTP_POST(POST.class), HTTP_PUT(PUT.class), HTTP_DELETE(DELETE.class), HTTP_PATCH(PATCH.class), HTTP_OPTIONS(OPTIONS.class), HTTP_HEAD(HEAD.class), HTTP_HTTP(HTTP.class);
 
     private Class<? extends Annotation> clazz;
 
