@@ -156,6 +156,19 @@ public class GsonConvertFactoryBuilder extends BaseConverterFactoryBuilder {
 
 ### Create custom CallAdapterFactory
 
+Create a custom CallAdapterFactory extends BaseCallAdapterFactoryBuilder
+
+```java
+public class RxJavaCallAdapterFactoryBuilder extends BaseCallAdapterFactoryBuilder {
+    @Override
+    public CallAdapter.Factory buildCallAdapterFactory() {
+        return RxJavaCallAdapterFactory.create();
+    }
+}
+```
+
+### Create custom CallBackExecutor
+
 Create a custom CallBackExecutor extends BaseCallBackExecutorBuilder
 
 ```java
@@ -164,19 +177,6 @@ public class CallBackExecutorBuilder extends BaseCallBackExecutorBuilder {
     @Override
     public Executor buildCallBackExecutor() {
         return command -> command.run();
-    }
-}
-```
-
-### Create custom CallBackExecutor
-
-Create a custom CallAdapterFactory extends BaseCallAdapterFactoryBuilder
-
-```java
-public class RxJavaCallAdapterFactoryBuilder extends BaseCallAdapterFactoryBuilder {
-    @Override
-    public CallAdapter.Factory buildCallAdapterFactory() {
-        return RxJavaCallAdapterFactory.create();
     }
 }
 ```
