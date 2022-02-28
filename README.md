@@ -358,7 +358,7 @@ public class HelloController {
 
 ### Single Retrofit instance
 
-Create a single Retrofit instance When the Retrofit configuration is the same and only the prefix part of the `baseUrl`
+Create a single Retrofit instance When the Retrofit configuration is the same and only the SUFFIX part of the `baseUrl`
 is different
 
 You can refer
