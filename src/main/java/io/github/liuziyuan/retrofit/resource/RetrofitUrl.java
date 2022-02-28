@@ -11,6 +11,7 @@ import java.net.URL;
 
 /**
  * RetrofitUrl object
+ *
  * @author liuziyuan
  */
 @Getter
@@ -20,9 +21,12 @@ public class RetrofitUrl {
     private final String realBaseUrl;
     private final String realHostUrl;
     private final String realPrefixUrl;
+    private String retrofitUrlPrefix;
     private static final String BASE_URL_NULL = "Retrofit baseUrl is null";
+    private Environment environment;
 
     public RetrofitUrl(String baseUrl, Environment environment) {
+        this.environment = environment;
         inputBaseUrl = baseUrl;
         realBaseUrl = RetrofitUtils.convertBaseUrl(baseUrl, environment);
         realHostUrl = getRealHostUrl(realBaseUrl);
@@ -53,6 +57,13 @@ public class RetrofitUrl {
         }
         URL url = new URL(realBaseUrl);
         return "/".equals(url.getPath()) ? "" : url.getPath();
+    }
+
+
+    public void setRetrofitUrlPrefix(String retrofitUrlPrefix) {
+        if (retrofitUrlPrefix != null) {
+            this.retrofitUrlPrefix = RetrofitUtils.convertBaseUrl(retrofitUrlPrefix, environment);
+        }
     }
 
 

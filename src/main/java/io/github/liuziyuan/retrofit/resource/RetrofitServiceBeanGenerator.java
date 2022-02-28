@@ -4,6 +4,7 @@ import io.github.liuziyuan.retrofit.Generator;
 import io.github.liuziyuan.retrofit.annotation.Interceptors;
 import io.github.liuziyuan.retrofit.annotation.RetrofitBuilder;
 import io.github.liuziyuan.retrofit.annotation.RetrofitInterceptor;
+import io.github.liuziyuan.retrofit.annotation.RetrofitUrlPrefix;
 import org.springframework.core.env.Environment;
 
 import java.lang.annotation.Annotation;
@@ -13,6 +14,7 @@ import java.util.List;
 
 /**
  * generate RetrofitServiceBean object
+ *
  * @author liuziyuan
  */
 public class RetrofitServiceBeanGenerator implements Generator<RetrofitServiceBean> {
@@ -35,6 +37,8 @@ public class RetrofitServiceBeanGenerator implements Generator<RetrofitServiceBe
         List<RetrofitInterceptor> interceptors = this.getInterceptors(retrofitBuilderClazz);
         retrofitServiceBean.setInterceptors(interceptors);
         RetrofitUrl url = new RetrofitUrl(retrofitBuilderAnnotation.baseUrl(), environment);
+        final RetrofitUrlPrefix retrofitUrlPrefix = clazz.getAnnotation(RetrofitUrlPrefix.class);
+        url.setRetrofitUrlPrefix(retrofitUrlPrefix == null ? null : retrofitUrlPrefix.value());
         retrofitServiceBean.setRetrofitUrl(url);
         return retrofitServiceBean;
     }
