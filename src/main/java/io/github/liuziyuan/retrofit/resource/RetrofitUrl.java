@@ -63,6 +63,8 @@ public class RetrofitUrl {
     public void setRetrofitUrlPrefix(String retrofitUrlPrefix) {
         if (retrofitUrlPrefix != null) {
             this.retrofitUrlPrefix = RetrofitUtils.convertBaseUrl(retrofitUrlPrefix, environment);
+        } else {
+            this.retrofitUrlPrefix = org.apache.commons.lang3.StringUtils.EMPTY;
         }
     }
 
