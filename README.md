@@ -1,20 +1,5 @@
 # retrofit-spring-boot-starter
 
-## Why is there another retrofit-spring-boot-starter
-
-First of all, thank [lianjiatech](https://github.com/LianjiaTech/retrofit-spring-boot-starter) for providing an almost
-perfect project of [retrofit-spring-boot-starter](https://github.com/LianjiaTech/retrofit-spring-boot-starter).
-
-However, in use, I found that it will create a retrofit instance for each API Interface file, which in my opinion is a
-waste of resources. After reading the code, I think it is difficult to modify the original basis in a short time, so I
-repeated a wheel.
-
-In my work, the team will use retrofit as the API of BFF layer HTTP client to request micro services. Therefore, there
-will be hundreds of interface files in BFF. Therefore, I improved the time of creating retrofit instance, allowing one
-retrofit interface to inherit one base interface, which can define and configure retrofit attributes
-
-You can see the effect I want from the fourth step of introduction
-
 ## How to use it
 
 Pre-conditions: you have mastered the basic usage of retrofit
@@ -156,6 +141,19 @@ public class GsonConvertFactoryBuilder extends BaseConverterFactoryBuilder {
 
 ### Create custom CallAdapterFactory
 
+Create a custom CallAdapterFactory extends BaseCallAdapterFactoryBuilder
+
+```java
+public class RxJavaCallAdapterFactoryBuilder extends BaseCallAdapterFactoryBuilder {
+    @Override
+    public CallAdapter.Factory buildCallAdapterFactory() {
+        return RxJavaCallAdapterFactory.create();
+    }
+}
+```
+
+### Create custom CallBackExecutor
+
 Create a custom CallBackExecutor extends BaseCallBackExecutorBuilder
 
 ```java
@@ -164,19 +162,6 @@ public class CallBackExecutorBuilder extends BaseCallBackExecutorBuilder {
     @Override
     public Executor buildCallBackExecutor() {
         return command -> command.run();
-    }
-}
-```
-
-### Create custom CallBackExecutor
-
-Create a custom CallAdapterFactory extends BaseCallAdapterFactoryBuilder
-
-```java
-public class RxJavaCallAdapterFactoryBuilder extends BaseCallAdapterFactoryBuilder {
-    @Override
-    public CallAdapter.Factory buildCallAdapterFactory() {
-        return RxJavaCallAdapterFactory.create();
     }
 }
 ```
@@ -373,9 +358,24 @@ public class HelloController {
 
 ### Single Retrofit instance
 
-Create a single Retrofit instance When the Retrofit configuration is the same and only the prefix part of the `baseUrl`
+Create a single Retrofit instance When the Retrofit configuration is the same and only the SUFFIX part of the `baseUrl`
 is different
 
 You can refer
 to [retrofit-spring-boot-starter-sample-single-instance](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-single-instance)
 & [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-backend-services)
+
+## Why is there another retrofit-spring-boot-starter
+
+First, thank [lianjiatech](https://github.com/LianjiaTech/retrofit-spring-boot-starter) for providing an almost
+perfect project of [retrofit-spring-boot-starter](https://github.com/LianjiaTech/retrofit-spring-boot-starter).
+
+However, in use, I found that it will create a retrofit instance for each API Interface file, which in my opinion is a
+waste of resources. After reading the code, I think it is difficult to modify the original basis in a short time, so I
+repeated a wheel.
+
+In my work, the team will use retrofit as the API of BFF layer HTTP client to request micro services. Therefore, there
+will be hundreds of interface files in BFF. Therefore, I improved the time of creating retrofit instance, allowing one
+retrofit interface to inherit one base interface, which can define and configure retrofit attributes
+
+You can see the effect I want from the fourth step of introduction

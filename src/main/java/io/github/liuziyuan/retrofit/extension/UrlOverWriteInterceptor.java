@@ -57,10 +57,13 @@ public class UrlOverWriteInterceptor extends BaseInterceptor {
         final RetrofitServiceBean currentServiceBean = super.context.getRetrofitServiceBean(clazzName);
         LinkedList<String> pathSegments = new LinkedList<>(request.url().pathSegments());
         String prefix = currentServiceBean.getRetrofitUrl().getRealPrefixUrl();
+        String retrofitUrlPrefix = currentServiceBean.getRetrofitUrl().getRetrofitUrlPrefix();
         List<String> pathPrefixes = Arrays.asList(StringUtils.split(prefix, "/"));
+        List<String> pathRetrofitUrlPrefixes = Arrays.asList(StringUtils.split(retrofitUrlPrefix, "/"));
         HttpUrl.Builder httpUrlBuilder = request.url().newBuilder();
         pathSegments.forEach(path -> httpUrlBuilder.removePathSegment(0));
         pathPrefixes.forEach(httpUrlBuilder::addPathSegment);
+        pathRetrofitUrlPrefixes.forEach(httpUrlBuilder::addPathSegment);
         pathSegments.forEach(httpUrlBuilder::addPathSegment);
         return httpUrlBuilder;
     }
