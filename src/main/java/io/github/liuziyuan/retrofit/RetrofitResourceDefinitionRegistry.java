@@ -41,7 +41,7 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
                 " |____|_  /\\___  >__|  |__|   \\____/|__|  |__||__|  \n" +
                 "        \\/     \\/                                   \n" +
                 "::Retrofit Spring Boot Starter ::          ({})\n" +
-                "::Retrofit ::                              ({})\n", "v0.0.7", "v2.9.0");
+                "::Retrofit ::                              ({})\n", "v0.0.8", "v2.9.0");
         BeanDefinitionRegistry beanDefinitionRegistry = (BeanDefinitionRegistry) beanFactory;
         BeanDefinitionBuilder builder;
         RetrofitResourceContext context = (RetrofitResourceContext) beanFactory.getBean(RetrofitResourceContext.class.getName());

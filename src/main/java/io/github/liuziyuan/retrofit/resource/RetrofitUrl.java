@@ -1,13 +1,9 @@
 package io.github.liuziyuan.retrofit.resource;
 
-import io.github.liuziyuan.retrofit.exception.RetrofitBaseUrlNullException;
 import io.github.liuziyuan.retrofit.util.RetrofitUtils;
 import lombok.Getter;
-import lombok.SneakyThrows;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.env.Environment;
-import org.springframework.util.StringUtils;
-
-import java.net.URL;
 
 /**
  * RetrofitUrl object
@@ -17,54 +13,35 @@ import java.net.URL;
 @Getter
 public class RetrofitUrl {
 
+    private final Environment environment;
     private final String inputBaseUrl;
-    private final String realBaseUrl;
-    private final String realHostUrl;
-    private final String realPrefixUrl;
-    private String retrofitUrlPrefix;
-    private static final String BASE_URL_NULL = "Retrofit baseUrl is null";
-    private Environment environment;
+    private final String inputRetrofitDynamicBaseUrl;
+    private BaseUrl defaultUrl;
+    private BaseUrl dynamicUrl;
+    private final String retrofitUrlPrefix;
+    private boolean isDynamicUrl;
 
-    public RetrofitUrl(String baseUrl, Environment environment) {
+
+    public RetrofitUrl(String baseUrl, String inputRetrofitDynamicBaseUrl, String retrofitUrlPrefix, Environment environment) {
         this.environment = environment;
-        inputBaseUrl = baseUrl;
-        realBaseUrl = RetrofitUtils.convertBaseUrl(baseUrl, environment);
-        realHostUrl = getRealHostUrl(realBaseUrl);
-        realPrefixUrl = getRealPrefixUrl(realBaseUrl);
-    }
-
-    public RetrofitUrl(RetrofitUrl source) {
-        this.inputBaseUrl = source.getInputBaseUrl();
-        this.realPrefixUrl = source.getRealPrefixUrl();
-        this.realHostUrl = source.getRealHostUrl();
-        this.realBaseUrl = source.getRealBaseUrl();
-    }
-
-    @SneakyThrows
-    private String getRealHostUrl(String realBaseUrl) {
-        if (realBaseUrl == null) {
-            throw new RetrofitBaseUrlNullException(BASE_URL_NULL);
+        this.inputBaseUrl = baseUrl;
+        this.inputRetrofitDynamicBaseUrl = inputRetrofitDynamicBaseUrl;
+        this.retrofitUrlPrefix = getUrlByConvertBaseUrl(retrofitUrlPrefix, environment);
+        String url;
+        if (StringUtils.isNotEmpty(inputRetrofitDynamicBaseUrl)) {
+            this.isDynamicUrl = true;
+            url = RetrofitUtils.convertBaseUrl(inputRetrofitDynamicBaseUrl, environment);
+            dynamicUrl = new BaseUrl(url);
         }
-        URL url = new URL(realBaseUrl);
-        String path = url.getPath();
-        return "/".equals(path) ? realBaseUrl : StringUtils.replace(realBaseUrl, path, "/");
+        url = RetrofitUtils.convertBaseUrl(baseUrl, environment);
+        defaultUrl = new BaseUrl(url);
     }
 
-    @SneakyThrows
-    private String getRealPrefixUrl(String realBaseUrl) {
-        if (realBaseUrl == null) {
-            throw new RetrofitBaseUrlNullException(BASE_URL_NULL);
-        }
-        URL url = new URL(realBaseUrl);
-        return "/".equals(url.getPath()) ? "" : url.getPath();
-    }
-
-
-    public void setRetrofitUrlPrefix(String retrofitUrlPrefix) {
-        if (retrofitUrlPrefix != null) {
-            this.retrofitUrlPrefix = RetrofitUtils.convertBaseUrl(retrofitUrlPrefix, environment);
+    private String getUrlByConvertBaseUrl(String url, Environment environment) {
+        if (url != null) {
+            return RetrofitUtils.convertBaseUrl(url, environment);
         } else {
-            this.retrofitUrlPrefix = org.apache.commons.lang3.StringUtils.EMPTY;
+            return StringUtils.EMPTY;
         }
     }
 

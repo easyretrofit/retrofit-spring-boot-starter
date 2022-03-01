@@ -29,7 +29,7 @@ public class RetrofitClientBeanGenerator implements Generator<RetrofitClientBean
             clientBean = new RetrofitClientBean();
             clientBean.setRetrofitBuilder(serviceBean.getRetrofitBuilder());
             clientBean.setInterceptors(serviceBean.getInterceptors());
-            clientBean.setRealHostUrl(serviceBean.getRetrofitUrl().getRealHostUrl());
+            clientBean.setRealHostUrl(serviceBean.getRetrofitUrl().getDefaultUrl().getRealHostUrl());
             clientBean.setRetrofitInstanceName(Retrofit.class.getSimpleName());
         }
         clientBean.addRetrofitServiceBean(serviceBean);
@@ -50,7 +50,7 @@ public class RetrofitClientBeanGenerator implements Generator<RetrofitClientBean
 
 
     private boolean isSameHostUrl(RetrofitClientBean clientBean, RetrofitServiceBean serviceBean) {
-        return serviceBean.getRetrofitUrl().getRealHostUrl().equals(clientBean.getRealHostUrl());
+        return serviceBean.getRetrofitUrl().getDefaultUrl().getRealHostUrl().equals(clientBean.getRealHostUrl());
     }
 
     private boolean isSameRetrofitBuilder(RetrofitClientBean clientBean, RetrofitServiceBean serviceBean) {

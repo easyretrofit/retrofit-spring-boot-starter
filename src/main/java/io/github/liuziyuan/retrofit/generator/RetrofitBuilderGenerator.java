@@ -133,6 +133,7 @@ public class RetrofitBuilderGenerator implements Generator<Retrofit.Builder> {
         } else {
             okHttpClientBuilder = new OkHttpClient.Builder();
         }
+        okHttpClientBuilder.addInterceptor(new DynamicBaseUrlInterceptor(context));
         okHttpClientBuilder.addInterceptor(new UrlOverWriteInterceptor(context));
         final List<Interceptor> okHttpDefaultInterceptors = getOkHttpInterceptors(interceptors, InterceptorType.DEFAULT);
         final List<Interceptor> okHttpNetworkInterceptors = getOkHttpInterceptors(interceptors, InterceptorType.NETWORK);

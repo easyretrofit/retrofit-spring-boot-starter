@@ -1,10 +1,7 @@
 package io.github.liuziyuan.retrofit.resource;
 
 import io.github.liuziyuan.retrofit.Generator;
-import io.github.liuziyuan.retrofit.annotation.Interceptors;
-import io.github.liuziyuan.retrofit.annotation.RetrofitBuilder;
-import io.github.liuziyuan.retrofit.annotation.RetrofitInterceptor;
-import io.github.liuziyuan.retrofit.annotation.RetrofitUrlPrefix;
+import io.github.liuziyuan.retrofit.annotation.*;
 import org.springframework.core.env.Environment;
 
 import java.lang.annotation.Annotation;
@@ -36,9 +33,13 @@ public class RetrofitServiceBeanGenerator implements Generator<RetrofitServiceBe
         retrofitServiceBean.setRetrofitBuilder(retrofitBuilderAnnotation);
         List<RetrofitInterceptor> interceptors = this.getInterceptors(retrofitBuilderClazz);
         retrofitServiceBean.setInterceptors(interceptors);
-        RetrofitUrl url = new RetrofitUrl(retrofitBuilderAnnotation.baseUrl(), environment);
         final RetrofitUrlPrefix retrofitUrlPrefix = clazz.getAnnotation(RetrofitUrlPrefix.class);
-        url.setRetrofitUrlPrefix(retrofitUrlPrefix == null ? null : retrofitUrlPrefix.value());
+        final RetrofitDynamicBaseUrl retrofitDynamicBaseUrl = clazz.getAnnotation(RetrofitDynamicBaseUrl.class);
+        String retrofitDynamicBaseUrlValue = retrofitDynamicBaseUrl == null ? null : retrofitDynamicBaseUrl.value();
+        RetrofitUrl url = new RetrofitUrl(retrofitBuilderAnnotation.baseUrl(),
+                retrofitDynamicBaseUrlValue,
+                retrofitUrlPrefix == null ? null : retrofitUrlPrefix.value(),
+                environment);
         retrofitServiceBean.setRetrofitUrl(url);
         return retrofitServiceBean;
     }
