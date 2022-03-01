@@ -16,8 +16,8 @@ public class RetrofitUrl {
     private final Environment environment;
     private final String inputBaseUrl;
     private final String inputRetrofitDynamicBaseUrl;
-    private BaseUrl defaultUrl;
-    private BaseUrl dynamicUrl = new BaseUrl();
+    private final BaseUrl defaultUrl;
+    private final BaseUrl dynamicUrl;
     private final String retrofitUrlPrefix;
     private boolean isDynamicUrl;
 
@@ -32,6 +32,8 @@ public class RetrofitUrl {
             this.isDynamicUrl = true;
             url = RetrofitUtils.convertBaseUrl(inputRetrofitDynamicBaseUrl, environment);
             dynamicUrl = new BaseUrl(url);
+        } else {
+            dynamicUrl = new BaseUrl();
         }
         url = RetrofitUtils.convertBaseUrl(baseUrl, environment);
         defaultUrl = new BaseUrl(url);
