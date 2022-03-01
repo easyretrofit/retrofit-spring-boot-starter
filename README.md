@@ -11,7 +11,7 @@ Pre-conditions: you have mastered the basic usage of retrofit
 <dependency>
     <groupId>io.github.liuziyuan</groupId>
     <artifactId>retrofit-spring-boot-starter</artifactId>
-    <version>0.0.7</version>
+    <version>0.0.8</version>
 </dependency>
 ```
 
@@ -314,6 +314,40 @@ public interface HelloApi extends BaseApi {
 
 Please try not to use the parent class in the injected place
 
+#### @RetrofitUrlPrefix Annotation
+
+You can use `@RetrofitUrlPrefix` to define the prefix of URL, just like using `@RequestMapping` of springboot
+
+```java
+
+@RetrofitUrlPrefix("/v1/hello/")
+public interface HelloApi extends BaseApi {
+    /**
+     * call hello API method of backend service
+     *
+     * @param message message
+     * @return
+     */
+    @GET("{message}")
+    Call<HelloBean> hello(@Path("message") String message);
+}
+```
+
+```java
+public interface HelloApi extends BaseApi {
+    /**
+     * call hello API method of backend service
+     *
+     * @param message message
+     * @return
+     */
+    @GET("v1/hello/{message}")
+    Call<HelloBean> hello(@Path("message") String message);
+}
+```
+
+The URLs of the two `hello` methods are the same
+
 You can refer
 to [retrofit-spring-boot-starter-sample-inherit](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-inherit)
 & [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-backend-services)
@@ -365,10 +399,18 @@ You can refer
 to [retrofit-spring-boot-starter-sample-single-instance](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-single-instance)
 & [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-backend-services)
 
+### @RetrofitDynamicBaseUrl Annotation
+
+You can use `@RetrofitDynamicBaseUrl` to dynamically change the `baseUrl` in `@RetrofitBuilder`
+
+You can refer
+to [retrofit-spring-boot-starter-sample-awesome](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-awesome)
+& [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-backend-services)
+
 ## Why is there another retrofit-spring-boot-starter
 
-First, thank [lianjiatech](https://github.com/LianjiaTech/retrofit-spring-boot-starter) for providing an almost
-perfect project of [retrofit-spring-boot-starter](https://github.com/LianjiaTech/retrofit-spring-boot-starter).
+First, thank [lianjiatech](https://github.com/LianjiaTech/retrofit-spring-boot-starter) for providing an almost perfect
+project of [retrofit-spring-boot-starter](https://github.com/LianjiaTech/retrofit-spring-boot-starter).
 
 However, in use, I found that it will create a retrofit instance for each API Interface file, which in my opinion is a
 waste of resources. After reading the code, I think it is difficult to modify the original basis in a short time, so I

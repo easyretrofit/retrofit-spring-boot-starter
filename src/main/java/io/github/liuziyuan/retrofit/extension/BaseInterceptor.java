@@ -7,7 +7,11 @@ import okhttp3.Request;
 import okhttp3.Response;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
+import retrofit2.Invocation;
 import retrofit2.internal.EverythingIsNonNull;
+
+import java.lang.reflect.Method;
+import java.util.Objects;
 
 /**
  * Abstract class of Interceptor, The custom interceptor needs to inherit it
@@ -65,6 +69,7 @@ public abstract class BaseInterceptor implements Interceptor {
         return false;
     }
 
+
     public void setInclude(String[] include) {
         this.include = include;
     }
@@ -73,4 +78,12 @@ public abstract class BaseInterceptor implements Interceptor {
         this.exclude = exclude;
     }
 
+
+    protected String getClazzNameByMethod(Method method) {
+        return method.getDeclaringClass().getName();
+    }
+
+    protected Method getRequestMethod(Request request) {
+        return Objects.requireNonNull(request.tag(Invocation.class)).method();
+    }
 }
