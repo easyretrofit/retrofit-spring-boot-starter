@@ -14,7 +14,6 @@ import java.lang.reflect.Method;
  * @author liuziyuan
  */
 public class DynamicBaseUrlInterceptor extends BaseInterceptor {
-    private volatile String host;
 
     public DynamicBaseUrlInterceptor(RetrofitResourceContext context) {
         super(context);
@@ -27,11 +26,21 @@ public class DynamicBaseUrlInterceptor extends BaseInterceptor {
         final Method method = super.getRequestMethod(request);
         String clazzName = super.getClazzNameByMethod(method);
         final RetrofitServiceBean currentServiceBean = super.context.getRetrofitServiceBean(clazzName);
+        String url;
         final String realDynamicHostUrl = currentServiceBean.getRetrofitUrl().getDynamicUrl().getRealHostUrl();
+        final String realHostUrl = currentServiceBean.getRetrofitUrl().getDefaultUrl().getRealHostUrl();
         if (StringUtils.isNotEmpty(realDynamicHostUrl)) {
-            HttpUrl newUrl = request.url().newBuilder().host(host).build();
-            request = request.newBuilder().url(newUrl).build();
+            url = realDynamicHostUrl;
+        } else {
+            url = realHostUrl;
         }
+        final HttpUrl httpUrl = HttpUrl.get(url);
+        HttpUrl newUrl = request.url().newBuilder()
+                .scheme(httpUrl.scheme())
+                .host(httpUrl.host())
+                .port(httpUrl.port())
+                .build();
+        request = request.newBuilder().url(newUrl).build();
         return chain.proceed(request);
     }
 }

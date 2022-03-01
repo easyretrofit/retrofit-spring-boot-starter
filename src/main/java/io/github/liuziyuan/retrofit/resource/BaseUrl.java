@@ -18,6 +18,12 @@ public class BaseUrl {
     private final String realPrefixUrl;
     private static final String BASE_URL_NULL = "Retrofit baseUrl is null";
 
+    public BaseUrl(){
+        this.realBaseUrl = StringUtils.EMPTY;
+        this.realHostUrl = StringUtils.EMPTY;
+        this.realPrefixUrl = StringUtils.EMPTY;
+    }
+
     public BaseUrl(String realBaseUrl) {
         this.realBaseUrl = realBaseUrl;
         this.realHostUrl = getRealHostUrl(realBaseUrl);

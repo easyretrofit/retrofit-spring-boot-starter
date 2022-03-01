@@ -17,7 +17,7 @@ public class RetrofitUrl {
     private final String inputBaseUrl;
     private final String inputRetrofitDynamicBaseUrl;
     private BaseUrl defaultUrl;
-    private BaseUrl dynamicUrl;
+    private BaseUrl dynamicUrl = new BaseUrl();
     private final String retrofitUrlPrefix;
     private boolean isDynamicUrl;
 
