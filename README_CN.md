@@ -1,10 +1,10 @@
 # retrofit-spring-boot-starter
 
-## How to use it
+## 快速开始
 
-Pre-conditions: you have mastered the basic usage of retrofit
+前提条件：你已经掌握了Retrofit的基本用法
 
-### Add retrofit-spring-boot-starter dependency to maven pom.xml
+### 新增 retrofit-spring-boot-starter 依赖到maven pom.xml文件
 
 ```xml
 
@@ -15,7 +15,7 @@ Pre-conditions: you have mastered the basic usage of retrofit
 </dependency>
 ```
 
-### Add `@EnableRetrofit` to your Spring boot starter Class
+### 新增 `@EnableRetrofit` 到你的Spring boot启动类
 
 ```java
 
@@ -31,7 +31,10 @@ public class HelloApplication extends SpringBootServletInitializer {
 You can specify basePackages like `@EnableRetrofit(basePackages = "xxx.demo.api")`, "xxx.demo.api" is your retrofit APIs
 folder name. By default, all files in the directory where the starter class file is located will be scanned
 
-### Create a RetrofitConfig file
+您可以指定基本包，比如`@EnableRetrofit(basePackages = "xxx.demo.api")`，"xxx.demo.api"是您的Retrofit api
+文件夹名。默认情况下，将扫描starter类文件所在目录中的所有文件
+
+### 创建一个RetrofitConfig文件
 
 ```java
 
@@ -45,7 +48,7 @@ public class RetrofitConfig {
 
 ```
 
-### Create an Interface file, and use `@RetrofitBuilder`
+### 创建一个接口文件, 并且使用`@RetrofitBuilder`
 
 ```java
 
@@ -62,7 +65,7 @@ public interface HelloApi {
 }
 ```
 
-and application.yml
+和 application.yml
 
 ```yaml
 app:
@@ -70,9 +73,9 @@ app:
     url: http://localhost:8080/
 ```
 
-Pls keep app.hello.url on your resources' config file, baseUrl can also be a URL as `http://localhost:8080/`
+请保持`app.hello.url` 在你的资源配置文件中, baseUrl 也可以是一个URL像 `http://localhost:8080/`一样
 
-### Use Retrofit API in Controller
+### 使用 Retrofit API 在Controller
 
 ```java
 
@@ -91,18 +94,16 @@ public class HelloController {
 }
 ```
 
-You can refer
-to [retrofit-spring-boot-starter-sample-quickstart](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-quickstart)
+你可以参考 [retrofit-spring-boot-starter-sample-quickstart](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-quickstart)
 & [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-backend-services)
 
-### Yes, Congratulations, your code should work normally.
+### 是的，恭喜你，你的代码应该能正常工作。
 
-## Advanced usage
+## 高级用法
 
-### Add other Retrofit attributes to `@RetrofitBuilder`, if you need
+### 添加其他的Retrofit属性到 `@RetrofitBuilder`, 如果你需要
 
-You can set the other properties of Retrofit in @RetrofitBuilder, the `@RetrofitBuilder` properties name is same as
-method name of `Retrofit.Builder`
+你可以在`@RetrofitBuilder`中设置Retrofit的其他属性， `@RetrofitBuilder`中的属性名称与`Retrofit.Builder`中的方法名是相同的
 
 ```java
 
@@ -126,9 +127,9 @@ public interface HelloApi {
 }
 ```
 
-### Create custom ConverterFactory
+### 创建自定义的 ConverterFactory
 
-Create a custom ConvertFactory need extend `BaseConverterFactoryBuilder`
+创建一个自定义的ConvertFactory类 需要继承`BaseConverterFactoryBuilder`类
 
 ```java
 public class GsonConvertFactoryBuilder extends BaseConverterFactoryBuilder {
@@ -139,9 +140,9 @@ public class GsonConvertFactoryBuilder extends BaseConverterFactoryBuilder {
 }
 ```
 
-### Create custom CallAdapterFactory
+### 创建自定义的 CallAdapterFactory
 
-Create a custom CallAdapterFactory need extend `BaseCallAdapterFactoryBuilder`
+创建一个自定义的CallAdapterFactory类 需要继承`BaseCallAdapterFactoryBuilder`
 
 ```java
 public class RxJavaCallAdapterFactoryBuilder extends BaseCallAdapterFactoryBuilder {
@@ -152,9 +153,9 @@ public class RxJavaCallAdapterFactoryBuilder extends BaseCallAdapterFactoryBuild
 }
 ```
 
-### Create custom CallBackExecutor
+### 创建自定义的 CallBackExecutor
 
-Create a custom CallBackExecutor need extend `BaseCallBackExecutorBuilder`
+创建一个自定义的CallBackExecutor 需要继承 `BaseCallBackExecutorBuilder`
 
 ```java
 public class CallBackExecutorBuilder extends BaseCallBackExecutorBuilder {
@@ -166,9 +167,9 @@ public class CallBackExecutorBuilder extends BaseCallBackExecutorBuilder {
 }
 ```
 
-### Create custom OKHttpClient
+### 创建自定义的 OKHttpClient
 
-Create a custom OKHttpClient need extend `BaseOkHttpClientBuilder`
+创建一个自定义的OKHttpClient 需要继承 `BaseOkHttpClientBuilder`
 
 ```java
 public class OkHttpClientBuilder extends BaseOkHttpClientBuilder {
@@ -179,9 +180,8 @@ public class OkHttpClientBuilder extends BaseOkHttpClientBuilder {
 }
 ```
 
-**important:**
-When you need to use the objects managed by the spring container in the Custom Builder, you only need to
-use `@Component` on the class header and inject the objects you need
+**重要事项:**
+当需要在自定义的Builder中使用spring容器管理的对象时，只需在类头上使用`@Component`，并注入所需的对象
 
 ```java
 
@@ -203,13 +203,13 @@ okhttpclient:
   timeout: 30000
 ```
 
-### Create custom OKHttpClient Interceptor
+### 创建自定义的 OKHttpClient Interceptor
 
-Create a custom Interceptor of OKHttpClient need extend BaseInterceptor
+Create a custom Interceptor of OKHttpClient need extend BaseInterceptor 创建一个自定义的 OKHttpClient Interceptor
+需要继承`BaseInterceptor`
 
-**important:**
-When you need to use the objects managed by the spring container in the Custom Interceptor, you only need to
-use `@Component` on the class header and inject the objects you need
+**重要事项:**
+当需要在自定义的Builder中使用spring容器管理的对象时，只需在类头上使用`@Component`，并注入所需的对象
 
 ```java
 
@@ -234,9 +234,9 @@ public class MyRetrofitInterceptor extends BaseInterceptor {
 }
 ```
 
-and set class name like `@RetrofitInterceptor(handler = MyRetrofitInterceptor.class)  `
+并且在接口名上声明如`@RetrofitInterceptor(handler = MyRetrofitInterceptor.class)`
 
-### Use OkHttpClient HttpLoggingInterceptor
+### 使用 OkHttpClient HttpLoggingInterceptor
 
 ```java
 public class LoggingInterceptor extends BaseInterceptor {
@@ -256,35 +256,30 @@ public class LoggingInterceptor extends BaseInterceptor {
 }
 ```
 
-**Tips:**
-When you only want to set the interceptor without making other modifications to the OKHttpClient object, you can delete
-the `client = OkHttpClientBuilder.class` property of `@RetrofitBuilder` and There is no need to customize your
-OKHttpClient
+**小贴士:**
 
-### Set include,exclude,type and sort for @RetrofitInterceptor
+如果只想设置拦截器，而不想对OKHttpClient对象进行其他修改，则可以从`@RetrofitBuilder`删除`client = OkHttpClientBuilder.class`属性，无需自定义OKHttpClient
 
-you could set `include`,`exclude`, `type` and `sort` properties in @RetrofitInterceptor
+### 为@RetrofitInterceptor 设置 include,exclude,type 和 sort
+
+你可以在`@RetrofitInterceptor` 上设置 `include`,`exclude`, `type` 和 `sort` 属性
 like `@RetrofitInterceptor(handler = MyRetrofitInterceptor.class, exclude = {"/v1/hello/*"})`
 
-When `exclude` is used, the corresponding API will ignore this interceptor.
+当使用`exclude`, 相应的API将忽略此拦截器
 
-When you use `sort`, please ensure that all interceptors use sort, because by default, sort is 0. You can ensure the
-execution order of your interceptors through int type. **_By default, the interceptor is loaded from top to bottom._**
+当使用`sort`, 请确保所有拦截器都使用了sort属性,因为默认情况下,sort为0. 您可以通过int类型的值确保拦截器的执行顺序。**_默认的,拦截器从上到下装载。_**
 
-When you use `type`, type is an Interceptor Enum , You can specify whether this interceptor is to be `addInterceptor()`
-or `addNetworkInterceptor()` in OkHttpClient
+当使用`type`, type是一个Interceptor的枚举类, 你可以指定此拦截器是OkHttpClient 的`addInterceptor()`方式或`addNetworkInterceptor()`方式
 
-You can refer
-to [retrofit-spring-boot-starter-sample-retrofitbuilder](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-retrofitbuilder)
+你可以参考 [retrofit-spring-boot-starter-sample-retrofitbuilder](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-retrofitbuilder)
 &
 [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-backend-services)
 
-### Interface inheritance
+### 接口继承
 
-If you have hundreds of Interface method, it is from a same source Base URL, and you want your code structure to be more
-orderly and look consistent with the source service structure, you could do this,
+如果你有成百上千个接口方法，它来自同一个HTTP URL源，你希望你的代码结构更有序，看起来与后台服务Controller结构一致，你可以这样做
 
-#### Define an empty Interface file
+#### 定义一个空的接口文件，并设置属性
 
 ```java
 
@@ -297,7 +292,7 @@ public interface BaseApi {
 }
 ```
 
-#### Create other API Interface extend Parent class
+#### 创建另一个接口文件继承父接口
 
 ```java
 public interface HelloApi extends BaseApi {
@@ -312,9 +307,9 @@ public interface HelloApi extends BaseApi {
 }
 ```
 
-#### @RetrofitUrlPrefix Annotation
+#### @RetrofitUrlPrefix 注解
 
-You can use `@RetrofitUrlPrefix` to define the prefix of URL, just like using `@RequestMapping` of springboot
+你可以使用`@RetrofitUrlPrefix`去定义一个URL前缀，就像SpringBoot MVC中的`@RequestMapping`
 
 ```java
 
@@ -344,14 +339,13 @@ public interface HelloApi extends BaseApi {
 }
 ```
 
-The URLs of the two `hello` methods are the same
+这两个`hello`方法具有相同的URL
 
-You can refer
-to [retrofit-spring-boot-starter-sample-inherit](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-inherit)
+你可以参考 [retrofit-spring-boot-starter-sample-inherit](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-inherit)
 & [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-backend-services)
 
 **Warning:**
-If you inject the parent Interface and the inherited Interface at the same place, the following errors may occur
+如果在同一Controller注入父接口和继承接口，可能会发生以下错误
 
 ```
 Description:
@@ -365,8 +359,7 @@ Action:
 Consider marking one of the beans as @Primary, updating the consumer to accept multiple beans, or using @Qualifier to identify the bean that should be consumed
 ```
 
-So, you need use @Qualifier(""), and the value is API Interface class full name, Please try not to use the parent class
-in the injected place
+所以，需要使用@Qualifier(""),其值为API接口类全名, 请尽量不要在此处使用父类
 
 ```java
 
@@ -389,33 +382,24 @@ public class HelloController {
 }
 ```
 
-### Single Retrofit instance
+### 单Retrofit实例
 
-Create a single Retrofit instance When the Retrofit configuration is the same and only the SUFFIX part of the `baseUrl`
-is different
+当Retrofit配置相同且仅为`baseUrl`的后缀部分不同时，会只创建一个Retrofit实例
 
-You can refer
-to [retrofit-spring-boot-starter-sample-single-instance](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-single-instance)
+你可以参考 [retrofit-spring-boot-starter-sample-single-instance](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-single-instance)
 & [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-backend-services)
 
-### @RetrofitDynamicBaseUrl Annotation
+### @RetrofitDynamicBaseUrl 注解
 
-You can use `@RetrofitDynamicBaseUrl` to dynamically change the `baseUrl` in `@RetrofitBuilder`
+你可以使用`@RetrofitDynamicBaseUrl` 动态的改变`@RetrofitBuilder`中的`baseUrl`
 
-You can refer
-to [retrofit-spring-boot-starter-sample-awesome](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-awesome)
+你可以参考 [retrofit-spring-boot-starter-sample-awesome](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-awesome)
 & [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-backend-services)
 
-## Why is there another retrofit-spring-boot-starter
+## 为什么这里会有另一个 retrofit-spring-boot-starter
 
-First, thank [lianjiatech](https://github.com/LianjiaTech/retrofit-spring-boot-starter) for providing an almost perfect
-project of [retrofit-spring-boot-starter](https://github.com/LianjiaTech/retrofit-spring-boot-starter).
-
-However, in use, I found that it will create a retrofit instance for each API Interface file, which in my opinion is a
-waste of resources. After reading the code, I think it is difficult to modify the original basis in a short time, so I
-repeated a wheel.
-
-In my work, the team will use retrofit as the API of BFF layer HTTP client to request micro services. Therefore, there
-will be hundreds of interface files in BFF. Therefore, I improved the time of creating retrofit instance, allowing one
-retrofit interface to inherit one base interface, which can define and configure retrofit attributes
+首先感谢[lianjiatech](https://github.com/LianjiaTech/retrofit-spring-boot-starter)
+提供一个近乎完美的项目[retrofit-spring-boot-starter](https://github.com/LianjiaTech/retrofit-spring-boot-starter).
+但是,在使用中,我发现它会为每个API Interface 文件创建一个 retrofit 实例,在我看来这是一个资源浪费. 看完代码,我觉得很难在短时间内修改原来的代码,所以我重复造了一个轮子. 在我的工作中，团队将使用Retrofit
+作为BFF层的HTTP客户端请求微服务,因此,有成败上线个API接口文件在BFF项目中. 因此，我改进了创建Retrofit实例的时间，允许一个Retrofit API接口继承一个基本接口，它可以定义和配置Retrofit属性
 
