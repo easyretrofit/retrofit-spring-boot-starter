@@ -400,6 +400,6 @@ public class HelloController {
 
 首先感谢[lianjiatech](https://github.com/LianjiaTech/retrofit-spring-boot-starter)
 提供一个近乎完美的项目[retrofit-spring-boot-starter](https://github.com/LianjiaTech/retrofit-spring-boot-starter).
-但是,在使用中,我发现它会为每个API Interface 文件创建一个 retrofit 实例,在我看来这是一个资源浪费. 看完代码,我觉得很难在短时间内修改原来的代码,所以我重复造了一个轮子. 在我的工作中，团队将使用Retrofit
-作为BFF层的HTTP客户端请求微服务,因此,有成败上线个API接口文件在BFF项目中. 因此，我改进了创建Retrofit实例的时间，允许一个Retrofit API接口继承一个基本接口，它可以定义和配置Retrofit属性
+但是,在使用中,我发现它会为每个API接口文件创建一个Retrofit实例,在我看来这是一个资源浪费. 看完代码,我觉得很难在短时间内修改原来的代码,所以我重复造了一个轮子. 在我的工作中，团队将使用Retrofit
+作为BFF层的HTTP客户端请求微服务,因此,有成百上千个API接口文件在BFF项目中. 因此，我改进了创建Retrofit实例的时间，允许一个Retrofit API接口继承一个基本接口，它可以定义和配置Retrofit属性
 
