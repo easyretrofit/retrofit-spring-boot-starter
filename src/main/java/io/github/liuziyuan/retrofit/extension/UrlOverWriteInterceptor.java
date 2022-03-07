@@ -37,10 +37,14 @@ public class UrlOverWriteInterceptor extends BaseInterceptor {
         final Method method = super.getRequestMethod(request);
         for (Annotation annotation : method.getDeclaredAnnotations()) {
             RetrofitHttpAnnotationEnum retrofitHttpAnnotationEnum;
-            retrofitHttpAnnotationEnum = RetrofitHttpAnnotationEnum.valueOf("HTTP_" + annotation.annotationType().getSimpleName());
-            final String value = getHttpAnnotationValue(method, retrofitHttpAnnotationEnum);
-            if (StringUtils.isNotEmpty(value)) {
-                return chain.proceed(setRequest(value, request, method));
+            try {
+                retrofitHttpAnnotationEnum = RetrofitHttpAnnotationEnum.valueOf("HTTP_" + annotation.annotationType().getSimpleName());
+                final String value = getHttpAnnotationValue(method, retrofitHttpAnnotationEnum);
+                if (StringUtils.isNotEmpty(value)) {
+                    return chain.proceed(setRequest(value, request, method));
+                }
+            } catch (IllegalArgumentException ex) {
+                continue;
             }
         }
         return chain.proceed(request);
