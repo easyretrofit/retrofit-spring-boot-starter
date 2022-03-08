@@ -2,6 +2,7 @@ package io.github.liuziyuan.retrofit;
 
 import io.github.liuziyuan.retrofit.annotation.RetrofitBuilder;
 import io.github.liuziyuan.retrofit.exception.ProxyTypeIsNotInterfaceException;
+import lombok.extern.slf4j.Slf4j;
 import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
 
@@ -12,8 +13,10 @@ import java.util.stream.Collectors;
 
 /**
  * Scan retrofit API resources using @RetrofitBuilder
+ *
  * @author liuziyuan
  */
+@Slf4j
 public class RetrofitResourceScanner {
 
     public Set<Class<?>> doScan(String... basePackages) {
@@ -23,11 +26,20 @@ public class RetrofitResourceScanner {
         } else {
             Pattern filterPattern = Pattern.compile(Arrays.stream(basePackages)
                     .map(s -> s.replace(".", "/"))
-                    .collect(Collectors.joining("|", "(", ").*?")));
-            configuration = new ConfigurationBuilder().forPackages(basePackages).filterInputsBy(s -> filterPattern.matcher(s).matches());
+                    .collect(Collectors.joining("|", ".*?(", ").*?")));
+            log.debug("Scanner Pattern : {}", filterPattern.pattern());
+            configuration = new ConfigurationBuilder().forPackages(basePackages).filterInputsBy(s ->
+            {
+                log.debug("Filter inputs {}", s);
+                return filterPattern.matcher(s).matches();
+            });
+
         }
         Reflections reflections = new Reflections(configuration);
         final Set<Class<?>> classSet = reflections.getTypesAnnotatedWith(RetrofitBuilder.class);
+        if (classSet.isEmpty()) {
+            log.warn("Retrofit Spring Boot Starter didn't find 'RetrofitBuilder'");
+        }
         for (Class<?> clazz : classSet) {
             if (!clazz.isInterface()) {
                 throw new ProxyTypeIsNotInterfaceException("[" + clazz.getName() + "] requires an interface type");
