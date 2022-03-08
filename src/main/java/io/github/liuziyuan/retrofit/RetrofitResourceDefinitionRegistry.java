@@ -80,7 +80,7 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
                 " |____|_  /\\___  >__|  |__|   \\____/|__|  |__||__|  \n" +
                 "        \\/     \\/                                   \n" +
                 "::Retrofit Spring Boot Starter ::          ({})\n" +
-                "::Retrofit ::                              ({})\n", "v0.0.8", "v2.9.0");
+                "::Retrofit ::                              ({})\n", "v0.0.9", "v2.9.0");
         for (RetrofitClientBean retrofitClient : context.getRetrofitClients()) {
             final String retrofitInstanceName = retrofitClient.getRetrofitInstanceName();
             final String realHostUrl = retrofitClient.getRealHostUrl();
