@@ -33,15 +33,6 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-        log.info("\n" +
-                "__________        __                 _____.__  __   \n" +
-                "\\______   \\ _____/  |________  _____/ ____\\__|/  |_ \n" +
-                " |       _// __ \\   __\\_  __ \\/  _ \\   __\\|  \\   __\\\n" +
-                " |    |   \\  ___/|  |  |  | \\(  <_> )  |  |  ||  |  \n" +
-                " |____|_  /\\___  >__|  |__|   \\____/|__|  |__||__|  \n" +
-                "        \\/     \\/                                   \n" +
-                "::Retrofit Spring Boot Starter ::          ({})\n" +
-                "::Retrofit ::                              ({})\n", "v0.0.8", "v2.9.0");
         BeanDefinitionRegistry beanDefinitionRegistry = (BeanDefinitionRegistry) beanFactory;
         BeanDefinitionBuilder builder;
         RetrofitResourceContext context = (RetrofitResourceContext) beanFactory.getBean(RetrofitResourceContext.class.getName());
@@ -81,6 +72,15 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
     }
 
     private void setLog(RetrofitResourceContext context) {
+        log.info("\n" +
+                "__________        __                 _____.__  __   \n" +
+                "\\______   \\ _____/  |________  _____/ ____\\__|/  |_ \n" +
+                " |       _// __ \\   __\\_  __ \\/  _ \\   __\\|  \\   __\\\n" +
+                " |    |   \\  ___/|  |  |  | \\(  <_> )  |  |  ||  |  \n" +
+                " |____|_  /\\___  >__|  |__|   \\____/|__|  |__||__|  \n" +
+                "        \\/     \\/                                   \n" +
+                "::Retrofit Spring Boot Starter ::          ({})\n" +
+                "::Retrofit ::                              ({})\n", "v0.0.9", "v2.9.0");
         for (RetrofitClientBean retrofitClient : context.getRetrofitClients()) {
             final String retrofitInstanceName = retrofitClient.getRetrofitInstanceName();
             final String realHostUrl = retrofitClient.getRealHostUrl();
