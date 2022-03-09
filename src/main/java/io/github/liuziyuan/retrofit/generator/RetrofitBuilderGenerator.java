@@ -112,7 +112,7 @@ public class RetrofitBuilderGenerator implements Generator<Retrofit.Builder> {
     @SneakyThrows
     private void setRetrofitOkHttpClient() {
         final RetrofitBuilder retrofitBuilder = clientBean.getRetrofitBuilder();
-        Set<RetrofitInterceptor> allInterceptors = new HashSet<>();
+        Set<RetrofitInterceptor> allInterceptors = new LinkedHashSet<>();
         allInterceptors.addAll(clientBean.getInterceptors());
         allInterceptors.addAll(clientBean.getInheritedInterceptors());
         final List<RetrofitInterceptor> interceptors = new ArrayList<>(allInterceptors);

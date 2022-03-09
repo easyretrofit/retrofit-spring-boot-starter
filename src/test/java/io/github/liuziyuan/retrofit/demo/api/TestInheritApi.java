@@ -11,7 +11,7 @@ import retrofit2.http.GET;
  * @date 1/5/2022 4:57 PM
  */
 @RetrofitInterceptor(handler = MyRetrofitInterceptor3.class)
-public interface TestInheritApi extends TestApi {
+public interface TestInheritApi extends TestMiddleApi {
     @GET("/v1/test1/")
     Call<String> test1();
 }

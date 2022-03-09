@@ -58,7 +58,7 @@ public class RetrofitServiceBeanGenerator implements Generator<RetrofitServiceBe
 
     private Set<RetrofitInterceptor> getInterceptors(Class<?> clazz) {
         Annotation[] annotations = clazz.getAnnotations();
-        Set<RetrofitInterceptor> retrofitInterceptorAnnotations = new HashSet<>();
+        Set<RetrofitInterceptor> retrofitInterceptorAnnotations = new LinkedHashSet<>();
         for (Annotation annotation : annotations) {
             if (annotation instanceof Interceptors) {
                 RetrofitInterceptor[] values = ((Interceptors) annotation).value();

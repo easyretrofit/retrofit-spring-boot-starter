@@ -25,8 +25,8 @@ public class RetrofitClientBean {
     private List<RetrofitServiceBean> retrofitServices;
 
     public RetrofitClientBean() {
-        this.interceptors = new HashSet<>();
-        this.inheritedInterceptors = new HashSet<>();
+        this.interceptors = new LinkedHashSet<>();
+        this.inheritedInterceptors = new LinkedHashSet<>();
         this.retrofitServices = new ArrayList<>();
     }
 
