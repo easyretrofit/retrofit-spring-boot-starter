@@ -37,9 +37,6 @@ public class RetrofitResourceScanner {
         }
         Reflections reflections = new Reflections(configuration);
         final Set<Class<?>> classSet = reflections.getTypesAnnotatedWith(RetrofitBuilder.class);
-        if (classSet.isEmpty()) {
-            log.warn("Retrofit Spring Boot Starter didn't find 'RetrofitBuilder'");
-        }
         for (Class<?> clazz : classSet) {
             if (!clazz.isInterface()) {
                 throw new ProxyTypeIsNotInterfaceException("[" + clazz.getName() + "] requires an interface type");
