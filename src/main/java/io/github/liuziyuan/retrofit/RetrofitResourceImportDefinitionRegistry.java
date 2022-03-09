@@ -1,6 +1,7 @@
 package io.github.liuziyuan.retrofit;
 
 import io.github.liuziyuan.retrofit.annotation.EnableRetrofit;
+import io.github.liuziyuan.retrofit.exception.Message;
 import io.github.liuziyuan.retrofit.resource.RetrofitClientBean;
 import io.github.liuziyuan.retrofit.resource.RetrofitServiceBean;
 import lombok.extern.slf4j.Slf4j;
@@ -57,11 +58,9 @@ public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefin
         context.setResourceLoader(resourceLoader);
         BeanDefinitionBuilder builder;
         //registry RetrofitResourceContext
-        if (!context.getRetrofitClients().isEmpty()) {
-            builder = BeanDefinitionBuilder.genericBeanDefinition(RetrofitResourceContext.class, () -> context);
-            GenericBeanDefinition definition = (GenericBeanDefinition) builder.getRawBeanDefinition();
-            registry.registerBeanDefinition(RetrofitResourceContext.class.getName(), definition);
-        }
+        builder = BeanDefinitionBuilder.genericBeanDefinition(RetrofitResourceContext.class, () -> context);
+        GenericBeanDefinition definition = (GenericBeanDefinition) builder.getRawBeanDefinition();
+        registry.registerBeanDefinition(RetrofitResourceContext.class.getName(), definition);
     }
 
     @Override
