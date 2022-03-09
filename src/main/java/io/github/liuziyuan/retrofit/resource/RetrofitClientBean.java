@@ -6,12 +6,11 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * RetrofitServiceBean with the same @RetrofitBuilder are aggregated into RetrofitClientBean
+ *
  * @author liuziyuan
  */
 @Getter
@@ -21,11 +20,13 @@ public class RetrofitClientBean {
     private String retrofitInstanceName;
     private String realHostUrl;
     private RetrofitBuilder retrofitBuilder;
-    private List<RetrofitInterceptor> interceptors;
+    private Set<RetrofitInterceptor> interceptors;
+    private Set<RetrofitInterceptor> inheritedInterceptors;
     private List<RetrofitServiceBean> retrofitServices;
 
     public RetrofitClientBean() {
-        this.interceptors = new ArrayList<>();
+        this.interceptors = new HashSet<>();
+        this.inheritedInterceptors = new HashSet<>();
         this.retrofitServices = new ArrayList<>();
     }
 
@@ -36,6 +37,10 @@ public class RetrofitClientBean {
     public void addRetrofitServiceBean(RetrofitServiceBean retrofitServiceBean) {
         retrofitServices.add(retrofitServiceBean);
         retrofitServiceBean.setRetrofitClientBean(this);
+    }
+
+    public void addInheritedInterceptors(Set<RetrofitInterceptor> serviceInheritedInterceptors) {
+        inheritedInterceptors.addAll(serviceInheritedInterceptors);
     }
 
 }

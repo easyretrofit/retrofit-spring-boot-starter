@@ -17,9 +17,7 @@ import retrofit2.CallAdapter;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.Executor;
 
 /**
@@ -114,7 +112,10 @@ public class RetrofitBuilderGenerator implements Generator<Retrofit.Builder> {
     @SneakyThrows
     private void setRetrofitOkHttpClient() {
         final RetrofitBuilder retrofitBuilder = clientBean.getRetrofitBuilder();
-        final List<RetrofitInterceptor> interceptors = clientBean.getInterceptors();
+        Set<RetrofitInterceptor> allInterceptors = new HashSet<>();
+        allInterceptors.addAll(clientBean.getInterceptors());
+        allInterceptors.addAll(clientBean.getInheritedInterceptors());
+        final List<RetrofitInterceptor> interceptors = new ArrayList<>(allInterceptors);
         OkHttpClient.Builder okHttpClientBuilder;
         OkHttpClientBuilderGenerator okHttpClientBuilderGenerator;
         if (retrofitBuilder.client() != null) {

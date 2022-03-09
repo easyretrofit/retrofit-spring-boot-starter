@@ -6,10 +6,11 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * Each API interface file corresponds to a RetrofitServiceBean
+ *
  * @author liuziyuan
  */
 @Getter
@@ -20,7 +21,11 @@ public class RetrofitServiceBean {
     private Class<?> parentClazz;
     private RetrofitUrl retrofitUrl;
     private RetrofitBuilder retrofitBuilder;
-    private List<RetrofitInterceptor> interceptors;
+    /**
+     * parent Interface interceptors
+     */
+    private Set<RetrofitInterceptor> interceptors;
+    private Set<RetrofitInterceptor> myInterceptors;
     private RetrofitClientBean retrofitClientBean;
 
     public void setRetrofitClientBean(RetrofitClientBean retrofitClientBean) {
@@ -28,7 +33,5 @@ public class RetrofitServiceBean {
         this.retrofitBuilder = retrofitClientBean.getRetrofitBuilder();
         this.interceptors = retrofitClientBean.getInterceptors();
     }
-
-
 
 }
