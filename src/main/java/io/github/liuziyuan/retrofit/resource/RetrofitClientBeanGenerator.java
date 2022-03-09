@@ -32,6 +32,7 @@ public class RetrofitClientBeanGenerator implements Generator<RetrofitClientBean
             clientBean.setRealHostUrl(serviceBean.getRetrofitUrl().getDefaultUrl().getRealHostUrl());
             clientBean.setRetrofitInstanceName(Retrofit.class.getSimpleName());
         }
+        clientBean.addInheritedInterceptors(serviceBean.getMyInterceptors());
         clientBean.addRetrofitServiceBean(serviceBean);
         return clientBean;
     }
