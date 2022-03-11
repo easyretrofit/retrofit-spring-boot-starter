@@ -15,26 +15,10 @@ Pre-conditions: you have mastered the basic usage of retrofit
 </dependency>
 ```
 
-### Add `@EnableRetrofit` to your Spring boot starter Class
+### Create a RetrofitConfig file and Add `@EnableRetrofit`
 
 ```java
-
 @EnableRetrofit
-@Slf4j
-public class HelloApplication extends SpringBootServletInitializer {
-    public static void main(String[] args) {
-        SpringApplication.run(HelloApplication.class, args);
-    }
-}
-```
-
-You can specify basePackages like `@EnableRetrofit(basePackages = "xxx.demo.api")`, "xxx.demo.api" is your retrofit APIs
-folder name. By default, all files in the directory where the starter class file is located will be scanned
-
-### Create a RetrofitConfig file
-
-```java
-
 @Configuration
 public class RetrofitConfig {
     @Bean
@@ -44,6 +28,13 @@ public class RetrofitConfig {
 }
 
 ```
+The `@EnableRetrofit` Annotation will enable to use retrofit-spring-boot-stater.
+
+The `RetrofitConfig` Class will registry resource object.
+
+You can specify basePackages like `@EnableRetrofit(basePackages = "xxx.demo.api")`, "xxx.demo.api" is your retrofit APIs
+folder name. By default, all files in the directory where the starter class file is located will be scanned
+
 
 ### Create an Interface file, and use `@RetrofitBuilder`
 

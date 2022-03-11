@@ -15,29 +15,11 @@
 </dependency>
 ```
 
-### 新增 `@EnableRetrofit` 到你的Spring boot启动类
+### Create a RetrofitConfig file and Add `@EnableRetrofit`
 
 ```java
 
 @EnableRetrofit
-@Slf4j
-public class HelloApplication extends SpringBootServletInitializer {
-    public static void main(String[] args) {
-        SpringApplication.run(HelloApplication.class, args);
-    }
-}
-```
-
-You can specify basePackages like `@EnableRetrofit(basePackages = "xxx.demo.api")`, "xxx.demo.api" is your retrofit APIs
-folder name. By default, all files in the directory where the starter class file is located will be scanned
-
-您可以指定基本包，比如`@EnableRetrofit(basePackages = "xxx.demo.api")`，"xxx.demo.api"是您的Retrofit api
-文件夹名。默认情况下，将扫描starter类文件所在目录中的所有文件
-
-### 创建一个RetrofitConfig文件
-
-```java
-
 @Configuration
 public class RetrofitConfig {
     @Bean
@@ -47,6 +29,13 @@ public class RetrofitConfig {
 }
 
 ```
+
+`@EnableRetrofit` 注解允许去使用retrofit-spring-boot-stater
+
+`RetrofitConfig` 类将注册Retrofit 资源对象
+
+您可以指定basePackages，比如`@EnableRetrofit(basePackages = "xxx.demo.api")`，"xxx.demo.api"是您的Retrofit api
+文件夹名。默认情况下，将扫描starter类文件所在目录中的所有文件
 
 ### 创建一个接口文件, 并且使用`@RetrofitBuilder`
 
