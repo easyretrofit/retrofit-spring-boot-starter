@@ -5,7 +5,10 @@ import io.github.liuziyuan.retrofit.annotation.*;
 import org.springframework.core.env.Environment;
 
 import java.lang.annotation.Annotation;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * generate RetrofitServiceBean object
@@ -23,7 +26,7 @@ public class RetrofitServiceBeanGenerator implements Generator<RetrofitServiceBe
 
     @Override
     public RetrofitServiceBean generate() {
-        final Class<?> retrofitBuilderClazz = findParentRetrofitBuilderClazz(clazz);
+        Class<?> retrofitBuilderClazz = getParentRetrofitBuilderClazz();
         RetrofitServiceBean retrofitServiceBean = new RetrofitServiceBean();
         retrofitServiceBean.setSelfClazz(clazz);
         retrofitServiceBean.setParentClazz(retrofitBuilderClazz);
@@ -68,6 +71,16 @@ public class RetrofitServiceBeanGenerator implements Generator<RetrofitServiceBe
             }
         }
         return retrofitInterceptorAnnotations;
+    }
+
+    private Class<?> getParentRetrofitBuilderClazz() {
+        Class<?> retrofitBuilderClazz;
+        if (clazz.getDeclaredAnnotation(RetrofitBase.class) != null) {
+            retrofitBuilderClazz = clazz.getDeclaredAnnotation(RetrofitBase.class).baseApi();
+        } else {
+            retrofitBuilderClazz = findParentRetrofitBuilderClazz(clazz);
+        }
+        return retrofitBuilderClazz;
     }
 
 

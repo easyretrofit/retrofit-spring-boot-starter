@@ -1,11 +1,13 @@
 package io.github.liuziyuan.retrofit;
 
+import io.github.liuziyuan.retrofit.annotation.RetrofitBase;
 import io.github.liuziyuan.retrofit.annotation.RetrofitBuilder;
 import io.github.liuziyuan.retrofit.exception.ProxyTypeIsNotInterfaceException;
 import lombok.extern.slf4j.Slf4j;
 import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
 
+import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -36,7 +38,15 @@ public class RetrofitResourceScanner {
 
         }
         Reflections reflections = new Reflections(configuration);
-        final Set<Class<?>> classSet = reflections.getTypesAnnotatedWith(RetrofitBuilder.class);
+        final Set<Class<?>> retrofitBuilderClasses = getRetrofitResourceClasses(reflections, RetrofitBuilder.class);
+        final Set<Class<?>> retrofitBaseApiClasses = getRetrofitResourceClasses(reflections, RetrofitBase.class);
+
+        retrofitBuilderClasses.addAll(retrofitBaseApiClasses);
+        return retrofitBuilderClasses;
+    }
+
+    private Set<Class<?>> getRetrofitResourceClasses(Reflections reflections, Class<? extends Annotation> annotationClass) {
+        final Set<Class<?>> classSet = reflections.getTypesAnnotatedWith(annotationClass);
         for (Class<?> clazz : classSet) {
             if (!clazz.isInterface()) {
                 throw new ProxyTypeIsNotInterfaceException("[" + clazz.getName() + "] requires an interface type");

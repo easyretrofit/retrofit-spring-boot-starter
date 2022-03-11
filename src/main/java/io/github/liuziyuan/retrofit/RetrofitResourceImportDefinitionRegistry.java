@@ -1,7 +1,6 @@
 package io.github.liuziyuan.retrofit;
 
 import io.github.liuziyuan.retrofit.annotation.EnableRetrofit;
-import io.github.liuziyuan.retrofit.exception.Message;
 import io.github.liuziyuan.retrofit.resource.RetrofitClientBean;
 import io.github.liuziyuan.retrofit.resource.RetrofitServiceBean;
 import lombok.extern.slf4j.Slf4j;
