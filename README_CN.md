@@ -11,7 +11,7 @@
 <dependency>
     <groupId>io.github.liuziyuan</groupId>
     <artifactId>retrofit-spring-boot-starter</artifactId>
-    <version>0.0.11</version>
+    <version>0.0.12</version>
 </dependency>
 ```
 
@@ -264,9 +264,13 @@ like `@RetrofitInterceptor(handler = MyRetrofitInterceptor.class, exclude = {"/v
 &
 [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-backend-services)
 
-### 接口继承
+## 接口继承
 
 如果你有成百上千个接口方法，它来自同一个HTTP URL源，你希望你的代码结构更有序，看起来与后台服务Controller结构一致，你可以这样做
+
+### 接口文件 `extends` 模式
+
+使用 `extends` 关键字来继承声明RetrofitBuilder的接口
 
 #### 定义一个空的接口文件，并设置属性
 
@@ -285,6 +289,25 @@ public interface BaseApi {
 
 ```java
 public interface HelloApi extends BaseApi {
+    /**
+     * call hello API method of backend service
+     *
+     * @param message message
+     * @return
+     */
+    @GET("v1/hello/{message}")
+    Call<HelloBean> hello(@Path("message") String message);
+}
+```
+
+### `@RetrofitBase` 模式
+
+使用`@RetrofitBase` 来设置有`@RetrofitBuilder`的接口
+
+```java
+
+@RetrofitBase(baseApi = BaseApi.class)
+public interface HelloApi {
     /**
      * call hello API method of backend service
      *

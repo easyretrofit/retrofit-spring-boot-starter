@@ -2,10 +2,13 @@ package io.github.liuziyuan.retrofit.resource;
 
 import io.github.liuziyuan.retrofit.Generator;
 import io.github.liuziyuan.retrofit.annotation.*;
+import io.github.liuziyuan.retrofit.exception.RetrofitStarterException;
 import org.springframework.core.env.Environment;
 
 import java.lang.annotation.Annotation;
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * generate RetrofitServiceBean object
@@ -23,7 +26,7 @@ public class RetrofitServiceBeanGenerator implements Generator<RetrofitServiceBe
 
     @Override
     public RetrofitServiceBean generate() {
-        final Class<?> retrofitBuilderClazz = findParentRetrofitBuilderClazz(clazz);
+        Class<?> retrofitBuilderClazz = getParentRetrofitBuilderClazz();
         RetrofitServiceBean retrofitServiceBean = new RetrofitServiceBean();
         retrofitServiceBean.setSelfClazz(clazz);
         retrofitServiceBean.setParentClazz(retrofitBuilderClazz);
@@ -68,6 +71,19 @@ public class RetrofitServiceBeanGenerator implements Generator<RetrofitServiceBe
             }
         }
         return retrofitInterceptorAnnotations;
+    }
+
+    private Class<?> getParentRetrofitBuilderClazz() {
+        Class<?> retrofitBuilderClazz;
+        if (clazz.getDeclaredAnnotation(RetrofitBase.class) != null) {
+            retrofitBuilderClazz = clazz.getDeclaredAnnotation(RetrofitBase.class).baseApi();
+            if (retrofitBuilderClazz.getDeclaredAnnotation(RetrofitBuilder.class) == null) {
+                throw new RetrofitStarterException("The baseApi of @RetrofitBase in the [" + clazz.getSimpleName() + "] Interface, does not define @RetrofitBuilder");
+            }
+        } else {
+            retrofitBuilderClazz = findParentRetrofitBuilderClazz(clazz);
+        }
+        return retrofitBuilderClazz;
     }
 
 

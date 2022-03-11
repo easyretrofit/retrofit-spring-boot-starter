@@ -10,8 +10,8 @@ _Feature_
    Retrofit will be generated.
 2. **Interface inheritance**,When there are many Retrofit APIs in the project, the API interface file can be decomposed
    more structurally through Interface inheritance
-3. **DynamicURL**, When using `@RetrofitDynamicBaseUrl` annotation, the entire API interface file uses dynamic base url, while other API interface files are not affected
-
+3. **DynamicURL**, When using `@RetrofitDynamicBaseUrl` annotation, the entire API interface file uses dynamic base url,
+   while other API interface files are not affected
 
 ## Table of contents
 
@@ -29,7 +29,7 @@ _Feature_
 <dependency>
     <groupId>io.github.liuziyuan</groupId>
     <artifactId>retrofit-spring-boot-starter</artifactId>
-    <version>0.0.11</version>
+    <version>0.0.12</version>
 </dependency>
 ```
 
@@ -87,7 +87,8 @@ app:
 
 ### Use Retrofit API in Controller
 
-Use `@Autowired` to inject API Interface, the retrofit-spring-boot-starter will help you to create instance of API Interface file.
+Use `@Autowired` to inject API Interface, the retrofit-spring-boot-starter will help you to create instance of API
+Interface file.
 
 ```java
 
@@ -214,6 +215,7 @@ public class MyOkHttpClient extends BaseOkHttpClientBuilder {
 ```
 
 and application.yml
+
 ```yaml
 okhttpclient:
   timeout: 30000
@@ -221,7 +223,8 @@ okhttpclient:
 
 ### Create custom OKHttpClient Interceptor
 
-The OkHttpClient Interceptor object can be created separately from the OkHttpClient object, which makes it more flexible to expand and use
+The OkHttpClient Interceptor object can be created separately from the OkHttpClient object, which makes it more flexible
+to expand and use
 
 Create a custom Interceptor of OKHttpClient need extend BaseInterceptor
 
@@ -297,12 +300,16 @@ to [retrofit-spring-boot-starter-sample-retrofitbuilder](https://github.com/liuz
 &
 [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-backend-services)
 
-### Interface inheritance
+## Interface Inheritance
 
 If you have hundreds of Interface method, it is from a same source Base URL, and you want your code structure to be more
 orderly and look consistent with the source service structure, you could do this,
 
-#### Define an empty Interface file
+### Interface file `extends` Mode
+
+Use `extends` keyword to inherit the interface that declares @RetrofitBuilder
+
+#### Define an empty Interface file,and set `@RetrofitBuilder`
 
 ```java
 
@@ -319,6 +326,25 @@ public interface BaseApi {
 
 ```java
 public interface HelloApi extends BaseApi {
+    /**
+     * call hello API method of backend service
+     *
+     * @param message message
+     * @return
+     */
+    @GET("v1/hello/{message}")
+    Call<HelloBean> hello(@Path("message") String message);
+}
+```
+
+### `@RetrofitBase` mode
+
+Use @RetrofitBase annotation to set @RetrofitBuilder Interface file
+
+```java
+
+@RetrofitBase(baseApi = BaseApi.class)
+public interface HelloApi {
     /**
      * call hello API method of backend service
      *
