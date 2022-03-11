@@ -1,15 +1,26 @@
 # retrofit-spring-boot-starter
 
-## Table of contents
-- [Quick Start](#quick-start)
-- [Advanced usage](#advanced-usage)
-- [Interface inheritance](#interface-inheritance)
-- [Single Retrofit instance](#single-retrofit-instance)
+**retrofit-spring-boot-starter** provides easier use and enhancement of common functions of **Retrofit** in **
+SpringBoot**
+project, and realizes the enhancement of common functions through more annotations.
 
+_Feature_
+
+1. **Single Instance**, When the properties of the `Retrofit.Builder()` object are the same, only **one instance** of
+   Retrofit will be generated.
+2. **Interface inheritance**,When there are many Retrofit APIs in the project, the API interface file can be decomposed
+   more structurally through Interface inheritance
+3. **DynamicURL**, When using `@RetrofitDynamicBaseUrl` annotation, the entire API interface file uses dynamic base url, while other API interface files are not affected
+
+
+## Table of contents
+
+- [Quick Start](#quick-start)
+- [Advanced Usage](#advanced-usage)
+- [Interface Inheritance](#interface-inheritance)
+- [Single Retrofit Instance](#single-retrofit-instance)
 
 ## Quick Start
-
-Pre-conditions: you have mastered the basic usage of retrofit
 
 ### Add retrofit-spring-boot-starter dependency to maven pom.xml
 
@@ -22,9 +33,14 @@ Pre-conditions: you have mastered the basic usage of retrofit
 </dependency>
 ```
 
-### Create a RetrofitConfig file and Add `@EnableRetrofit`
+### Create a `RetrofitConfig` Class file and Add `@EnableRetrofit` Annotation
+
+The `@EnableRetrofit` Annotation will enable to use retrofit-spring-boot-stater.
+
+The `RetrofitConfig` Class will registry Retrofit starter resource objects.
 
 ```java
+
 @EnableRetrofit
 @Configuration
 public class RetrofitConfig {
@@ -35,18 +51,19 @@ public class RetrofitConfig {
 }
 
 ```
-The `@EnableRetrofit` Annotation will enable to use retrofit-spring-boot-stater.
-
-The `RetrofitConfig` Class will registry resource object.
 
 You can specify basePackages like `@EnableRetrofit(basePackages = "xxx.demo.api")`, "xxx.demo.api" is your retrofit APIs
 folder name. By default, all files in the directory where the starter class file is located will be scanned
 
-
 ### Create an Interface file, and use `@RetrofitBuilder`
+
+`@RetrofitBuilder` will create a `Retrofit.Builder()` object, and it will be managed by Spring container
+
+`baseUrl` can be a URL string or a properties in a resource file
 
 ```java
 
+// baseUrl = "http://localhost:8080/"
 @RetrofitBuilder(baseUrl = "${app.hello.url}")
 public interface HelloApi {
     /**
@@ -68,9 +85,9 @@ app:
     url: http://localhost:8080/
 ```
 
-Pls keep app.hello.url on your resources' config file, baseUrl can also be a URL as `http://localhost:8080/`
-
 ### Use Retrofit API in Controller
+
+Use `@Autowired` to inject API Interface, the retrofit-spring-boot-starter will help you to create instance of API Interface file.
 
 ```java
 
@@ -95,12 +112,12 @@ to [retrofit-spring-boot-starter-sample-quickstart](https://github.com/liuziyuan
 
 ### Yes, Congratulations, your code should work normally.
 
-## Advanced usage
+## Advanced Usage
 
 ### Add other Retrofit attributes to `@RetrofitBuilder`, if you need
 
 You can set the other properties of Retrofit in @RetrofitBuilder, the `@RetrofitBuilder` properties name is same as
-method name of `Retrofit.Builder`
+method name of `Retrofit.Builder()`
 
 ```java
 
@@ -196,12 +213,15 @@ public class MyOkHttpClient extends BaseOkHttpClientBuilder {
 }
 ```
 
+and application.yml
 ```yaml
 okhttpclient:
   timeout: 30000
 ```
 
 ### Create custom OKHttpClient Interceptor
+
+The OkHttpClient Interceptor object can be created separately from the OkHttpClient object, which makes it more flexible to expand and use
 
 Create a custom Interceptor of OKHttpClient need extend BaseInterceptor
 
@@ -387,7 +407,7 @@ public class HelloController {
 }
 ```
 
-### Single Retrofit instance
+### Single Retrofit Instance
 
 Create a single Retrofit instance When the Retrofit configuration is the same and only the SUFFIX part of the `baseUrl`
 is different
