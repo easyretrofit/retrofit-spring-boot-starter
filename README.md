@@ -1,6 +1,13 @@
 # retrofit-spring-boot-starter
 
-## How to use it
+## Table of contents
+- [Quick Start](#quick-start)
+- [Advanced usage](#advanced-usage)
+- [Interface inheritance](#interface-inheritance)
+- [Single Retrofit instance](#single-retrofit-instance)
+
+
+## Quick Start
 
 Pre-conditions: you have mastered the basic usage of retrofit
 
