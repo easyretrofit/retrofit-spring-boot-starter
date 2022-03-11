@@ -2,7 +2,7 @@ package io.github.liuziyuan.retrofit.resource;
 
 import io.github.liuziyuan.retrofit.Generator;
 import io.github.liuziyuan.retrofit.annotation.*;
-import io.github.liuziyuan.retrofit.exception.RetrofitSpringBootStarterException;
+import io.github.liuziyuan.retrofit.exception.RetrofitStarterException;
 import org.springframework.core.env.Environment;
 
 import java.lang.annotation.Annotation;
@@ -78,7 +78,7 @@ public class RetrofitServiceBeanGenerator implements Generator<RetrofitServiceBe
         if (clazz.getDeclaredAnnotation(RetrofitBase.class) != null) {
             retrofitBuilderClazz = clazz.getDeclaredAnnotation(RetrofitBase.class).baseApi();
             if (retrofitBuilderClazz.getDeclaredAnnotation(RetrofitBuilder.class) == null) {
-                throw new RetrofitSpringBootStarterException("The baseApi of @RetrofitBase in the [" + clazz.getSimpleName() + "] Interface, does not define @RetrofitBuilder");
+                throw new RetrofitStarterException("The baseApi of @RetrofitBase in the [" + clazz.getSimpleName() + "] Interface, does not define @RetrofitBuilder");
             }
         } else {
             retrofitBuilderClazz = findParentRetrofitBuilderClazz(clazz);
