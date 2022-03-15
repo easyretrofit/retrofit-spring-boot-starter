@@ -2,6 +2,7 @@ package io.github.liuziyuan.retrofit.resource;
 
 import io.github.liuziyuan.retrofit.Generator;
 import io.github.liuziyuan.retrofit.annotation.*;
+import io.github.liuziyuan.retrofit.exception.RetrofitBaseUrlException;
 import io.github.liuziyuan.retrofit.exception.RetrofitStarterException;
 import org.springframework.core.env.Environment;
 
@@ -39,12 +40,16 @@ public class RetrofitServiceBeanGenerator implements Generator<RetrofitServiceBe
         final RetrofitUrlPrefix retrofitUrlPrefix = clazz.getAnnotation(RetrofitUrlPrefix.class);
         final RetrofitDynamicBaseUrl retrofitDynamicBaseUrl = clazz.getAnnotation(RetrofitDynamicBaseUrl.class);
         String retrofitDynamicBaseUrlValue = retrofitDynamicBaseUrl == null ? null : retrofitDynamicBaseUrl.value();
-        RetrofitUrl url = new RetrofitUrl(retrofitBuilderAnnotation.baseUrl(),
-                retrofitDynamicBaseUrlValue,
-                retrofitUrlPrefix == null ? null : retrofitUrlPrefix.value(),
-                environment);
-        retrofitServiceBean.setRetrofitUrl(url);
-        return retrofitServiceBean;
+        try {
+            RetrofitUrl url = new RetrofitUrl(retrofitBuilderAnnotation.baseUrl(),
+                    retrofitDynamicBaseUrlValue,
+                    retrofitUrlPrefix == null ? null : retrofitUrlPrefix.value(),
+                    environment);
+            retrofitServiceBean.setRetrofitUrl(url);
+            return retrofitServiceBean;
+        } catch (RetrofitBaseUrlException exception) {
+            return null;
+        }
     }
 
     private Class<?> findParentRetrofitBuilderClazz(Class<?> clazz) {

@@ -1,6 +1,6 @@
 package io.github.liuziyuan.retrofit.resource;
 
-import io.github.liuziyuan.retrofit.exception.RetrofitBaseUrlNullException;
+import io.github.liuziyuan.retrofit.exception.RetrofitBaseUrlException;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
@@ -33,7 +33,7 @@ public class BaseUrl {
     @SneakyThrows
     private String getRealHostUrl(String realBaseUrl) {
         if (realBaseUrl == null) {
-            throw new RetrofitBaseUrlNullException(BASE_URL_NULL);
+            throw new RetrofitBaseUrlException(BASE_URL_NULL);
         }
         URL url = new URL(realBaseUrl);
         String path = url.getPath();
@@ -43,7 +43,7 @@ public class BaseUrl {
     @SneakyThrows
     private String getRealPrefixUrl(String realBaseUrl) {
         if (realBaseUrl == null) {
-            throw new RetrofitBaseUrlNullException(BASE_URL_NULL);
+            throw new RetrofitBaseUrlException(BASE_URL_NULL);
         }
         URL url = new URL(realBaseUrl);
         return "/".equals(url.getPath()) ? "" : url.getPath();

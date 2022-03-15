@@ -42,7 +42,9 @@ public class RetrofitResourceContextBuilder {
         for (Class<?> clazz : retrofitBuilderClassSet) {
             serviceBeanHandler = new RetrofitServiceBeanGenerator(clazz, environment);
             final RetrofitServiceBean serviceBean = serviceBeanHandler.generate();
-            retrofitServiceBeanList.add(serviceBean);
+            if (serviceBean != null){
+                retrofitServiceBeanList.add(serviceBean);
+            }
         }
         return retrofitServiceBeanList;
     }
