@@ -2,6 +2,7 @@ package io.github.liuziyuan.retrofit.resource;
 
 import io.github.liuziyuan.retrofit.Generator;
 import io.github.liuziyuan.retrofit.annotation.*;
+import io.github.liuziyuan.retrofit.exception.RetrofitBaseUrlException;
 import io.github.liuziyuan.retrofit.exception.RetrofitStarterException;
 import org.springframework.core.env.Environment;
 
@@ -45,6 +46,7 @@ public class RetrofitServiceBeanGenerator implements Generator<RetrofitServiceBe
                 environment);
         retrofitServiceBean.setRetrofitUrl(url);
         return retrofitServiceBean;
+
     }
 
     private Class<?> findParentRetrofitBuilderClazz(Class<?> clazz) {

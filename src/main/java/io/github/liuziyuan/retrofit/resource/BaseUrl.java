@@ -1,10 +1,13 @@
 package io.github.liuziyuan.retrofit.resource;
 
-import io.github.liuziyuan.retrofit.exception.RetrofitBaseUrlNullException;
+import io.github.liuziyuan.retrofit.exception.RetrofitBaseUrlException;
+import io.github.liuziyuan.retrofit.exception.RetrofitStarterException;
+import io.github.liuziyuan.retrofit.util.RetrofitUtils;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -18,7 +21,7 @@ public class BaseUrl {
     private final String realPrefixUrl;
     private static final String BASE_URL_NULL = "Retrofit baseUrl is null";
 
-    public BaseUrl(){
+    public BaseUrl() {
         this.realBaseUrl = StringUtils.EMPTY;
         this.realHostUrl = StringUtils.EMPTY;
         this.realPrefixUrl = StringUtils.EMPTY;
@@ -33,9 +36,9 @@ public class BaseUrl {
     @SneakyThrows
     private String getRealHostUrl(String realBaseUrl) {
         if (realBaseUrl == null) {
-            throw new RetrofitBaseUrlNullException(BASE_URL_NULL);
+            throw new RetrofitBaseUrlException(BASE_URL_NULL);
         }
-        URL url = new URL(realBaseUrl);
+        URL url = RetrofitUtils.getURL(realBaseUrl);
         String path = url.getPath();
         return "/".equals(path) ? realBaseUrl : StringUtils.replace(realBaseUrl, path, "/");
     }
@@ -43,9 +46,11 @@ public class BaseUrl {
     @SneakyThrows
     private String getRealPrefixUrl(String realBaseUrl) {
         if (realBaseUrl == null) {
-            throw new RetrofitBaseUrlNullException(BASE_URL_NULL);
+            throw new RetrofitBaseUrlException(BASE_URL_NULL);
         }
-        URL url = new URL(realBaseUrl);
+        URL url = RetrofitUtils.getURL(realBaseUrl);
         return "/".equals(url.getPath()) ? "" : url.getPath();
     }
+
+
 }

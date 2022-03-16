@@ -1,10 +1,18 @@
 package io.github.liuziyuan.retrofit.util;
 
+import io.github.liuziyuan.retrofit.exception.RetrofitBaseUrlException;
+import io.github.liuziyuan.retrofit.exception.RetrofitStarterException;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.env.Environment;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * @author liuziyuan
  */
+@Slf4j
 public class RetrofitUtils {
 
     private static final String SUFFIX = "/";
@@ -13,11 +21,59 @@ public class RetrofitUtils {
     }
 
     public static String convertBaseUrl(String baseUrl, Environment environment) {
-        baseUrl = environment.resolveRequiredPlaceholders(baseUrl);
-        // 解析baseUrl占位符
-        if (!baseUrl.endsWith(SUFFIX)) {
-            baseUrl += SUFFIX;
+        String currentUrl = baseUrl;
+        String toLowerUrl = baseUrl;
+        try {
+            currentUrl = environment.resolveRequiredPlaceholders(currentUrl);
+            baseUrl = currentUrl;
+        } catch (IllegalArgumentException exception) {
+            currentUrl = null;
         }
-        return baseUrl;
+        if (currentUrl == null) {
+            try {
+                toLowerUrl = upperToLower(toLowerUrl);
+                toLowerUrl = environment.resolveRequiredPlaceholders(toLowerUrl);
+                baseUrl = toLowerUrl;
+            } catch (IllegalArgumentException exception) {
+                toLowerUrl = null;
+                log.warn("The URL {} could not be resolved, Retrofit Service will be discarded", baseUrl);
+            }
+        }
+        if (currentUrl != null || toLowerUrl != null) {
+            // 解析baseUrl占位符
+            if (!baseUrl.endsWith(SUFFIX)) {
+                baseUrl += SUFFIX;
+            }
+            return getURL(baseUrl).toString();
+        }
+        return getURL(baseUrl).toString();
     }
+
+    private static String upperToLower(String str) {
+        if (StringUtils.isNotEmpty(str)) {
+            StringBuffer sb = new StringBuffer();
+            //排除第一个字符
+            for (int i = 0; i < str.length(); i++) {
+                char c = str.charAt(i);
+                if (Character.isUpperCase(c)) {
+                    sb.append("-" + Character.toLowerCase(c));
+                } else {
+                    sb.append(c);
+                }
+
+            }
+            return sb.toString();
+        }
+        return str;
+    }
+
+    public static URL getURL(String urlString) {
+        try {
+            URL url = new URL(urlString);
+            return url;
+        } catch (MalformedURLException exception) {
+            throw new RetrofitBaseUrlException("URL[" + urlString + "] could not be resolved", exception);
+        }
+    }
+
 }
