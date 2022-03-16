@@ -40,16 +40,13 @@ public class RetrofitServiceBeanGenerator implements Generator<RetrofitServiceBe
         final RetrofitUrlPrefix retrofitUrlPrefix = clazz.getAnnotation(RetrofitUrlPrefix.class);
         final RetrofitDynamicBaseUrl retrofitDynamicBaseUrl = clazz.getAnnotation(RetrofitDynamicBaseUrl.class);
         String retrofitDynamicBaseUrlValue = retrofitDynamicBaseUrl == null ? null : retrofitDynamicBaseUrl.value();
-        try {
-            RetrofitUrl url = new RetrofitUrl(retrofitBuilderAnnotation.baseUrl(),
-                    retrofitDynamicBaseUrlValue,
-                    retrofitUrlPrefix == null ? null : retrofitUrlPrefix.value(),
-                    environment);
-            retrofitServiceBean.setRetrofitUrl(url);
-            return retrofitServiceBean;
-        } catch (RetrofitBaseUrlException exception) {
-            return null;
-        }
+        RetrofitUrl url = new RetrofitUrl(retrofitBuilderAnnotation.baseUrl(),
+                retrofitDynamicBaseUrlValue,
+                retrofitUrlPrefix == null ? null : retrofitUrlPrefix.value(),
+                environment);
+        retrofitServiceBean.setRetrofitUrl(url);
+        return retrofitServiceBean;
+
     }
 
     private Class<?> findParentRetrofitBuilderClazz(Class<?> clazz) {
