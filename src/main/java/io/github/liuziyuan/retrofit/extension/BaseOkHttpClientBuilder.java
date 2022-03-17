@@ -3,6 +3,7 @@ package io.github.liuziyuan.retrofit.extension;
 import okhttp3.OkHttpClient;
 
 /**
+ * The Builder of Retrofit OkHttpClient.Builder,
  * Abstract class of OkHttpClient Builder, the custom OkHttpClient need to inherit it
  * @author liuziyuan
  */
