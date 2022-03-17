@@ -29,7 +29,7 @@ _Feature_
 <dependency>
     <groupId>io.github.liuziyuan</groupId>
     <artifactId>retrofit-spring-boot-starter</artifactId>
-    <version>0.0.13</version>
+    <version>0.0.14</version>
 </dependency>
 ```
 
@@ -355,6 +355,8 @@ public interface HelloApi {
     Call<HelloBean> hello(@Path("message") String message);
 }
 ```
+
+if `HelloApi` use `extends BaseApi` and used `@RetrofitBase(baseApi = BaseApi.class)`, The starter first to use `@RetrofitBase(baseApi = BaseApi.class)`
 
 #### @RetrofitUrlPrefix Annotation
 

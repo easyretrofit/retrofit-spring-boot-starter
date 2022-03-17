@@ -2,7 +2,6 @@ package io.github.liuziyuan.retrofit.resource;
 
 import io.github.liuziyuan.retrofit.Generator;
 import io.github.liuziyuan.retrofit.annotation.*;
-import io.github.liuziyuan.retrofit.exception.RetrofitBaseUrlException;
 import io.github.liuziyuan.retrofit.exception.RetrofitStarterException;
 import org.springframework.core.env.Environment;
 
@@ -49,6 +48,21 @@ public class RetrofitServiceBeanGenerator implements Generator<RetrofitServiceBe
 
     }
 
+    private Class<?> getParentRetrofitBuilderClazz() {
+        Class<?> retrofitBuilderClazz;
+        if (clazz.getDeclaredAnnotation(RetrofitBase.class) != null) {
+            final Class<?> parentRetrofitBaseClazz = findParentRetrofitBaseClazz(clazz);
+            if (parentRetrofitBaseClazz.getDeclaredAnnotation(RetrofitBuilder.class) == null) {
+                throw new RetrofitStarterException("The baseApi of @RetrofitBase in the [" + clazz.getSimpleName() + "] Interface, does not define @RetrofitBuilder");
+            } else {
+                retrofitBuilderClazz = parentRetrofitBaseClazz;
+            }
+        } else {
+            retrofitBuilderClazz = findParentRetrofitBuilderClazz(clazz);
+        }
+        return retrofitBuilderClazz;
+    }
+
     private Class<?> findParentRetrofitBuilderClazz(Class<?> clazz) {
         RetrofitBuilder retrofitBuilder = clazz.getAnnotation(RetrofitBuilder.class);
         Class<?> targetClazz = clazz;
@@ -56,6 +70,18 @@ public class RetrofitServiceBeanGenerator implements Generator<RetrofitServiceBe
             Class<?>[] interfaces = clazz.getInterfaces();
             if (interfaces.length > 0) {
                 targetClazz = findParentRetrofitBuilderClazz(interfaces[0]);
+            }
+        }
+        return targetClazz;
+    }
+
+    private Class<?> findParentRetrofitBaseClazz(Class<?> clazz) {
+        RetrofitBase retrofitBase = clazz.getAnnotation(RetrofitBase.class);
+        Class<?> targetClazz = clazz;
+        if (retrofitBase != null) {
+            final Class<?> baseApiClazz = retrofitBase.baseApi();
+            if (baseApiClazz != null) {
+                targetClazz = findParentRetrofitBaseClazz(baseApiClazz);
             }
         }
         return targetClazz;
@@ -73,19 +99,6 @@ public class RetrofitServiceBeanGenerator implements Generator<RetrofitServiceBe
             }
         }
         return retrofitInterceptorAnnotations;
-    }
-
-    private Class<?> getParentRetrofitBuilderClazz() {
-        Class<?> retrofitBuilderClazz;
-        if (clazz.getDeclaredAnnotation(RetrofitBase.class) != null) {
-            retrofitBuilderClazz = clazz.getDeclaredAnnotation(RetrofitBase.class).baseApi();
-            if (retrofitBuilderClazz.getDeclaredAnnotation(RetrofitBuilder.class) == null) {
-                throw new RetrofitStarterException("The baseApi of @RetrofitBase in the [" + clazz.getSimpleName() + "] Interface, does not define @RetrofitBuilder");
-            }
-        } else {
-            retrofitBuilderClazz = findParentRetrofitBuilderClazz(clazz);
-        }
-        return retrofitBuilderClazz;
     }
 
 
