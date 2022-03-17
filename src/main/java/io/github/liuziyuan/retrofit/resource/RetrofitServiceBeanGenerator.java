@@ -30,14 +30,14 @@ public class RetrofitServiceBeanGenerator implements Generator<RetrofitServiceBe
         RetrofitServiceBean retrofitServiceBean = new RetrofitServiceBean();
         retrofitServiceBean.setSelfClazz(clazz);
         retrofitServiceBean.setParentClazz(retrofitBuilderClazz);
-        RetrofitBuilder retrofitBuilderAnnotation = retrofitBuilderClazz.getAnnotation(RetrofitBuilder.class);
+        RetrofitBuilder retrofitBuilderAnnotation = retrofitBuilderClazz.getDeclaredAnnotation(RetrofitBuilder.class);
         retrofitServiceBean.setRetrofitBuilder(retrofitBuilderAnnotation);
         Set<RetrofitInterceptor> interceptors = this.getInterceptors(retrofitBuilderClazz);
         Set<RetrofitInterceptor> myInterceptors = this.getInterceptors(clazz);
         retrofitServiceBean.setMyInterceptors(myInterceptors);
         retrofitServiceBean.setInterceptors(interceptors);
-        final RetrofitUrlPrefix retrofitUrlPrefix = clazz.getAnnotation(RetrofitUrlPrefix.class);
-        final RetrofitDynamicBaseUrl retrofitDynamicBaseUrl = clazz.getAnnotation(RetrofitDynamicBaseUrl.class);
+        final RetrofitUrlPrefix retrofitUrlPrefix = clazz.getDeclaredAnnotation(RetrofitUrlPrefix.class);
+        final RetrofitDynamicBaseUrl retrofitDynamicBaseUrl = clazz.getDeclaredAnnotation(RetrofitDynamicBaseUrl.class);
         String retrofitDynamicBaseUrlValue = retrofitDynamicBaseUrl == null ? null : retrofitDynamicBaseUrl.value();
         RetrofitUrl url = new RetrofitUrl(retrofitBuilderAnnotation.baseUrl(),
                 retrofitDynamicBaseUrlValue,
@@ -49,34 +49,44 @@ public class RetrofitServiceBeanGenerator implements Generator<RetrofitServiceBe
     }
 
     private Class<?> getParentRetrofitBuilderClazz() {
+        final Class<?> parentClazzIncludeRetrofitBuilderAndBase = findParentClazzIncludeRetrofitBuilderAndBase(clazz);
+//        if (parentClazzIncludeRetrofitBuilderAndBase.getDeclaredAnnotation(RetrofitBuilder.class) == null) {
+//            throw new RetrofitStarterException("The baseApi of @RetrofitBase in the [" + clazz.getSimpleName() + "] Interface, does not define @RetrofitBuilder");
+//        }
+        return parentClazzIncludeRetrofitBuilderAndBase;
+    }
+
+    private Class<?> findParentClazzIncludeRetrofitBuilderAndBase(Class<?> clazz) {
         Class<?> retrofitBuilderClazz;
         if (clazz.getDeclaredAnnotation(RetrofitBase.class) != null) {
-            final Class<?> parentRetrofitBaseClazz = findParentRetrofitBaseClazz(clazz);
-            if (parentRetrofitBaseClazz.getDeclaredAnnotation(RetrofitBuilder.class) == null) {
-                throw new RetrofitStarterException("The baseApi of @RetrofitBase in the [" + clazz.getSimpleName() + "] Interface, does not define @RetrofitBuilder");
-            } else {
-                retrofitBuilderClazz = parentRetrofitBaseClazz;
-            }
+            retrofitBuilderClazz = findParentRetrofitBaseClazz(clazz);
         } else {
             retrofitBuilderClazz = findParentRetrofitBuilderClazz(clazz);
+        }
+        if (retrofitBuilderClazz.getDeclaredAnnotation(RetrofitBuilder.class) == null) {
+            retrofitBuilderClazz = findParentClazzIncludeRetrofitBuilderAndBase(retrofitBuilderClazz);
         }
         return retrofitBuilderClazz;
     }
 
     private Class<?> findParentRetrofitBuilderClazz(Class<?> clazz) {
-        RetrofitBuilder retrofitBuilder = clazz.getAnnotation(RetrofitBuilder.class);
+        RetrofitBuilder retrofitBuilder = clazz.getDeclaredAnnotation(RetrofitBuilder.class);
         Class<?> targetClazz = clazz;
         if (retrofitBuilder == null) {
             Class<?>[] interfaces = clazz.getInterfaces();
             if (interfaces.length > 0) {
                 targetClazz = findParentRetrofitBuilderClazz(interfaces[0]);
+            }else {
+                if (clazz.getDeclaredAnnotation(RetrofitBase.class) == null) {
+                    throw new RetrofitStarterException("The baseApi of @RetrofitBase in the [" + clazz.getSimpleName() + "] Interface, does not define @RetrofitBuilder");
+                }
             }
         }
         return targetClazz;
     }
 
     private Class<?> findParentRetrofitBaseClazz(Class<?> clazz) {
-        RetrofitBase retrofitBase = clazz.getAnnotation(RetrofitBase.class);
+        RetrofitBase retrofitBase = clazz.getDeclaredAnnotation(RetrofitBase.class);
         Class<?> targetClazz = clazz;
         if (retrofitBase != null) {
             final Class<?> baseApiClazz = retrofitBase.baseApi();
@@ -88,7 +98,7 @@ public class RetrofitServiceBeanGenerator implements Generator<RetrofitServiceBe
     }
 
     private Set<RetrofitInterceptor> getInterceptors(Class<?> clazz) {
-        Annotation[] annotations = clazz.getAnnotations();
+        Annotation[] annotations = clazz.getDeclaredAnnotations();
         Set<RetrofitInterceptor> retrofitInterceptorAnnotations = new LinkedHashSet<>();
         for (Annotation annotation : annotations) {
             if (annotation instanceof Interceptors) {
