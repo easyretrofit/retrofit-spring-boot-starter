@@ -64,6 +64,8 @@ public @interface RetrofitBuilder {
      * <p>Base URL: http://example.com<br>
      * Endpoint: //github.com/square/retrofit/<br>
      * Result: http://github.com/square/retrofit/ (note the scheme stays 'http')
+     *
+     * @return String URL
      */
     String baseUrl() default "";
 

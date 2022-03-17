@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.lang.annotation.*;
 
 /**
+ * The value of @RetrofitDynamicBaseUrl can dynamically replace the baseurl in @RetrofitBuilder
  * @author liuziyuan
  */
 @Documented

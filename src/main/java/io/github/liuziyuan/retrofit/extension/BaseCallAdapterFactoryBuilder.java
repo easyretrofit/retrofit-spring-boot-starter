@@ -3,6 +3,7 @@ package io.github.liuziyuan.retrofit.extension;
 import retrofit2.CallAdapter;
 
 /**
+ * The Builder of Retrofit CallAdapter.Factory
  * @author liuziyuan
  */
 public abstract class BaseCallAdapterFactoryBuilder extends BaseBuilder<CallAdapter.Factory> {

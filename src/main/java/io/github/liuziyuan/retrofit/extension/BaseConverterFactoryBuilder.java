@@ -3,6 +3,7 @@ package io.github.liuziyuan.retrofit.extension;
 import retrofit2.Converter;
 
 /**
+ * The Builder of Retrofit Converter.Factory
  * @author liuziyuan
  */
 public abstract class BaseConverterFactoryBuilder extends BaseBuilder<Converter.Factory> {

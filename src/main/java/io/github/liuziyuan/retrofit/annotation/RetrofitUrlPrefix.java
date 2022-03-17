@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.lang.annotation.*;
 
 /**
+ * Set the prefix of the URL to reduce the duplicate path of the URL on the method
  * @author liuziyuan
  */
 @Documented

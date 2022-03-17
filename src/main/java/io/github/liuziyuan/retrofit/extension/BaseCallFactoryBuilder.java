@@ -3,6 +3,7 @@ package io.github.liuziyuan.retrofit.extension;
 import okhttp3.Call;
 
 /**
+ * The Builder of Retrofit Call.Factory
  * @author liuziyuan
  */
 public abstract class BaseCallFactoryBuilder extends BaseBuilder<Call.Factory> {
@@ -10,7 +11,7 @@ public abstract class BaseCallFactoryBuilder extends BaseBuilder<Call.Factory> {
     /**
      * build OKHttp Call.Factory
      *
-     * @return
+     * @return Call.Factory
      */
     public abstract Call.Factory buildCallFactory();
 

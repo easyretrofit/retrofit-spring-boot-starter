@@ -3,6 +3,7 @@ package io.github.liuziyuan.retrofit.extension;
 import java.util.concurrent.Executor;
 
 /**
+ * The Builder of Retrofit Executor
  * @author liuziyuan
  */
 public abstract class BaseCallBackExecutorBuilder extends BaseBuilder<Executor> {
