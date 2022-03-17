@@ -11,7 +11,7 @@ public abstract class BaseCallFactoryBuilder extends BaseBuilder<Call.Factory> {
     /**
      * build OKHttp Call.Factory
      *
-     * @return
+     * @return Call.Factory
      */
     public abstract Call.Factory buildCallFactory();
 
