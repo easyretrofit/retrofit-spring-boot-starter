@@ -1,7 +1,6 @@
 package io.github.liuziyuan.retrofit.util;
 
 import io.github.liuziyuan.retrofit.exception.RetrofitBaseUrlException;
-import io.github.liuziyuan.retrofit.exception.RetrofitStarterException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.env.Environment;
@@ -20,7 +19,7 @@ public class RetrofitUtils {
     private RetrofitUtils() {
     }
 
-    public static String convertBaseUrl(String baseUrl, Environment environment) {
+    public static String convertBaseUrl(String baseUrl, Environment environment, boolean checkUrl) {
         String currentUrl = baseUrl;
         String toLowerUrl = baseUrl;
         try {
@@ -44,9 +43,9 @@ public class RetrofitUtils {
             if (!baseUrl.endsWith(SUFFIX)) {
                 baseUrl += SUFFIX;
             }
-            return getURL(baseUrl).toString();
+            return checkUrl ? getURL(baseUrl).toString() : baseUrl;
         }
-        return getURL(baseUrl).toString();
+        return checkUrl ? getURL(baseUrl).toString() : baseUrl;
     }
 
     private static String upperToLower(String str) {
