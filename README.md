@@ -28,25 +28,22 @@ _Feature_
 <dependency>
     <groupId>io.github.liuziyuan</groupId>
     <artifactId>retrofit-spring-boot-starter</artifactId>
-    <version>0.0.14</version>
+    <version>0.0.15</version>
 </dependency>
 ```
 
-### Create a `RetrofitConfig` Class file and Add `@EnableRetrofit` Annotation
+### Add `@EnableRetrofit` Annotation
 
 The `@EnableRetrofit` Annotation will enable to use retrofit-spring-boot-stater.
-
-The `RetrofitConfig` Class will registry Retrofit starter resource objects.
 
 ```java
 
 @EnableRetrofit
-@Configuration
-public class RetrofitConfig {
-    @Bean
-    public RetrofitResourceDefinitionRegistry retrofitResourceDefinitionRegistry() {
-        return new RetrofitResourceDefinitionRegistry();
-    }
+@SpringBootApplication
+public class QuickStartApplication {
+   public static void main(String[] args) {
+      SpringApplication.run(QuickStartApplication.class, args);
+   }
 }
 
 ```

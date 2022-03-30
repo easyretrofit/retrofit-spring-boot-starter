@@ -11,28 +11,25 @@
 <dependency>
     <groupId>io.github.liuziyuan</groupId>
     <artifactId>retrofit-spring-boot-starter</artifactId>
-    <version>0.0.14</version>
+    <version>0.0.15</version>
 </dependency>
 ```
 
-### Create a RetrofitConfig file and Add `@EnableRetrofit`
+### 添加 `@EnableRetrofit`
 
 ```java
 
 @EnableRetrofit
-@Configuration
-public class RetrofitConfig {
-    @Bean
-    public RetrofitResourceDefinitionRegistry retrofitResourceDefinitionRegistry() {
-        return new RetrofitResourceDefinitionRegistry();
+@SpringBootApplication
+public class QuickStartApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(QuickStartApplication.class, args);
     }
 }
 
 ```
 
 `@EnableRetrofit` 注解允许去使用retrofit-spring-boot-stater
-
-`RetrofitConfig` 类将注册Retrofit 资源对象
 
 您可以指定basePackages，比如`@EnableRetrofit(basePackages = "xxx.demo.api")`，"xxx.demo.api"是您的Retrofit api
 文件夹名。默认情况下，将扫描starter类文件所在目录中的所有文件
