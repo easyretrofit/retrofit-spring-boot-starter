@@ -90,7 +90,9 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
                 " |____|_  /\\___  >__|  |__|   \\____/|__|  |__||__|  \n" +
                 "        \\/     \\/                                   \n" +
                 "::Retrofit Spring Boot Starter ::          ({})\n" +
-                "::Retrofit ::                              ({})\n", "v0.0.14", "v2.9.0");
+                "::Retrofit ::                              ({})\n",
+                this.getClass().getPackage().getImplementationVersion(),
+                "v2.9.0");
 
         if (context.getRetrofitClients().isEmpty()) {
             log.warn(Message.WARNING_RETROFIT_CLIENT_EMPTY);
