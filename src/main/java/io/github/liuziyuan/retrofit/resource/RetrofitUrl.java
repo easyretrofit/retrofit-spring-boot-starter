@@ -31,22 +31,22 @@ public class RetrofitUrl {
             this.environment = environment;
             this.inputBaseUrl = baseUrl;
             this.inputRetrofitDynamicBaseUrl = inputRetrofitDynamicBaseUrl;
-            this.retrofitUrlPrefix = getUrlByConvertBaseUrl(retrofitUrlPrefix, environment);
+            this.retrofitUrlPrefix = getUrlByConvertBaseUrl(retrofitUrlPrefix, environment, false);
             String url;
             if (StringUtils.isNotEmpty(inputRetrofitDynamicBaseUrl)) {
                 this.isDynamicUrl = true;
-                url = RetrofitUtils.convertBaseUrl(inputRetrofitDynamicBaseUrl, environment);
+                url = RetrofitUtils.convertBaseUrl(inputRetrofitDynamicBaseUrl, environment, true);
                 dynamicUrl = new BaseUrl(url);
             } else {
                 dynamicUrl = new BaseUrl();
             }
-            url = RetrofitUtils.convertBaseUrl(baseUrl, environment);
+            url = RetrofitUtils.convertBaseUrl(baseUrl, environment, true);
             defaultUrl = new BaseUrl(url);
     }
 
-    private String getUrlByConvertBaseUrl(String url, Environment environment) {
+    private String getUrlByConvertBaseUrl(String url, Environment environment, boolean checkUrl) {
         if (url != null) {
-            return RetrofitUtils.convertBaseUrl(url, environment);
+            return RetrofitUtils.convertBaseUrl(url, environment, checkUrl);
         } else {
             return StringUtils.EMPTY;
         }
