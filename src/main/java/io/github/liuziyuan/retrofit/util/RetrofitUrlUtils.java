@@ -1,6 +1,6 @@
 package io.github.liuziyuan.retrofit.util;
 
-import io.github.liuziyuan.retrofit.exception.RetrofitBaseUrlException;
+import io.github.liuziyuan.retrofit.exception.BaseUrlException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.env.Environment;
@@ -12,11 +12,11 @@ import java.net.URL;
  * @author liuziyuan
  */
 @Slf4j
-public class RetrofitUtils {
+public class RetrofitUrlUtils {
 
     private static final String SUFFIX = "/";
 
-    private RetrofitUtils() {
+    private RetrofitUrlUtils() {
     }
 
     public static String convertBaseUrl(String baseUrl, Environment environment, boolean checkUrl) {
@@ -71,7 +71,7 @@ public class RetrofitUtils {
             URL url = new URL(urlString);
             return url;
         } catch (MalformedURLException exception) {
-            throw new RetrofitBaseUrlException("URL[" + urlString + "] could not be resolved", exception);
+            throw new BaseUrlException("URL[" + urlString + "] could not be resolved", exception);
         }
     }
 

@@ -1,6 +1,5 @@
 package io.github.liuziyuan.retrofit;
 
-import io.github.liuziyuan.retrofit.exception.Message;
 import io.github.liuziyuan.retrofit.generator.RetrofitBuilderGenerator;
 import io.github.liuziyuan.retrofit.proxy.RetrofitServiceProxyFactory;
 import io.github.liuziyuan.retrofit.resource.RetrofitClientBean;
@@ -25,6 +24,9 @@ import java.util.Objects;
  */
 @Slf4j
 public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistryPostProcessor, ApplicationContextAware {
+
+    private static final String WARNING_RETROFIT_CLIENT_EMPTY = "The [Retrofit Client] is not found in the 'RetrofitResourceContext'. You may not be using @RetrofitBuilder in the basePackages";
+    private static final String RETROFIT_RESOURCE_CONTEXT_NOT_FOUND = "The 'RetrofitResourceContext' object not found in the Spring 'ApplicationContext'. You may not be using @EnableRetrofit";
 
     private ApplicationContext applicationContext;
 
@@ -69,7 +71,7 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
             }
             setLog(context);
         } catch (NoSuchBeanDefinitionException exception) {
-            log.error(Message.RETROFIT_RESOURCE_CONTEXT_NOT_FOUND);
+            log.error(RETROFIT_RESOURCE_CONTEXT_NOT_FOUND);
             throw exception;
         }
 
@@ -83,19 +85,19 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
 
     private void setLog(RetrofitResourceContext context) {
         log.info("\n" +
-                "__________        __                 _____.__  __   \n" +
-                "\\______   \\ _____/  |________  _____/ ____\\__|/  |_ \n" +
-                " |       _// __ \\   __\\_  __ \\/  _ \\   __\\|  \\   __\\\n" +
-                " |    |   \\  ___/|  |  |  | \\(  <_> )  |  |  ||  |  \n" +
-                " |____|_  /\\___  >__|  |__|   \\____/|__|  |__||__|  \n" +
-                "        \\/     \\/                                   \n" +
-                "::Retrofit Spring Boot Starter ::          ({})\n" +
-                "::Retrofit ::                              ({})\n",
+                        "__________        __                 _____.__  __   \n" +
+                        "\\______   \\ _____/  |________  _____/ ____\\__|/  |_ \n" +
+                        " |       _// __ \\   __\\_  __ \\/  _ \\   __\\|  \\   __\\\n" +
+                        " |    |   \\  ___/|  |  |  | \\(  <_> )  |  |  ||  |  \n" +
+                        " |____|_  /\\___  >__|  |__|   \\____/|__|  |__||__|  \n" +
+                        "        \\/     \\/                                   \n" +
+                        "::Retrofit Spring Boot Starter ::          ({})\n" +
+                        "::Retrofit ::                              ({})\n",
                 this.getClass().getPackage().getImplementationVersion(),
                 "v2.9.0");
 
         if (context.getRetrofitClients().isEmpty()) {
-            log.warn(Message.WARNING_RETROFIT_CLIENT_EMPTY);
+            log.warn(WARNING_RETROFIT_CLIENT_EMPTY);
         }
         for (RetrofitClientBean retrofitClient : context.getRetrofitClients()) {
             final String retrofitInstanceName = retrofitClient.getRetrofitInstanceName();
