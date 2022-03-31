@@ -50,9 +50,6 @@ public class RetrofitServiceBeanGenerator implements Generator<RetrofitServiceBe
 
     private Class<?> getParentRetrofitBuilderClazz() {
         final Class<?> parentClazzIncludeRetrofitBuilderAndBase = findParentClazzIncludeRetrofitBuilderAndBase(clazz);
-//        if (parentClazzIncludeRetrofitBuilderAndBase.getDeclaredAnnotation(RetrofitBuilder.class) == null) {
-//            throw new RetrofitStarterException("The baseApi of @RetrofitBase in the [" + clazz.getSimpleName() + "] Interface, does not define @RetrofitBuilder");
-//        }
         return parentClazzIncludeRetrofitBuilderAndBase;
     }
 
@@ -89,7 +86,7 @@ public class RetrofitServiceBeanGenerator implements Generator<RetrofitServiceBe
         RetrofitBase retrofitBase = clazz.getDeclaredAnnotation(RetrofitBase.class);
         Class<?> targetClazz = clazz;
         if (retrofitBase != null) {
-            final Class<?> baseApiClazz = retrofitBase.baseApi();
+            final Class<?> baseApiClazz = retrofitBase.baseInterface();
             if (baseApiClazz != null) {
                 targetClazz = findParentRetrofitBaseClazz(baseApiClazz);
             }
