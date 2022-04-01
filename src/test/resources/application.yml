@@ -3,3 +3,8 @@ app.hello.base-url: http://localhost:8081/hello
 app.hello-inherit.base-url: http://localhost:8081/hello/inherit
 
 okhttpclient.timeout: 30000
+
+logging:
+  level:
+    root: info
+    io.github.liuziyuan.retrofit: debug
