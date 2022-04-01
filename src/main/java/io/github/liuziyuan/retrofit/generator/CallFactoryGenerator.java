@@ -12,7 +12,7 @@ import org.springframework.context.ApplicationContext;
  */
 public class CallFactoryGenerator implements Generator<Call.Factory> {
     private final Class<? extends BaseCallFactoryBuilder> callFactoryBuilderClazz;
-    private ApplicationContext applicationContext;
+    private final ApplicationContext applicationContext;
 
     public CallFactoryGenerator(Class<? extends BaseCallFactoryBuilder> callFactoryBuilderClazz, ApplicationContext applicationContext) {
         this.callFactoryBuilderClazz = callFactoryBuilderClazz;
@@ -25,7 +25,7 @@ public class CallFactoryGenerator implements Generator<Call.Factory> {
         try {
             BaseCallFactoryBuilder baseCallFactoryBuilder = applicationContext.getBean(callFactoryBuilderClazz);
             return baseCallFactoryBuilder.executeBuild();
-        } catch (NoSuchBeanDefinitionException ex) {
+        } catch (NoSuchBeanDefinitionException ignored) {
         }
         if (callFactoryBuilderClazz != null) {
             final String baseCallFactoryBuilderClazzName = BaseCallFactoryBuilder.class.getName();

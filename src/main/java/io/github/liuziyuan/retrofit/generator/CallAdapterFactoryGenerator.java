@@ -14,7 +14,7 @@ import retrofit2.CallAdapter;
  */
 public class CallAdapterFactoryGenerator implements Generator<CallAdapter.Factory> {
     private final Class<? extends BaseCallAdapterFactoryBuilder> baseCallAdapterFactoryBuilderClazz;
-    private ApplicationContext applicationContext;
+    private final ApplicationContext applicationContext;
 
     public CallAdapterFactoryGenerator(Class<? extends BaseCallAdapterFactoryBuilder> baseCallAdapterFactoryBuilderClazz, ApplicationContext applicationContext) {
         this.baseCallAdapterFactoryBuilderClazz = baseCallAdapterFactoryBuilderClazz;
@@ -27,7 +27,7 @@ public class CallAdapterFactoryGenerator implements Generator<CallAdapter.Factor
         try {
             final BaseCallAdapterFactoryBuilder baseCallAdapterFactoryBuilder = applicationContext.getBean(baseCallAdapterFactoryBuilderClazz);
             return baseCallAdapterFactoryBuilder.executeBuild();
-        } catch (NoSuchBeanDefinitionException ex) {
+        } catch (NoSuchBeanDefinitionException ignored) {
         }
         if (baseCallAdapterFactoryBuilderClazz != null) {
             final String baseCallAdapterFactoryBuilderClazzName = BaseCallAdapterFactoryBuilder.class.getName();

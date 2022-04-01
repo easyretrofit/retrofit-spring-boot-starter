@@ -13,8 +13,8 @@ import org.springframework.context.ApplicationContext;
  * @author liuziyuan
  */
 public class OkHttpClientBuilderGenerator implements Generator<OkHttpClient.Builder> {
-    private Class<? extends BaseOkHttpClientBuilder> okHttpClientBuilderClazz;
-    private ApplicationContext applicationContext;
+    private final Class<? extends BaseOkHttpClientBuilder> okHttpClientBuilderClazz;
+    private final ApplicationContext applicationContext;
 
     public OkHttpClientBuilderGenerator(Class<? extends BaseOkHttpClientBuilder> okHttpClientBuilderClazz, ApplicationContext applicationContext) {
         this.okHttpClientBuilderClazz = okHttpClientBuilderClazz;
@@ -27,7 +27,7 @@ public class OkHttpClientBuilderGenerator implements Generator<OkHttpClient.Buil
         try {
             final BaseOkHttpClientBuilder baseOkHttpClientBuilder = applicationContext.getBean(okHttpClientBuilderClazz);
             return baseOkHttpClientBuilder.build();
-        } catch (NoSuchBeanDefinitionException ex) {
+        } catch (NoSuchBeanDefinitionException ignored) {
         }
         if (okHttpClientBuilderClazz != null) {
             final String okHttpClientBuilderClazzName = okHttpClientBuilderClazz.getName();

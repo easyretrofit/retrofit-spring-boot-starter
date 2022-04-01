@@ -13,7 +13,7 @@ import java.util.concurrent.Executor;
  */
 public class CallBackExecutorGenerator implements Generator<Executor> {
     private final Class<? extends BaseCallBackExecutorBuilder> callBackExecutorBuilderClazz;
-    private ApplicationContext applicationContext;
+    private final ApplicationContext applicationContext;
 
     public CallBackExecutorGenerator(Class<? extends BaseCallBackExecutorBuilder> callBackExecutorBuilderClazz, ApplicationContext applicationContext) {
         this.callBackExecutorBuilderClazz = callBackExecutorBuilderClazz;
@@ -25,10 +25,8 @@ public class CallBackExecutorGenerator implements Generator<Executor> {
     public Executor generate() {
         try {
             final BaseCallBackExecutorBuilder baseCallBackExecutorBuilder = applicationContext.getBean(callBackExecutorBuilderClazz);
-            Executor executor = baseCallBackExecutorBuilder.executeBuild();
-            return executor;
-        } catch (NoSuchBeanDefinitionException ex) {
-
+            return baseCallBackExecutorBuilder.executeBuild();
+        } catch (NoSuchBeanDefinitionException ignored) {
         }
         if (callBackExecutorBuilderClazz != null) {
             final String baseCallBackExecutorClazzName = BaseCallBackExecutorBuilder.class.getName();

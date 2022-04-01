@@ -5,7 +5,6 @@ import io.github.liuziyuan.retrofit.RetrofitResourceContext;
 import io.github.liuziyuan.retrofit.annotation.RetrofitInterceptor;
 import io.github.liuziyuan.retrofit.extension.BaseInterceptor;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import okhttp3.Interceptor;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 
@@ -35,7 +34,7 @@ public class OkHttpInterceptorGenerator implements Generator<Interceptor> {
 
         try {
             interceptor = resourceContext.getApplicationContext().getBean(retrofitInterceptor.handler());
-        } catch (NoSuchBeanDefinitionException ex) {
+        } catch (NoSuchBeanDefinitionException ignored) {
         }
         if (interceptor == null && interceptorClass != null) {
             Constructor<? extends BaseInterceptor> constructor;

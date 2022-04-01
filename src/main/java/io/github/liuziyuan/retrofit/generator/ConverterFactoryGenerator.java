@@ -14,7 +14,7 @@ import retrofit2.Converter;
  */
 public class ConverterFactoryGenerator implements Generator<Converter.Factory> {
     private final Class<? extends BaseConverterFactoryBuilder> baseConverterFactoryBuilderClazz;
-    private ApplicationContext applicationContext;
+    private final ApplicationContext applicationContext;
 
     public ConverterFactoryGenerator(Class<? extends BaseConverterFactoryBuilder> converterFactoryBuilderClazz, ApplicationContext applicationContext) {
         this.baseConverterFactoryBuilderClazz = converterFactoryBuilderClazz;
@@ -27,7 +27,7 @@ public class ConverterFactoryGenerator implements Generator<Converter.Factory> {
         try {
             final BaseConverterFactoryBuilder baseConverterFactoryBuilder = applicationContext.getBean(baseConverterFactoryBuilderClazz);
             return baseConverterFactoryBuilder.executeBuild();
-        } catch (NoSuchBeanDefinitionException ex) {
+        } catch (NoSuchBeanDefinitionException ignored) {
         }
         if (baseConverterFactoryBuilderClazz != null) {
             final String baseConverterFactoryBuilderClazzName = BaseConverterFactoryBuilder.class.getName();
