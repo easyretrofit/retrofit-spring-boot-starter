@@ -32,25 +32,28 @@ public class RetrofitServiceBeanGenerator implements Generator<RetrofitServiceBe
         retrofitServiceBean.setParentClazz(retrofitBuilderClazz);
         RetrofitBuilder retrofitBuilderAnnotation = retrofitBuilderClazz.getDeclaredAnnotation(RetrofitBuilder.class);
         retrofitServiceBean.setRetrofitBuilder(retrofitBuilderAnnotation);
-        Set<RetrofitInterceptor> interceptors = this.getInterceptors(retrofitBuilderClazz);
-        Set<RetrofitInterceptor> myInterceptors = this.getInterceptors(clazz);
+        Set<RetrofitInterceptor> interceptors = getInterceptors(retrofitBuilderClazz);
+        Set<RetrofitInterceptor> myInterceptors = getInterceptors(clazz);
         retrofitServiceBean.setMyInterceptors(myInterceptors);
         retrofitServiceBean.setInterceptors(interceptors);
-        final RetrofitUrlPrefix retrofitUrlPrefix = clazz.getDeclaredAnnotation(RetrofitUrlPrefix.class);
-        final RetrofitDynamicBaseUrl retrofitDynamicBaseUrl = clazz.getDeclaredAnnotation(RetrofitDynamicBaseUrl.class);
-        String retrofitDynamicBaseUrlValue = retrofitDynamicBaseUrl == null ? null : retrofitDynamicBaseUrl.value();
-        RetrofitUrl url = new RetrofitUrl(retrofitBuilderAnnotation.baseUrl(),
-                retrofitDynamicBaseUrlValue,
-                retrofitUrlPrefix == null ? null : retrofitUrlPrefix.value(),
-                environment);
-        retrofitServiceBean.setRetrofitUrl(url);
+        RetrofitUrl retrofitUrl = getRetrofitUrl(retrofitBuilderAnnotation);
+        retrofitServiceBean.setRetrofitUrl(retrofitUrl);
         return retrofitServiceBean;
 
     }
 
+    private RetrofitUrl getRetrofitUrl(RetrofitBuilder retrofitBuilderAnnotation) {
+        final RetrofitUrlPrefix retrofitUrlPrefix = clazz.getDeclaredAnnotation(RetrofitUrlPrefix.class);
+        final RetrofitDynamicBaseUrl retrofitDynamicBaseUrl = clazz.getDeclaredAnnotation(RetrofitDynamicBaseUrl.class);
+        String retrofitDynamicBaseUrlValue = retrofitDynamicBaseUrl == null ? null : retrofitDynamicBaseUrl.value();
+        return new RetrofitUrl(retrofitBuilderAnnotation.baseUrl(),
+                retrofitDynamicBaseUrlValue,
+                retrofitUrlPrefix == null ? null : retrofitUrlPrefix.value(),
+                environment);
+    }
+
     private Class<?> getParentRetrofitBuilderClazz() {
-        final Class<?> parentClazzIncludeRetrofitBuilderAndBase = findParentClazzIncludeRetrofitBuilderAndBase(clazz);
-        return parentClazzIncludeRetrofitBuilderAndBase;
+        return findParentClazzIncludeRetrofitBuilderAndBase(clazz);
     }
 
     private Class<?> findParentClazzIncludeRetrofitBuilderAndBase(Class<?> clazz) {
@@ -73,7 +76,7 @@ public class RetrofitServiceBeanGenerator implements Generator<RetrofitServiceBe
             Class<?>[] interfaces = clazz.getInterfaces();
             if (interfaces.length > 0) {
                 targetClazz = findParentRetrofitBuilderClazz(interfaces[0]);
-            }else {
+            } else {
                 if (clazz.getDeclaredAnnotation(RetrofitBase.class) == null) {
                     throw new RetrofitStarterException("The baseApi of @RetrofitBase in the [" + clazz.getSimpleName() + "] Interface, does not define @RetrofitBuilder");
                 }
