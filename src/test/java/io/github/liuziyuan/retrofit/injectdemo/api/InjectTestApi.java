@@ -16,7 +16,7 @@ import retrofit2.http.GET;
         callbackExecutor = InjectMyCallBackExecutorBuilder.class,
         client = InjectMyOkHttpClient.class)
 @RetrofitInterceptor(handler = InjectMyRetrofitInterceptor1.class)
-public interface TestApi {
+public interface InjectTestApi {
     @GET("/v1/test1/")
     Call<String> test1();
 }

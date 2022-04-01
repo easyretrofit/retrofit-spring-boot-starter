@@ -1,8 +1,7 @@
 package io.github.liuziyuan.retrofit.injectdemo;
 
 import io.github.liuziyuan.retrofit.BaseTest;
-import io.github.liuziyuan.retrofit.demo.api.TestInheritApi;
-import io.github.liuziyuan.retrofit.injectdemo.api.TestApi;
+import io.github.liuziyuan.retrofit.injectdemo.api.InjectTestApi;
 import lombok.SneakyThrows;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,9 +25,9 @@ class InjectTestServiceInjectTest extends BaseTest {
     private InjectTestService injectTestService;
 
     @Mock
-    private TestApi testApi;
+    private InjectTestApi injectTestApi;
 
-    private MockTestApi mockTestApi;
+    private MockInjectTestApi mockTestApi;
 
     @BeforeEach
     void setUp() {
@@ -37,8 +36,8 @@ class InjectTestServiceInjectTest extends BaseTest {
         NetworkBehavior behavior = NetworkBehavior.create();
         MockRetrofit mockRetrofit =
                 new MockRetrofit.Builder(retrofit).networkBehavior(behavior).build();
-        BehaviorDelegate<TestApi> delegate = mockRetrofit.create(TestApi.class);
-        mockTestApi = new MockTestApi(delegate);
+        BehaviorDelegate<InjectTestApi> delegate = mockRetrofit.create(InjectTestApi.class);
+        mockTestApi = new MockInjectTestApi(delegate);
     }
 
     @SneakyThrows
@@ -46,15 +45,15 @@ class InjectTestServiceInjectTest extends BaseTest {
     void test1() {
 
         final Call<String> call = mockTestApi.test1();
-        Mockito.when(testApi.test1()).thenReturn(call);
+        Mockito.when(injectTestApi.test1()).thenReturn(call);
         final String test = injectTestService.test();
         Assert.assertEquals(test, "hello");
     }
 
-    class MockTestApi implements TestApi {
-        private BehaviorDelegate<TestApi> delegate;
+    class MockInjectTestApi implements InjectTestApi {
+        private BehaviorDelegate<InjectTestApi> delegate;
 
-        public MockTestApi(BehaviorDelegate<TestApi> delegate) {
+        public MockInjectTestApi(BehaviorDelegate<InjectTestApi> delegate) {
             this.delegate = delegate;
         }
 
