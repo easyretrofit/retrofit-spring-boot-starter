@@ -26,7 +26,7 @@ public class OkHttpClientBuilderGenerator implements Generator<OkHttpClient.Buil
     public OkHttpClient.Builder generate() {
         try {
             final BaseOkHttpClientBuilder baseOkHttpClientBuilder = applicationContext.getBean(okHttpClientBuilderClazz);
-            return baseOkHttpClientBuilder.build();
+            return baseOkHttpClientBuilder.executeBuild();
         } catch (NoSuchBeanDefinitionException ignored) {
         }
         if (okHttpClientBuilderClazz != null) {
