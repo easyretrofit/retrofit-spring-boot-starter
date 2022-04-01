@@ -16,59 +16,64 @@ import java.util.*;
 public class RetrofitResourceContextBuilder {
 
     private List<RetrofitClientBean> retrofitClientBeanList;
-
-    private Map<String, RetrofitServiceBean> retrofitServiceBeanHashMap;
+    private List<RetrofitServiceBean> retrofitServiceBeanList;
+    private final Map<String, RetrofitServiceBean> retrofitServiceBeanHashMap;
     private final Environment environment;
 
     public RetrofitResourceContextBuilder(Environment environment) {
         retrofitClientBeanList = new ArrayList<>();
+        retrofitServiceBeanList = new ArrayList<>();
         retrofitServiceBeanHashMap = new HashMap<>();
         this.environment = environment;
     }
 
-    public void build(Set<Class<?>> retrofitBuilderClassSet) {
-        List<RetrofitServiceBean> retrofitServiceBeanList = setRetrofitServiceBeanList(retrofitBuilderClassSet);
-        retrofitClientBeanList = setRetrofitClientBeanList(retrofitServiceBeanList);
+    public RetrofitResourceContextBuilder build(Set<Class<?>> retrofitBuilderClassSet) {
+        setRetrofitServiceBeanList(retrofitBuilderClassSet);
+        setRetrofitClientBeanList(retrofitServiceBeanList);
+        setRetrofitServiceBeanHashMap();
+        return this;
     }
 
     public List<RetrofitClientBean> getRetrofitClientBeanList() {
         return retrofitClientBeanList;
     }
 
+    public Map<String, RetrofitServiceBean> getRetrofitServiceBeanHashMap() {
+        return retrofitServiceBeanHashMap;
+    }
 
-    private List<RetrofitServiceBean> setRetrofitServiceBeanList(Set<Class<?>> retrofitBuilderClassSet) {
-        List<RetrofitServiceBean> retrofitServiceBeanList = new ArrayList<>();
-        RetrofitServiceBeanGenerator serviceBeanHandler;
-        for (Class<?> clazz : retrofitBuilderClassSet) {
-            serviceBeanHandler = new RetrofitServiceBeanGenerator(clazz, environment);
-            final RetrofitServiceBean serviceBean = serviceBeanHandler.generate();
-            if (serviceBean != null){
-                retrofitServiceBeanList.add(serviceBean);
-            }
-        }
+    public List<RetrofitServiceBean> getRetrofitServiceBean() {
         return retrofitServiceBeanList;
     }
 
-    private List<RetrofitClientBean> setRetrofitClientBeanList(List<RetrofitServiceBean> serviceBeanList) {
-        List<RetrofitClientBean> clientBeanList = new ArrayList<>();
-        RetrofitClientBeanGenerator clientBeanHandler;
-        for (RetrofitServiceBean serviceBean : serviceBeanList) {
-            clientBeanHandler = new RetrofitClientBeanGenerator(clientBeanList, serviceBean);
-            final RetrofitClientBean retrofitClientBean = clientBeanHandler.generate();
-            if (retrofitClientBean != null && clientBeanList.stream().noneMatch(clientBean -> clientBean.getRetrofitInstanceName().equals(retrofitClientBean.getRetrofitInstanceName()))) {
-                clientBeanList.add(retrofitClientBean);
-            }
-        }
-        return clientBeanList;
-    }
-
-    public Map<String, RetrofitServiceBean> getRetrofitServiceBeanHashMap() {
+    private void setRetrofitServiceBeanHashMap() {
         for (RetrofitClientBean retrofitClient : getRetrofitClientBeanList()) {
             for (RetrofitServiceBean retrofitService : retrofitClient.getRetrofitServices()) {
                 retrofitServiceBeanHashMap.put(retrofitService.getSelfClazz().getName(), retrofitService);
             }
         }
-        return retrofitServiceBeanHashMap;
+    }
+
+    private void setRetrofitServiceBeanList(Set<Class<?>> retrofitBuilderClassSet) {
+        RetrofitServiceBeanGenerator serviceBeanHandler;
+        for (Class<?> clazz : retrofitBuilderClassSet) {
+            serviceBeanHandler = new RetrofitServiceBeanGenerator(clazz, environment);
+            final RetrofitServiceBean serviceBean = serviceBeanHandler.generate();
+            if (serviceBean != null) {
+                retrofitServiceBeanList.add(serviceBean);
+            }
+        }
+    }
+
+    private void setRetrofitClientBeanList(List<RetrofitServiceBean> serviceBeanList) {
+        RetrofitClientBeanGenerator clientBeanHandler;
+        for (RetrofitServiceBean serviceBean : serviceBeanList) {
+            clientBeanHandler = new RetrofitClientBeanGenerator(retrofitClientBeanList, serviceBean);
+            final RetrofitClientBean retrofitClientBean = clientBeanHandler.generate();
+            if (retrofitClientBean != null && retrofitClientBeanList.stream().noneMatch(clientBean -> clientBean.getRetrofitInstanceName().equals(retrofitClientBean.getRetrofitInstanceName()))) {
+                retrofitClientBeanList.add(retrofitClientBean);
+            }
+        }
     }
 
 
