@@ -40,17 +40,23 @@ public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefin
     }
 
     void registerRetrofitResourceBeanDefinitions(AnnotationAttributes annoAttrs, BeanDefinitionRegistry registry) {
-        RetrofitResourceContext context = new RetrofitResourceContext();
-
         // scan RetrofitResource
-        RetrofitResourceScanner scanner = new RetrofitResourceScanner();
-        List<String> basePackages = new ArrayList<>();
-        basePackages.addAll(Arrays.stream(annoAttrs.getStringArray("value")).filter(StringUtils::hasText).collect(Collectors.toList()));
-        basePackages.addAll(Arrays.stream(annoAttrs.getStringArray("basePackages")).filter(StringUtils::hasText).collect(Collectors.toList()));
-        basePackages.addAll(Arrays.stream(annoAttrs.getClassArray("basePackageClasses")).map(ClassUtils::getPackageName).collect(Collectors.toList()));
-        final Set<Class<?>> retrofitBuilderClassSet = scanner.doScan(StringUtils.toStringArray(basePackages));
-
+        final Set<Class<?>> retrofitBuilderClassSet = scanRetrofitResource(annoAttrs);
         // init RetrofitResourceContext by RetrofitResourceContextBuilder
+        RetrofitResourceContext context = initRetrofitResourceContext(retrofitBuilderClassSet);
+        //registry RetrofitResourceContext
+        registryRetrofitResourceContext(registry, context);
+    }
+
+    private void registryRetrofitResourceContext(BeanDefinitionRegistry registry, RetrofitResourceContext context) {
+        BeanDefinitionBuilder builder;
+        builder = BeanDefinitionBuilder.genericBeanDefinition(RetrofitResourceContext.class, () -> context);
+        GenericBeanDefinition definition = (GenericBeanDefinition) builder.getRawBeanDefinition();
+        registry.registerBeanDefinition(RetrofitResourceContext.class.getName(), definition);
+    }
+
+    private RetrofitResourceContext initRetrofitResourceContext(Set<Class<?>> retrofitBuilderClassSet) {
+        RetrofitResourceContext context = new RetrofitResourceContext();
         RetrofitResourceContextBuilder retrofitResourceContextBuilder = new RetrofitResourceContextBuilder(environment);
         retrofitResourceContextBuilder.build(retrofitBuilderClassSet);
         final List<RetrofitClientBean> retrofitClientBeanList = retrofitResourceContextBuilder.getRetrofitClientBeanList();
@@ -59,12 +65,17 @@ public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefin
         context.setRetrofitServices(retrofitServiceBeanHashMap);
         context.setEnvironment(environment);
         context.setResourceLoader(resourceLoader);
+        return context;
+    }
 
-        //registry RetrofitResourceContext
-        BeanDefinitionBuilder builder;
-        builder = BeanDefinitionBuilder.genericBeanDefinition(RetrofitResourceContext.class, () -> context);
-        GenericBeanDefinition definition = (GenericBeanDefinition) builder.getRawBeanDefinition();
-        registry.registerBeanDefinition(RetrofitResourceContext.class.getName(), definition);
+    private Set<Class<?>> scanRetrofitResource(AnnotationAttributes annoAttrs) {
+        // scan RetrofitResource
+        RetrofitResourceScanner scanner = new RetrofitResourceScanner();
+        List<String> basePackages = new ArrayList<>();
+        basePackages.addAll(Arrays.stream(annoAttrs.getStringArray("value")).filter(StringUtils::hasText).collect(Collectors.toList()));
+        basePackages.addAll(Arrays.stream(annoAttrs.getStringArray("basePackages")).filter(StringUtils::hasText).collect(Collectors.toList()));
+        basePackages.addAll(Arrays.stream(annoAttrs.getClassArray("basePackageClasses")).map(ClassUtils::getPackageName).collect(Collectors.toList()));
+        return scanner.doScan(StringUtils.toStringArray(basePackages));
     }
 
     @Override
