@@ -3,6 +3,8 @@ package io.github.liuziyuan.retrofit.generator;
 import io.github.liuziyuan.retrofit.Generator;
 import io.github.liuziyuan.retrofit.extension.BaseCallAdapterFactoryBuilder;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.context.ApplicationContext;
 import retrofit2.CallAdapter;
 
 /**
@@ -12,18 +14,20 @@ import retrofit2.CallAdapter;
  */
 public class CallAdapterFactoryGenerator implements Generator<CallAdapter.Factory> {
     private final Class<? extends BaseCallAdapterFactoryBuilder> baseCallAdapterFactoryBuilderClazz;
-    private final CallAdapter.Factory factory;
+    private ApplicationContext applicationContext;
 
-    public CallAdapterFactoryGenerator(Class<? extends BaseCallAdapterFactoryBuilder> baseCallAdapterFactoryBuilderClazz, CallAdapter.Factory factory) {
+    public CallAdapterFactoryGenerator(Class<? extends BaseCallAdapterFactoryBuilder> baseCallAdapterFactoryBuilderClazz, ApplicationContext applicationContext) {
         this.baseCallAdapterFactoryBuilderClazz = baseCallAdapterFactoryBuilderClazz;
-        this.factory = factory;
+        this.applicationContext = applicationContext;
     }
 
     @SneakyThrows
     @Override
     public CallAdapter.Factory generate() {
-        if (factory != null) {
-            return factory;
+        try {
+            final BaseCallAdapterFactoryBuilder baseCallAdapterFactoryBuilder = applicationContext.getBean(baseCallAdapterFactoryBuilderClazz);
+            return baseCallAdapterFactoryBuilder.executeBuild();
+        } catch (NoSuchBeanDefinitionException ex) {
         }
         if (baseCallAdapterFactoryBuilderClazz != null) {
             final String baseCallAdapterFactoryBuilderClazzName = BaseCallAdapterFactoryBuilder.class.getName();

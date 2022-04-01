@@ -3,6 +3,8 @@ package io.github.liuziyuan.retrofit.generator;
 import io.github.liuziyuan.retrofit.Generator;
 import io.github.liuziyuan.retrofit.extension.BaseConverterFactoryBuilder;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.context.ApplicationContext;
 import retrofit2.Converter;
 
 /**
@@ -12,18 +14,20 @@ import retrofit2.Converter;
  */
 public class ConverterFactoryGenerator implements Generator<Converter.Factory> {
     private final Class<? extends BaseConverterFactoryBuilder> baseConverterFactoryBuilderClazz;
-    private final Converter.Factory factory;
+    private ApplicationContext applicationContext;
 
-    public ConverterFactoryGenerator(Class<? extends BaseConverterFactoryBuilder> baseConverterFactoryBuilderClazz, Converter.Factory factory) {
-        this.baseConverterFactoryBuilderClazz = baseConverterFactoryBuilderClazz;
-        this.factory = factory;
+    public ConverterFactoryGenerator(Class<? extends BaseConverterFactoryBuilder> converterFactoryBuilderClazz, ApplicationContext applicationContext) {
+        this.baseConverterFactoryBuilderClazz = converterFactoryBuilderClazz;
+        this.applicationContext = applicationContext;
     }
 
     @SneakyThrows
     @Override
     public Converter.Factory generate() {
-        if (factory != null) {
-            return factory;
+        try {
+            final BaseConverterFactoryBuilder baseConverterFactoryBuilder = applicationContext.getBean(baseConverterFactoryBuilderClazz);
+            return baseConverterFactoryBuilder.executeBuild();
+        } catch (NoSuchBeanDefinitionException ex) {
         }
         if (baseConverterFactoryBuilderClazz != null) {
             final String baseConverterFactoryBuilderClazzName = BaseConverterFactoryBuilder.class.getName();

@@ -5,7 +5,9 @@ import io.github.liuziyuan.retrofit.RetrofitResourceContext;
 import io.github.liuziyuan.retrofit.annotation.RetrofitInterceptor;
 import io.github.liuziyuan.retrofit.extension.BaseInterceptor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.Interceptor;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 
 import java.lang.reflect.Constructor;
 
@@ -20,16 +22,21 @@ public class OkHttpInterceptorGenerator implements Generator<Interceptor> {
     private final RetrofitResourceContext resourceContext;
     private BaseInterceptor interceptor;
 
-    public OkHttpInterceptorGenerator(RetrofitInterceptor retrofitInterceptor, RetrofitResourceContext resourceContext, BaseInterceptor componentInterceptor) {
+    public OkHttpInterceptorGenerator(RetrofitInterceptor retrofitInterceptor, RetrofitResourceContext resourceContext) {
         this.retrofitInterceptor = retrofitInterceptor;
         this.interceptorClass = retrofitInterceptor.handler();
         this.resourceContext = resourceContext;
-        this.interceptor = componentInterceptor;
+        this.interceptor = null;
     }
 
     @SneakyThrows
     @Override
     public Interceptor generate() {
+
+        try {
+            interceptor = resourceContext.getApplicationContext().getBean(retrofitInterceptor.handler());
+        } catch (NoSuchBeanDefinitionException ex) {
+        }
         if (interceptor == null && interceptorClass != null) {
             Constructor<? extends BaseInterceptor> constructor;
             BaseInterceptor interceptorInstance;

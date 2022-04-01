@@ -4,24 +4,28 @@ import io.github.liuziyuan.retrofit.Generator;
 import io.github.liuziyuan.retrofit.extension.BaseCallFactoryBuilder;
 import lombok.SneakyThrows;
 import okhttp3.Call;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.context.ApplicationContext;
 
 /**
  * @author liuziyuan
  */
 public class CallFactoryGenerator implements Generator<Call.Factory> {
     private final Class<? extends BaseCallFactoryBuilder> callFactoryBuilderClazz;
-    private final Call.Factory factory;
+    private ApplicationContext applicationContext;
 
-    public CallFactoryGenerator(Class<? extends BaseCallFactoryBuilder> callFactoryBuilderClazz, Call.Factory factory) {
+    public CallFactoryGenerator(Class<? extends BaseCallFactoryBuilder> callFactoryBuilderClazz, ApplicationContext applicationContext) {
         this.callFactoryBuilderClazz = callFactoryBuilderClazz;
-        this.factory = factory;
+        this.applicationContext = applicationContext;
     }
 
     @SneakyThrows
     @Override
     public Call.Factory generate() {
-        if (factory != null) {
-            return factory;
+        try {
+            BaseCallFactoryBuilder baseCallFactoryBuilder = applicationContext.getBean(callFactoryBuilderClazz);
+            return baseCallFactoryBuilder.executeBuild();
+        } catch (NoSuchBeanDefinitionException ex) {
         }
         if (callFactoryBuilderClazz != null) {
             final String baseCallFactoryBuilderClazzName = BaseCallFactoryBuilder.class.getName();

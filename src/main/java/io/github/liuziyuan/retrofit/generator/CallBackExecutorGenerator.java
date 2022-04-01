@@ -3,6 +3,8 @@ package io.github.liuziyuan.retrofit.generator;
 import io.github.liuziyuan.retrofit.Generator;
 import io.github.liuziyuan.retrofit.extension.BaseCallBackExecutorBuilder;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.context.ApplicationContext;
 
 import java.util.concurrent.Executor;
 
@@ -11,18 +13,22 @@ import java.util.concurrent.Executor;
  */
 public class CallBackExecutorGenerator implements Generator<Executor> {
     private final Class<? extends BaseCallBackExecutorBuilder> callBackExecutorBuilderClazz;
-    private final Executor executor;
+    private ApplicationContext applicationContext;
 
-    public CallBackExecutorGenerator(Class<? extends BaseCallBackExecutorBuilder> callBackExecutorBuilderClazz, Executor executor) {
+    public CallBackExecutorGenerator(Class<? extends BaseCallBackExecutorBuilder> callBackExecutorBuilderClazz, ApplicationContext applicationContext) {
         this.callBackExecutorBuilderClazz = callBackExecutorBuilderClazz;
-        this.executor = executor;
+        this.applicationContext = applicationContext;
     }
 
     @SneakyThrows
     @Override
     public Executor generate() {
-        if (executor != null) {
+        try {
+            final BaseCallBackExecutorBuilder baseCallBackExecutorBuilder = applicationContext.getBean(callBackExecutorBuilderClazz);
+            Executor executor = baseCallBackExecutorBuilder.executeBuild();
             return executor;
+        } catch (NoSuchBeanDefinitionException ex) {
+
         }
         if (callBackExecutorBuilderClazz != null) {
             final String baseCallBackExecutorClazzName = BaseCallBackExecutorBuilder.class.getName();
