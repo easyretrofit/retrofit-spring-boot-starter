@@ -110,6 +110,7 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
             final String retrofitInstanceName = retrofitClient.getRetrofitInstanceName();
             final String realHostUrl = retrofitClient.getRealHostUrl();
             log.info("---Retrofit Client : HostURL: {}, Retrofit instance name: {}", realHostUrl, retrofitInstanceName);
+            log.debug("Retrofit Client toString: {}", retrofitClient.toString());
             for (RetrofitServiceBean retrofitService : retrofitClient.getRetrofitServices()) {
                 final Class<?> selfClazz = retrofitService.getSelfClazz();
                 final Class<?> parentClazz = retrofitService.getParentClazz();
