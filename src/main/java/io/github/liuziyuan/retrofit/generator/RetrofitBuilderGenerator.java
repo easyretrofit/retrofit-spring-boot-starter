@@ -11,7 +11,6 @@ import lombok.SneakyThrows;
 import okhttp3.Call;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.CollectionUtils;
 import retrofit2.CallAdapter;

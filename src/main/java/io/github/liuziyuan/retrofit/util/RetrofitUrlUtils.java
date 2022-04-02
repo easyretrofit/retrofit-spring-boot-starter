@@ -50,12 +50,12 @@ public class RetrofitUrlUtils {
 
     private static String upperToLower(String str) {
         if (StringUtils.isNotEmpty(str)) {
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             //排除第一个字符
             for (int i = 0; i < str.length(); i++) {
                 char c = str.charAt(i);
                 if (Character.isUpperCase(c)) {
-                    sb.append("-" + Character.toLowerCase(c));
+                    sb.append("-").append(Character.toLowerCase(c));
                 } else {
                     sb.append(c);
                 }
@@ -68,8 +68,7 @@ public class RetrofitUrlUtils {
 
     public static URL getURL(String urlString) {
         try {
-            URL url = new URL(urlString);
-            return url;
+            return new URL(urlString);
         } catch (MalformedURLException exception) {
             throw new BaseUrlException("URL[" + urlString + "] could not be resolved", exception);
         }
