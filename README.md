@@ -28,7 +28,7 @@ _Feature_
 <dependency>
     <groupId>io.github.liuziyuan</groupId>
     <artifactId>retrofit-spring-boot-starter</artifactId>
-    <version>0.0.17</version>
+    <version>0.0.18</version>
 </dependency>
 ```
 
