@@ -5,6 +5,7 @@ import io.github.liuziyuan.retrofit.annotation.RetrofitInterceptor;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.*;
 
@@ -15,6 +16,7 @@ import java.util.*;
  */
 @Getter
 @Setter(AccessLevel.PACKAGE)
+@ToString
 public class RetrofitClientBean {
 
     private String retrofitInstanceName;

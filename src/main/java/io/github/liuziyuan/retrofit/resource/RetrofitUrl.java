@@ -1,14 +1,9 @@
 package io.github.liuziyuan.retrofit.resource;
 
-import io.github.liuziyuan.retrofit.exception.RetrofitBaseUrlException;
-import io.github.liuziyuan.retrofit.exception.RetrofitStarterException;
-import io.github.liuziyuan.retrofit.util.RetrofitUtils;
+import io.github.liuziyuan.retrofit.util.RetrofitUrlUtils;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.env.Environment;
-
-import java.net.MalformedURLException;
-import java.net.URL;
 
 /**
  * RetrofitUrl object
@@ -19,37 +14,45 @@ import java.net.URL;
 public class RetrofitUrl {
 
     private final Environment environment;
-    private final String inputBaseUrl;
-    private final String inputRetrofitDynamicBaseUrl;
-    private final BaseUrl defaultUrl;
-    private final BaseUrl dynamicUrl;
-    private final String retrofitUrlPrefix;
+    private final String inputDefaultBaseUrl;
+    private final String inputDynamicBaseUrl;
+    private BaseUrl defaultUrl;
+    private BaseUrl dynamicUrl;
+    private String retrofitUrlPrefix;
     private boolean isDynamicUrl;
 
 
-    public RetrofitUrl(String baseUrl, String inputRetrofitDynamicBaseUrl, String retrofitUrlPrefix, Environment environment) {
-            this.environment = environment;
-            this.inputBaseUrl = baseUrl;
-            this.inputRetrofitDynamicBaseUrl = inputRetrofitDynamicBaseUrl;
-            this.retrofitUrlPrefix = getUrlByConvertBaseUrl(retrofitUrlPrefix, environment, false);
-            String url;
-            if (StringUtils.isNotEmpty(inputRetrofitDynamicBaseUrl)) {
-                this.isDynamicUrl = true;
-                url = RetrofitUtils.convertBaseUrl(inputRetrofitDynamicBaseUrl, environment, true);
-                dynamicUrl = new BaseUrl(url);
-            } else {
-                dynamicUrl = new BaseUrl();
-            }
-            url = RetrofitUtils.convertBaseUrl(baseUrl, environment, true);
-            defaultUrl = new BaseUrl(url);
+    public RetrofitUrl(String baseUrl, String inputDynamicBaseUrl, String retrofitUrlPrefix, Environment environment) {
+        this.environment = environment;
+        this.inputDefaultBaseUrl = baseUrl;
+        this.inputDynamicBaseUrl = inputDynamicBaseUrl;
+        setRetrofitUrlPrefix(retrofitUrlPrefix);
+        setDefaultUrl();
+        setDynamicUrl();
+
     }
 
-    private String getUrlByConvertBaseUrl(String url, Environment environment, boolean checkUrl) {
+    private void setRetrofitUrlPrefix(String url) {
         if (url != null) {
-            return RetrofitUtils.convertBaseUrl(url, environment, checkUrl);
+            retrofitUrlPrefix = RetrofitUrlUtils.convertBaseUrl(url, environment, false);
         } else {
-            return StringUtils.EMPTY;
+            retrofitUrlPrefix = StringUtils.EMPTY;
         }
+    }
+
+    private void setDynamicUrl() {
+        if (StringUtils.isNotEmpty(inputDynamicBaseUrl)) {
+            this.isDynamicUrl = true;
+            String url = RetrofitUrlUtils.convertBaseUrl(inputDynamicBaseUrl, environment, true);
+            dynamicUrl = new BaseUrl(url);
+        } else {
+            dynamicUrl = new BaseUrl();
+        }
+    }
+
+    private void setDefaultUrl() {
+        String url = RetrofitUrlUtils.convertBaseUrl(inputDefaultBaseUrl, environment, true);
+        defaultUrl = new BaseUrl(url);
     }
 
 

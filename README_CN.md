@@ -11,7 +11,7 @@
 <dependency>
     <groupId>io.github.liuziyuan</groupId>
     <artifactId>retrofit-spring-boot-starter</artifactId>
-    <version>0.0.15</version>
+    <version>0.0.17</version>
 </dependency>
 ```
 
@@ -303,7 +303,7 @@ public interface HelloApi extends BaseApi {
 
 ```java
 
-@RetrofitBase(baseApi = BaseApi.class)
+@RetrofitBase(baseInterface = BaseApi.class)
 public interface HelloApi {
     /**
      * call hello API method of backend service
@@ -316,7 +316,7 @@ public interface HelloApi {
 }
 ```
 
-如果 `HelloApi` 使用 `extends BaseApi` 并且使用了 `@RetrofitBase(baseApi = BaseApi.class)`, stater会优先去使用 `@RetrofitBase(baseApi = BaseApi.class)`
+如果 `HelloApi` 使用 `extends BaseApi` 并且使用了 `@RetrofitBase(baseInterface = BaseApi.class)`, starter会优先去使用 `@RetrofitBase(baseInterface = BaseApi.class)`
 
 #### @RetrofitUrlPrefix 注解
 

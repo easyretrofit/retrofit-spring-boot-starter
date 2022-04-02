@@ -5,6 +5,6 @@ import io.github.liuziyuan.retrofit.annotation.RetrofitBase;
 /**
  * @author liuziyuan
  */
-@RetrofitBase(baseApi = TestApi.class)
+@RetrofitBase(baseInterface = TestApi.class)
 public interface AnnotationApi{
 }

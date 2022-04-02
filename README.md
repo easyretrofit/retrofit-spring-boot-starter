@@ -28,7 +28,7 @@ _Feature_
 <dependency>
     <groupId>io.github.liuziyuan</groupId>
     <artifactId>retrofit-spring-boot-starter</artifactId>
-    <version>0.0.15</version>
+    <version>0.0.17</version>
 </dependency>
 ```
 
@@ -339,7 +339,7 @@ Use @RetrofitBase annotation to set @RetrofitBuilder Interface file
 
 ```java
 
-@RetrofitBase(baseApi = BaseApi.class)
+@RetrofitBase(baseInterface = BaseApi.class)
 public interface HelloApi {
     /**
      * call hello API method of backend service
@@ -352,7 +352,7 @@ public interface HelloApi {
 }
 ```
 
-if `HelloApi` use `extends BaseApi` and used `@RetrofitBase(baseApi = BaseApi.class)`, The starter first to use `@RetrofitBase(baseApi = BaseApi.class)`
+if `HelloApi` use `extends BaseApi` and used `@RetrofitBase(baseInterface = BaseApi.class)`, The starter first to use `@RetrofitBase(baseInterface = BaseApi.class)`
 
 #### @RetrofitUrlPrefix Annotation
 

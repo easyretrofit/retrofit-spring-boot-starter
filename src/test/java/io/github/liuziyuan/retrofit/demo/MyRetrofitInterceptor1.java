@@ -6,19 +6,12 @@ import lombok.SneakyThrows;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.io.IOException;
 
 /**
  * @author liuziyuan
  * @date 1/5/2022 5:41 PM
  */
-@Component
 public class MyRetrofitInterceptor1 extends BaseInterceptor {
-
-    @Autowired
-    private RetrofitResourceContext context;
 
     @SneakyThrows
     @Override

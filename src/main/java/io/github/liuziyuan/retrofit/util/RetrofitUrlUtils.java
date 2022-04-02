@@ -1,6 +1,6 @@
 package io.github.liuziyuan.retrofit.util;
 
-import io.github.liuziyuan.retrofit.exception.RetrofitBaseUrlException;
+import io.github.liuziyuan.retrofit.exception.BaseUrlException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.env.Environment;
@@ -12,11 +12,11 @@ import java.net.URL;
  * @author liuziyuan
  */
 @Slf4j
-public class RetrofitUtils {
+public class RetrofitUrlUtils {
 
     private static final String SUFFIX = "/";
 
-    private RetrofitUtils() {
+    private RetrofitUrlUtils() {
     }
 
     public static String convertBaseUrl(String baseUrl, Environment environment, boolean checkUrl) {
@@ -50,12 +50,12 @@ public class RetrofitUtils {
 
     private static String upperToLower(String str) {
         if (StringUtils.isNotEmpty(str)) {
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             //排除第一个字符
             for (int i = 0; i < str.length(); i++) {
                 char c = str.charAt(i);
                 if (Character.isUpperCase(c)) {
-                    sb.append("-" + Character.toLowerCase(c));
+                    sb.append("-").append(Character.toLowerCase(c));
                 } else {
                     sb.append(c);
                 }
@@ -68,10 +68,9 @@ public class RetrofitUtils {
 
     public static URL getURL(String urlString) {
         try {
-            URL url = new URL(urlString);
-            return url;
+            return new URL(urlString);
         } catch (MalformedURLException exception) {
-            throw new RetrofitBaseUrlException("URL[" + urlString + "] could not be resolved", exception);
+            throw new BaseUrlException("URL[" + urlString + "] could not be resolved", exception);
         }
     }
 

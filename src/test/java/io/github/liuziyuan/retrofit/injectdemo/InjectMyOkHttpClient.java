@@ -1,7 +1,9 @@
-package io.github.liuziyuan.retrofit.demo;
+package io.github.liuziyuan.retrofit.injectdemo;
 
 import io.github.liuziyuan.retrofit.extension.BaseOkHttpClientBuilder;
 import okhttp3.OkHttpClient;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 
@@ -9,9 +11,11 @@ import java.time.Duration;
  * @author liuziyuan
  * @date 12/31/2021 11:54 AM
  */
-public class MyOkHttpClient extends BaseOkHttpClientBuilder {
+@Component
+public class InjectMyOkHttpClient extends BaseOkHttpClientBuilder {
 
-    private int timeout = 3000;
+    @Value("${okhttpclient.timeout}")
+    private int timeout;
 
     @Override
     public OkHttpClient.Builder buildOkHttpClientBuilder(OkHttpClient.Builder builder) {

@@ -1,6 +1,5 @@
 package io.github.liuziyuan.retrofit;
 
-import io.github.liuziyuan.retrofit.exception.Message;
 import io.github.liuziyuan.retrofit.generator.RetrofitBuilderGenerator;
 import io.github.liuziyuan.retrofit.proxy.RetrofitServiceProxyFactory;
 import io.github.liuziyuan.retrofit.resource.RetrofitClientBean;
@@ -26,6 +25,9 @@ import java.util.Objects;
 @Slf4j
 public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistryPostProcessor, ApplicationContextAware {
 
+    private static final String WARNING_RETROFIT_CLIENT_EMPTY = "The [Retrofit Client] is not found in the 'RetrofitResourceContext'. You may not be using @RetrofitBuilder in the basePackages";
+    private static final String RETROFIT_RESOURCE_CONTEXT_NOT_FOUND = "The 'RetrofitResourceContext' object not found in the Spring 'ApplicationContext'. You may not be using @EnableRetrofit";
+
     private ApplicationContext applicationContext;
 
     @Override
@@ -36,44 +38,51 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
         BeanDefinitionRegistry beanDefinitionRegistry = (BeanDefinitionRegistry) beanFactory;
-        BeanDefinitionBuilder builder;
         RetrofitResourceContext context;
         try {
+            // set context
             context = (RetrofitResourceContext) beanFactory.getBean(RetrofitResourceContext.class.getName());
             context.setApplicationContext(applicationContext);
             beanFactory.autowireBean(context);
             List<RetrofitClientBean> retrofitClientBeanList = context.getRetrofitClients();
-            //registry Retrofit object
-            for (RetrofitClientBean clientBean : retrofitClientBeanList) {
-                builder = BeanDefinitionBuilder.genericBeanDefinition(Retrofit.class, () -> {
-                    RetrofitBuilderGenerator retrofitBuilderGenerator = new RetrofitBuilderGenerator(clientBean, context);
-                    final Retrofit.Builder retrofitBuilder = retrofitBuilderGenerator.generate();
-                    return retrofitBuilder.build();
-                });
-                GenericBeanDefinition definition = (GenericBeanDefinition) builder.getRawBeanDefinition();
-                definition.addQualifier(new AutowireCandidateQualifier(Qualifier.class, clientBean.getRetrofitInstanceName()));
-                beanDefinitionRegistry.registerBeanDefinition(clientBean.getRetrofitInstanceName(), definition);
-            }
-            //registry  proxy object of retrofit api interface
-            for (RetrofitClientBean clientBean : retrofitClientBeanList) {
-                for (RetrofitServiceBean serviceBean : clientBean.getRetrofitServices()) {
-                    builder = BeanDefinitionBuilder.genericBeanDefinition(serviceBean.getSelfClazz());
-                    GenericBeanDefinition definition = (GenericBeanDefinition) builder.getRawBeanDefinition();
-                    definition.getConstructorArgumentValues().addGenericArgumentValue(Objects.requireNonNull(definition.getBeanClassName()));
-                    definition.getConstructorArgumentValues().addGenericArgumentValue(serviceBean);
-                    definition.addQualifier(new AutowireCandidateQualifier(Qualifier.class, serviceBean.getSelfClazz().getName()));
-                    definition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
-                    definition.setBeanClass(RetrofitServiceProxyFactory.class);
-                    beanDefinitionRegistry.registerBeanDefinition(serviceBean.getSelfClazz().getName(), definition);
-                }
-            }
+            // registry Retrofit object
+            registryRetrofitInstance(beanDefinitionRegistry, retrofitClientBeanList, context);
+            // registry proxy object of retrofit api interface
+            registryRetrofitInterfaceProxy(beanDefinitionRegistry, retrofitClientBeanList);
+            // set log
             setLog(context);
         } catch (NoSuchBeanDefinitionException exception) {
-            log.error(Message.RETROFIT_RESOURCE_CONTEXT_NOT_FOUND);
+            log.error(RETROFIT_RESOURCE_CONTEXT_NOT_FOUND);
             throw exception;
         }
+    }
 
+    private void registryRetrofitInstance(BeanDefinitionRegistry beanDefinitionRegistry, List<RetrofitClientBean> retrofitClientBeanList, RetrofitResourceContext context) {
+        for (RetrofitClientBean clientBean : retrofitClientBeanList) {
+            BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(Retrofit.class, () -> {
+                RetrofitBuilderGenerator retrofitBuilderGenerator = new RetrofitBuilderGenerator(clientBean, context);
+                final Retrofit.Builder retrofitBuilder = retrofitBuilderGenerator.generate();
+                return retrofitBuilder.build();
+            });
+            GenericBeanDefinition definition = (GenericBeanDefinition) builder.getRawBeanDefinition();
+            definition.addQualifier(new AutowireCandidateQualifier(Qualifier.class, clientBean.getRetrofitInstanceName()));
+            beanDefinitionRegistry.registerBeanDefinition(clientBean.getRetrofitInstanceName(), definition);
+        }
+    }
 
+    private void registryRetrofitInterfaceProxy(BeanDefinitionRegistry beanDefinitionRegistry, List<RetrofitClientBean> retrofitClientBeanList) {
+        for (RetrofitClientBean clientBean : retrofitClientBeanList) {
+            for (RetrofitServiceBean serviceBean : clientBean.getRetrofitServices()) {
+                BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(serviceBean.getSelfClazz());
+                GenericBeanDefinition definition = (GenericBeanDefinition) builder.getRawBeanDefinition();
+                definition.getConstructorArgumentValues().addGenericArgumentValue(Objects.requireNonNull(definition.getBeanClassName()));
+                definition.getConstructorArgumentValues().addGenericArgumentValue(serviceBean);
+                definition.addQualifier(new AutowireCandidateQualifier(Qualifier.class, serviceBean.getSelfClazz().getName()));
+                definition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
+                definition.setBeanClass(RetrofitServiceProxyFactory.class);
+                beanDefinitionRegistry.registerBeanDefinition(serviceBean.getSelfClazz().getName(), definition);
+            }
+        }
     }
 
     @Override
@@ -83,24 +92,25 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
 
     private void setLog(RetrofitResourceContext context) {
         log.info("\n" +
-                "__________        __                 _____.__  __   \n" +
-                "\\______   \\ _____/  |________  _____/ ____\\__|/  |_ \n" +
-                " |       _// __ \\   __\\_  __ \\/  _ \\   __\\|  \\   __\\\n" +
-                " |    |   \\  ___/|  |  |  | \\(  <_> )  |  |  ||  |  \n" +
-                " |____|_  /\\___  >__|  |__|   \\____/|__|  |__||__|  \n" +
-                "        \\/     \\/                                   \n" +
-                "::Retrofit Spring Boot Starter ::          ({})\n" +
-                "::Retrofit ::                              ({})\n",
+                        "__________        __                 _____.__  __   \n" +
+                        "\\______   \\ _____/  |________  _____/ ____\\__|/  |_ \n" +
+                        " |       _// __ \\   __\\_  __ \\/  _ \\   __\\|  \\   __\\\n" +
+                        " |    |   \\  ___/|  |  |  | \\(  <_> )  |  |  ||  |  \n" +
+                        " |____|_  /\\___  >__|  |__|   \\____/|__|  |__||__|  \n" +
+                        "        \\/     \\/                                   \n" +
+                        "::Retrofit Spring Boot Starter ::          ({})\n" +
+                        "::Retrofit ::                              ({})\n",
                 this.getClass().getPackage().getImplementationVersion(),
                 "v2.9.0");
 
         if (context.getRetrofitClients().isEmpty()) {
-            log.warn(Message.WARNING_RETROFIT_CLIENT_EMPTY);
+            log.warn(WARNING_RETROFIT_CLIENT_EMPTY);
         }
         for (RetrofitClientBean retrofitClient : context.getRetrofitClients()) {
             final String retrofitInstanceName = retrofitClient.getRetrofitInstanceName();
             final String realHostUrl = retrofitClient.getRealHostUrl();
             log.info("---Retrofit Client : HostURL: {}, Retrofit instance name: {}", realHostUrl, retrofitInstanceName);
+            log.debug("Retrofit Client toString: {}", retrofitClient.toString());
             for (RetrofitServiceBean retrofitService : retrofitClient.getRetrofitServices()) {
                 final Class<?> selfClazz = retrofitService.getSelfClazz();
                 final Class<?> parentClazz = retrofitService.getParentClazz();

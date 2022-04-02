@@ -43,8 +43,7 @@ public class UrlOverWriteInterceptor extends BaseInterceptor {
                 if (StringUtils.isNotEmpty(value)) {
                     return chain.proceed(setRequest(value, request, method));
                 }
-            } catch (IllegalArgumentException ex) {
-                continue;
+            } catch (IllegalArgumentException ignored) {
             }
         }
         return chain.proceed(request);

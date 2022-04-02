@@ -15,5 +15,5 @@ public @interface RetrofitBase {
      * The class of baseApi is an interface that has declared @RetrofitBuilder
      * @return Class
      */
-    Class<?> baseApi();
+    Class<?> baseInterface();
 }
