@@ -11,9 +11,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RetrofitConfig {
 
-    private RetrofitConfig() {
-    }
-
     @Bean
     @ConditionalOnMissingBean
     public static RetrofitResourceDefinitionRegistry retrofitResourceDefinitionRegistry() {
