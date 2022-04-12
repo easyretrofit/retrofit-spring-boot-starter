@@ -32,7 +32,6 @@ public class RetrofitUrl {
         setRetrofitUrlPrefix(retrofitUrlPrefix);
         setDefaultUrl();
         setDynamicUrl();
-        retrofitUrlAvailable();
     }
 
     private void setRetrofitUrlPrefix(String url) {
@@ -66,16 +65,5 @@ public class RetrofitUrl {
         }
         defaultUrl = new BaseUrl(url);
     }
-
-    private void setUrlStatus() {
-    }
-
-    private void retrofitUrlAvailable() {
-        if (urlStatus.equals(UrlStatus.NULL)) {
-            throw new BaseUrlException("inputDefaultBaseUrl: {} and inputDynamicBaseUrl:{} ,Failed to generate RetrofitUrl object," +
-                    "Default URL and dynamic URL are not allowed to be empty");
-        }
-    }
-
 
 }
