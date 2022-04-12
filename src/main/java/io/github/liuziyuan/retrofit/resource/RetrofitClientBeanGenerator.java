@@ -28,6 +28,7 @@ public class RetrofitClientBeanGenerator implements Generator<RetrofitClientBean
             clientBean.setInterceptors(serviceBean.getInterceptors());
             clientBean.setRealHostUrl(serviceBean.getRetrofitUrl().getDefaultUrl().getRealHostUrl());
             clientBean.setRetrofitInstanceName(Retrofit.class.getSimpleName());
+            clientBean.setUrlStatus(serviceBean.getRetrofitUrl().getUrlStatus());
         }
         clientBean.addInheritedInterceptors(serviceBean.getMyInterceptors());
         clientBean.addRetrofitServiceBean(serviceBean);
@@ -38,6 +39,7 @@ public class RetrofitClientBeanGenerator implements Generator<RetrofitClientBean
         for (RetrofitClientBean clientBean : clientBeanList) {
             RetrofitResourceComparer comparer = new RetrofitResourceComparer(clientBean, serviceBean);
             if (comparer.isSameHostUrl() &&
+                    comparer.isDummyUrlCompare() &&
                     comparer.isSameRetrofitBuilderInstance() &&
                     comparer.isSameInterceptors()) {
                 return clientBean;

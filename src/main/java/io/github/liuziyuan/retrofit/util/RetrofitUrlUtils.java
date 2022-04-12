@@ -38,7 +38,7 @@ public class RetrofitUrlUtils {
                 log.warn("The URL {} could not be resolved, Retrofit Service will be discarded", baseUrl);
             }
         }
-        if (currentUrl != null || toLowerUrl != null) {
+        if (StringUtils.isNotEmpty(currentUrl) || StringUtils.isNotEmpty(toLowerUrl)) {
             // 解析baseUrl占位符
             if (!baseUrl.endsWith(SUFFIX)) {
                 baseUrl += SUFFIX;
@@ -74,4 +74,12 @@ public class RetrofitUrlUtils {
         }
     }
 
+    public static URL getLocalURL(Environment environment) {
+        final int serverPort = Integer.parseInt(environment.getProperty("server.port"));
+        try {
+            return new URL("http", "localhost", serverPort, "/");
+        } catch (MalformedURLException e) {
+            throw new BaseUrlException("Failed to generate localhost URL");
+        }
+    }
 }

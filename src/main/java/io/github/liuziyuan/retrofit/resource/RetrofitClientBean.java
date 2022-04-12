@@ -21,6 +21,7 @@ public class RetrofitClientBean {
 
     private String retrofitInstanceName;
     private String realHostUrl;
+    private UrlStatus urlStatus;
     private RetrofitBuilder retrofitBuilder;
     private Set<RetrofitInterceptor> interceptors;
     private Set<RetrofitInterceptor> inheritedInterceptors;

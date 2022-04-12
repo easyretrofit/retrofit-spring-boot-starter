@@ -81,6 +81,11 @@ public class RetrofitResourceComparer {
         return StringUtils.equals(serviceBean.getRetrofitUrl().getDefaultUrl().getRealHostUrl(), clientBean.getRealHostUrl());
     }
 
+    public boolean isDummyUrlCompare() {
+        return serviceBean.getRetrofitUrl().getUrlStatus().equals(clientBean.getUrlStatus());
+    }
+
+
     public boolean isSameRetrofitBuilderInstance() {
         return okHttpClientInstanceCompare() &&
                 callBackExecutorCompare() &&
