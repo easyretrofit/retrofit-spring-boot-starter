@@ -75,9 +75,8 @@ public class RetrofitUrlUtils {
     }
 
     public static URL getLocalURL(Environment environment) {
-        final int serverPort = Integer.parseInt(environment.getProperty("server.port"));
         try {
-            return new URL("http", "localhost", serverPort, "/");
+            return new URL("http", "localhost", "/");
         } catch (MalformedURLException e) {
             throw new BaseUrlException("Failed to generate localhost URL");
         }
