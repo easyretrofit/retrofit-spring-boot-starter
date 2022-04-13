@@ -4,6 +4,7 @@ import io.github.liuziyuan.retrofit.generator.RetrofitBuilderGenerator;
 import io.github.liuziyuan.retrofit.proxy.RetrofitServiceProxyFactory;
 import io.github.liuziyuan.retrofit.resource.RetrofitClientBean;
 import io.github.liuziyuan.retrofit.resource.RetrofitServiceBean;
+import io.github.liuziyuan.retrofit.resource.UrlStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.core.env.Environment;
 import retrofit2.Retrofit;
 
 import java.util.List;
@@ -50,7 +52,7 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
             // registry proxy object of retrofit api interface
             registryRetrofitInterfaceProxy(beanDefinitionRegistry, retrofitClientBeanList);
             // set log
-            setLog(context);
+            setLog(context, context.getEnvironment());
         } catch (NoSuchBeanDefinitionException exception) {
             log.error(RETROFIT_RESOURCE_CONTEXT_NOT_FOUND);
             throw exception;
@@ -90,7 +92,7 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
         this.applicationContext = applicationContext;
     }
 
-    private void setLog(RetrofitResourceContext context) {
+    private void setLog(RetrofitResourceContext context, Environment environment) {
         log.info("\n" +
                         "__________        __                 _____.__  __   \n" +
                         "\\______   \\ _____/  |________  _____/ ____\\__|/  |_ \n" +
@@ -109,7 +111,11 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
         for (RetrofitClientBean retrofitClient : context.getRetrofitClients()) {
             final String retrofitInstanceName = retrofitClient.getRetrofitInstanceName();
             final String realHostUrl = retrofitClient.getRealHostUrl();
-            log.info("---Retrofit Client : HostURL: {}, Retrofit instance name: {}", realHostUrl, retrofitInstanceName);
+            if (retrofitClient.getUrlStatus().equals(UrlStatus.DYNAMIC_URL_ONLY)) {
+                log.warn("---Retrofit Client : HostURL[Dummy]: {}, Retrofit instance name: {}", realHostUrl, retrofitInstanceName);
+            } else {
+                log.info("---Retrofit Client : HostURL: {}, Retrofit instance name: {}", realHostUrl, retrofitInstanceName);
+            }
             log.debug("Retrofit Client toString: {}", retrofitClient.toString());
             for (RetrofitServiceBean retrofitService : retrofitClient.getRetrofitServices()) {
                 final Class<?> selfClazz = retrofitService.getSelfClazz();

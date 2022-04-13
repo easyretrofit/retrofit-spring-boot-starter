@@ -1,3 +1,5 @@
+server:
+  port: 8080
 app.test.base-url: http://localhost:8080
 app.hello.base-url: http://localhost:8081/hello
 app.hello-inherit.base-url: http://localhost:8081/hello/inherit

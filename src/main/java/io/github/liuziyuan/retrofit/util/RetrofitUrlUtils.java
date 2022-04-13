@@ -35,10 +35,10 @@ public class RetrofitUrlUtils {
                 baseUrl = toLowerUrl;
             } catch (IllegalArgumentException exception) {
                 toLowerUrl = null;
-                log.warn("The URL {} could not be resolved, Retrofit Service will be discarded", baseUrl);
+                log.warn("The URL: {} could not be resolved, Retrofit Service will be discarded", baseUrl);
             }
         }
-        if (currentUrl != null || toLowerUrl != null) {
+        if (StringUtils.isNotEmpty(currentUrl) || StringUtils.isNotEmpty(toLowerUrl)) {
             // 解析baseUrl占位符
             if (!baseUrl.endsWith(SUFFIX)) {
                 baseUrl += SUFFIX;
@@ -70,8 +70,16 @@ public class RetrofitUrlUtils {
         try {
             return new URL(urlString);
         } catch (MalformedURLException exception) {
-            throw new BaseUrlException("URL[" + urlString + "] could not be resolved", exception);
+            String url = StringUtils.isEmpty(urlString) ? "EMPTY" : urlString;
+            throw new BaseUrlException("URL: [" + url + "] could not be resolved", exception);
         }
     }
 
+    public static URL getLocalURL(Environment environment) {
+        try {
+            return new URL("http", "localhost", "/");
+        } catch (MalformedURLException e) {
+            throw new BaseUrlException("Failed to generate localhost URL");
+        }
+    }
 }
