@@ -1,6 +1,5 @@
 package io.github.liuziyuan.retrofit.resource;
 
-import io.github.liuziyuan.retrofit.exception.BaseUrlException;
 import io.github.liuziyuan.retrofit.util.RetrofitUrlUtils;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +27,7 @@ public class RetrofitUrl {
     public RetrofitUrl(String baseUrl, String inputDynamicBaseUrl, String retrofitUrlPrefix, Environment environment) {
         this.environment = environment;
         this.inputDefaultBaseUrl = RetrofitUrlUtils.convertBaseUrl(baseUrl, environment, false);
-        this.inputDynamicBaseUrl = RetrofitUrlUtils.convertBaseUrl(inputDynamicBaseUrl,environment, false);
+        this.inputDynamicBaseUrl = RetrofitUrlUtils.convertBaseUrl(inputDynamicBaseUrl, environment, false);
         setRetrofitUrlPrefix(retrofitUrlPrefix);
         setDefaultUrl();
         setDynamicUrl();
@@ -59,7 +58,10 @@ public class RetrofitUrl {
         if (StringUtils.isEmpty(inputDefaultBaseUrl) && StringUtils.isNotEmpty(inputDynamicBaseUrl)) {
             url = RetrofitUrlUtils.getLocalURL(environment).toString();
             urlStatus = UrlStatus.DYNAMIC_URL_ONLY;
-        } else {
+        } else if (StringUtils.isEmpty(inputDefaultBaseUrl) && StringUtils.isEmpty(inputDynamicBaseUrl)) {
+            url = RetrofitUrlUtils.getLocalURL(environment).toString();
+            urlStatus = UrlStatus.NULL;
+        } else{
             url = RetrofitUrlUtils.convertBaseUrl(inputDefaultBaseUrl, environment, true);
             urlStatus = UrlStatus.DEFAULT_URL_ONLY;
         }
