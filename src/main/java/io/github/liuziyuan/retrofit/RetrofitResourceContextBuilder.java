@@ -29,7 +29,7 @@ public class RetrofitResourceContextBuilder {
 
     public RetrofitResourceContextBuilder build(Set<Class<?>> retrofitBuilderClassSet) {
         setRetrofitServiceBeanList(retrofitBuilderClassSet);
-        setRetrofitClientBeanList(retrofitServiceBeanList);
+        setRetrofitClientBeanList();
         setRetrofitServiceBeanHashMap();
         return this;
     }
@@ -65,9 +65,9 @@ public class RetrofitResourceContextBuilder {
         }
     }
 
-    private void setRetrofitClientBeanList(List<RetrofitServiceBean> serviceBeanList) {
+    private void setRetrofitClientBeanList() {
         RetrofitClientBeanGenerator clientBeanHandler;
-        for (RetrofitServiceBean serviceBean : serviceBeanList) {
+        for (RetrofitServiceBean serviceBean : getRetrofitServiceBean()) {
             clientBeanHandler = new RetrofitClientBeanGenerator(retrofitClientBeanList, serviceBean);
             final RetrofitClientBean retrofitClientBean = clientBeanHandler.generate();
             if (retrofitClientBean != null && retrofitClientBeanList.stream().noneMatch(clientBean -> clientBean.getRetrofitInstanceName().equals(retrofitClientBean.getRetrofitInstanceName()))) {

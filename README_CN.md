@@ -11,7 +11,7 @@
 <dependency>
     <groupId>io.github.liuziyuan</groupId>
     <artifactId>retrofit-spring-boot-starter</artifactId>
-    <version>0.0.18</version>
+    <version>0.0.19</version>
 </dependency>
 ```
 
@@ -406,6 +406,29 @@ public class HelloController {
 
 你可以参考 [retrofit-spring-boot-starter-sample-awesome](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-awesome)
 & [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-backend-services)
+
+
+### @RetrofitCloudService Annotation
+在 Spring Cloud 微服务集群, 你可以使用`@RetrofitCloudService`去调用其他方微服务的API。
+这个功能依赖`spring-cloud-starter-loadbalancer`,将以下加入 pom.xml
+```xml
+<dependency>
+   <groupId>org.springframework.cloud</groupId>
+   <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+</dependency>
+```
+
+```java
+@RetrofitBuilder
+@RetrofitCloudService(name = "catalog")
+public interface RetrofitApi {
+
+    @GET("echo/{string}")
+    Call<ResponseBody> echo(@Path("string") String string);
+}
+```
+`catalog`是其他微服务的服务名称，也就是在注册中心的名称
+
 
 ## 为什么这里会有另一个 retrofit-spring-boot-starter
 

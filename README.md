@@ -11,7 +11,8 @@ _Feature_
    more structurally through Interface inheritance
 3. **DynamicURL**, When using `@RetrofitDynamicBaseUrl` annotation, the entire API interface file uses dynamic base url,
    while other API interface files are not affected
-
+4. **Spring Cloud Web Client**, When using `@RetrofitCloudService(name = "xxx")` annotation, and set name is `micro services nameing`,
+   entire API interface will call that micro services API.
 ## Table of contents
 
 - [Quick Start](#quick-start)
@@ -28,7 +29,7 @@ _Feature_
 <dependency>
     <groupId>io.github.liuziyuan</groupId>
     <artifactId>retrofit-spring-boot-starter</artifactId>
-    <version>0.0.18</version>
+    <version>0.0.19</version>
 </dependency>
 ```
 
@@ -447,6 +448,29 @@ You can use `@RetrofitDynamicBaseUrl` to dynamically change the `baseUrl` in `@R
 You can refer
 to [retrofit-spring-boot-starter-sample-awesome](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-awesome)
 & [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-backend-services)
+
+### @RetrofitCloudService Annotation
+In spring cloud micro services cluster, You can use `@RetrofitCloudService` to call another micro service.
+This function depends on `spring-cloud-starter-loadbalancer`,so adding to pom.xml
+```xml
+<dependency>
+   <groupId>org.springframework.cloud</groupId>
+   <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+</dependency>
+```
+
+```java
+@RetrofitBuilder
+@RetrofitCloudService(name = "catalog")
+public interface RetrofitApi {
+
+    @GET("echo/{string}")
+    Call<ResponseBody> echo(@Path("string") String string);
+}
+```
+
+the `catalog` is name of provider micro service. That's the name in the registry center.
+
 
 ## Why is there another retrofit-spring-boot-starter
 
