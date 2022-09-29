@@ -11,7 +11,7 @@
 <dependency>
     <groupId>io.github.liuziyuan</groupId>
     <artifactId>retrofit-spring-boot-starter</artifactId>
-    <version>0.0.18</version>
+    <version>0.0.19</version>
 </dependency>
 ```
 
