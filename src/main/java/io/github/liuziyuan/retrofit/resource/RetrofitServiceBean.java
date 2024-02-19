@@ -1,7 +1,7 @@
 package io.github.liuziyuan.retrofit.resource;
 
 import io.github.liuziyuan.retrofit.annotation.RetrofitBuilder;
-import io.github.liuziyuan.retrofit.annotation.RetrofitCloudService;
+//import io.github.liuziyuan.retrofit.annotation.RetrofitCloudService;
 import io.github.liuziyuan.retrofit.annotation.RetrofitInterceptor;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -21,7 +21,7 @@ public class RetrofitServiceBean {
     private Class<?> selfClazz;
     private Class<?> parentClazz;
     private RetrofitUrl retrofitUrl;
-    private RetrofitCloudService retrofitCloudService;
+//    private RetrofitCloudService retrofitCloudService;
     private RetrofitBuilder retrofitBuilder;
     /**
      * parent Interface interceptors

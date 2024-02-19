@@ -33,15 +33,15 @@ public class RetrofitServiceBeanGenerator implements Generator<RetrofitServiceBe
         retrofitServiceBean.setParentClazz(retrofitBuilderClazz);
         RetrofitBuilder retrofitBuilderAnnotation = retrofitBuilderClazz.getDeclaredAnnotation(RetrofitBuilder.class);
         retrofitServiceBean.setRetrofitBuilder(retrofitBuilderAnnotation);
-        RetrofitCloudService retrofitCloudServiceAnnotation = clazz.getDeclaredAnnotation(RetrofitCloudService.class);
-        retrofitServiceBean.setRetrofitCloudService(retrofitCloudServiceAnnotation);
+//        RetrofitCloudService retrofitCloudServiceAnnotation = clazz.getDeclaredAnnotation(RetrofitCloudService.class);
+//        retrofitServiceBean.setRetrofitCloudService(retrofitCloudServiceAnnotation);
         Set<RetrofitInterceptor> interceptors = getInterceptors(retrofitBuilderClazz);
         Set<RetrofitInterceptor> myInterceptors = getInterceptors(clazz);
-        try {
-            RetrofitInterceptor annotation = retrofitCloudServiceAnnotation.annotationType().getAnnotation(RetrofitInterceptor.class);
-            myInterceptors.add(annotation);
-        } catch (NullPointerException ignored) {
-        }
+//        try {
+//            RetrofitInterceptor annotation = retrofitCloudServiceAnnotation.annotationType().getAnnotation(RetrofitInterceptor.class);
+//            myInterceptors.add(annotation);
+//        } catch (NullPointerException ignored) {
+//        }
         retrofitServiceBean.setMyInterceptors(myInterceptors);
         retrofitServiceBean.setInterceptors(interceptors);
         RetrofitUrl retrofitUrl = getRetrofitUrl(retrofitBuilderAnnotation);
