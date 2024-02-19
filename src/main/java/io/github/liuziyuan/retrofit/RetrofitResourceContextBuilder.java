@@ -18,13 +18,13 @@ public class RetrofitResourceContextBuilder {
     private List<RetrofitClientBean> retrofitClientBeanList;
     private List<RetrofitServiceBean> retrofitServiceBeanList;
     private final Map<String, RetrofitServiceBean> retrofitServiceBeanHashMap;
-    private final Environment environment;
+    private final Env env;
 
-    public RetrofitResourceContextBuilder(Environment environment) {
+    public RetrofitResourceContextBuilder(Env env) {
         retrofitClientBeanList = new ArrayList<>();
         retrofitServiceBeanList = new ArrayList<>();
         retrofitServiceBeanHashMap = new HashMap<>();
-        this.environment = environment;
+        this.env = env;
     }
 
     public RetrofitResourceContextBuilder build(Set<Class<?>> retrofitBuilderClassSet) {
@@ -57,7 +57,7 @@ public class RetrofitResourceContextBuilder {
     private void setRetrofitServiceBeanList(Set<Class<?>> retrofitBuilderClassSet) {
         RetrofitServiceBeanGenerator serviceBeanHandler;
         for (Class<?> clazz : retrofitBuilderClassSet) {
-            serviceBeanHandler = new RetrofitServiceBeanGenerator(clazz, environment);
+            serviceBeanHandler = new RetrofitServiceBeanGenerator(clazz, env);
             final RetrofitServiceBean serviceBean = serviceBeanHandler.generate();
             if (serviceBean != null) {
                 retrofitServiceBeanList.add(serviceBean);

@@ -7,6 +7,8 @@ import org.springframework.core.env.Environment;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * @author liuziyuan
@@ -19,11 +21,12 @@ public class RetrofitUrlUtils {
     private RetrofitUrlUtils() {
     }
 
-    public static String convertBaseUrl(String baseUrl, Environment environment, boolean checkUrl) {
+
+    public static String convertBaseUrl(String baseUrl, Function<String, String> resolveRequiredPlaceholders, boolean checkUrl) {
         String currentUrl = baseUrl;
         String toLowerUrl = baseUrl;
         try {
-            currentUrl = environment.resolveRequiredPlaceholders(currentUrl);
+            currentUrl = resolveRequiredPlaceholders.apply(currentUrl);
             baseUrl = currentUrl;
         } catch (IllegalArgumentException exception) {
             currentUrl = null;
@@ -31,7 +34,7 @@ public class RetrofitUrlUtils {
         if (currentUrl == null) {
             try {
                 toLowerUrl = upperToLower(toLowerUrl);
-                toLowerUrl = environment.resolveRequiredPlaceholders(toLowerUrl);
+                toLowerUrl = resolveRequiredPlaceholders.apply(toLowerUrl);
                 baseUrl = toLowerUrl;
             } catch (IllegalArgumentException exception) {
                 toLowerUrl = null;
@@ -75,7 +78,7 @@ public class RetrofitUrlUtils {
         }
     }
 
-    public static URL getLocalURL(Environment environment) {
+    public static URL getLocalURL() {
         try {
             return new URL("http", "localhost", "/");
         } catch (MalformedURLException e) {

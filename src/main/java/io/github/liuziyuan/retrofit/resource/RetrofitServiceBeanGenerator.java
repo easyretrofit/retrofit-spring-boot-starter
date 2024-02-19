@@ -1,5 +1,6 @@
 package io.github.liuziyuan.retrofit.resource;
 
+import io.github.liuziyuan.retrofit.Env;
 import io.github.liuziyuan.retrofit.Generator;
 import io.github.liuziyuan.retrofit.annotation.*;
 import io.github.liuziyuan.retrofit.exception.RetrofitStarterException;
@@ -17,11 +18,11 @@ import java.util.Set;
  */
 public class RetrofitServiceBeanGenerator implements Generator<RetrofitServiceBean> {
     private final Class<?> clazz;
-    private final Environment environment;
+    private final Env env;
 
-    public RetrofitServiceBeanGenerator(Class<?> clazz, Environment environment) {
+    public RetrofitServiceBeanGenerator(Class<?> clazz, Env env) {
         this.clazz = clazz;
-        this.environment = environment;
+        this.env = env;
     }
 
     @Override
@@ -56,7 +57,7 @@ public class RetrofitServiceBeanGenerator implements Generator<RetrofitServiceBe
         return new RetrofitUrl(retrofitBuilderAnnotation.baseUrl(),
                 retrofitDynamicBaseUrlValue,
                 retrofitUrlPrefix == null ? null : retrofitUrlPrefix.value(),
-                environment);
+                env);
     }
 
     private Class<?> getParentRetrofitBuilderClazz() {
