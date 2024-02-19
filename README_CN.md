@@ -408,7 +408,7 @@ public class HelloController {
 & [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-backend-services)
 
 
-### @RetrofitCloudService Annotation
+### @RetrofitCloudService Annotation (v0.0.20 临时放弃)
 在 Spring Cloud 微服务集群, 你可以使用`@RetrofitCloudService`去调用其他方微服务的API。
 这个功能依赖`spring-cloud-starter-loadbalancer`,将以下加入 pom.xml
 ```xml

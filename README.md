@@ -449,7 +449,7 @@ You can refer
 to [retrofit-spring-boot-starter-sample-awesome](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-awesome)
 & [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-backend-services)
 
-### @RetrofitCloudService Annotation
+### @RetrofitCloudService Annotation (v0.0.20 temporary discard)
 In spring cloud micro services cluster, You can use `@RetrofitCloudService` to call another micro service.
 This function depends on `spring-cloud-starter-loadbalancer`,so adding to pom.xml
 ```xml
