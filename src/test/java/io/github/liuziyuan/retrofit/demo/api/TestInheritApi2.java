@@ -1,8 +1,6 @@
 package io.github.liuziyuan.retrofit.demo.api;
 
 
-import io.github.liuziyuan.retrofit.annotation.RetrofitInterceptor;
-import io.github.liuziyuan.retrofit.demo.MyRetrofitInterceptor3;
 import retrofit2.Call;
 import retrofit2.http.GET;
 

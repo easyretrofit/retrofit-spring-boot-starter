@@ -1,6 +1,6 @@
 package io.github.liuziyuan.retrofit.injectdemo;
 
-import io.github.liuziyuan.retrofit.extension.BaseConverterFactoryBuilder;
+import io.github.liuziyuan.retrofit.core.extension.BaseConverterFactoryBuilder;
 import org.springframework.stereotype.Component;
 import retrofit2.Converter;
 import retrofit2.converter.gson.GsonConverterFactory;

@@ -1,6 +1,6 @@
 package io.github.liuziyuan.retrofit.demo;
 
-import io.github.liuziyuan.retrofit.extension.BaseConverterFactoryBuilder;
+import io.github.liuziyuan.retrofit.core.extension.BaseConverterFactoryBuilder;
 import retrofit2.Converter;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 

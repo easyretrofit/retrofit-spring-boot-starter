@@ -1,6 +1,6 @@
 package io.github.liuziyuan.retrofit.demo;
 
-import io.github.liuziyuan.retrofit.extension.BaseCallBackExecutorBuilder;
+import io.github.liuziyuan.retrofit.core.extension.BaseCallBackExecutorBuilder;
 
 import java.util.concurrent.Executor;
 
