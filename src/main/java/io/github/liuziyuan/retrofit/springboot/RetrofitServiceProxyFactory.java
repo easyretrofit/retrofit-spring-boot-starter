@@ -1,4 +1,4 @@
-package io.github.liuziyuan.retrofit.springboot.config.proxy;
+package io.github.liuziyuan.retrofit.springboot;
 
 import io.github.liuziyuan.retrofit.core.proxy.RetrofitServiceProxy;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitServiceBean;

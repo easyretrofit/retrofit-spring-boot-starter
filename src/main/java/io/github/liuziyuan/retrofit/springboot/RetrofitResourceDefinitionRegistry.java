@@ -1,7 +1,6 @@
 package io.github.liuziyuan.retrofit.springboot;
 
 import io.github.liuziyuan.retrofit.core.generator.RetrofitBuilderGenerator;
-import io.github.liuziyuan.retrofit.springboot.config.proxy.RetrofitServiceProxyFactory;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitServiceBean;
 import io.github.liuziyuan.retrofit.core.resource.UrlStatus;
