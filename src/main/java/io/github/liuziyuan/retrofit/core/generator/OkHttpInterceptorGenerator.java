@@ -1,6 +1,6 @@
 package io.github.liuziyuan.retrofit.core.generator;
 
-import io.github.liuziyuan.retrofit.springboot.Generator;
+import io.github.liuziyuan.retrofit.core.Generator;
 import io.github.liuziyuan.retrofit.springboot.RetrofitResourceContext;
 import io.github.liuziyuan.retrofit.core.annotation.RetrofitInterceptor;
 import io.github.liuziyuan.retrofit.core.extension.BaseInterceptor;

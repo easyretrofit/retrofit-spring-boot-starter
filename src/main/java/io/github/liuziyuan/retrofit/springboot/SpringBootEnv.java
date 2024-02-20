@@ -1,5 +1,6 @@
 package io.github.liuziyuan.retrofit.springboot;
 
+import io.github.liuziyuan.retrofit.core.Env;
 import org.springframework.core.env.Environment;
 
 public class SpringBootEnv implements Env {

@@ -1,6 +1,6 @@
 package io.github.liuziyuan.retrofit.core.resource;
 
-import io.github.liuziyuan.retrofit.springboot.Env;
+import io.github.liuziyuan.retrofit.core.Env;
 import io.github.liuziyuan.retrofit.core.util.RetrofitUrlUtils;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
