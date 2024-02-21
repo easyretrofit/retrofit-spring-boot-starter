@@ -1,7 +1,7 @@
 package io.github.liuziyuan.retrofit.core.resource;
 
-import io.github.liuziyuan.retrofit.core.extension.BaseCallAdapterFactoryBuilder;
-import io.github.liuziyuan.retrofit.core.extension.BaseConverterFactoryBuilder;
+import io.github.liuziyuan.retrofit.core.builder.BaseCallAdapterFactoryBuilder;
+import io.github.liuziyuan.retrofit.core.builder.BaseConverterFactoryBuilder;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;

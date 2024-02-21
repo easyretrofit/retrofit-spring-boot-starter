@@ -1,6 +1,6 @@
 package io.github.liuziyuan.retrofit.core.generator;
 
-import io.github.liuziyuan.retrofit.core.extension.BaseConverterFactoryBuilder;
+import io.github.liuziyuan.retrofit.core.builder.BaseConverterFactoryBuilder;
 import lombok.SneakyThrows;
 import retrofit2.Converter;
 

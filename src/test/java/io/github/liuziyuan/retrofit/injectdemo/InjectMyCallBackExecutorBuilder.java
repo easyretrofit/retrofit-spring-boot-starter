@@ -1,6 +1,6 @@
 package io.github.liuziyuan.retrofit.injectdemo;
 
-import io.github.liuziyuan.retrofit.core.extension.BaseCallBackExecutorBuilder;
+import io.github.liuziyuan.retrofit.core.builder.BaseCallBackExecutorBuilder;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.Executor;

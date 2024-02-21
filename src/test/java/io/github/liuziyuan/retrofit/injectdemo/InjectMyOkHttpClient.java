@@ -1,6 +1,6 @@
 package io.github.liuziyuan.retrofit.injectdemo;
 
-import io.github.liuziyuan.retrofit.core.extension.BaseOkHttpClientBuilder;
+import io.github.liuziyuan.retrofit.core.builder.BaseOkHttpClientBuilder;
 import okhttp3.OkHttpClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

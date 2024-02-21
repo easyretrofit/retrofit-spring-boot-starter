@@ -4,6 +4,7 @@ import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
 import io.github.liuziyuan.retrofit.core.annotation.InterceptorType;
 import io.github.liuziyuan.retrofit.core.annotation.RetrofitBuilder;
 import io.github.liuziyuan.retrofit.core.annotation.RetrofitInterceptor;
+import io.github.liuziyuan.retrofit.core.builder.*;
 import io.github.liuziyuan.retrofit.core.extension.*;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
 import lombok.SneakyThrows;

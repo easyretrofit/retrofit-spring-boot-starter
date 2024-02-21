@@ -1,4 +1,4 @@
-package io.github.liuziyuan.retrofit.core.extension;
+package io.github.liuziyuan.retrofit.core.builder;
 
 /**
  * abstract class of Builder

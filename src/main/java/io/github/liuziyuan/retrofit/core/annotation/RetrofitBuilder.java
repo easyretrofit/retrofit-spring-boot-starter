@@ -1,6 +1,6 @@
 package io.github.liuziyuan.retrofit.core.annotation;
 
-import io.github.liuziyuan.retrofit.core.extension.*;
+import io.github.liuziyuan.retrofit.core.builder.*;
 import okhttp3.HttpUrl;
 import retrofit2.http.GET;
 

@@ -1,4 +1,4 @@
-package io.github.liuziyuan.retrofit.core.extension;
+package io.github.liuziyuan.retrofit.core.builder;
 
 import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
 import lombok.SneakyThrows;

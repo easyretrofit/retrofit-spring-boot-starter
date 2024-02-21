@@ -1,6 +1,6 @@
 package io.github.liuziyuan.retrofit.core.generator;
 
-import io.github.liuziyuan.retrofit.core.extension.BaseOkHttpClientBuilder;
+import io.github.liuziyuan.retrofit.core.builder.BaseOkHttpClientBuilder;
 import lombok.SneakyThrows;
 import okhttp3.OkHttpClient;
 

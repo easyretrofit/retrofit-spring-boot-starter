@@ -1,7 +1,7 @@
 package io.github.liuziyuan.retrofit.springboot.generator;
 
 import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
-import io.github.liuziyuan.retrofit.core.extension.*;
+import io.github.liuziyuan.retrofit.core.builder.*;
 import io.github.liuziyuan.retrofit.core.generator.RetrofitBuilderGenerator;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;

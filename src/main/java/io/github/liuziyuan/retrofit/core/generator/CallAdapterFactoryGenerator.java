@@ -1,6 +1,6 @@
 package io.github.liuziyuan.retrofit.core.generator;
 
-import io.github.liuziyuan.retrofit.core.extension.BaseCallAdapterFactoryBuilder;
+import io.github.liuziyuan.retrofit.core.builder.BaseCallAdapterFactoryBuilder;
 import lombok.SneakyThrows;
 import retrofit2.CallAdapter;
 

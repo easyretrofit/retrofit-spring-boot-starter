@@ -1,6 +1,6 @@
 package io.github.liuziyuan.retrofit.core.generator;
 
-import io.github.liuziyuan.retrofit.core.extension.BaseCallBackExecutorBuilder;
+import io.github.liuziyuan.retrofit.core.builder.BaseCallBackExecutorBuilder;
 import lombok.SneakyThrows;
 
 import java.util.concurrent.Executor;

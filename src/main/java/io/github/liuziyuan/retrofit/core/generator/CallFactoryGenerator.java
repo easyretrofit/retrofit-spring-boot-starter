@@ -1,6 +1,6 @@
 package io.github.liuziyuan.retrofit.core.generator;
 
-import io.github.liuziyuan.retrofit.core.extension.BaseCallFactoryBuilder;
+import io.github.liuziyuan.retrofit.core.builder.BaseCallFactoryBuilder;
 import lombok.SneakyThrows;
 import okhttp3.Call;
 

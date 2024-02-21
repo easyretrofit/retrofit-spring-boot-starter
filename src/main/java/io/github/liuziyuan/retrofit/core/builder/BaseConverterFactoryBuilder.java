@@ -1,4 +1,4 @@
-package io.github.liuziyuan.retrofit.core.extension;
+package io.github.liuziyuan.retrofit.core.builder;
 
 import retrofit2.Converter;
 
