@@ -1,6 +1,6 @@
 package io.github.liuziyuan.retrofit.core.resource;
 
-import io.github.liuziyuan.retrofit.core.Generator;
+import io.github.liuziyuan.retrofit.core.generator.Generator;
 import retrofit2.Retrofit;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package io.github.liuziyuan.retrofit.core;
+package io.github.liuziyuan.retrofit.core.generator;
 
 /**
  * Generate interface used internally

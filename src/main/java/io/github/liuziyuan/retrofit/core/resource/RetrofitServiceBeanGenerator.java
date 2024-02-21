@@ -1,7 +1,7 @@
 package io.github.liuziyuan.retrofit.core.resource;
 
 import io.github.liuziyuan.retrofit.core.Env;
-import io.github.liuziyuan.retrofit.core.Generator;
+import io.github.liuziyuan.retrofit.core.generator.Generator;
 import io.github.liuziyuan.retrofit.core.annotation.*;
 import io.github.liuziyuan.retrofit.core.exception.RetrofitStarterException;
 

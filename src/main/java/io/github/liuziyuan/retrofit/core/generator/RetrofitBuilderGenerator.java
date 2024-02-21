@@ -1,7 +1,5 @@
 package io.github.liuziyuan.retrofit.core.generator;
 
-import io.github.liuziyuan.retrofit.core.AppContext;
-import io.github.liuziyuan.retrofit.core.Generator;
 import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
 import io.github.liuziyuan.retrofit.core.annotation.InterceptorType;
 import io.github.liuziyuan.retrofit.core.annotation.RetrofitBuilder;
@@ -12,7 +10,6 @@ import lombok.SneakyThrows;
 import okhttp3.Call;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import org.springframework.context.ApplicationContext;
 import org.springframework.util.CollectionUtils;
 import retrofit2.CallAdapter;
 import retrofit2.Converter;

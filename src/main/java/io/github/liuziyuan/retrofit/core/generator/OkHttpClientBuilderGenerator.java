@@ -1,13 +1,8 @@
 package io.github.liuziyuan.retrofit.core.generator;
 
-import io.github.liuziyuan.retrofit.core.AppContext;
-import io.github.liuziyuan.retrofit.core.Generator;
-import io.github.liuziyuan.retrofit.core.extension.BaseConverterFactoryBuilder;
 import io.github.liuziyuan.retrofit.core.extension.BaseOkHttpClientBuilder;
 import lombok.SneakyThrows;
 import okhttp3.OkHttpClient;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.context.ApplicationContext;
 
 /**
  * Generate OkHttpClientBuilder instance

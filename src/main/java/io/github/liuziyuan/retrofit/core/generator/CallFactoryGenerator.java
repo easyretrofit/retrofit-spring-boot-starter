@@ -1,13 +1,8 @@
 package io.github.liuziyuan.retrofit.core.generator;
 
-import io.github.liuziyuan.retrofit.core.AppContext;
-import io.github.liuziyuan.retrofit.core.Generator;
-import io.github.liuziyuan.retrofit.core.extension.BaseCallBackExecutorBuilder;
 import io.github.liuziyuan.retrofit.core.extension.BaseCallFactoryBuilder;
 import lombok.SneakyThrows;
 import okhttp3.Call;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.context.ApplicationContext;
 
 /**
  * @author liuziyuan
