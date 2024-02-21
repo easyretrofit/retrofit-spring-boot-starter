@@ -2,7 +2,7 @@ package io.github.liuziyuan.retrofit.core.generator;
 
 import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
 import io.github.liuziyuan.retrofit.core.annotation.RetrofitInterceptor;
-import io.github.liuziyuan.retrofit.core.builder.BaseInterceptor;
+import io.github.liuziyuan.retrofit.core.extension.BaseInterceptor;
 import lombok.SneakyThrows;
 import okhttp3.Interceptor;
 

@@ -1,6 +1,6 @@
 package io.github.liuziyuan.retrofit.core.annotation;
 
-import io.github.liuziyuan.retrofit.core.builder.BaseInterceptor;
+import io.github.liuziyuan.retrofit.core.extension.BaseInterceptor;
 
 import java.lang.annotation.*;
 
