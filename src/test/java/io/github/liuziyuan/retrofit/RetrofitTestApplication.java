@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author liuziyuan
  * @date 12/24/2021 5:51 PM
  */
-@EnableRetrofit({"io.github.liuziyuan.retrofit.demo.api", "io.github.liuziyuan.retrofit.injection.api"})
+@EnableRetrofit({"io.github.liuziyuan.retrofit.demo.api", "io.github.liuziyuan.retrofit.injectdemo.api"})
 //@EnableRetrofit
 @SpringBootApplication
 public class RetrofitTestApplication {

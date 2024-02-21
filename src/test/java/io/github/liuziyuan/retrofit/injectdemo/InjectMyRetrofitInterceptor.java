@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  * @date 1/5/2022 5:41 PM
  */
 @Component
-public class InjectMyRetrofitInterceptor1 extends BaseInterceptor {
+public class InjectMyRetrofitInterceptor extends BaseInterceptor {
 
     @Autowired
     private RetrofitResourceContext context;
