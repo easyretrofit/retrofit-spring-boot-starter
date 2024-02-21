@@ -19,7 +19,7 @@ import java.util.Map;
  * @author liuziyuan
  */
 @Getter
-@Setter
+@Setter(AccessLevel.PACKAGE)
 public class RetrofitResourceContext {
 
     private List<RetrofitClientBean> retrofitClients;
