@@ -2,6 +2,7 @@ package io.github.liuziyuan.retrofit.core.generator;
 
 import io.github.liuziyuan.retrofit.core.AppContext;
 import io.github.liuziyuan.retrofit.core.Generator;
+import io.github.liuziyuan.retrofit.core.extension.BaseCallFactoryBuilder;
 import io.github.liuziyuan.retrofit.core.extension.BaseConverterFactoryBuilder;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -13,20 +14,20 @@ import retrofit2.Converter;
  *
  * @author liuziyuan
  */
-public class ConverterFactoryGenerator implements Generator<Converter.Factory> {
+public abstract class ConverterFactoryGenerator implements Generator<Converter.Factory> {
     private final Class<? extends BaseConverterFactoryBuilder> baseConverterFactoryBuilderClazz;
-    private final AppContext applicationContext;
 
-    public ConverterFactoryGenerator(Class<? extends BaseConverterFactoryBuilder> converterFactoryBuilderClazz, AppContext applicationContext) {
+    public ConverterFactoryGenerator(Class<? extends BaseConverterFactoryBuilder> converterFactoryBuilderClazz) {
         this.baseConverterFactoryBuilderClazz = converterFactoryBuilderClazz;
-        this.applicationContext = applicationContext;
     }
+
+    public abstract BaseConverterFactoryBuilder buildInjectionObject(Class<? extends BaseConverterFactoryBuilder> clazz);
 
     @SneakyThrows
     @Override
     public Converter.Factory generate() {
 
-        final BaseConverterFactoryBuilder baseConverterFactoryBuilder = applicationContext.getBean(baseConverterFactoryBuilderClazz);
+        final BaseConverterFactoryBuilder baseConverterFactoryBuilder = buildInjectionObject(baseConverterFactoryBuilderClazz);
         if (baseConverterFactoryBuilder != null) {
             return baseConverterFactoryBuilder.executeBuild();
         }

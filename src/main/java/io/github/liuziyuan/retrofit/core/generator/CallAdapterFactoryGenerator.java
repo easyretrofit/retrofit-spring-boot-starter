@@ -13,19 +13,19 @@ import retrofit2.CallAdapter;
  *
  * @author liuziyuan
  */
-public class CallAdapterFactoryGenerator implements Generator<CallAdapter.Factory> {
+public abstract class CallAdapterFactoryGenerator implements Generator<CallAdapter.Factory> {
     private final Class<? extends BaseCallAdapterFactoryBuilder> baseCallAdapterFactoryBuilderClazz;
-    private final AppContext applicationContext;
 
-    public CallAdapterFactoryGenerator(Class<? extends BaseCallAdapterFactoryBuilder> baseCallAdapterFactoryBuilderClazz, AppContext applicationContext) {
+    public CallAdapterFactoryGenerator(Class<? extends BaseCallAdapterFactoryBuilder> baseCallAdapterFactoryBuilderClazz) {
         this.baseCallAdapterFactoryBuilderClazz = baseCallAdapterFactoryBuilderClazz;
-        this.applicationContext = applicationContext;
     }
+
+    public abstract BaseCallAdapterFactoryBuilder buildInjectionObject(Class<? extends BaseCallAdapterFactoryBuilder> clazz);
 
     @SneakyThrows
     @Override
     public CallAdapter.Factory generate() {
-        final BaseCallAdapterFactoryBuilder baseCallAdapterFactoryBuilder = applicationContext.getBean(baseCallAdapterFactoryBuilderClazz);
+        final BaseCallAdapterFactoryBuilder baseCallAdapterFactoryBuilder = buildInjectionObject(baseCallAdapterFactoryBuilderClazz);
         if (baseCallAdapterFactoryBuilder != null) {
             return baseCallAdapterFactoryBuilder.executeBuild();
         }

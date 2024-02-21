@@ -2,6 +2,7 @@ package io.github.liuziyuan.retrofit.core.generator;
 
 import io.github.liuziyuan.retrofit.core.AppContext;
 import io.github.liuziyuan.retrofit.core.Generator;
+import io.github.liuziyuan.retrofit.core.extension.BaseConverterFactoryBuilder;
 import io.github.liuziyuan.retrofit.core.extension.BaseOkHttpClientBuilder;
 import lombok.SneakyThrows;
 import okhttp3.OkHttpClient;
@@ -13,20 +14,20 @@ import org.springframework.context.ApplicationContext;
  *
  * @author liuziyuan
  */
-public class OkHttpClientBuilderGenerator implements Generator<OkHttpClient.Builder> {
+public abstract class OkHttpClientBuilderGenerator implements Generator<OkHttpClient.Builder> {
     private final Class<? extends BaseOkHttpClientBuilder> okHttpClientBuilderClazz;
-    private final AppContext applicationContext;
 
-    public OkHttpClientBuilderGenerator(Class<? extends BaseOkHttpClientBuilder> okHttpClientBuilderClazz, AppContext applicationContext) {
+    public OkHttpClientBuilderGenerator(Class<? extends BaseOkHttpClientBuilder> okHttpClientBuilderClazz) {
         this.okHttpClientBuilderClazz = okHttpClientBuilderClazz;
-        this.applicationContext = applicationContext;
     }
+
+    public abstract BaseOkHttpClientBuilder buildInjectionObject(Class<? extends BaseOkHttpClientBuilder> clazz);
 
     @SneakyThrows
     @Override
     public OkHttpClient.Builder generate() {
 
-        final BaseOkHttpClientBuilder baseOkHttpClientBuilder = applicationContext.getBean(okHttpClientBuilderClazz);
+        final BaseOkHttpClientBuilder baseOkHttpClientBuilder = buildInjectionObject(okHttpClientBuilderClazz);
         if (baseOkHttpClientBuilder != null) {
             return baseOkHttpClientBuilder.executeBuild();
         }

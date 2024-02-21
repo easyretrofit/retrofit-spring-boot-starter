@@ -6,6 +6,7 @@ import io.github.liuziyuan.retrofit.core.generator.RetrofitBuilderGenerator;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitServiceBean;
 import io.github.liuziyuan.retrofit.core.resource.UrlStatus;
+import io.github.liuziyuan.retrofit.springboot.generator.SpringBootRetrofitBuilderGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -62,8 +63,7 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
     private void registryRetrofitInstance(BeanDefinitionRegistry beanDefinitionRegistry, List<RetrofitClientBean> retrofitClientBeanList, RetrofitResourceContext context) {
         for (RetrofitClientBean clientBean : retrofitClientBeanList) {
             BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(Retrofit.class, () -> {
-                AppContext appContext = new SpringAppContext(applicationContext);
-                RetrofitBuilderGenerator retrofitBuilderGenerator = new RetrofitBuilderGenerator(clientBean, context, appContext);
+                SpringBootRetrofitBuilderGenerator retrofitBuilderGenerator = new SpringBootRetrofitBuilderGenerator(clientBean, context, applicationContext);
                 final Retrofit.Builder retrofitBuilder = retrofitBuilderGenerator.generate();
                 return retrofitBuilder.build();
             });
