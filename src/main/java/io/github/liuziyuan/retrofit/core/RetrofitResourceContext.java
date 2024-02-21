@@ -25,8 +25,9 @@ public class RetrofitResourceContext {
     private List<RetrofitClientBean> retrofitClients;
     private Map<String, RetrofitServiceBean> retrofitServices;
 
-    public RetrofitResourceContext() {
-        retrofitClients = new ArrayList<>();
+    public RetrofitResourceContext(List<RetrofitClientBean> retrofitClients, Map<String, RetrofitServiceBean> retrofitServices) {
+        this.retrofitServices = retrofitServices;
+        this.retrofitClients = retrofitClients;
     }
 
     public void setRetrofitClients(List<RetrofitClientBean> retrofitClients) {

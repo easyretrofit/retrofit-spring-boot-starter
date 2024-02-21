@@ -58,15 +58,13 @@ public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefin
     }
 
     private RetrofitResourceContext initRetrofitResourceContext(Set<Class<?>> retrofitBuilderClassSet) {
-        RetrofitResourceContext context = new RetrofitResourceContext();
+
         Env env = new SpringBootEnv(environment);
         RetrofitResourceContextBuilder retrofitResourceContextBuilder = new RetrofitResourceContextBuilder(env);
         retrofitResourceContextBuilder.build(retrofitBuilderClassSet);
         final List<RetrofitClientBean> retrofitClientBeanList = retrofitResourceContextBuilder.getRetrofitClientBeanList();
         final Map<String, RetrofitServiceBean> retrofitServiceBeanHashMap = retrofitResourceContextBuilder.getRetrofitServiceBeanHashMap();
-        context.setRetrofitClients(retrofitClientBeanList);
-        context.setRetrofitServices(retrofitServiceBeanHashMap);
-        return context;
+        return new RetrofitResourceContext(retrofitClientBeanList, retrofitServiceBeanHashMap);
     }
 
     private Set<Class<?>> scanRetrofitResource(AnnotationAttributes annoAttrs) {
