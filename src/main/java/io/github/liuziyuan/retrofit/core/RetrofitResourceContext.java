@@ -19,10 +19,10 @@ import java.util.Map;
 public class RetrofitResourceContext {
 
     private List<RetrofitClientBean> retrofitClients;
-    private Map<String, RetrofitApiServiceBean> retrofitServices;
+    private Map<String, RetrofitApiServiceBean> retrofitApiServices;
 
-    public RetrofitResourceContext(List<RetrofitClientBean> retrofitClients, Map<String, RetrofitApiServiceBean> retrofitServices) {
-        this.retrofitServices = retrofitServices;
+    public RetrofitResourceContext(List<RetrofitClientBean> retrofitClients, Map<String, RetrofitApiServiceBean> retrofitApiServices) {
+        this.retrofitApiServices = retrofitApiServices;
         this.retrofitClients = retrofitClients;
     }
 
@@ -30,8 +30,8 @@ public class RetrofitResourceContext {
         return retrofitClients;
     }
 
-    public RetrofitApiServiceBean getRetrofitServiceBean(String currentClass) {
-        return retrofitServices.get(currentClass);
+    public RetrofitApiServiceBean getRetrofitApiServiceBean(String currentClass) {
+        return retrofitApiServices.get(currentClass);
     }
 
 }

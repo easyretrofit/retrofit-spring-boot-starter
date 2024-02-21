@@ -51,7 +51,7 @@ public class UrlOverWriteInterceptor extends BaseInterceptor {
 
     private HttpUrl.Builder setNonSlashEndpoint(Request request, Method method) {
         String clazzName = super.getClazzNameByMethod(method);
-        final RetrofitApiServiceBean currentServiceBean = super.context.getRetrofitServiceBean(clazzName);
+        final RetrofitApiServiceBean currentServiceBean = super.context.getRetrofitApiServiceBean(clazzName);
         LinkedList<String> pathSegments = new LinkedList<>(request.url().pathSegments());
         String prefix;
         if (StringUtils.isNotEmpty(currentServiceBean.getRetrofitUrl().getDynamicUrl().getRealBaseUrl())) {
