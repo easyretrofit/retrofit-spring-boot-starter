@@ -4,6 +4,7 @@ import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
 import io.github.liuziyuan.retrofit.core.extension.*;
 import io.github.liuziyuan.retrofit.core.generator.RetrofitBuilderGenerator;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 
 public class SpringBootRetrofitBuilderGenerator extends RetrofitBuilderGenerator {
@@ -16,49 +17,55 @@ public class SpringBootRetrofitBuilderGenerator extends RetrofitBuilderGenerator
 
     @Override
     public BaseCallFactoryBuilder buildInjectionCallFactory(Class<? extends BaseCallFactoryBuilder> clazz) {
-        if (applicationContext.containsBean(clazz.getName())) {
+        try {
             return applicationContext.getBean(clazz);
+        } catch (NoSuchBeanDefinitionException e) {
+            return null;
         }
-        return null;
     }
 
     @Override
     public BaseCallBackExecutorBuilder buildInjectionCallBackExecutor(Class<? extends BaseCallBackExecutorBuilder> clazz) {
-        if (applicationContext.containsBean(clazz.getName())) {
+        try {
             return applicationContext.getBean(clazz);
+        } catch (NoSuchBeanDefinitionException e) {
+            return null;
         }
-        return null;
     }
 
     @Override
     public BaseOkHttpClientBuilder buildInjectionOkHttpClient(Class<? extends BaseOkHttpClientBuilder> clazz) {
-        if (applicationContext.containsBean(clazz.getName())) {
+        try {
             return applicationContext.getBean(clazz);
+        } catch (NoSuchBeanDefinitionException e) {
+            return null;
         }
-        return null;
     }
 
     @Override
     public BaseInterceptor buildInjectionInterceptor(Class<? extends BaseInterceptor> clazz) {
-        if (applicationContext.containsBean(clazz.getName())) {
+        try {
             return applicationContext.getBean(clazz);
+        } catch (NoSuchBeanDefinitionException e) {
+            return null;
         }
-        return null;
     }
 
     @Override
     public BaseCallAdapterFactoryBuilder buildInjectionCallAdapterFactor(Class<? extends BaseCallAdapterFactoryBuilder> clazz) {
-        if (applicationContext.containsBean(clazz.getName())) {
+        try {
             return applicationContext.getBean(clazz);
+        } catch (NoSuchBeanDefinitionException e) {
+            return null;
         }
-        return null;
     }
 
     @Override
     public BaseConverterFactoryBuilder buildInjectionConverterFactory(Class<? extends BaseConverterFactoryBuilder> clazz) {
-        if (applicationContext.containsBean(clazz.getName())) {
+        try {
             return applicationContext.getBean(clazz);
+        } catch (NoSuchBeanDefinitionException e) {
+            return null;
         }
-        return null;
     }
 }

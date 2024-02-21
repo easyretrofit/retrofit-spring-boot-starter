@@ -1,7 +1,6 @@
 package io.github.liuziyuan.retrofit.springboot;
 
 import io.github.liuziyuan.retrofit.core.AppContext;
-import io.github.liuziyuan.retrofit.core.exception.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 
 public class SpringAppContext implements AppContext {
