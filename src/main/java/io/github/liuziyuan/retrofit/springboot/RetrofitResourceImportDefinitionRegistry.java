@@ -2,9 +2,8 @@ package io.github.liuziyuan.retrofit.springboot;
 
 import io.github.liuziyuan.retrofit.core.Env;
 import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
-import io.github.liuziyuan.retrofit.core.RetrofitResourceScanner;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
-import io.github.liuziyuan.retrofit.core.resource.RetrofitServiceBean;
+import io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -63,7 +62,7 @@ public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefin
         RetrofitResourceContextBuilder retrofitResourceContextBuilder = new RetrofitResourceContextBuilder(env);
         retrofitResourceContextBuilder.build(retrofitBuilderClassSet);
         final List<RetrofitClientBean> retrofitClientBeanList = retrofitResourceContextBuilder.getRetrofitClientBeanList();
-        final Map<String, RetrofitServiceBean> retrofitServiceBeanHashMap = retrofitResourceContextBuilder.getRetrofitServiceBeanHashMap();
+        final Map<String, RetrofitApiServiceBean> retrofitServiceBeanHashMap = retrofitResourceContextBuilder.getRetrofitServiceBeanHashMap();
         return new RetrofitResourceContext(retrofitClientBeanList, retrofitServiceBeanHashMap);
     }
 

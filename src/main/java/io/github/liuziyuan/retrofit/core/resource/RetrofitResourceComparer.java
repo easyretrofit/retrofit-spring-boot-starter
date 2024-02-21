@@ -13,9 +13,9 @@ import java.util.List;
 public class RetrofitResourceComparer {
 
     private final RetrofitClientBean clientBean;
-    private final RetrofitServiceBean serviceBean;
+    private final RetrofitApiServiceBean serviceBean;
 
-    public RetrofitResourceComparer(RetrofitClientBean clientBean, RetrofitServiceBean serviceBean) {
+    public RetrofitResourceComparer(RetrofitClientBean clientBean, RetrofitApiServiceBean serviceBean) {
         this.clientBean = clientBean;
         this.serviceBean = serviceBean;
     }

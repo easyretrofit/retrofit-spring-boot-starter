@@ -1,7 +1,7 @@
 package io.github.liuziyuan.retrofit.springboot;
 
 import io.github.liuziyuan.retrofit.core.proxy.RetrofitServiceProxy;
-import io.github.liuziyuan.retrofit.core.resource.RetrofitServiceBean;
+import io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
@@ -20,16 +20,16 @@ import java.lang.reflect.Proxy;
 public class RetrofitServiceProxyFactory<T> implements FactoryBean<T>, ApplicationContextAware {
     private final Class<T> interfaceType;
     private ApplicationContext applicationContext;
-    private final RetrofitServiceBean retrofitServiceBean;
+    private final RetrofitApiServiceBean retrofitApiServiceBean;
 
-    public RetrofitServiceProxyFactory(Class<T> interfaceType, RetrofitServiceBean retrofitServiceBean) {
+    public RetrofitServiceProxyFactory(Class<T> interfaceType, RetrofitApiServiceBean retrofitApiServiceBean) {
         this.interfaceType = interfaceType;
-        this.retrofitServiceBean = retrofitServiceBean;
+        this.retrofitApiServiceBean = retrofitApiServiceBean;
     }
 
     @Override
     public T getObject() {
-        String retrofitInstanceName = retrofitServiceBean.getRetrofitClientBean().getRetrofitInstanceName();
+        String retrofitInstanceName = retrofitApiServiceBean.getRetrofitClientBean().getRetrofitInstanceName();
         Retrofit retrofit = (Retrofit) applicationContext.getBean(retrofitInstanceName);
         T t = retrofit.create(interfaceType);
         InvocationHandler handler = new RetrofitServiceProxy<>(t);

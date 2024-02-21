@@ -2,7 +2,7 @@ package io.github.liuziyuan.retrofit.springboot;
 
 import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
-import io.github.liuziyuan.retrofit.core.resource.RetrofitServiceBean;
+import io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean;
 import io.github.liuziyuan.retrofit.core.resource.UrlStatus;
 import io.github.liuziyuan.retrofit.springboot.generator.SpringBootRetrofitBuilderGenerator;
 import lombok.extern.slf4j.Slf4j;
@@ -73,7 +73,7 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
 
     private void registryRetrofitInterfaceProxy(BeanDefinitionRegistry beanDefinitionRegistry, List<RetrofitClientBean> retrofitClientBeanList) {
         for (RetrofitClientBean clientBean : retrofitClientBeanList) {
-            for (RetrofitServiceBean serviceBean : clientBean.getRetrofitServices()) {
+            for (RetrofitApiServiceBean serviceBean : clientBean.getRetrofitServices()) {
                 BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(serviceBean.getSelfClazz());
                 GenericBeanDefinition definition = (GenericBeanDefinition) builder.getRawBeanDefinition();
                 definition.getConstructorArgumentValues().addGenericArgumentValue(Objects.requireNonNull(definition.getBeanClassName()));
@@ -116,7 +116,7 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
                 log.info("---Retrofit Client : HostURL: {}, Retrofit instance name: {}", realHostUrl, retrofitInstanceName);
             }
             log.debug("Retrofit Client toString: {}", retrofitClient.toString());
-            for (RetrofitServiceBean retrofitService : retrofitClient.getRetrofitServices()) {
+            for (RetrofitApiServiceBean retrofitService : retrofitClient.getRetrofitServices()) {
                 final Class<?> selfClazz = retrofitService.getSelfClazz();
                 final Class<?> parentClazz = retrofitService.getParentClazz();
                 String parentClazzName = null;

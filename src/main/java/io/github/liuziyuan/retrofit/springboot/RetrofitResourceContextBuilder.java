@@ -3,8 +3,8 @@ package io.github.liuziyuan.retrofit.springboot;
 import io.github.liuziyuan.retrofit.core.Env;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBeanGenerator;
-import io.github.liuziyuan.retrofit.core.resource.RetrofitServiceBean;
-import io.github.liuziyuan.retrofit.core.resource.RetrofitServiceBeanGenerator;
+import io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean;
+import io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBeanGenerator;
 
 import java.util.*;
 
@@ -16,13 +16,13 @@ import java.util.*;
 public class RetrofitResourceContextBuilder {
 
     private List<RetrofitClientBean> retrofitClientBeanList;
-    private List<RetrofitServiceBean> retrofitServiceBeanList;
-    private final Map<String, RetrofitServiceBean> retrofitServiceBeanHashMap;
+    private List<RetrofitApiServiceBean> retrofitApiServiceBeanList;
+    private final Map<String, RetrofitApiServiceBean> retrofitServiceBeanHashMap;
     private final Env env;
 
     public RetrofitResourceContextBuilder(Env env) {
         retrofitClientBeanList = new ArrayList<>();
-        retrofitServiceBeanList = new ArrayList<>();
+        retrofitApiServiceBeanList = new ArrayList<>();
         retrofitServiceBeanHashMap = new HashMap<>();
         this.env = env;
     }
@@ -38,36 +38,36 @@ public class RetrofitResourceContextBuilder {
         return retrofitClientBeanList;
     }
 
-    public Map<String, RetrofitServiceBean> getRetrofitServiceBeanHashMap() {
+    public Map<String, RetrofitApiServiceBean> getRetrofitServiceBeanHashMap() {
         return retrofitServiceBeanHashMap;
     }
 
-    public List<RetrofitServiceBean> getRetrofitServiceBean() {
-        return retrofitServiceBeanList;
+    public List<RetrofitApiServiceBean> getRetrofitServiceBean() {
+        return retrofitApiServiceBeanList;
     }
 
     private void setRetrofitServiceBeanHashMap() {
         for (RetrofitClientBean retrofitClient : getRetrofitClientBeanList()) {
-            for (RetrofitServiceBean retrofitService : retrofitClient.getRetrofitServices()) {
+            for (RetrofitApiServiceBean retrofitService : retrofitClient.getRetrofitServices()) {
                 retrofitServiceBeanHashMap.put(retrofitService.getSelfClazz().getName(), retrofitService);
             }
         }
     }
 
     private void setRetrofitServiceBeanList(Set<Class<?>> retrofitBuilderClassSet) {
-        RetrofitServiceBeanGenerator serviceBeanHandler;
+        RetrofitApiServiceBeanGenerator serviceBeanHandler;
         for (Class<?> clazz : retrofitBuilderClassSet) {
-            serviceBeanHandler = new RetrofitServiceBeanGenerator(clazz, env);
-            final RetrofitServiceBean serviceBean = serviceBeanHandler.generate();
+            serviceBeanHandler = new RetrofitApiServiceBeanGenerator(clazz, env);
+            final RetrofitApiServiceBean serviceBean = serviceBeanHandler.generate();
             if (serviceBean != null) {
-                retrofitServiceBeanList.add(serviceBean);
+                retrofitApiServiceBeanList.add(serviceBean);
             }
         }
     }
 
     private void setRetrofitClientBeanList() {
         RetrofitClientBeanGenerator clientBeanHandler;
-        for (RetrofitServiceBean serviceBean : getRetrofitServiceBean()) {
+        for (RetrofitApiServiceBean serviceBean : getRetrofitServiceBean()) {
             clientBeanHandler = new RetrofitClientBeanGenerator(retrofitClientBeanList, serviceBean);
             final RetrofitClientBean retrofitClientBean = clientBeanHandler.generate();
             if (retrofitClientBean != null && retrofitClientBeanList.stream().noneMatch(clientBean -> clientBean.getRetrofitInstanceName().equals(retrofitClientBean.getRetrofitInstanceName()))) {

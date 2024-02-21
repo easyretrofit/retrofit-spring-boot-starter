@@ -2,7 +2,7 @@ package io.github.liuziyuan.retrofit.core.extension;
 
 import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
 import io.github.liuziyuan.retrofit.core.builder.BaseInterceptor;
-import io.github.liuziyuan.retrofit.core.resource.RetrofitServiceBean;
+import io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean;
 import lombok.SneakyThrows;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
@@ -52,7 +52,7 @@ public class UrlOverWriteInterceptor extends BaseInterceptor {
 
     private HttpUrl.Builder setNonSlashEndpoint(Request request, Method method) {
         String clazzName = super.getClazzNameByMethod(method);
-        final RetrofitServiceBean currentServiceBean = super.context.getRetrofitServiceBean(clazzName);
+        final RetrofitApiServiceBean currentServiceBean = super.context.getRetrofitServiceBean(clazzName);
         LinkedList<String> pathSegments = new LinkedList<>(request.url().pathSegments());
         String prefix;
         if (StringUtils.isNotEmpty(currentServiceBean.getRetrofitUrl().getDynamicUrl().getRealBaseUrl())) {

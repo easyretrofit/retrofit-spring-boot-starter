@@ -1,15 +1,11 @@
 package io.github.liuziyuan.retrofit.core;
 
 import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
-import io.github.liuziyuan.retrofit.core.resource.RetrofitServiceBean;
+import io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.context.ApplicationContext;
-import org.springframework.core.env.Environment;
-import org.springframework.core.io.ResourceLoader;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,14 +19,10 @@ import java.util.Map;
 public class RetrofitResourceContext {
 
     private List<RetrofitClientBean> retrofitClients;
-    private Map<String, RetrofitServiceBean> retrofitServices;
+    private Map<String, RetrofitApiServiceBean> retrofitServices;
 
-    public RetrofitResourceContext(List<RetrofitClientBean> retrofitClients, Map<String, RetrofitServiceBean> retrofitServices) {
+    public RetrofitResourceContext(List<RetrofitClientBean> retrofitClients, Map<String, RetrofitApiServiceBean> retrofitServices) {
         this.retrofitServices = retrofitServices;
-        this.retrofitClients = retrofitClients;
-    }
-
-    public void setRetrofitClients(List<RetrofitClientBean> retrofitClients) {
         this.retrofitClients = retrofitClients;
     }
 
@@ -38,7 +30,7 @@ public class RetrofitResourceContext {
         return retrofitClients;
     }
 
-    public RetrofitServiceBean getRetrofitServiceBean(String currentClass) {
+    public RetrofitApiServiceBean getRetrofitServiceBean(String currentClass) {
         return retrofitServices.get(currentClass);
     }
 

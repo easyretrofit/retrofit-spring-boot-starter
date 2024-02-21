@@ -15,23 +15,23 @@ import java.util.Set;
  *
  * @author liuziyuan
  */
-public class RetrofitServiceBeanGenerator implements Generator<RetrofitServiceBean> {
+public class RetrofitApiServiceBeanGenerator implements Generator<RetrofitApiServiceBean> {
     private final Class<?> clazz;
     private final Env env;
 
-    public RetrofitServiceBeanGenerator(Class<?> clazz, Env env) {
+    public RetrofitApiServiceBeanGenerator(Class<?> clazz, Env env) {
         this.clazz = clazz;
         this.env = env;
     }
 
     @Override
-    public RetrofitServiceBean generate() {
+    public RetrofitApiServiceBean generate() {
         Class<?> retrofitBuilderClazz = getParentRetrofitBuilderClazz();
-        RetrofitServiceBean retrofitServiceBean = new RetrofitServiceBean();
-        retrofitServiceBean.setSelfClazz(clazz);
-        retrofitServiceBean.setParentClazz(retrofitBuilderClazz);
+        RetrofitApiServiceBean retrofitApiServiceBean = new RetrofitApiServiceBean();
+        retrofitApiServiceBean.setSelfClazz(clazz);
+        retrofitApiServiceBean.setParentClazz(retrofitBuilderClazz);
         RetrofitBuilder retrofitBuilderAnnotation = retrofitBuilderClazz.getDeclaredAnnotation(RetrofitBuilder.class);
-        retrofitServiceBean.setRetrofitBuilder(retrofitBuilderAnnotation);
+        retrofitApiServiceBean.setRetrofitBuilder(retrofitBuilderAnnotation);
 //        RetrofitCloudService retrofitCloudServiceAnnotation = clazz.getDeclaredAnnotation(RetrofitCloudService.class);
 //        retrofitServiceBean.setRetrofitCloudService(retrofitCloudServiceAnnotation);
         Set<RetrofitInterceptor> interceptors = getInterceptors(retrofitBuilderClazz);
@@ -41,11 +41,11 @@ public class RetrofitServiceBeanGenerator implements Generator<RetrofitServiceBe
 //            myInterceptors.add(annotation);
 //        } catch (NullPointerException ignored) {
 //        }
-        retrofitServiceBean.setMyInterceptors(myInterceptors);
-        retrofitServiceBean.setInterceptors(interceptors);
+        retrofitApiServiceBean.setMyInterceptors(myInterceptors);
+        retrofitApiServiceBean.setInterceptors(interceptors);
         RetrofitUrl retrofitUrl = getRetrofitUrl(retrofitBuilderAnnotation);
-        retrofitServiceBean.setRetrofitUrl(retrofitUrl);
-        return retrofitServiceBean;
+        retrofitApiServiceBean.setRetrofitUrl(retrofitUrl);
+        return retrofitApiServiceBean;
 
     }
 

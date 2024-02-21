@@ -16,7 +16,7 @@ import java.util.Set;
  */
 @Getter
 @Setter(AccessLevel.PACKAGE)
-public class RetrofitServiceBean {
+public class RetrofitApiServiceBean {
 
     private Class<?> selfClazz;
     private Class<?> parentClazz;
