@@ -1,4 +1,4 @@
-package io.github.liuziyuan.retrofit.springboot;
+package io.github.liuziyuan.retrofit.core;
 
 import io.github.liuziyuan.retrofit.core.annotation.RetrofitBase;
 import io.github.liuziyuan.retrofit.core.annotation.RetrofitBuilder;
@@ -19,8 +19,9 @@ import java.util.stream.Collectors;
  * @author liuziyuan
  */
 @Slf4j
-public class RetrofitResourceScanner {
+public abstract class RetrofitResourceScanner {
 
+    public abstract Set<Class<?>> customRetrofitResourceClasses(Reflections reflections);
     public Set<Class<?>> doScan(String... basePackages) {
         ConfigurationBuilder configuration;
         if (basePackages.length == 0) {
@@ -40,12 +41,15 @@ public class RetrofitResourceScanner {
         Reflections reflections = new Reflections(configuration);
         final Set<Class<?>> retrofitBuilderClasses = getRetrofitResourceClasses(reflections, RetrofitBuilder.class);
         final Set<Class<?>> retrofitBaseApiClasses = getRetrofitResourceClasses(reflections, RetrofitBase.class);
-
         retrofitBuilderClasses.addAll(retrofitBaseApiClasses);
+        Set<Class<?>> customClasses = customRetrofitResourceClasses(reflections);
+        if (customClasses != null && !customClasses.isEmpty()){
+            retrofitBuilderClasses.addAll(customClasses);
+        }
         return retrofitBuilderClasses;
     }
 
-    private Set<Class<?>> getRetrofitResourceClasses(Reflections reflections, Class<? extends Annotation> annotationClass) {
+    protected Set<Class<?>> getRetrofitResourceClasses(Reflections reflections, Class<? extends Annotation> annotationClass) {
         final Set<Class<?>> classSet = reflections.getTypesAnnotatedWith(annotationClass);
         for (Class<?> clazz : classSet) {
             if (!clazz.isInterface()) {

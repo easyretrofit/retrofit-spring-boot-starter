@@ -1,5 +1,6 @@
 package io.github.liuziyuan.retrofit.core.generator;
 
+import io.github.liuziyuan.retrofit.core.AppContext;
 import io.github.liuziyuan.retrofit.core.Generator;
 import io.github.liuziyuan.retrofit.core.extension.BaseCallAdapterFactoryBuilder;
 import lombok.SneakyThrows;
@@ -14,9 +15,9 @@ import retrofit2.CallAdapter;
  */
 public class CallAdapterFactoryGenerator implements Generator<CallAdapter.Factory> {
     private final Class<? extends BaseCallAdapterFactoryBuilder> baseCallAdapterFactoryBuilderClazz;
-    private final ApplicationContext applicationContext;
+    private final AppContext applicationContext;
 
-    public CallAdapterFactoryGenerator(Class<? extends BaseCallAdapterFactoryBuilder> baseCallAdapterFactoryBuilderClazz, ApplicationContext applicationContext) {
+    public CallAdapterFactoryGenerator(Class<? extends BaseCallAdapterFactoryBuilder> baseCallAdapterFactoryBuilderClazz, AppContext applicationContext) {
         this.baseCallAdapterFactoryBuilderClazz = baseCallAdapterFactoryBuilderClazz;
         this.applicationContext = applicationContext;
     }
@@ -24,10 +25,9 @@ public class CallAdapterFactoryGenerator implements Generator<CallAdapter.Factor
     @SneakyThrows
     @Override
     public CallAdapter.Factory generate() {
-        try {
-            final BaseCallAdapterFactoryBuilder baseCallAdapterFactoryBuilder = applicationContext.getBean(baseCallAdapterFactoryBuilderClazz);
+        final BaseCallAdapterFactoryBuilder baseCallAdapterFactoryBuilder = applicationContext.getBean(baseCallAdapterFactoryBuilderClazz);
+        if (baseCallAdapterFactoryBuilder != null) {
             return baseCallAdapterFactoryBuilder.executeBuild();
-        } catch (NoSuchBeanDefinitionException ignored) {
         }
         if (baseCallAdapterFactoryBuilderClazz != null) {
             final String baseCallAdapterFactoryBuilderClazzName = BaseCallAdapterFactoryBuilder.class.getName();

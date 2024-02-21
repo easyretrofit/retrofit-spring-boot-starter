@@ -1,7 +1,8 @@
 package io.github.liuziyuan.retrofit.core.generator;
 
+import io.github.liuziyuan.retrofit.core.AppContext;
 import io.github.liuziyuan.retrofit.core.Generator;
-import io.github.liuziyuan.retrofit.springboot.RetrofitResourceContext;
+import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
 import io.github.liuziyuan.retrofit.core.annotation.InterceptorType;
 import io.github.liuziyuan.retrofit.core.annotation.RetrofitBuilder;
 import io.github.liuziyuan.retrofit.core.annotation.RetrofitInterceptor;
@@ -30,10 +31,13 @@ public class RetrofitBuilderGenerator implements Generator<Retrofit.Builder> {
     private final RetrofitResourceContext context;
     private final Retrofit.Builder builder;
 
-    public RetrofitBuilderGenerator(RetrofitClientBean clientBean, RetrofitResourceContext context) {
+    private final AppContext applicationContext;
+
+    public RetrofitBuilderGenerator(RetrofitClientBean clientBean, RetrofitResourceContext context, AppContext applicationContext) {
         this.builder = new Retrofit.Builder();
         this.clientBean = clientBean;
         this.context = context;
+        this.applicationContext = applicationContext;
     }
 
     @Override
@@ -62,7 +66,6 @@ public class RetrofitBuilderGenerator implements Generator<Retrofit.Builder> {
     private void setCallFactory() {
         final RetrofitBuilder retrofitBuilder = clientBean.getRetrofitBuilder();
         final Class<? extends BaseCallFactoryBuilder> callFactoryBuilderClazz = retrofitBuilder.callFactory();
-        final ApplicationContext applicationContext = context.getApplicationContext();
         CallFactoryGenerator callFactoryGenerator = new CallFactoryGenerator(callFactoryBuilderClazz, applicationContext);
         final Call.Factory factory = callFactoryGenerator.generate();
         if (factory != null) {
@@ -73,7 +76,6 @@ public class RetrofitBuilderGenerator implements Generator<Retrofit.Builder> {
     private void setCallBackExecutor() {
         final RetrofitBuilder retrofitBuilder = clientBean.getRetrofitBuilder();
         final Class<? extends BaseCallBackExecutorBuilder> callbackExecutorBuilderClazz = retrofitBuilder.callbackExecutor();
-        final ApplicationContext applicationContext = context.getApplicationContext();
         CallBackExecutorGenerator callBackExecutorGenerator = new CallBackExecutorGenerator(callbackExecutorBuilderClazz, applicationContext);
         final Executor executor = callBackExecutorGenerator.generate();
         if (executor != null) {
@@ -106,7 +108,6 @@ public class RetrofitBuilderGenerator implements Generator<Retrofit.Builder> {
         final List<RetrofitInterceptor> interceptors = new ArrayList<>(allInterceptors);
         OkHttpClient.Builder okHttpClientBuilder;
         if (retrofitBuilder.client() != null) {
-            final ApplicationContext applicationContext = context.getApplicationContext();
             final OkHttpClientBuilderGenerator clientBuilderGenerator = new OkHttpClientBuilderGenerator(retrofitBuilder.client(), applicationContext);
             okHttpClientBuilder = clientBuilderGenerator.generate();
         } else {
@@ -128,7 +129,7 @@ public class RetrofitBuilderGenerator implements Generator<Retrofit.Builder> {
         interceptors.sort(Comparator.comparing(RetrofitInterceptor::sort));
         for (RetrofitInterceptor interceptor : interceptors) {
             if (interceptor.type() == type) {
-                okHttpInterceptorGenerator = new OkHttpInterceptorGenerator(interceptor, context);
+                okHttpInterceptorGenerator = new OkHttpInterceptorGenerator(interceptor, context, applicationContext);
                 final Interceptor generateInterceptor = okHttpInterceptorGenerator.generate();
                 interceptorList.add(generateInterceptor);
             }
@@ -140,7 +141,6 @@ public class RetrofitBuilderGenerator implements Generator<Retrofit.Builder> {
     private List<CallAdapter.Factory> getCallAdapterFactories(Class<? extends BaseCallAdapterFactoryBuilder>[] callAdapterFactoryClasses) {
         List<CallAdapter.Factory> callAdapterFactories = new ArrayList<>();
         CallAdapterFactoryGenerator callAdapterFactoryGenerator;
-        final ApplicationContext applicationContext = context.getApplicationContext();
         for (Class<? extends BaseCallAdapterFactoryBuilder> callAdapterFactoryClazz : callAdapterFactoryClasses) {
             callAdapterFactoryGenerator = new CallAdapterFactoryGenerator(callAdapterFactoryClazz, applicationContext);
             callAdapterFactories.add(callAdapterFactoryGenerator.generate());
@@ -152,7 +152,6 @@ public class RetrofitBuilderGenerator implements Generator<Retrofit.Builder> {
     private List<Converter.Factory> getConverterFactories(Class<? extends BaseConverterFactoryBuilder>[] converterFactoryBuilderClasses) {
         List<Converter.Factory> converterFactories = new ArrayList<>();
         ConverterFactoryGenerator converterFactoryGenerator;
-        final ApplicationContext applicationContext = context.getApplicationContext();
         for (Class<? extends BaseConverterFactoryBuilder> converterFactoryBuilderClazz : converterFactoryBuilderClasses) {
             converterFactoryGenerator = new ConverterFactoryGenerator(converterFactoryBuilderClazz, applicationContext);
             converterFactories.add(converterFactoryGenerator.generate());

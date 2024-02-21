@@ -1,5 +1,6 @@
 package io.github.liuziyuan.retrofit.core.generator;
 
+import io.github.liuziyuan.retrofit.core.AppContext;
 import io.github.liuziyuan.retrofit.core.Generator;
 import io.github.liuziyuan.retrofit.core.extension.BaseConverterFactoryBuilder;
 import lombok.SneakyThrows;
@@ -14,9 +15,9 @@ import retrofit2.Converter;
  */
 public class ConverterFactoryGenerator implements Generator<Converter.Factory> {
     private final Class<? extends BaseConverterFactoryBuilder> baseConverterFactoryBuilderClazz;
-    private final ApplicationContext applicationContext;
+    private final AppContext applicationContext;
 
-    public ConverterFactoryGenerator(Class<? extends BaseConverterFactoryBuilder> converterFactoryBuilderClazz, ApplicationContext applicationContext) {
+    public ConverterFactoryGenerator(Class<? extends BaseConverterFactoryBuilder> converterFactoryBuilderClazz, AppContext applicationContext) {
         this.baseConverterFactoryBuilderClazz = converterFactoryBuilderClazz;
         this.applicationContext = applicationContext;
     }
@@ -24,10 +25,10 @@ public class ConverterFactoryGenerator implements Generator<Converter.Factory> {
     @SneakyThrows
     @Override
     public Converter.Factory generate() {
-        try {
-            final BaseConverterFactoryBuilder baseConverterFactoryBuilder = applicationContext.getBean(baseConverterFactoryBuilderClazz);
+
+        final BaseConverterFactoryBuilder baseConverterFactoryBuilder = applicationContext.getBean(baseConverterFactoryBuilderClazz);
+        if (baseConverterFactoryBuilder != null) {
             return baseConverterFactoryBuilder.executeBuild();
-        } catch (NoSuchBeanDefinitionException ignored) {
         }
         if (baseConverterFactoryBuilderClazz != null) {
             final String baseConverterFactoryBuilderClazzName = BaseConverterFactoryBuilder.class.getName();

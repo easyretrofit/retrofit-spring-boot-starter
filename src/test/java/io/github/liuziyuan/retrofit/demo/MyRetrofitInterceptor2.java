@@ -1,6 +1,6 @@
 package io.github.liuziyuan.retrofit.demo;
 
-import io.github.liuziyuan.retrofit.springboot.RetrofitResourceContext;
+import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
 import io.github.liuziyuan.retrofit.core.extension.BaseInterceptor;
 import lombok.SneakyThrows;
 import okhttp3.Request;

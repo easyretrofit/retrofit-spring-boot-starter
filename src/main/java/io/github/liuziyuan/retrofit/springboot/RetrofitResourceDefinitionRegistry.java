@@ -1,5 +1,7 @@
 package io.github.liuziyuan.retrofit.springboot;
 
+import io.github.liuziyuan.retrofit.core.AppContext;
+import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
 import io.github.liuziyuan.retrofit.core.generator.RetrofitBuilderGenerator;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitServiceBean;
@@ -43,7 +45,6 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
         try {
             // set context
             context = (RetrofitResourceContext) beanFactory.getBean(RetrofitResourceContext.class.getName());
-            context.setApplicationContext(applicationContext);
             beanFactory.autowireBean(context);
             List<RetrofitClientBean> retrofitClientBeanList = context.getRetrofitClients();
             // registry Retrofit object
@@ -51,7 +52,7 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
             // registry proxy object of retrofit api interface
             registryRetrofitInterfaceProxy(beanDefinitionRegistry, retrofitClientBeanList);
             // set log
-            setLog(context, context.getEnvironment());
+            setLog(context, applicationContext.getEnvironment());
         } catch (NoSuchBeanDefinitionException exception) {
             log.error(RETROFIT_RESOURCE_CONTEXT_NOT_FOUND);
             throw exception;
@@ -61,7 +62,8 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
     private void registryRetrofitInstance(BeanDefinitionRegistry beanDefinitionRegistry, List<RetrofitClientBean> retrofitClientBeanList, RetrofitResourceContext context) {
         for (RetrofitClientBean clientBean : retrofitClientBeanList) {
             BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(Retrofit.class, () -> {
-                RetrofitBuilderGenerator retrofitBuilderGenerator = new RetrofitBuilderGenerator(clientBean, context);
+                AppContext appContext = new SpringAppContext(applicationContext);
+                RetrofitBuilderGenerator retrofitBuilderGenerator = new RetrofitBuilderGenerator(clientBean, context, appContext);
                 final Retrofit.Builder retrofitBuilder = retrofitBuilderGenerator.generate();
                 return retrofitBuilder.build();
             });

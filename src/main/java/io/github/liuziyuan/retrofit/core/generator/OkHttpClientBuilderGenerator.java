@@ -1,5 +1,6 @@
 package io.github.liuziyuan.retrofit.core.generator;
 
+import io.github.liuziyuan.retrofit.core.AppContext;
 import io.github.liuziyuan.retrofit.core.Generator;
 import io.github.liuziyuan.retrofit.core.extension.BaseOkHttpClientBuilder;
 import lombok.SneakyThrows;
@@ -14,9 +15,9 @@ import org.springframework.context.ApplicationContext;
  */
 public class OkHttpClientBuilderGenerator implements Generator<OkHttpClient.Builder> {
     private final Class<? extends BaseOkHttpClientBuilder> okHttpClientBuilderClazz;
-    private final ApplicationContext applicationContext;
+    private final AppContext applicationContext;
 
-    public OkHttpClientBuilderGenerator(Class<? extends BaseOkHttpClientBuilder> okHttpClientBuilderClazz, ApplicationContext applicationContext) {
+    public OkHttpClientBuilderGenerator(Class<? extends BaseOkHttpClientBuilder> okHttpClientBuilderClazz, AppContext applicationContext) {
         this.okHttpClientBuilderClazz = okHttpClientBuilderClazz;
         this.applicationContext = applicationContext;
     }
@@ -24,10 +25,10 @@ public class OkHttpClientBuilderGenerator implements Generator<OkHttpClient.Buil
     @SneakyThrows
     @Override
     public OkHttpClient.Builder generate() {
-        try {
-            final BaseOkHttpClientBuilder baseOkHttpClientBuilder = applicationContext.getBean(okHttpClientBuilderClazz);
+
+        final BaseOkHttpClientBuilder baseOkHttpClientBuilder = applicationContext.getBean(okHttpClientBuilderClazz);
+        if (baseOkHttpClientBuilder != null) {
             return baseOkHttpClientBuilder.executeBuild();
-        } catch (NoSuchBeanDefinitionException ignored) {
         }
         if (okHttpClientBuilderClazz != null) {
             final String okHttpClientBuilderClazzName = okHttpClientBuilderClazz.getName();

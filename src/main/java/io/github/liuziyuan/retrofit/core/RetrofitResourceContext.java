@@ -1,4 +1,4 @@
-package io.github.liuziyuan.retrofit.springboot;
+package io.github.liuziyuan.retrofit.core;
 
 import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitServiceBean;
@@ -19,12 +19,9 @@ import java.util.Map;
  * @author liuziyuan
  */
 @Getter
-@Setter(AccessLevel.PACKAGE)
-public final class RetrofitResourceContext {
+@Setter
+public class RetrofitResourceContext {
 
-    private Environment environment;
-    private ApplicationContext applicationContext;
-    private ResourceLoader resourceLoader;
     private List<RetrofitClientBean> retrofitClients;
     private Map<String, RetrofitServiceBean> retrofitServices;
 
@@ -32,11 +29,11 @@ public final class RetrofitResourceContext {
         retrofitClients = new ArrayList<>();
     }
 
-    void setRetrofitClients(List<RetrofitClientBean> retrofitClients) {
+    public void setRetrofitClients(List<RetrofitClientBean> retrofitClients) {
         this.retrofitClients = retrofitClients;
     }
 
-    List<RetrofitClientBean> getRetrofitClients() {
+    public List<RetrofitClientBean> getRetrofitClients() {
         return retrofitClients;
     }
 

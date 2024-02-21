@@ -1,5 +1,6 @@
 package io.github.liuziyuan.retrofit.core.generator;
 
+import io.github.liuziyuan.retrofit.core.AppContext;
 import io.github.liuziyuan.retrofit.core.Generator;
 import io.github.liuziyuan.retrofit.core.extension.BaseCallFactoryBuilder;
 import lombok.SneakyThrows;
@@ -12,9 +13,9 @@ import org.springframework.context.ApplicationContext;
  */
 public class CallFactoryGenerator implements Generator<Call.Factory> {
     private final Class<? extends BaseCallFactoryBuilder> callFactoryBuilderClazz;
-    private final ApplicationContext applicationContext;
+    private final AppContext applicationContext;
 
-    public CallFactoryGenerator(Class<? extends BaseCallFactoryBuilder> callFactoryBuilderClazz, ApplicationContext applicationContext) {
+    public CallFactoryGenerator(Class<? extends BaseCallFactoryBuilder> callFactoryBuilderClazz, AppContext applicationContext) {
         this.callFactoryBuilderClazz = callFactoryBuilderClazz;
         this.applicationContext = applicationContext;
     }
@@ -22,10 +23,9 @@ public class CallFactoryGenerator implements Generator<Call.Factory> {
     @SneakyThrows
     @Override
     public Call.Factory generate() {
-        try {
-            BaseCallFactoryBuilder baseCallFactoryBuilder = applicationContext.getBean(callFactoryBuilderClazz);
+        BaseCallFactoryBuilder baseCallFactoryBuilder = applicationContext.getBean(callFactoryBuilderClazz);
+        if (baseCallFactoryBuilder != null) {
             return baseCallFactoryBuilder.executeBuild();
-        } catch (NoSuchBeanDefinitionException ignored) {
         }
         if (callFactoryBuilderClazz != null) {
             final String baseCallFactoryBuilderClazzName = BaseCallFactoryBuilder.class.getName();

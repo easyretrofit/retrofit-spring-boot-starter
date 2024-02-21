@@ -1,6 +1,8 @@
 package io.github.liuziyuan.retrofit.springboot;
 
 import io.github.liuziyuan.retrofit.core.Env;
+import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
+import io.github.liuziyuan.retrofit.core.RetrofitResourceScanner;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitServiceBean;
 import lombok.extern.slf4j.Slf4j;
@@ -64,14 +66,12 @@ public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefin
         final Map<String, RetrofitServiceBean> retrofitServiceBeanHashMap = retrofitResourceContextBuilder.getRetrofitServiceBeanHashMap();
         context.setRetrofitClients(retrofitClientBeanList);
         context.setRetrofitServices(retrofitServiceBeanHashMap);
-        context.setEnvironment(environment);
-        context.setResourceLoader(resourceLoader);
         return context;
     }
 
     private Set<Class<?>> scanRetrofitResource(AnnotationAttributes annoAttrs) {
         // scan RetrofitResource
-        RetrofitResourceScanner scanner = new RetrofitResourceScanner();
+        SpringBootRetrofitResourceScanner scanner = new SpringBootRetrofitResourceScanner();
         List<String> basePackages = new ArrayList<>();
         basePackages.addAll(Arrays.stream(annoAttrs.getStringArray("value")).filter(StringUtils::hasText).collect(Collectors.toList()));
         basePackages.addAll(Arrays.stream(annoAttrs.getStringArray("basePackages")).filter(StringUtils::hasText).collect(Collectors.toList()));

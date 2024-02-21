@@ -1,5 +1,6 @@
 package io.github.liuziyuan.retrofit.core.generator;
 
+import io.github.liuziyuan.retrofit.core.AppContext;
 import io.github.liuziyuan.retrofit.core.Generator;
 import io.github.liuziyuan.retrofit.core.extension.BaseCallBackExecutorBuilder;
 import lombok.SneakyThrows;
@@ -13,9 +14,9 @@ import java.util.concurrent.Executor;
  */
 public class CallBackExecutorGenerator implements Generator<Executor> {
     private final Class<? extends BaseCallBackExecutorBuilder> callBackExecutorBuilderClazz;
-    private final ApplicationContext applicationContext;
+    private final AppContext applicationContext;
 
-    public CallBackExecutorGenerator(Class<? extends BaseCallBackExecutorBuilder> callBackExecutorBuilderClazz, ApplicationContext applicationContext) {
+    public CallBackExecutorGenerator(Class<? extends BaseCallBackExecutorBuilder> callBackExecutorBuilderClazz, AppContext applicationContext) {
         this.callBackExecutorBuilderClazz = callBackExecutorBuilderClazz;
         this.applicationContext = applicationContext;
     }
@@ -23,10 +24,10 @@ public class CallBackExecutorGenerator implements Generator<Executor> {
     @SneakyThrows
     @Override
     public Executor generate() {
-        try {
-            final BaseCallBackExecutorBuilder baseCallBackExecutorBuilder = applicationContext.getBean(callBackExecutorBuilderClazz);
+
+        final BaseCallBackExecutorBuilder baseCallBackExecutorBuilder = applicationContext.getBean(callBackExecutorBuilderClazz);
+        if (baseCallBackExecutorBuilder != null) {
             return baseCallBackExecutorBuilder.executeBuild();
-        } catch (NoSuchBeanDefinitionException ignored) {
         }
         if (callBackExecutorBuilderClazz != null) {
             final String baseCallBackExecutorClazzName = BaseCallBackExecutorBuilder.class.getName();

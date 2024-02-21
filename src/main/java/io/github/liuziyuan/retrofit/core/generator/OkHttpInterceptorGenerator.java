@@ -1,12 +1,14 @@
 package io.github.liuziyuan.retrofit.core.generator;
 
+import io.github.liuziyuan.retrofit.core.AppContext;
+import io.github.liuziyuan.retrofit.core.Env;
 import io.github.liuziyuan.retrofit.core.Generator;
-import io.github.liuziyuan.retrofit.springboot.RetrofitResourceContext;
+import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
 import io.github.liuziyuan.retrofit.core.annotation.RetrofitInterceptor;
+import io.github.liuziyuan.retrofit.core.exception.NoSuchBeanDefinitionException;
 import io.github.liuziyuan.retrofit.core.extension.BaseInterceptor;
 import lombok.SneakyThrows;
 import okhttp3.Interceptor;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 
 import java.lang.reflect.Constructor;
 
@@ -19,23 +21,21 @@ public class OkHttpInterceptorGenerator implements Generator<Interceptor> {
     private final Class<? extends BaseInterceptor> interceptorClass;
     private final RetrofitInterceptor retrofitInterceptor;
     private final RetrofitResourceContext resourceContext;
+    private AppContext applicationContext;
     private BaseInterceptor interceptor;
 
-    public OkHttpInterceptorGenerator(RetrofitInterceptor retrofitInterceptor, RetrofitResourceContext resourceContext) {
+    public OkHttpInterceptorGenerator(RetrofitInterceptor retrofitInterceptor, RetrofitResourceContext resourceContext, AppContext applicationContext) {
         this.retrofitInterceptor = retrofitInterceptor;
         this.interceptorClass = retrofitInterceptor.handler();
         this.resourceContext = resourceContext;
         this.interceptor = null;
+        this.applicationContext = applicationContext;
     }
 
     @SneakyThrows
     @Override
     public Interceptor generate() {
-
-        try {
-            interceptor = resourceContext.getApplicationContext().getBean(retrofitInterceptor.handler());
-        } catch (NoSuchBeanDefinitionException ignored) {
-        }
+        interceptor = applicationContext.getBean(retrofitInterceptor.handler());
         if (interceptor == null && interceptorClass != null) {
             Constructor<? extends BaseInterceptor> constructor;
             BaseInterceptor interceptorInstance;
