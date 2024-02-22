@@ -2,6 +2,7 @@ package io.github.liuziyuan.retrofit.spring.boot;
 
 import io.github.liuziyuan.retrofit.core.Env;
 import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
+import io.github.liuziyuan.retrofit.core.RetrofitResourceContextBuilder;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean;
 import lombok.extern.slf4j.Slf4j;

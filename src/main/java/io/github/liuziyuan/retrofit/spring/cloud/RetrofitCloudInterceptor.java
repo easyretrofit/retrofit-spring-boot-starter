@@ -1,7 +1,6 @@
 package io.github.liuziyuan.retrofit.spring.cloud;
 
 import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
-import io.github.liuziyuan.retrofit.core.annotation.RetrofitInterceptor;
 import io.github.liuziyuan.retrofit.core.extension.BaseInterceptor;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean;
 import lombok.SneakyThrows;
@@ -36,6 +35,7 @@ public class RetrofitCloudInterceptor extends BaseInterceptor {
         final Method method = super.getRequestMethod(request);
         String clazzName = super.getClazzNameByMethod(method);
         final RetrofitApiServiceBean currentServiceBean = context.getRetrofitApiServiceBean(clazzName);
+        //final String serviceName = currentServiceBean.getRetrofitCloudService().name()
         final String serviceName = null;
         if (StringUtils.isNotEmpty(serviceName)) {
             final URI uri = loadBalancerClient.choose(serviceName).getUri();

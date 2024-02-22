@@ -1,6 +1,5 @@
-package io.github.liuziyuan.retrofit.spring.boot;
+package io.github.liuziyuan.retrofit.core;
 
-import io.github.liuziyuan.retrofit.core.Env;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBeanGenerator;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean;
