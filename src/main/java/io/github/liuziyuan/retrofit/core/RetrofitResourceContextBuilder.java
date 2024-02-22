@@ -60,7 +60,7 @@ public abstract class RetrofitResourceContextBuilder {
         RetrofitApiServiceBeanGenerator serviceBeanHandler;
         for (Class<?> clazz : retrofitBuilderClassSet) {
             serviceBeanHandler = new RetrofitApiServiceBeanGenerator(clazz, env);
-            final RetrofitApiServiceBean serviceBean = serviceBeanHandler.generate();
+            final RetrofitApiServiceBean serviceBean = serviceBeanHandler.generate(extensions);
             if (serviceBean != null) {
                 retrofitApiServiceBeanList.add(serviceBean);
             }
