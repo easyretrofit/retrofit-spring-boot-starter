@@ -1,6 +1,6 @@
-package io.github.liuziyuan.retrofit.springboot;
+package io.github.liuziyuan.retrofit.spring.boot;
 
-import io.github.liuziyuan.retrofit.springboot.config.RetrofitConfig;
+import io.github.liuziyuan.retrofit.spring.boot.config.RetrofitConfig;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;

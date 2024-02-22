@@ -1,10 +1,10 @@
-package io.github.liuziyuan.retrofit.springboot;
+package io.github.liuziyuan.retrofit.spring.boot;
 
 import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean;
 import io.github.liuziyuan.retrofit.core.resource.UrlStatus;
-import io.github.liuziyuan.retrofit.springboot.generator.SpringBootRetrofitBuilderGenerator;
+import io.github.liuziyuan.retrofit.spring.boot.generator.SpringBootRetrofitBuilderGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;

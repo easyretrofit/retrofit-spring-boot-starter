@@ -1,4 +1,4 @@
-package io.github.liuziyuan.retrofit.springboot;
+package io.github.liuziyuan.retrofit.spring.boot;
 
 import io.github.liuziyuan.retrofit.core.Env;
 import org.springframework.core.env.Environment;

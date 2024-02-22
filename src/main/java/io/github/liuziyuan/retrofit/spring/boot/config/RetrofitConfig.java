@@ -1,6 +1,6 @@
-package io.github.liuziyuan.retrofit.springboot.config;
+package io.github.liuziyuan.retrofit.spring.boot.config;
 
-import io.github.liuziyuan.retrofit.springboot.RetrofitResourceDefinitionRegistry;
+import io.github.liuziyuan.retrofit.spring.boot.RetrofitResourceDefinitionRegistry;
 //import io.github.liuziyuan.retrofit.extension.RetrofitCloudInterceptor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
