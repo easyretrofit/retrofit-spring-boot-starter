@@ -2,7 +2,6 @@ package io.github.liuziyuan.retrofit.spring.cloud;
 
 import io.github.liuziyuan.retrofit.core.annotation.RetrofitDynamicBaseUrl;
 import io.github.liuziyuan.retrofit.core.annotation.RetrofitInterceptor;
-import io.github.liuziyuan.retrofit.spring.cloud.RetrofitCloudInterceptor;
 import org.springframework.core.annotation.AliasFor;
 
 import java.lang.annotation.*;

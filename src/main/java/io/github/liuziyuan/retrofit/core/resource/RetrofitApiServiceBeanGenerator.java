@@ -1,13 +1,16 @@
 package io.github.liuziyuan.retrofit.core.resource;
 
 import io.github.liuziyuan.retrofit.core.Env;
+import io.github.liuziyuan.retrofit.core.Extension;
 import io.github.liuziyuan.retrofit.core.generator.Generator;
 import io.github.liuziyuan.retrofit.core.annotation.*;
 import io.github.liuziyuan.retrofit.core.exception.RetrofitStarterException;
 
+import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -24,28 +27,38 @@ public class RetrofitApiServiceBeanGenerator implements Generator<RetrofitApiSer
         this.env = env;
     }
 
-    @Override
-    public RetrofitApiServiceBean generate() {
+    public RetrofitApiServiceBean generate(List<Extension> extensions) {
+        return generateInner(extensions);
+    }
+
+    private RetrofitApiServiceBean generateInner(@Nullable List<Extension> extensions) {
         Class<?> retrofitBuilderClazz = getParentRetrofitBuilderClazz();
         RetrofitApiServiceBean retrofitApiServiceBean = new RetrofitApiServiceBean();
         retrofitApiServiceBean.setSelfClazz(clazz);
         retrofitApiServiceBean.setParentClazz(retrofitBuilderClazz);
         RetrofitBuilder retrofitBuilderAnnotation = retrofitBuilderClazz.getDeclaredAnnotation(RetrofitBuilder.class);
         retrofitApiServiceBean.setRetrofitBuilder(retrofitBuilderAnnotation);
-//        RetrofitCloudService retrofitCloudServiceAnnotation = clazz.getDeclaredAnnotation(RetrofitCloudService.class);
-//        retrofitServiceBean.setRetrofitCloudService(retrofitCloudServiceAnnotation);
         Set<RetrofitInterceptor> interceptors = getInterceptors(retrofitBuilderClazz);
         Set<RetrofitInterceptor> myInterceptors = getInterceptors(clazz);
-//        try {
-//            RetrofitInterceptor annotation = retrofitCloudServiceAnnotation.annotationType().getAnnotation(RetrofitInterceptor.class);
-//            myInterceptors.add(annotation);
-//        } catch (NullPointerException ignored) {
-//        }
+        if (extensions != null) {
+            for (Extension extension : extensions) {
+                try {
+                    RetrofitInterceptor annotation = extension.createAnnotation().getAnnotation(RetrofitInterceptor.class);
+                    myInterceptors.add(annotation);
+                } catch (NullPointerException ignored) {
+                }
+            }
+        }
         retrofitApiServiceBean.setMyInterceptors(myInterceptors);
         retrofitApiServiceBean.setInterceptors(interceptors);
         RetrofitUrl retrofitUrl = getRetrofitUrl(retrofitBuilderAnnotation);
         retrofitApiServiceBean.setRetrofitUrl(retrofitUrl);
         return retrofitApiServiceBean;
+    }
+
+    @Override
+    public RetrofitApiServiceBean generate() {
+        return generateInner(null);
 
     }
 
@@ -119,4 +132,7 @@ public class RetrofitApiServiceBeanGenerator implements Generator<RetrofitApiSer
     }
 
 
+    public List<Extension> registerExtension(List<Extension> extensions) {
+        return extensions;
+    }
 }

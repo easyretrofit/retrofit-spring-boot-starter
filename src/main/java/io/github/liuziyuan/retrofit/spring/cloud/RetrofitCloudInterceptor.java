@@ -35,8 +35,12 @@ public class RetrofitCloudInterceptor extends BaseInterceptor {
         final Method method = super.getRequestMethod(request);
         String clazzName = super.getClazzNameByMethod(method);
         final RetrofitApiServiceBean currentServiceBean = context.getRetrofitApiServiceBean(clazzName);
-        //final String serviceName = currentServiceBean.getRetrofitCloudService().name()
-        final String serviceName = null;
+        RetrofitCloudService annotation = null;
+        annotation = currentServiceBean.getSelfClazz().getAnnotation(RetrofitCloudService.class);
+        if (annotation == null) {
+            annotation = currentServiceBean.getParentClazz().getAnnotation(RetrofitCloudService.class);
+        }
+        final String serviceName = annotation.name();
         if (StringUtils.isNotEmpty(serviceName)) {
             final URI uri = loadBalancerClient.choose(serviceName).getUri();
             final HttpUrl httpUrl = HttpUrl.get(uri);

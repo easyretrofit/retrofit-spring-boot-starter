@@ -12,12 +12,14 @@ import java.util.*;
  *
  * @author liuziyuan
  */
-public class RetrofitResourceContextBuilder {
+public abstract class RetrofitResourceContextBuilder {
 
     private List<RetrofitClientBean> retrofitClientBeanList;
     private List<RetrofitApiServiceBean> retrofitApiServiceBeanList;
     private final Map<String, RetrofitApiServiceBean> retrofitServiceBeanHashMap;
     private final Env env;
+    private List<Extension> extensions;
+    public abstract List<Extension> registerExtension(List<Extension> extensions);
 
     public RetrofitResourceContextBuilder(Env env) {
         retrofitClientBeanList = new ArrayList<>();
@@ -54,6 +56,7 @@ public class RetrofitResourceContextBuilder {
     }
 
     private void setRetrofitServiceBeanList(Set<Class<?>> retrofitBuilderClassSet) {
+        extensions = registerExtension(new ArrayList<>());
         RetrofitApiServiceBeanGenerator serviceBeanHandler;
         for (Class<?> clazz : retrofitBuilderClassSet) {
             serviceBeanHandler = new RetrofitApiServiceBeanGenerator(clazz, env);
@@ -74,6 +77,5 @@ public class RetrofitResourceContextBuilder {
             }
         }
     }
-
 
 }
