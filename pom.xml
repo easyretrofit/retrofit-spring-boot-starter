@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.liuziyuan</groupId>
-    <artifactId>retrofit-spring-boot-starter</artifactId>
+    <artifactId>retrofit-spring-cloud-starter</artifactId>
     <version>0.1.0-SNAPSHOT</version>
 
     <name>${project.groupId}:${project.artifactId}</name>
-    <description>retrofit-spring-boot-starter</description>
-    <url>https://github.com/liuziyuan/retrofit-spring-boot-starter</url>
+    <description>retrofit-spring-cloud-starter</description>
+    <url>https://github.com/liuziyuan/${project.artifactId}</url>
 
     <licenses>
         <license>
@@ -19,9 +19,9 @@
     </licenses>
 
     <scm>
-        <url>https://github.com/liuziyuan/retrofit-spring-boot-starter/tree/main</url>
-        <connection>scm:git:git://github.com/liuziyuan/retrofit-spring-boot-starter.git</connection>
-        <developerConnection>scm:git:ssh://github.com/liuziyuan/retrofit-spring-boot-starter.git</developerConnection>
+        <url>https://github.com/liuziyuan/${project.artifactId}/tree/main</url>
+        <connection>scm:git:git://github.com/liuziyuan/${project.artifactId}.git</connection>
+        <developerConnection>scm:git:ssh://github.com/liuziyuan/${project.artifactId}.git</developerConnection>
     </scm>
 
     <developers>
