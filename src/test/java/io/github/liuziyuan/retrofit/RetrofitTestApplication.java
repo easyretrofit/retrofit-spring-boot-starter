@@ -2,9 +2,8 @@ package io.github.liuziyuan.retrofit;
 
 import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
-import io.github.liuziyuan.retrofit.springboot.EnableRetrofit;
+import io.github.liuziyuan.retrofit.spring.boot.EnableRetrofit;
 import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;

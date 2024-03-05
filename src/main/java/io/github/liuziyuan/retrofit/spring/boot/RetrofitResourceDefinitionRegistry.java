@@ -1,12 +1,10 @@
-package io.github.liuziyuan.retrofit.springboot;
+package io.github.liuziyuan.retrofit.spring.boot;
 
-import io.github.liuziyuan.retrofit.core.Env;
 import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
-import io.github.liuziyuan.retrofit.core.annotation.RetrofitBuilder;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean;
 import io.github.liuziyuan.retrofit.core.resource.UrlStatus;
-import io.github.liuziyuan.retrofit.springboot.generator.SpringBootRetrofitBuilderGenerator;
+import io.github.liuziyuan.retrofit.spring.boot.generator.SpringBootRetrofitBuilderGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -19,12 +17,8 @@ import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
 import retrofit2.Retrofit;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * Retrofit Resources Definition and Registry, including Retrofit objects and Retrofit API objects of dynamic proxy
