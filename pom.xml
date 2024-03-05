@@ -40,7 +40,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.boot.version>2.3.12.RELEASE</spring.boot.version>
         <retrofit.version>2.9.0</retrofit.version>
-        <retrofit-core.version>1.0.0</retrofit-core.version>
+        <retrofit-core.version>1.1.0-SNAPSHOT</retrofit-core.version>
         <reflections.version>0.10.2</reflections.version>
         <lombok.version>1.18.22</lombok.version>
         <commons.lang3.version>3.12.0</commons.lang3.version>
