@@ -1,15 +1,21 @@
 package io.github.liuziyuan.retrofit.core.resource;
 
 import io.github.liuziyuan.retrofit.core.Env;
+import io.github.liuziyuan.retrofit.core.Extension;
 import io.github.liuziyuan.retrofit.core.OverrideRule;
-import io.github.liuziyuan.retrofit.core.generator.Generator;
 import io.github.liuziyuan.retrofit.core.annotation.*;
 import io.github.liuziyuan.retrofit.core.exception.RetrofitStarterException;
+import io.github.liuziyuan.retrofit.core.generator.Generator;
+import io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean;
+import io.github.liuziyuan.retrofit.core.resource.RetrofitBuilderBean;
+import io.github.liuziyuan.retrofit.core.resource.RetrofitUrl;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -17,7 +23,7 @@ import java.util.Set;
  *
  * @author liuziyuan
  */
-public class RetrofitApiServiceBeanGenerator implements Generator<RetrofitApiServiceBean> {
+public class RetrofitApiServiceBeanGenerator implements Generator<io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean> {
     private final Class<?> clazz;
     private final Env env;
     private final RetrofitBuilderBean globalRetrofitBuilderBean;
@@ -28,11 +34,13 @@ public class RetrofitApiServiceBeanGenerator implements Generator<RetrofitApiSer
         this.globalRetrofitBuilderBean = globalRetrofitBuilderBean;
     }
 
+    public io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean generate(List<Extension> extensions) {
+        return generateInner(extensions);
+    }
 
-    @Override
-    public RetrofitApiServiceBean generate() {
+    private io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean generateInner(@Nullable List<Extension> extensions) {
         Class<?> retrofitBuilderClazz = getParentRetrofitBuilderClazz();
-        RetrofitApiServiceBean retrofitApiServiceBean = new RetrofitApiServiceBean();
+        io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean retrofitApiServiceBean = new io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean();
         retrofitApiServiceBean.setSelfClazz(clazz);
         retrofitApiServiceBean.setParentClazz(retrofitBuilderClazz);
         //将RetrofitBuilder注解信息注入到RetrofitBuilderBean中
@@ -40,22 +48,22 @@ public class RetrofitApiServiceBeanGenerator implements Generator<RetrofitApiSer
         retrofitApiServiceBean.setRetrofitBuilder(retrofitBuilderBean);
         Set<RetrofitInterceptor> interceptors = getInterceptors(retrofitBuilderClazz);
         Set<RetrofitInterceptor> myInterceptors = getInterceptors(clazz);
+        if (extensions != null) {
+            for (Extension extension : extensions) {
+                try {
+                    RetrofitInterceptor annotation = extension.createAnnotation().getAnnotation(RetrofitInterceptor.class);
+                    myInterceptors.add(annotation);
+                } catch (NullPointerException ignored) {
+                }
+            }
+        }
         retrofitApiServiceBean.setMyInterceptors(myInterceptors);
         retrofitApiServiceBean.setInterceptors(interceptors);
         RetrofitUrl retrofitUrl = getRetrofitUrl(retrofitBuilderBean);
         retrofitApiServiceBean.setRetrofitUrl(retrofitUrl);
         return retrofitApiServiceBean;
-
     }
 
-
-    /**
-     * 如果自己对RetrofitBuilder注解进行自定义属性，那么使用自己的RetrofitBuilder的属性，而不是使用global的
-     *
-     * @param retrofitBuilderClazz
-     * @param globalRetrofitBuilderBean
-     * @return
-     */
     private RetrofitBuilderBean getRetrofitBuilder(Class<?> retrofitBuilderClazz, RetrofitBuilderBean globalRetrofitBuilderBean) {
         RetrofitBuilder retrofitBuilderAnnotation = retrofitBuilderClazz.getDeclaredAnnotation(RetrofitBuilder.class);
         RetrofitBuilderBean retrofitBuilderBean = new RetrofitBuilderBean();
@@ -87,6 +95,12 @@ public class RetrofitApiServiceBeanGenerator implements Generator<RetrofitApiSer
             retrofitBuilderBean.setCallFactory(retrofitBuilderAnnotation.callFactory());
         }
         return retrofitBuilderBean;
+    }
+
+    @Override
+    public RetrofitApiServiceBean generate() {
+        return generateInner(null);
+
     }
 
     private RetrofitUrl getRetrofitUrl(RetrofitBuilderBean retrofitBuilderBean) {

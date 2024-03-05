@@ -1,5 +1,6 @@
 package io.github.liuziyuan.retrofit.core;
 
+import io.github.liuziyuan.retrofit.core.OverrideRule;
 import io.github.liuziyuan.retrofit.core.builder.*;
 
 public interface GlobalParamConfig {

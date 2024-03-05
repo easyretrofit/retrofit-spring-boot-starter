@@ -1,8 +1,9 @@
 package io.github.liuziyuan.retrofit.core.resource;
 
-import io.github.liuziyuan.retrofit.core.annotation.RetrofitBuilder;
-//import io.github.liuziyuan.retrofit.annotation.RetrofitCloudService;
 import io.github.liuziyuan.retrofit.core.annotation.RetrofitInterceptor;
+import io.github.liuziyuan.retrofit.core.resource.RetrofitBuilderBean;
+import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
+import io.github.liuziyuan.retrofit.core.resource.RetrofitUrl;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;

@@ -2,6 +2,8 @@ package io.github.liuziyuan.retrofit.core.resource;
 
 import io.github.liuziyuan.retrofit.core.builder.BaseCallAdapterFactoryBuilder;
 import io.github.liuziyuan.retrofit.core.builder.BaseConverterFactoryBuilder;
+import io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean;
+import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
 import io.github.liuziyuan.retrofit.core.util.BooleanUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -13,8 +15,8 @@ import java.util.List;
  */
 public class RetrofitResourceComparer {
 
-    private final RetrofitClientBean clientBean;
-    private final RetrofitApiServiceBean serviceBean;
+    private final io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean clientBean;
+    private final io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean serviceBean;
 
     public RetrofitResourceComparer(RetrofitClientBean clientBean, RetrofitApiServiceBean serviceBean) {
         this.clientBean = clientBean;

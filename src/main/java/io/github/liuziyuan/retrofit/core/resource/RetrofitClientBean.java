@@ -1,7 +1,9 @@
 package io.github.liuziyuan.retrofit.core.resource;
 
-import io.github.liuziyuan.retrofit.core.annotation.RetrofitBuilder;
 import io.github.liuziyuan.retrofit.core.annotation.RetrofitInterceptor;
+import io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean;
+import io.github.liuziyuan.retrofit.core.resource.RetrofitBuilderBean;
+import io.github.liuziyuan.retrofit.core.resource.UrlStatus;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,7 +27,7 @@ public class RetrofitClientBean {
     private RetrofitBuilderBean retrofitBuilder;
     private Set<RetrofitInterceptor> interceptors;
     private Set<RetrofitInterceptor> inheritedInterceptors;
-    private List<RetrofitApiServiceBean> retrofitServices;
+    private List<io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean> retrofitServices;
 
     public RetrofitClientBean() {
         this.interceptors = new LinkedHashSet<>();
