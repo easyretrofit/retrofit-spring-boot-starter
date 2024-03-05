@@ -6,7 +6,16 @@ app.hello-inherit.base-url: http://localhost:8081/hello/inherit
 
 okhttpclient.timeout: 30000
 
+
 logging:
   level:
     root: info
     io.github.liuziyuan.retrofit: debug
+retrofit:
+  global:
+    enable: true
+    call-adapter-factory-builder-clazz: io.github.liuziyuan.retrofit.injectdemo.InjectRxJavaCallAdapterFactoryBuilder, io.github.liuziyuan.retrofit.demo.RxJavaCallAdapterFactoryBuilder
+    base-url: http://localhost:8080
+    ok-http-client-builder-clazz: io.github.liuziyuan.retrofit.injectdemo.InjectMyOkHttpClient
+    validate-eagerly: false
+    overwrite-type: global_first

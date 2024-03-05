@@ -1,8 +1,14 @@
 package io.github.liuziyuan.retrofit;
 
-import io.github.liuziyuan.retrofit.annotation.EnableRetrofit;
+import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
+import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
+import io.github.liuziyuan.retrofit.spring.boot.EnableRetrofit;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
+
+import java.util.List;
 
 /**
  * @author liuziyuan
@@ -13,6 +19,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class RetrofitTestApplication {
     public static void main(String[] args) {
-        SpringApplication.run(RetrofitTestApplication.class, args);
+        ConfigurableApplicationContext run = SpringApplication.run(RetrofitTestApplication.class, args);
+        BeanFactory beanFactory = run.getBeanFactory();
+        RetrofitResourceContext bean = beanFactory.getBean(RetrofitResourceContext.class);
+        List<RetrofitClientBean> retrofitClients = bean.getRetrofitClients();
     }
 }

@@ -1,7 +1,7 @@
 package io.github.liuziyuan.retrofit.injectdemo.api;
 
-import io.github.liuziyuan.retrofit.annotation.RetrofitBuilder;
-import io.github.liuziyuan.retrofit.annotation.RetrofitInterceptor;
+import io.github.liuziyuan.retrofit.core.annotation.RetrofitBuilder;
+import io.github.liuziyuan.retrofit.core.annotation.RetrofitInterceptor;
 import io.github.liuziyuan.retrofit.injectdemo.*;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -15,7 +15,7 @@ import retrofit2.http.GET;
         addCallAdapterFactory = {InjectRxJavaCallAdapterFactoryBuilder.class},
         callbackExecutor = InjectMyCallBackExecutorBuilder.class,
         client = InjectMyOkHttpClient.class)
-@RetrofitInterceptor(handler = InjectMyRetrofitInterceptor1.class)
+@RetrofitInterceptor(handler = InjectMyRetrofitInterceptor.class)
 public interface InjectTestApi {
     @GET("/v1/test1/")
     Call<String> test1();

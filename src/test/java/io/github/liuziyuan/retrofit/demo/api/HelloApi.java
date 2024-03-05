@@ -1,11 +1,8 @@
 package io.github.liuziyuan.retrofit.demo.api;
 
-import io.github.liuziyuan.retrofit.annotation.RetrofitBuilder;
-import io.github.liuziyuan.retrofit.annotation.RetrofitInterceptor;
+import io.github.liuziyuan.retrofit.core.annotation.RetrofitBuilder;
+import io.github.liuziyuan.retrofit.core.annotation.RetrofitInterceptor;
 import io.github.liuziyuan.retrofit.demo.*;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.converter.jackson.JacksonConverterFactory;
 
 /**
  * @author liuziyuan

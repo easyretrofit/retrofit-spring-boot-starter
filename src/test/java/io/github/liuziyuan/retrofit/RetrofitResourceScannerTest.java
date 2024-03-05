@@ -4,6 +4,7 @@ import io.github.liuziyuan.retrofit.demo.api.HelloApi;
 import io.github.liuziyuan.retrofit.demo.api.HelloInheritApi;
 import io.github.liuziyuan.retrofit.demo.api.TestApi;
 import io.github.liuziyuan.retrofit.demo.api.TestInheritApi;
+import io.github.liuziyuan.retrofit.core.RetrofitResourceScanner;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,7 @@ class RetrofitResourceScannerTest {
 
     @BeforeEach
     void setUp() {
-        scanner = new RetrofitResourceScanner();
+//        scanner = new RetrofitResourceScanner();
     }
 
     @Test

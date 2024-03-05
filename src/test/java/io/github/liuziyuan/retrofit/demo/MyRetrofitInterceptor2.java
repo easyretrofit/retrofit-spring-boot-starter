@@ -1,7 +1,7 @@
 package io.github.liuziyuan.retrofit.demo;
 
-import io.github.liuziyuan.retrofit.RetrofitResourceContext;
-import io.github.liuziyuan.retrofit.extension.BaseInterceptor;
+import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
+import io.github.liuziyuan.retrofit.core.extension.BaseInterceptor;
 import lombok.SneakyThrows;
 import okhttp3.Request;
 import okhttp3.Response;
