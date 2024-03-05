@@ -6,7 +6,9 @@ import io.github.liuziyuan.retrofit.core.annotation.RetrofitBuilder;
 import io.github.liuziyuan.retrofit.core.annotation.RetrofitInterceptor;
 import io.github.liuziyuan.retrofit.core.builder.*;
 import io.github.liuziyuan.retrofit.core.extension.*;
+import io.github.liuziyuan.retrofit.core.resource.RetrofitBuilderBean;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
+import io.github.liuziyuan.retrofit.core.util.BooleanUtil;
 import lombok.SneakyThrows;
 import okhttp3.Call;
 import okhttp3.Interceptor;
@@ -64,15 +66,16 @@ public abstract class RetrofitBuilderGenerator implements Generator<Retrofit.Bui
     public abstract BaseCallAdapterFactoryBuilder buildInjectionCallAdapterFactor(Class<? extends BaseCallAdapterFactoryBuilder> clazz);
 
     public abstract BaseConverterFactoryBuilder buildInjectionConverterFactory(Class<? extends BaseConverterFactoryBuilder> clazz);
+
     private void setValidateEagerly() {
-        final RetrofitBuilder retrofitBuilder = clientBean.getRetrofitBuilder();
-        final boolean validateEagerly = retrofitBuilder.validateEagerly();
-        builder.validateEagerly(validateEagerly);
+        final RetrofitBuilderBean retrofitBuilder = clientBean.getRetrofitBuilder();
+        final String validateEagerly = retrofitBuilder.getValidateEagerly();
+        builder.validateEagerly(BooleanUtil.transformToBoolean(validateEagerly));
     }
 
     private void setCallFactory() {
-        final RetrofitBuilder retrofitBuilder = clientBean.getRetrofitBuilder();
-        final Class<? extends BaseCallFactoryBuilder> callFactoryBuilderClazz = retrofitBuilder.callFactory();
+        final RetrofitBuilderBean retrofitBuilder = clientBean.getRetrofitBuilder();
+        final Class<? extends BaseCallFactoryBuilder> callFactoryBuilderClazz = retrofitBuilder.getCallFactory();
         CallFactoryGenerator callFactoryGenerator = new CallFactoryGenerator(callFactoryBuilderClazz) {
             @Override
             public BaseCallFactoryBuilder buildInjectionObject(Class<? extends BaseCallFactoryBuilder> clazz) {
@@ -86,8 +89,8 @@ public abstract class RetrofitBuilderGenerator implements Generator<Retrofit.Bui
     }
 
     private void setCallBackExecutor() {
-        final RetrofitBuilder retrofitBuilder = clientBean.getRetrofitBuilder();
-        final Class<? extends BaseCallBackExecutorBuilder> callbackExecutorBuilderClazz = retrofitBuilder.callbackExecutor();
+        final RetrofitBuilderBean retrofitBuilder = clientBean.getRetrofitBuilder();
+        final Class<? extends BaseCallBackExecutorBuilder> callbackExecutorBuilderClazz = retrofitBuilder.getCallbackExecutor();
         CallBackExecutorGenerator callBackExecutorGenerator = new CallBackExecutorGenerator(callbackExecutorBuilderClazz) {
             @Override
             public BaseCallBackExecutorBuilder buildInjectionObject(Class<? extends BaseCallBackExecutorBuilder> clazz) {
@@ -101,16 +104,16 @@ public abstract class RetrofitBuilderGenerator implements Generator<Retrofit.Bui
     }
 
     private void setRetrofitCallAdapterFactory() {
-        final RetrofitBuilder retrofitBuilder = clientBean.getRetrofitBuilder();
-        final List<CallAdapter.Factory> callAdapterFactories = getCallAdapterFactories(retrofitBuilder.addCallAdapterFactory());
+        final RetrofitBuilderBean retrofitBuilder = clientBean.getRetrofitBuilder();
+        final List<CallAdapter.Factory> callAdapterFactories = getCallAdapterFactories(retrofitBuilder.getAddCallAdapterFactory());
         if (!CollectionUtils.isEmpty(callAdapterFactories)) {
             callAdapterFactories.forEach(builder::addCallAdapterFactory);
         }
     }
 
     private void setRetrofitConverterFactory() {
-        final RetrofitBuilder retrofitBuilder = clientBean.getRetrofitBuilder();
-        final List<Converter.Factory> converterFactories = getConverterFactories(retrofitBuilder.addConverterFactory());
+        final RetrofitBuilderBean retrofitBuilder = clientBean.getRetrofitBuilder();
+        final List<Converter.Factory> converterFactories = getConverterFactories(retrofitBuilder.getAddConverterFactory());
         if (!CollectionUtils.isEmpty(converterFactories)) {
             converterFactories.forEach(builder::addConverterFactory);
         }
@@ -118,14 +121,14 @@ public abstract class RetrofitBuilderGenerator implements Generator<Retrofit.Bui
 
     @SneakyThrows
     private void setRetrofitOkHttpClient() {
-        final RetrofitBuilder retrofitBuilder = clientBean.getRetrofitBuilder();
+        final RetrofitBuilderBean retrofitBuilder = clientBean.getRetrofitBuilder();
         Set<RetrofitInterceptor> allInterceptors = new LinkedHashSet<>();
         allInterceptors.addAll(clientBean.getInterceptors());
         allInterceptors.addAll(clientBean.getInheritedInterceptors());
         final List<RetrofitInterceptor> interceptors = new ArrayList<>(allInterceptors);
         OkHttpClient.Builder okHttpClientBuilder;
-        if (retrofitBuilder.client() != null) {
-            final OkHttpClientBuilderGenerator clientBuilderGenerator = new OkHttpClientBuilderGenerator(retrofitBuilder.client()) {
+        if (retrofitBuilder.getClient() != null) {
+            final OkHttpClientBuilderGenerator clientBuilderGenerator = new OkHttpClientBuilderGenerator(retrofitBuilder.getClient()) {
                 @Override
                 public BaseOkHttpClientBuilder buildInjectionObject(Class<? extends BaseOkHttpClientBuilder> clazz) {
                     return buildInjectionOkHttpClient(clazz);

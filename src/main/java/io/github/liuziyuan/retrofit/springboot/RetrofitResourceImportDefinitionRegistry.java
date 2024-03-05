@@ -2,6 +2,7 @@ package io.github.liuziyuan.retrofit.springboot;
 
 import io.github.liuziyuan.retrofit.core.Env;
 import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
+import io.github.liuziyuan.retrofit.core.resource.RetrofitBuilderBean;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean;
 import lombok.extern.slf4j.Slf4j;
@@ -43,10 +44,30 @@ public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefin
     void registerRetrofitResourceBeanDefinitions(AnnotationAttributes annoAttrs, BeanDefinitionRegistry registry) {
         // scan RetrofitResource
         final Set<Class<?>> retrofitBuilderClassSet = scanRetrofitResource(annoAttrs);
-        // init RetrofitResourceContext by RetrofitResourceContextBuilder
-        RetrofitResourceContext context = initRetrofitResourceContext(retrofitBuilderClassSet);
-        //registry RetrofitResourceContext
+        RetrofitBuilderBean retrofitBuilderBean = setRetrofitBuilderBean();
+        RetrofitResourceContext context = initRetrofitResourceContext(retrofitBuilderClassSet, retrofitBuilderBean);
+        // registry RetrofitResourceContext
         registryRetrofitResourceContext(registry, context);
+    }
+
+    private RetrofitBuilderBean setRetrofitBuilderBean() {
+        RetrofitBuilderBean retrofitBuilderBean = new RetrofitBuilderBean();
+        GlobalParamConfigSetting globalParamConfigSetting;
+        RetrofitGlobalConfigProperties properties = new RetrofitGlobalConfigProperties();
+        properties.setByEnvironment(environment);
+        globalParamConfigSetting = new GlobalParamConfigSetting(properties);
+        if (globalParamConfigSetting.enable()) {
+            retrofitBuilderBean.setEnable(globalParamConfigSetting.enable());
+            retrofitBuilderBean.setOverwriteType(globalParamConfigSetting.overwriteType());
+            retrofitBuilderBean.setBaseUrl(globalParamConfigSetting.globalBaseUrl());
+            retrofitBuilderBean.setClient(globalParamConfigSetting.globalOkHttpClientBuilderClazz());
+            retrofitBuilderBean.setCallFactory(globalParamConfigSetting.globalCallFactoryBuilderClazz());
+            retrofitBuilderBean.setCallbackExecutor(globalParamConfigSetting.globalCallBackExecutorBuilderClazz());
+            retrofitBuilderBean.setAddConverterFactory(globalParamConfigSetting.globalConverterFactoryBuilderClazz());
+            retrofitBuilderBean.setAddCallAdapterFactory(globalParamConfigSetting.globalCallAdapterFactoryBuilderClazz());
+            retrofitBuilderBean.setValidateEagerly(globalParamConfigSetting.globalValidateEagerly());
+        }
+        return retrofitBuilderBean;
     }
 
     private void registryRetrofitResourceContext(BeanDefinitionRegistry registry, RetrofitResourceContext context) {
@@ -56,11 +77,10 @@ public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefin
         registry.registerBeanDefinition(RetrofitResourceContext.class.getName(), definition);
     }
 
-    private RetrofitResourceContext initRetrofitResourceContext(Set<Class<?>> retrofitBuilderClassSet) {
-
+    private RetrofitResourceContext initRetrofitResourceContext(Set<Class<?>> retrofitBuilderClassSet, RetrofitBuilderBean retrofitBuilderBean) {
         Env env = new SpringBootEnv(environment);
         RetrofitResourceContextBuilder retrofitResourceContextBuilder = new RetrofitResourceContextBuilder(env);
-        retrofitResourceContextBuilder.build(retrofitBuilderClassSet);
+        retrofitResourceContextBuilder.build(retrofitBuilderClassSet, retrofitBuilderBean);
         final List<RetrofitClientBean> retrofitClientBeanList = retrofitResourceContextBuilder.getRetrofitClientBeanList();
         final Map<String, RetrofitApiServiceBean> retrofitServiceBeanHashMap = retrofitResourceContextBuilder.getRetrofitServiceBeanHashMap();
         return new RetrofitResourceContext(retrofitClientBeanList, retrofitServiceBeanHashMap);

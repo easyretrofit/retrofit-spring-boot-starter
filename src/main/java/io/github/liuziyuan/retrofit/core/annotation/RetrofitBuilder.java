@@ -79,5 +79,5 @@ public @interface RetrofitBuilder {
 
     Class<? extends BaseCallFactoryBuilder> callFactory() default BaseCallFactoryBuilder.class;
 
-    boolean validateEagerly() default false;
+    String validateEagerly() default "0";
 }

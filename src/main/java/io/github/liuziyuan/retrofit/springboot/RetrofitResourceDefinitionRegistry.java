@@ -1,6 +1,8 @@
 package io.github.liuziyuan.retrofit.springboot;
 
+import io.github.liuziyuan.retrofit.core.Env;
 import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
+import io.github.liuziyuan.retrofit.core.annotation.RetrofitBuilder;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean;
 import io.github.liuziyuan.retrofit.core.resource.UrlStatus;
@@ -13,11 +15,16 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
 import retrofit2.Retrofit;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Retrofit Resources Definition and Registry, including Retrofit objects and Retrofit API objects of dynamic proxy
@@ -25,11 +32,11 @@ import java.util.Objects;
  * @author liuziyuan
  */
 @Slf4j
-public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistryPostProcessor, ApplicationContextAware {
+public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistryPostProcessor, ApplicationContextAware, EnvironmentAware {
 
     private static final String WARNING_RETROFIT_CLIENT_EMPTY = "The [Retrofit Client] is not found in the 'RetrofitResourceContext'. You may not be using @RetrofitBuilder in the basePackages";
     private static final String RETROFIT_RESOURCE_CONTEXT_NOT_FOUND = "The 'RetrofitResourceContext' object not found in the Spring 'ApplicationContext'. You may not be using @EnableRetrofit";
-
+    private Environment environment;
     private ApplicationContext applicationContext;
 
     @Override
@@ -46,6 +53,7 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
             context = (RetrofitResourceContext) beanFactory.getBean(RetrofitResourceContext.class.getName());
             beanFactory.autowireBean(context);
             List<RetrofitClientBean> retrofitClientBeanList = context.getRetrofitClients();
+
             // registry Retrofit object
             registryRetrofitInstance(beanDefinitionRegistry, retrofitClientBeanList, context);
             // registry proxy object of retrofit api interface
@@ -126,5 +134,10 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
                 log.info("|--API Services: Interface name: {} , Parent Interface name: {}", selfClazz.getName(), parentClazzName);
             }
         }
+    }
+
+    @Override
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
     }
 }

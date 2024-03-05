@@ -2,6 +2,7 @@ package io.github.liuziyuan.retrofit.core.resource;
 
 import io.github.liuziyuan.retrofit.core.builder.BaseCallAdapterFactoryBuilder;
 import io.github.liuziyuan.retrofit.core.builder.BaseConverterFactoryBuilder;
+import io.github.liuziyuan.retrofit.core.util.BooleanUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -21,36 +22,36 @@ public class RetrofitResourceComparer {
     }
 
     public boolean okHttpClientInstanceCompare() {
-        final String clientBeanRetrofitBuilderOkHttpClientSimpleName = clientBean.getRetrofitBuilder().client().getName();
-        final String serviceBeanRetrofitBuilderOkHttpClientSimpleName = serviceBean.getRetrofitBuilder().client().getName();
+        final String clientBeanRetrofitBuilderOkHttpClientSimpleName = clientBean.getRetrofitBuilder().getClient().getName();
+        final String serviceBeanRetrofitBuilderOkHttpClientSimpleName = serviceBean.getRetrofitBuilder().getClient().getName();
         return StringUtils.equals(clientBeanRetrofitBuilderOkHttpClientSimpleName, serviceBeanRetrofitBuilderOkHttpClientSimpleName);
     }
 
     public boolean callBackExecutorCompare() {
-        final String clientBeanCallBackExecutorName = clientBean.getRetrofitBuilder().callbackExecutor().getName();
-        final String serviceBeanCallBackExecutorName = serviceBean.getRetrofitBuilder().callbackExecutor().getName();
+        final String clientBeanCallBackExecutorName = clientBean.getRetrofitBuilder().getCallbackExecutor().getName();
+        final String serviceBeanCallBackExecutorName = serviceBean.getRetrofitBuilder().getCallbackExecutor().getName();
         return StringUtils.equals(clientBeanCallBackExecutorName, serviceBeanCallBackExecutorName);
     }
 
     public boolean callFactoryCompare() {
-        final String clientBeanCallFactoryName = clientBean.getRetrofitBuilder().callFactory().getName();
-        final String serviceBeanCallFactoryName = serviceBean.getRetrofitBuilder().callFactory().getName();
+        final String clientBeanCallFactoryName = clientBean.getRetrofitBuilder().getCallFactory().getName();
+        final String serviceBeanCallFactoryName = serviceBean.getRetrofitBuilder().getCallFactory().getName();
         return StringUtils.equals(clientBeanCallFactoryName, serviceBeanCallFactoryName);
     }
 
     public boolean validateEagerlyCompare() {
-        final boolean clientBeanValidateEagerly = clientBean.getRetrofitBuilder().validateEagerly();
-        final boolean serviceBeanValidateEagerly = serviceBean.getRetrofitBuilder().validateEagerly();
+        final boolean clientBeanValidateEagerly = BooleanUtil.transformToBoolean(clientBean.getRetrofitBuilder().getValidateEagerly());
+        final boolean serviceBeanValidateEagerly = BooleanUtil.transformToBoolean(serviceBean.getRetrofitBuilder().getValidateEagerly());
         return clientBeanValidateEagerly == serviceBeanValidateEagerly;
     }
 
     public boolean callAdapterFactoryCompare() {
         List<String> clientBeanCallAdapterFactoryList = new ArrayList<>();
-        for (Class<? extends BaseCallAdapterFactoryBuilder> clazz : clientBean.getRetrofitBuilder().addCallAdapterFactory()) {
+        for (Class<? extends BaseCallAdapterFactoryBuilder> clazz : clientBean.getRetrofitBuilder().getAddCallAdapterFactory()) {
             clientBeanCallAdapterFactoryList.add(clazz.getSimpleName());
         }
         List<String> serviceBeanCallAdapterFactoryList = new ArrayList<>();
-        for (Class<? extends BaseCallAdapterFactoryBuilder> clazz : serviceBean.getRetrofitBuilder().addCallAdapterFactory()) {
+        for (Class<? extends BaseCallAdapterFactoryBuilder> clazz : serviceBean.getRetrofitBuilder().getAddCallAdapterFactory()) {
             serviceBeanCallAdapterFactoryList.add(clazz.getSimpleName());
         }
         return clientBeanCallAdapterFactoryList.containsAll(serviceBeanCallAdapterFactoryList) && serviceBeanCallAdapterFactoryList.containsAll(clientBeanCallAdapterFactoryList);
@@ -58,11 +59,11 @@ public class RetrofitResourceComparer {
 
     public boolean converterFactoryCompare() {
         List<String> clientBeanConverterFactoryList = new ArrayList<>();
-        for (Class<? extends BaseConverterFactoryBuilder> clazz : clientBean.getRetrofitBuilder().addConverterFactory()) {
+        for (Class<? extends BaseConverterFactoryBuilder> clazz : clientBean.getRetrofitBuilder().getAddConverterFactory()) {
             clientBeanConverterFactoryList.add(clazz.getSimpleName());
         }
         List<String> serviceBeanConverterFactoryList = new ArrayList<>();
-        for (Class<? extends BaseConverterFactoryBuilder> clazz : serviceBean.getRetrofitBuilder().addConverterFactory()) {
+        for (Class<? extends BaseConverterFactoryBuilder> clazz : serviceBean.getRetrofitBuilder().getAddConverterFactory()) {
             serviceBeanConverterFactoryList.add(clazz.getSimpleName());
         }
         return clientBeanConverterFactoryList.containsAll(serviceBeanConverterFactoryList) && serviceBeanConverterFactoryList.containsAll(clientBeanConverterFactoryList);

@@ -1,10 +1,7 @@
 package io.github.liuziyuan.retrofit.springboot;
 
 import io.github.liuziyuan.retrofit.core.Env;
-import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
-import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBeanGenerator;
-import io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean;
-import io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBeanGenerator;
+import io.github.liuziyuan.retrofit.core.resource.*;
 
 import java.util.*;
 
@@ -27,8 +24,8 @@ public class RetrofitResourceContextBuilder {
         this.env = env;
     }
 
-    public RetrofitResourceContextBuilder build(Set<Class<?>> retrofitBuilderClassSet) {
-        setRetrofitServiceBeanList(retrofitBuilderClassSet);
+    public RetrofitResourceContextBuilder build(Set<Class<?>> retrofitBuilderClassSet, RetrofitBuilderBean retrofitBuilderBean) {
+        setRetrofitServiceBeanList(retrofitBuilderClassSet, retrofitBuilderBean);
         setRetrofitClientBeanList();
         setRetrofitServiceBeanHashMap();
         return this;
@@ -54,10 +51,10 @@ public class RetrofitResourceContextBuilder {
         }
     }
 
-    private void setRetrofitServiceBeanList(Set<Class<?>> retrofitBuilderClassSet) {
+    private void setRetrofitServiceBeanList(Set<Class<?>> retrofitBuilderClassSet, RetrofitBuilderBean retrofitBuilderBean) {
         RetrofitApiServiceBeanGenerator serviceBeanHandler;
         for (Class<?> clazz : retrofitBuilderClassSet) {
-            serviceBeanHandler = new RetrofitApiServiceBeanGenerator(clazz, env);
+            serviceBeanHandler = new RetrofitApiServiceBeanGenerator(clazz, env, retrofitBuilderBean);
             final RetrofitApiServiceBean serviceBean = serviceBeanHandler.generate();
             if (serviceBean != null) {
                 retrofitApiServiceBeanList.add(serviceBean);
