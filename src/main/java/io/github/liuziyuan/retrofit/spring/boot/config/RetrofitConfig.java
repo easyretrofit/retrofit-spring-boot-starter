@@ -1,5 +1,6 @@
 package io.github.liuziyuan.retrofit.spring.boot.config;
 
+import io.github.liuziyuan.retrofit.spring.boot.RetrofitGlobalConfigProperties;
 import io.github.liuziyuan.retrofit.spring.boot.RetrofitResourceDefinitionRegistry;
 //import io.github.liuziyuan.retrofit.extension.RetrofitCloudInterceptor;
 import io.github.liuziyuan.retrofit.spring.cloud.RetrofitCloudInterceptor;
@@ -17,6 +18,12 @@ public class RetrofitConfig {
     @ConditionalOnMissingBean
     public static RetrofitResourceDefinitionRegistry retrofitResourceDefinitionRegistry() {
         return new RetrofitResourceDefinitionRegistry();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public RetrofitGlobalConfigProperties retrofitGlobalConfigProperties() {
+        return new RetrofitGlobalConfigProperties();
     }
 
     @Bean

@@ -11,7 +11,7 @@ public class SpringBootRetrofitResourceContextBuilder extends RetrofitResourceCo
 
     @Override
     public List<Extension> registerExtension(List<Extension> extensions) {
-        extensions.add(new RetrofitCloudServiceExtension());
+//        extensions.add(new RetrofitCloudServiceExtension());
         return extensions;
     }
 
