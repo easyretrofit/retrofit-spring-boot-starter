@@ -18,7 +18,7 @@ import java.util.Set;
  * @author liuziyuan
  * @date 1/14/2022 5:07 PM
  */
-class RetrofitResourceScannerTest {
+class RetrofitComponentScannerTest {
 
     private RetrofitResourceScanner scanner;
 

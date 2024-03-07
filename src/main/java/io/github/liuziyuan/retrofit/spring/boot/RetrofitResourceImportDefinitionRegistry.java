@@ -57,7 +57,7 @@ public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefin
         GlobalParamConfigSetting globalParamConfigSetting;
         RetrofitGlobalConfigProperties properties = new RetrofitGlobalConfigProperties();
         properties.setByEnvironment(environment);
-        globalParamConfigSetting = new GlobalParamConfigSetting(properties);
+        globalParamConfigSetting = new GlobalParamConfigSetting(properties, getBeanInstance());
         if (globalParamConfigSetting.enable()) {
             retrofitBuilderBean.setEnable(globalParamConfigSetting.enable());
             retrofitBuilderBean.setOverwriteType(globalParamConfigSetting.overwriteType());
@@ -70,6 +70,23 @@ public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefin
             retrofitBuilderBean.setValidateEagerly(globalParamConfigSetting.globalValidateEagerly());
         }
         return retrofitBuilderBean;
+    }
+
+    private <T> T getBeanInstance() {
+        SpringBootRetrofitResourceScanner scanner = new SpringBootRetrofitResourceScanner();
+        Set<Class<?>> retrofitResources = scanner.getRetrofitResource(RetrofitComponent.class, "io.github.liuziyuan.retrofit.spring.boot");
+        for (Class<?> retrofitResource : retrofitResources) {
+            if (Arrays.stream(retrofitResource.getInterfaces()).anyMatch(c -> "GlobalParamConfig".equalsIgnoreCase(c.getSimpleName()))) {
+                try {
+                    return (T) retrofitResource.newInstance();
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                } catch (InstantiationException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        return null;
     }
 
 

@@ -1,6 +1,8 @@
 package io.github.liuziyuan.retrofit.spring.boot;
 
 import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
+import io.github.liuziyuan.retrofit.core.builder.BaseCallAdapterFactoryBuilder;
+import io.github.liuziyuan.retrofit.core.builder.BaseConverterFactoryBuilder;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitBuilderBean;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean;
@@ -18,9 +20,11 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.env.Environment;
 import retrofit2.Retrofit;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Retrofit Resources Definition and Registry, including Retrofit objects and Retrofit API objects of dynamic proxy
@@ -135,15 +139,15 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
         final String realHostUrl = retrofitClient.getRealHostUrl();
         RetrofitBuilderBean retrofitBuilder = retrofitClient.getRetrofitBuilder();
         final String globalEnable = retrofitBuilder.isEnable() ? "true" : "false";
-        String CallAdapterFactoryString = StringUtils.join(Arrays.stream(retrofitBuilder.getAddCallAdapterFactory()).map(Class::getSimpleName), ",");
-        String ConverterFactoryString = StringUtils.join(Arrays.stream(retrofitBuilder.getAddConverterFactory()).map(Class::getSimpleName), ",");
+        String CallAdapterFactoryString = StringUtils.join(Arrays.stream(retrofitBuilder.getAddCallAdapterFactory()).map(Class::getSimpleName).collect(Collectors.toList()), ",");
+        String ConverterFactoryString = StringUtils.join(Arrays.stream(retrofitBuilder.getAddConverterFactory()).map(Class::getSimpleName).collect(Collectors.toList()), ",");
         String callbackExecutorString = retrofitBuilder.getCallbackExecutor().getSimpleName();
         String clientString = retrofitBuilder.getClient().getSimpleName();
         String callFactoryString = retrofitBuilder.getCallFactory().getSimpleName();
         String validateEagerlyString = retrofitBuilder.getValidateEagerly();
         String inheritedInterceptor = retrofitClient.getInheritedInterceptors().toString();
         String interceptor = retrofitClient.getInterceptors().toString();
-        log.debug("RetrofitClientBean: HostURL: {}, UrlStatus: {}, globalEnable: {}, CallAdapterFactory: {}, ConverterFactory:{}, callbackExecutor: {}, client: {}, callFactory: {}, validateEagerly: {}, inheritedInterceptor: {}, interceptor: {}",
+        log.debug("RetrofitClientBean: HostURL: {}; UrlStatus: {}; globalEnable: {}; CallAdapterFactory: {}; ConverterFactory:{}; callbackExecutor: {}; client: {}; callFactory: {}; validateEagerly: {}; inheritedInterceptor: {}; interceptor: {}",
                 realHostUrl, retrofitClient.getUrlStatus(), globalEnable, CallAdapterFactoryString, ConverterFactoryString, callbackExecutorString, clientString, callFactoryString, validateEagerlyString, inheritedInterceptor, interceptor);
 
     }

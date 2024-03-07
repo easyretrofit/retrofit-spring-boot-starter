@@ -7,53 +7,88 @@ import io.github.liuziyuan.retrofit.core.builder.*;
 public class GlobalParamConfigSetting implements GlobalParamConfig {
 
     private final RetrofitGlobalConfigProperties properties;
+    private final GlobalParamConfig customSetting;
 
-    public GlobalParamConfigSetting(RetrofitGlobalConfigProperties properties) {
+    public GlobalParamConfigSetting(RetrofitGlobalConfigProperties properties, GlobalParamConfig customSetting) {
         this.properties = properties;
+        this.customSetting = customSetting;
     }
 
     @Override
     public boolean enable() {
+        if (customSetting != null && customSetting.enable()) {
+            return customSetting.enable();
+        }
         return properties.isEnable();
     }
 
     @Override
     public OverrideRule overwriteType() {
-        return OverrideRule.GLOBAL_FIRST;
+        OverrideRule overwriteType = null;
+        if (properties.getOverwriteType() != null) {
+            overwriteType = properties.getOverwriteType();
+        } else {
+            overwriteType = customSetting.overwriteType();
+        }
+        if (overwriteType == null) {
+            overwriteType = OverrideRule.GLOBAL_FIRST;
+        }
+        return overwriteType;
     }
 
     @Override
     public String globalBaseUrl() {
-        return properties.getBaseUrl();
+        if (properties.getBaseUrl() != null) {
+            return properties.getBaseUrl();
+        }
+        return customSetting.globalBaseUrl();
     }
 
     @Override
     public Class<? extends BaseCallAdapterFactoryBuilder>[] globalCallAdapterFactoryBuilderClazz() {
-        return properties.getCallAdapterFactoryBuilderClazz();
+        if (properties.getCallAdapterFactoryBuilderClazz() != null) {
+            return properties.getCallAdapterFactoryBuilderClazz();
+        }
+        return customSetting.globalCallAdapterFactoryBuilderClazz();
     }
 
     @Override
     public Class<? extends BaseConverterFactoryBuilder>[] globalConverterFactoryBuilderClazz() {
-        return properties.getConverterFactoryBuilderClazz();
+        if (properties.getConverterFactoryBuilderClazz() != null) {
+            return properties.getConverterFactoryBuilderClazz();
+        }
+        return customSetting.globalConverterFactoryBuilderClazz();
     }
 
     @Override
     public Class<? extends BaseOkHttpClientBuilder> globalOkHttpClientBuilderClazz() {
-        return properties.getOkHttpClientBuilderClazz();
+        if (properties.getOkHttpClientBuilderClazz() != null) {
+            return properties.getOkHttpClientBuilderClazz();
+        }
+        return customSetting.globalOkHttpClientBuilderClazz();
     }
 
     @Override
     public Class<? extends BaseCallBackExecutorBuilder> globalCallBackExecutorBuilderClazz() {
-        return properties.getCallBackExecutorBuilderClazz();
+        if (properties.getCallBackExecutorBuilderClazz() != null) {
+            return properties.getCallBackExecutorBuilderClazz();
+        }
+        return customSetting.globalCallBackExecutorBuilderClazz();
     }
 
     @Override
     public Class<? extends BaseCallFactoryBuilder> globalCallFactoryBuilderClazz() {
-        return properties.getCallFactoryBuilderClazz();
+        if (properties.getCallFactoryBuilderClazz() != null) {
+            return properties.getCallFactoryBuilderClazz();
+        }
+        return customSetting.globalCallFactoryBuilderClazz();
     }
 
     @Override
     public String globalValidateEagerly() {
-        return properties.getValidateEagerly();
+        if (properties.getValidateEagerly() != null) {
+            return properties.getValidateEagerly();
+        }
+        return customSetting.globalValidateEagerly();
     }
 }

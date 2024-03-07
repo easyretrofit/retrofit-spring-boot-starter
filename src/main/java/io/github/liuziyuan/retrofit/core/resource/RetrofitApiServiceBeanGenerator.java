@@ -68,6 +68,7 @@ public class RetrofitApiServiceBeanGenerator implements Generator<io.github.liuz
         RetrofitBuilder retrofitBuilderAnnotation = retrofitBuilderClazz.getDeclaredAnnotation(RetrofitBuilder.class);
         RetrofitBuilderBean retrofitBuilderBean = new RetrofitBuilderBean();
         if (globalRetrofitBuilderBean.isEnable()) {
+            retrofitBuilderBean.setEnable(true);
             if (globalRetrofitBuilderBean.getOverwriteType() == OverrideRule.GLOBAL_FIRST) {
                 retrofitBuilderBean.setBaseUrl(StringUtils.isNotBlank(globalRetrofitBuilderBean.getBaseUrl()) ? globalRetrofitBuilderBean.getBaseUrl() : retrofitBuilderAnnotation.baseUrl());
                 retrofitBuilderBean.setClient(globalRetrofitBuilderBean.getClient() != null ? globalRetrofitBuilderBean.getClient() : retrofitBuilderAnnotation.client());
@@ -86,6 +87,7 @@ public class RetrofitApiServiceBeanGenerator implements Generator<io.github.liuz
                 retrofitBuilderBean.setCallFactory(retrofitBuilderAnnotation.callFactory() != null ? retrofitBuilderAnnotation.callFactory() : globalRetrofitBuilderBean.getCallFactory());
             }
         } else {
+            retrofitBuilderBean.setEnable(false);
             retrofitBuilderBean.setBaseUrl(retrofitBuilderAnnotation.baseUrl());
             retrofitBuilderBean.setClient(retrofitBuilderAnnotation.client());
             retrofitBuilderBean.setCallbackExecutor(retrofitBuilderAnnotation.callbackExecutor());

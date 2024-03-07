@@ -24,7 +24,7 @@ public class RetrofitGlobalConfigProperties {
 
     private boolean enable = false;
 
-    private OverrideRule overwriteType = OverrideRule.GLOBAL_FIRST;
+    private OverrideRule overwriteType;
 
     private String baseUrl;
 

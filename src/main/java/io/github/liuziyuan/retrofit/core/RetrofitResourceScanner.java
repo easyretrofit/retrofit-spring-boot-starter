@@ -22,7 +22,20 @@ import java.util.stream.Collectors;
 public abstract class RetrofitResourceScanner {
 
     public abstract Set<Class<?>> customRetrofitResourceClasses(Reflections reflections);
+
     public Set<Class<?>> doScan(String... basePackages) {
+        Reflections reflections = getReflections(basePackages);
+        final Set<Class<?>> retrofitBuilderClasses = getRetrofitResourceClasses(reflections, RetrofitBuilder.class);
+        final Set<Class<?>> retrofitBaseApiClasses = getRetrofitResourceClasses(reflections, RetrofitBase.class);
+        retrofitBuilderClasses.addAll(retrofitBaseApiClasses);
+        Set<Class<?>> customClasses = customRetrofitResourceClasses(reflections);
+        if (customClasses != null && !customClasses.isEmpty()) {
+            retrofitBuilderClasses.addAll(customClasses);
+        }
+        return retrofitBuilderClasses;
+    }
+
+    private Reflections getReflections(String[] basePackages) {
         ConfigurationBuilder configuration;
         if (basePackages.length == 0) {
             configuration = new ConfigurationBuilder().forPackages("");
@@ -38,15 +51,12 @@ public abstract class RetrofitResourceScanner {
             });
 
         }
-        Reflections reflections = new Reflections(configuration);
-        final Set<Class<?>> retrofitBuilderClasses = getRetrofitResourceClasses(reflections, RetrofitBuilder.class);
-        final Set<Class<?>> retrofitBaseApiClasses = getRetrofitResourceClasses(reflections, RetrofitBase.class);
-        retrofitBuilderClasses.addAll(retrofitBaseApiClasses);
-        Set<Class<?>> customClasses = customRetrofitResourceClasses(reflections);
-        if (customClasses != null && !customClasses.isEmpty()){
-            retrofitBuilderClasses.addAll(customClasses);
-        }
-        return retrofitBuilderClasses;
+        return new Reflections(configuration);
+    }
+
+    public Set<Class<?>> getRetrofitResource(Class<? extends Annotation> clazz, String... basePackages) {
+        Reflections reflections = getReflections(basePackages);
+        return reflections.getTypesAnnotatedWith(clazz);
     }
 
     protected Set<Class<?>> getRetrofitResourceClasses(Reflections reflections, Class<? extends Annotation> annotationClass) {
