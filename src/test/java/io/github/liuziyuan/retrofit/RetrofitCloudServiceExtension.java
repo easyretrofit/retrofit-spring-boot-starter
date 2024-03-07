@@ -8,7 +8,7 @@ import java.lang.annotation.Annotation;
 
 @Component
 @RetrofitComponent
-public class RetrofitCloudServiceExtension extends Extension {
+public class RetrofitCloudServiceExtension implements Extension {
     @Override
     public Class<? extends Annotation> createAnnotation() {
         return RetrofitCloudService.class;

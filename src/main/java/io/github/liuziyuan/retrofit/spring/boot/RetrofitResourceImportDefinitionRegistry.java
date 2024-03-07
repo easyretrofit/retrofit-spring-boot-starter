@@ -61,7 +61,7 @@ public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefin
         GlobalParamConfigSetting globalParamConfigSetting;
         RetrofitGlobalConfigProperties properties = new RetrofitGlobalConfigProperties();
         properties.setByEnvironment(environment);
-        globalParamConfigSetting = new GlobalParamConfigSetting(properties, getBeanInstance());
+        globalParamConfigSetting = new GlobalParamConfigSetting(properties, scanner.getRetrofitComponentGlobalParamConfigInstance());
         if (globalParamConfigSetting.enable()) {
             retrofitBuilderBean.setEnable(globalParamConfigSetting.enable());
             retrofitBuilderBean.setOverwriteType(globalParamConfigSetting.overwriteType());
@@ -76,11 +76,6 @@ public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefin
         return retrofitBuilderBean;
     }
 
-    private <T> T getBeanInstance() {
-        return scanner.getRetrofitComponentGlobalParamConfigInstance();
-    }
-
-
     private void registryRetrofitResourceContext(BeanDefinitionRegistry registry, RetrofitResourceContext context) {
         BeanDefinitionBuilder builder;
         builder = BeanDefinitionBuilder.genericBeanDefinition(RetrofitResourceContext.class, () -> context);
@@ -91,7 +86,7 @@ public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefin
     private RetrofitResourceContext initRetrofitResourceContext(Set<Class<?>> retrofitBuilderClassSet, RetrofitBuilderBean retrofitBuilderBean) {
 
         Env env = new SpringBootEnv(environment);
-        SpringBootRetrofitResourceContextBuilder retrofitResourceContextBuilder = new SpringBootRetrofitResourceContextBuilder(env);
+        SpringBootRetrofitResourceContextBuilder retrofitResourceContextBuilder = new SpringBootRetrofitResourceContextBuilder(env, scanner);
         retrofitResourceContextBuilder.build(retrofitBuilderClassSet, retrofitBuilderBean);
         final List<RetrofitClientBean> retrofitClientBeanList = retrofitResourceContextBuilder.getRetrofitClientBeanList();
         final Map<String, RetrofitApiServiceBean> retrofitServiceBeanHashMap = retrofitResourceContextBuilder.getRetrofitServiceBeanHashMap();

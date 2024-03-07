@@ -22,7 +22,7 @@ public class SpringBootRetrofitResourceScanner extends RetrofitResourceScanner {
         Set<Class<?>> retrofitResources = this.getRetrofitResource(RetrofitComponent.class);
         Set<Class<?>> results = new HashSet<>();
         for (Class<?> retrofitResource : retrofitResources) {
-            if (Arrays.stream(retrofitResource.getInterfaces()).anyMatch(c -> interfaceSampleName.equalsIgnoreCase(c.getSimpleName()))) {
+            if (Arrays.stream(retrofitResource.getInterfaces()).anyMatch(c -> interfaceSampleName.equalsIgnoreCase(c.getName()))) {
                 results.add(retrofitResource);
             }
         }
