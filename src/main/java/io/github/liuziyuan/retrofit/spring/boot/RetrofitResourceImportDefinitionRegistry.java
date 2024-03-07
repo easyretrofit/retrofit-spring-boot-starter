@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 /**
  * When @EnableRetrofit is used, this class will generate the RetrofitResourceContext object according to the Annotation, and define and register it in the spring container
  * 当@EnableRetrofit注解被使用时，会根据注解生成RetrofitResourceContext对象，然后将它注册到spring容器中，后续会在RetrofitResourceDefinitionRegistry类中注册真正的API接口
+ *
  * @author liuziyuan
  */
 @Slf4j
@@ -32,6 +33,7 @@ public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefin
 
     private Environment environment;
     private ResourceLoader resourceLoader;
+    private SpringBootRetrofitResourceScanner scanner;
 
     @Override
     public void registerBeanDefinitions(AnnotationMetadata metadata, BeanDefinitionRegistry registry) {
@@ -44,12 +46,14 @@ public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefin
     void registerRetrofitResourceBeanDefinitions(AnnotationAttributes annoAttrs, BeanDefinitionRegistry registry) {
         // scan RetrofitResource
         final Set<Class<?>> retrofitBuilderClassSet = scanRetrofitResource(annoAttrs);
-
-        RetrofitBuilderBean retrofitBuilderBean = setRetrofitBuilderBean();
-        // init RetrofitResourceContext by RetrofitResourceContextBuilder
-        RetrofitResourceContext context = initRetrofitResourceContext(retrofitBuilderClassSet, retrofitBuilderBean);
-        //registry RetrofitResourceContext
-        registryRetrofitResourceContext(registry, context);
+        if (!retrofitBuilderClassSet.isEmpty()) {
+            log.info(Constants.RETROFIT_BUILDER_NOT_FOUND);
+            RetrofitBuilderBean retrofitBuilderBean = setRetrofitBuilderBean();
+            // init RetrofitResourceContext by RetrofitResourceContextBuilder
+            RetrofitResourceContext context = initRetrofitResourceContext(retrofitBuilderClassSet, retrofitBuilderBean);
+            //registry RetrofitResourceContext
+            registryRetrofitResourceContext(registry, context);
+        }
     }
 
     private RetrofitBuilderBean setRetrofitBuilderBean() {
@@ -73,20 +77,7 @@ public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefin
     }
 
     private <T> T getBeanInstance() {
-        SpringBootRetrofitResourceScanner scanner = new SpringBootRetrofitResourceScanner();
-        Set<Class<?>> retrofitResources = scanner.getRetrofitResource(RetrofitComponent.class, "io.github.liuziyuan.retrofit.spring.boot");
-        for (Class<?> retrofitResource : retrofitResources) {
-            if (Arrays.stream(retrofitResource.getInterfaces()).anyMatch(c -> "GlobalParamConfig".equalsIgnoreCase(c.getSimpleName()))) {
-                try {
-                    return (T) retrofitResource.newInstance();
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                } catch (InstantiationException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-        return null;
+        return scanner.getRetrofitComponentGlobalParamConfigInstance();
     }
 
 
@@ -109,11 +100,12 @@ public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefin
 
     private Set<Class<?>> scanRetrofitResource(AnnotationAttributes annoAttrs) {
         // scan RetrofitResource
-        SpringBootRetrofitResourceScanner scanner = new SpringBootRetrofitResourceScanner();
+        scanner = new SpringBootRetrofitResourceScanner();
         List<String> basePackages = new ArrayList<>();
         basePackages.addAll(Arrays.stream(annoAttrs.getStringArray("value")).filter(StringUtils::hasText).collect(Collectors.toList()));
         basePackages.addAll(Arrays.stream(annoAttrs.getStringArray("basePackages")).filter(StringUtils::hasText).collect(Collectors.toList()));
         basePackages.addAll(Arrays.stream(annoAttrs.getClassArray("basePackageClasses")).map(ClassUtils::getPackageName).collect(Collectors.toList()));
+        basePackages.add("io.github.liuziyuan.retrofit");
         return scanner.doScan(StringUtils.toStringArray(basePackages));
     }
 

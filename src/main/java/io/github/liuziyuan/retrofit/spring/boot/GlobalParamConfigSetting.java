@@ -7,7 +7,7 @@ import io.github.liuziyuan.retrofit.core.builder.*;
 /**
  * 继承core中的GlobalParamConfig实现自定义Retrofit必要的的全局配置
  * 这个类合并了自定义的配置和web的resources文件夹中配置文件中的配置
- * 合并原则是：以下优先级：resources文件夹中配置 > 自定义配置
+ * 合并原则是：以下优先级：resources文件夹中配置大于自定义配置
  */
 public class GlobalParamConfigSetting implements GlobalParamConfig {
 
@@ -24,7 +24,7 @@ public class GlobalParamConfigSetting implements GlobalParamConfig {
         if (properties != null) {
             return properties.isEnable();
         }
-        return customSetting.enable();
+        return customSetting != null && customSetting.enable();
     }
 
     @Override
@@ -33,7 +33,7 @@ public class GlobalParamConfigSetting implements GlobalParamConfig {
         if (properties.getOverwriteType() != null) {
             overwriteType = properties.getOverwriteType();
         } else {
-            overwriteType = customSetting.overwriteType();
+            overwriteType = customSetting == null ? OverrideRule.GLOBAL_FIRST : customSetting.overwriteType();
         }
         if (overwriteType == null) {
             overwriteType = OverrideRule.GLOBAL_FIRST;
@@ -46,7 +46,7 @@ public class GlobalParamConfigSetting implements GlobalParamConfig {
         if (properties.getBaseUrl() != null) {
             return properties.getBaseUrl();
         }
-        return customSetting.globalBaseUrl();
+        return customSetting == null ? null : customSetting.globalBaseUrl();
     }
 
     @Override
@@ -54,7 +54,7 @@ public class GlobalParamConfigSetting implements GlobalParamConfig {
         if (properties.getCallAdapterFactoryBuilderClazz() != null) {
             return properties.getCallAdapterFactoryBuilderClazz();
         }
-        return customSetting.globalCallAdapterFactoryBuilderClazz();
+        return customSetting == null ? null : customSetting.globalCallAdapterFactoryBuilderClazz();
     }
 
     @Override
@@ -62,7 +62,7 @@ public class GlobalParamConfigSetting implements GlobalParamConfig {
         if (properties.getConverterFactoryBuilderClazz() != null) {
             return properties.getConverterFactoryBuilderClazz();
         }
-        return customSetting.globalConverterFactoryBuilderClazz();
+        return customSetting == null ? null : customSetting.globalConverterFactoryBuilderClazz();
     }
 
     @Override
@@ -70,7 +70,7 @@ public class GlobalParamConfigSetting implements GlobalParamConfig {
         if (properties.getOkHttpClientBuilderClazz() != null) {
             return properties.getOkHttpClientBuilderClazz();
         }
-        return customSetting.globalOkHttpClientBuilderClazz();
+        return customSetting == null ? null : customSetting.globalOkHttpClientBuilderClazz();
     }
 
     @Override
@@ -78,7 +78,7 @@ public class GlobalParamConfigSetting implements GlobalParamConfig {
         if (properties.getCallBackExecutorBuilderClazz() != null) {
             return properties.getCallBackExecutorBuilderClazz();
         }
-        return customSetting.globalCallBackExecutorBuilderClazz();
+        return customSetting == null ? null : customSetting.globalCallBackExecutorBuilderClazz();
     }
 
     @Override
@@ -86,7 +86,7 @@ public class GlobalParamConfigSetting implements GlobalParamConfig {
         if (properties.getCallFactoryBuilderClazz() != null) {
             return properties.getCallFactoryBuilderClazz();
         }
-        return customSetting.globalCallFactoryBuilderClazz();
+        return customSetting == null ? null : customSetting.globalCallFactoryBuilderClazz();
     }
 
     @Override
@@ -94,6 +94,6 @@ public class GlobalParamConfigSetting implements GlobalParamConfig {
         if (properties.getValidateEagerly() != null) {
             return properties.getValidateEagerly();
         }
-        return customSetting.globalValidateEagerly();
+        return customSetting == null ? null : customSetting.globalValidateEagerly();
     }
 }

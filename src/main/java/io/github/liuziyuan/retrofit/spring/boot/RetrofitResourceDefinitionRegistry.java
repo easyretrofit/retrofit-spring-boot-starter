@@ -25,14 +25,11 @@ import java.util.stream.Collectors;
 /**
  * Retrofit Resources Definition and Registry, including Retrofit objects and Retrofit API objects of dynamic proxy
  * Retrofit 资源的注册器，包括 Retrofit 对象和动态代理的 Retrofit API 对象
+ *
  * @author liuziyuan
  */
 @Slf4j
 public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistryPostProcessor, ApplicationContextAware {
-
-    private static final String WARNING_RETROFIT_CLIENT_EMPTY = "The [Retrofit Client] is not found in the 'RetrofitResourceContext'. You may not be using @RetrofitBuilder in the basePackages";
-    private static final String RETROFIT_RESOURCE_CONTEXT_NOT_FOUND = "The 'RetrofitResourceContext' object not found in the Spring 'ApplicationContext'. You may not be using @EnableRetrofit";
-
     private ApplicationContext applicationContext;
 
     @Override
@@ -56,8 +53,7 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
             // set log
             setLog(context, applicationContext.getEnvironment());
         } catch (NoSuchBeanDefinitionException exception) {
-            log.error(RETROFIT_RESOURCE_CONTEXT_NOT_FOUND);
-            throw exception;
+            log.info(Constants.RETROFIT_BUILDER_NOT_FOUND);
         }
     }
 
@@ -107,9 +103,6 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
                 this.getClass().getPackage().getImplementationVersion(),
                 "v2.9.0");
 
-        if (context.getRetrofitClients().isEmpty()) {
-            log.warn(WARNING_RETROFIT_CLIENT_EMPTY);
-        }
         for (RetrofitClientBean retrofitClient : context.getRetrofitClients()) {
             final String retrofitInstanceName = retrofitClient.getRetrofitInstanceName();
             final String realHostUrl = retrofitClient.getRealHostUrl();
