@@ -4,6 +4,11 @@ import io.github.liuziyuan.retrofit.core.GlobalParamConfig;
 import io.github.liuziyuan.retrofit.core.OverrideRule;
 import io.github.liuziyuan.retrofit.core.builder.*;
 
+/**
+ * 继承core中的GlobalParamConfig实现自定义Retrofit必要的的全局配置
+ * 这个类合并了自定义的配置和web的resources文件夹中配置文件中的配置
+ * 合并原则是：以下优先级：resources文件夹中配置 > 自定义配置
+ */
 public class GlobalParamConfigSetting implements GlobalParamConfig {
 
     private final RetrofitGlobalConfigProperties properties;
@@ -16,10 +21,10 @@ public class GlobalParamConfigSetting implements GlobalParamConfig {
 
     @Override
     public boolean enable() {
-        if (customSetting != null && customSetting.enable()) {
-            return customSetting.enable();
+        if (properties != null) {
+            return properties.isEnable();
         }
-        return properties.isEnable();
+        return customSetting.enable();
     }
 
     @Override

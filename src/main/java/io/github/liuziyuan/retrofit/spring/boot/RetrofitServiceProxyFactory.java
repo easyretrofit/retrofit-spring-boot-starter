@@ -14,6 +14,7 @@ import java.lang.reflect.Proxy;
 
 /**
  * The proxy factory of RetrofitServiceBean
+ * SpringBoot的FactoryBean实现，在这里，从Spring上下文中获取Retrofit实例，生成代理对象
  * @author liuziyuan
  */
 @Slf4j

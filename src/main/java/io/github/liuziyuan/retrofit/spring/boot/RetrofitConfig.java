@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
+ * 全局配置，随@EnableRetrofit 启动
  * @author liuziyuan
  */
 @Configuration

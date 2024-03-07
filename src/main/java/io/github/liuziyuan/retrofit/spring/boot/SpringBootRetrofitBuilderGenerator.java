@@ -8,6 +8,10 @@ import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 
+/**
+ * Core中RetrofitBuilderGenerator接口的实现，由于Core并没有依赖Spring框架，所以并不能获取SpringBoot中注入的bean，所以这里需要重写
+ * 当用户定义Builder，且使用@Component注入这个Builder类到SpringBoot容器中，这里就可以通过SpringBoot的ApplicationContext获取
+ */
 public class SpringBootRetrofitBuilderGenerator extends RetrofitBuilderGenerator {
     private final ApplicationContext applicationContext;
 

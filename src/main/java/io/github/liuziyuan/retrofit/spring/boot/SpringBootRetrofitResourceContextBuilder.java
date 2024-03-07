@@ -6,6 +6,9 @@ import io.github.liuziyuan.retrofit.core.RetrofitResourceContextBuilder;
 
 import java.util.List;
 
+/**
+ * Core中RetrofitResourceContextBuilder的实现类，这里核心的目的就是扩展Extension
+ */
 public class SpringBootRetrofitResourceContextBuilder extends RetrofitResourceContextBuilder {
 
     @Override

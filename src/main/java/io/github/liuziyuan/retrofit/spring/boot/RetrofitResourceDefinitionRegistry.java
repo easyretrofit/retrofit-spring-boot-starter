@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 
 /**
  * Retrofit Resources Definition and Registry, including Retrofit objects and Retrofit API objects of dynamic proxy
- *
+ * Retrofit 资源的注册器，包括 Retrofit 对象和动态代理的 Retrofit API 对象
  * @author liuziyuan
  */
 @Slf4j

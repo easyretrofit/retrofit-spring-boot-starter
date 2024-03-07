@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 
 /**
  * When @EnableRetrofit is used, this class will generate the RetrofitResourceContext object according to the Annotation, and define and register it in the spring container
- *
+ * 当@EnableRetrofit注解被使用时，会根据注解生成RetrofitResourceContext对象，然后将它注册到spring容器中，后续会在RetrofitResourceDefinitionRegistry类中注册真正的API接口
  * @author liuziyuan
  */
 @Slf4j
