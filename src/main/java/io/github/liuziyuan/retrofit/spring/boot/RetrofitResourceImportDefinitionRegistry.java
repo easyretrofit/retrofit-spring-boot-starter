@@ -58,20 +58,20 @@ public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefin
 
     private RetrofitBuilderBean setRetrofitBuilderBean() {
         RetrofitBuilderBean retrofitBuilderBean = new RetrofitBuilderBean();
-        GlobalParamConfigSetting globalParamConfigSetting;
+        SpringBootGlobalParamConfigSetting springBootGlobalParamConfigSetting;
         RetrofitGlobalConfigProperties properties = new RetrofitGlobalConfigProperties();
         properties.setByEnvironment(environment);
-        globalParamConfigSetting = new GlobalParamConfigSetting(properties, scanner.getRetrofitComponentGlobalParamConfigInstance());
-        if (globalParamConfigSetting.enable()) {
-            retrofitBuilderBean.setEnable(globalParamConfigSetting.enable());
-            retrofitBuilderBean.setOverwriteType(globalParamConfigSetting.overwriteType());
-            retrofitBuilderBean.setBaseUrl(globalParamConfigSetting.globalBaseUrl());
-            retrofitBuilderBean.setClient(globalParamConfigSetting.globalOkHttpClientBuilderClazz());
-            retrofitBuilderBean.setCallFactory(globalParamConfigSetting.globalCallFactoryBuilderClazz());
-            retrofitBuilderBean.setCallbackExecutor(globalParamConfigSetting.globalCallBackExecutorBuilderClazz());
-            retrofitBuilderBean.setAddConverterFactory(globalParamConfigSetting.globalConverterFactoryBuilderClazz());
-            retrofitBuilderBean.setAddCallAdapterFactory(globalParamConfigSetting.globalCallAdapterFactoryBuilderClazz());
-            retrofitBuilderBean.setValidateEagerly(globalParamConfigSetting.globalValidateEagerly());
+        springBootGlobalParamConfigSetting = new SpringBootGlobalParamConfigSetting(properties, scanner.getRetrofitComponentGlobalParamConfigInstance());
+        if (springBootGlobalParamConfigSetting.enable()) {
+            retrofitBuilderBean.setEnable(springBootGlobalParamConfigSetting.enable());
+            retrofitBuilderBean.setOverwriteType(springBootGlobalParamConfigSetting.overwriteType());
+            retrofitBuilderBean.setBaseUrl(springBootGlobalParamConfigSetting.globalBaseUrl());
+            retrofitBuilderBean.setClient(springBootGlobalParamConfigSetting.globalOkHttpClientBuilderClazz());
+            retrofitBuilderBean.setCallFactory(springBootGlobalParamConfigSetting.globalCallFactoryBuilderClazz());
+            retrofitBuilderBean.setCallbackExecutor(springBootGlobalParamConfigSetting.globalCallBackExecutorBuilderClazz());
+            retrofitBuilderBean.setAddConverterFactory(springBootGlobalParamConfigSetting.globalConverterFactoryBuilderClazz());
+            retrofitBuilderBean.setAddCallAdapterFactory(springBootGlobalParamConfigSetting.globalCallAdapterFactoryBuilderClazz());
+            retrofitBuilderBean.setValidateEagerly(springBootGlobalParamConfigSetting.globalValidateEagerly());
         }
         return retrofitBuilderBean;
     }

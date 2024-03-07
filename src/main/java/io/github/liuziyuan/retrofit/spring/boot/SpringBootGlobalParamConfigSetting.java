@@ -9,12 +9,12 @@ import io.github.liuziyuan.retrofit.core.builder.*;
  * 这个类合并了自定义的配置和web的resources文件夹中配置文件中的配置
  * 合并原则是：以下优先级：resources文件夹中配置大于自定义配置
  */
-public class GlobalParamConfigSetting implements GlobalParamConfig {
+public class SpringBootGlobalParamConfigSetting implements GlobalParamConfig {
 
     private final RetrofitGlobalConfigProperties properties;
     private final GlobalParamConfig customSetting;
 
-    public GlobalParamConfigSetting(RetrofitGlobalConfigProperties properties, GlobalParamConfig customSetting) {
+    public SpringBootGlobalParamConfigSetting(RetrofitGlobalConfigProperties properties, GlobalParamConfig customSetting) {
         this.properties = properties;
         this.customSetting = customSetting;
     }
