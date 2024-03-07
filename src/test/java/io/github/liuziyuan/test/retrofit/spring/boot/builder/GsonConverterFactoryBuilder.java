@@ -1,15 +1,13 @@
-package io.github.liuziyuan.retrofit.injectdemo;
+package io.github.liuziyuan.test.retrofit.spring.boot.builder;
 
 import io.github.liuziyuan.retrofit.core.builder.BaseConverterFactoryBuilder;
-import org.springframework.stereotype.Component;
 import retrofit2.Converter;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * @author liuziyuan
  */
-@Component
-public class InjectGsonConverterFactoryBuilder extends BaseConverterFactoryBuilder {
+public class GsonConverterFactoryBuilder extends BaseConverterFactoryBuilder {
     @Override
     public Converter.Factory buildConverterFactory() {
         return GsonConverterFactory.create();

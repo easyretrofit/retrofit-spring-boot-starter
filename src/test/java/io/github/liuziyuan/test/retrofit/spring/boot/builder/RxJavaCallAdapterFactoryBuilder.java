@@ -1,4 +1,4 @@
-package io.github.liuziyuan.retrofit.demo;
+package io.github.liuziyuan.test.retrofit.spring.boot.builder;
 
 import io.github.liuziyuan.retrofit.core.builder.BaseCallAdapterFactoryBuilder;
 import retrofit2.CallAdapter;
