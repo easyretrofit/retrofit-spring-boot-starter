@@ -1,4 +1,4 @@
-package io.github.liuziyuan.retrofit.spring.boot.generator;
+package io.github.liuziyuan.retrofit.spring.boot;
 
 import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
 import io.github.liuziyuan.retrofit.core.builder.*;

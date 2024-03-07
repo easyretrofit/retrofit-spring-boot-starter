@@ -1,4 +1,4 @@
-package io.github.liuziyuan.retrofit.spring.boot.config;
+package io.github.liuziyuan.retrofit.spring.boot;
 
 import io.github.liuziyuan.retrofit.spring.boot.RetrofitGlobalConfigProperties;
 import io.github.liuziyuan.retrofit.spring.boot.RetrofitResourceDefinitionRegistry;
