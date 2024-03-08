@@ -72,7 +72,7 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
 
     private void registryRetrofitInterfaceProxy(BeanDefinitionRegistry beanDefinitionRegistry, List<RetrofitClientBean> retrofitClientBeanList) {
         for (RetrofitClientBean clientBean : retrofitClientBeanList) {
-            for (RetrofitApiServiceBean serviceBean : clientBean.getRetrofitServices()) {
+            for (RetrofitApiServiceBean serviceBean : clientBean.getRetrofitApiServiceBeans()) {
                 BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(serviceBean.getSelfClazz());
                 GenericBeanDefinition definition = (GenericBeanDefinition) builder.getRawBeanDefinition();
                 definition.getConstructorArgumentValues().addGenericArgumentValue(Objects.requireNonNull(definition.getBeanClassName()));
@@ -112,7 +112,7 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
                 log.info("---Retrofit Client : HostURL: {}, Retrofit instance name: {}", realHostUrl, retrofitInstanceName);
             }
             retrofitClientDebugLog(retrofitClient);
-            for (RetrofitApiServiceBean retrofitService : retrofitClient.getRetrofitServices()) {
+            for (RetrofitApiServiceBean retrofitService : retrofitClient.getRetrofitApiServiceBeans()) {
                 final Class<?> selfClazz = retrofitService.getSelfClazz();
                 final Class<?> parentClazz = retrofitService.getParentClazz();
                 String parentClazzName = null;
