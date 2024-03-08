@@ -43,7 +43,7 @@ public class RetrofitGlobalConfigProperties {
     private String validateEagerly;
 
     public void setByEnvironment(Environment environment) {
-        this.enable = "true".equalsIgnoreCase(resolveRequiredPlaceholders(environment, "${retrofit.global.enable}"));
+        this.enable = setEnable(environment);
         this.baseUrl = resolveRequiredPlaceholders(environment, "${retrofit.global.base-url}");
         this.callAdapterFactoryBuilderClazz = (Class<? extends BaseCallAdapterFactoryBuilder>[]) transformClasses(resolveRequiredPlaceholders(environment, "${retrofit.global.call-adapter-factory-builder-clazz}"));
         this.converterFactoryBuilderClazz = (Class<? extends BaseConverterFactoryBuilder>[]) transformClasses(resolveRequiredPlaceholders(environment, "${retrofit.global.converter-factory-builder-clazz}"));
@@ -51,6 +51,17 @@ public class RetrofitGlobalConfigProperties {
         this.callBackExecutorBuilderClazz = (Class<? extends BaseCallBackExecutorBuilder>) transformClass(resolveRequiredPlaceholders(environment, "${retrofit.global.call-back-executor-builder-clazz}"));
         this.callFactoryBuilderClazz = (Class<? extends BaseCallFactoryBuilder>) transformClass(resolveRequiredPlaceholders(environment, "${retrofit.global.call-factory-builder-clazz}"));
         this.validateEagerly = resolveRequiredPlaceholders(environment, "${retrofit.global.validate-eagerly}");
+    }
+
+    private Boolean setEnable(Environment environment) {
+        String s = resolveRequiredPlaceholders(environment, "${retrofit.global.enable}");
+        if ("true".equalsIgnoreCase(s)) {
+            return true;
+        } else if ("false".equalsIgnoreCase(s)) {
+            return false;
+        } else {
+            return null;
+        }
     }
 
     private String resolveRequiredPlaceholders(Environment environment, String text) {
