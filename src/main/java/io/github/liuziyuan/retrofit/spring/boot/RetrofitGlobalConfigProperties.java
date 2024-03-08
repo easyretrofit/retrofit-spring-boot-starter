@@ -16,6 +16,7 @@ import java.util.List;
 /**
  * Spring boot web配置文件中声明的全局配置
  */
+@Component
 @Getter
 @Setter
 @ConfigurationProperties(
