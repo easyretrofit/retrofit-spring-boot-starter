@@ -3,6 +3,7 @@ package io.github.liuziyuan.retrofit.spring.boot;
 import io.github.liuziyuan.retrofit.core.GlobalParamConfig;
 import io.github.liuziyuan.retrofit.core.OverrideRule;
 import io.github.liuziyuan.retrofit.core.builder.*;
+import io.github.liuziyuan.retrofit.core.util.BooleanUtil;
 
 /**
  * 继承core中的GlobalParamConfig实现自定义Retrofit必要的的全局配置
@@ -22,7 +23,7 @@ public class SpringBootGlobalParamConfigSetting implements GlobalParamConfig {
     @Override
     public boolean enable() {
         if (properties.getEnable() != null) {
-            return properties.getEnable();
+            return BooleanUtil.transformToBoolean(properties.getEnable());
         }
         return customSetting != null && customSetting.enable();
     }
