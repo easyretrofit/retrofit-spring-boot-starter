@@ -16,7 +16,6 @@ import java.util.List;
 /**
  * Spring boot web配置文件中声明的全局配置
  */
-@Component
 @Getter
 @Setter
 @ConfigurationProperties(
@@ -68,7 +67,7 @@ public class RetrofitGlobalConfigProperties {
             String[] clazzStrList = StringUtils.split(className, ",");
             for (String clazz : clazzStrList) {
                 try {
-                    clazzList.add(Class.forName(clazz));
+                    clazzList.add(Class.forName(clazz.trim()));
                 } catch (ClassNotFoundException | NullPointerException e) {
                     log.warn(e.toString());
                 }

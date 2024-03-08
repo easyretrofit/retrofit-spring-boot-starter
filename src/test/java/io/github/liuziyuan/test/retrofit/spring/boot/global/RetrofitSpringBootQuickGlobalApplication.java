@@ -1,7 +1,6 @@
-package io.github.liuziyuan.test.retrofit.spring.boot.single.instance;
+package io.github.liuziyuan.test.retrofit.spring.boot.global;
 
 import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
-import io.github.liuziyuan.retrofit.core.resource.RetrofitBuilderBean;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
 import io.github.liuziyuan.retrofit.spring.boot.EnableRetrofit;
 import org.junit.Assert;
@@ -16,14 +15,14 @@ import java.util.List;
  * @author liuziyuan
  * @date 12/24/2021 5:51 PM
  */
-@EnableRetrofit({"io.github.liuziyuan.test.retrofit.spring.boot.single.instance"})
+@EnableRetrofit({"io.github.liuziyuan.test.retrofit.spring.boot.global"})
 @SpringBootApplication
-public class RetrofitSpringBootSingleInstanceApplication {
+public class RetrofitSpringBootQuickGlobalApplication {
     public static void main(String[] args) {
-        ConfigurableApplicationContext run = SpringApplication.run(RetrofitSpringBootSingleInstanceApplication.class, args);
+        ConfigurableApplicationContext run = SpringApplication.run(RetrofitSpringBootQuickGlobalApplication.class, args);
         BeanFactory beanFactory = run.getBeanFactory();
         RetrofitResourceContext bean = beanFactory.getBean(RetrofitResourceContext.class);
         List<RetrofitClientBean> retrofitClients = bean.getRetrofitClients();
-        Assert.assertEquals(1, retrofitClients.size());
+        Assert.assertEquals(2, retrofitClients.size());
     }
 }

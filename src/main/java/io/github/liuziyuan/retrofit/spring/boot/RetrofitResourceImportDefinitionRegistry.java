@@ -48,9 +48,9 @@ public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefin
         final Set<Class<?>> retrofitBuilderClassSet = scanRetrofitResource(annoAttrs);
         if (!retrofitBuilderClassSet.isEmpty()) {
             log.info(Constants.RETROFIT_BUILDER_NOT_FOUND);
-            RetrofitBuilderBean retrofitBuilderBean = setRetrofitBuilderBean();
+            RetrofitBuilderBean globalRetrofitBuilderBean = setRetrofitBuilderBean();
             // init RetrofitResourceContext by RetrofitResourceContextBuilder
-            RetrofitResourceContext context = initRetrofitResourceContext(retrofitBuilderClassSet, retrofitBuilderBean);
+            RetrofitResourceContext context = initRetrofitResourceContext(retrofitBuilderClassSet, globalRetrofitBuilderBean);
             //registry RetrofitResourceContext
             registryRetrofitResourceContext(registry, context);
         }
@@ -83,11 +83,11 @@ public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefin
         registry.registerBeanDefinition(RetrofitResourceContext.class.getName(), definition);
     }
 
-    private RetrofitResourceContext initRetrofitResourceContext(Set<Class<?>> retrofitBuilderClassSet, RetrofitBuilderBean retrofitBuilderBean) {
+    private RetrofitResourceContext initRetrofitResourceContext(Set<Class<?>> retrofitBuilderClassSet, RetrofitBuilderBean globalRetrofitBuilderBean) {
 
         Env env = new SpringBootEnv(environment);
         SpringBootRetrofitResourceContextBuilder retrofitResourceContextBuilder = new SpringBootRetrofitResourceContextBuilder(env, scanner);
-        retrofitResourceContextBuilder.build(retrofitBuilderClassSet, retrofitBuilderBean);
+        retrofitResourceContextBuilder.build(retrofitBuilderClassSet, globalRetrofitBuilderBean);
         final List<RetrofitClientBean> retrofitClientBeanList = retrofitResourceContextBuilder.getRetrofitClientBeanList();
         final Map<String, RetrofitApiServiceBean> retrofitServiceBeanHashMap = retrofitResourceContextBuilder.getRetrofitServiceBeanHashMap();
         return new RetrofitResourceContext(retrofitClientBeanList, retrofitServiceBeanHashMap);
