@@ -24,7 +24,8 @@ public class RetrofitSpringBootInheritApplication {
         BeanFactory beanFactory = run.getBeanFactory();
         RetrofitResourceContext bean = beanFactory.getBean(RetrofitResourceContext.class);
         List<RetrofitClientBean> retrofitClients = bean.getRetrofitClients();
-        Assert.assertEquals(1, retrofitClients.size());
-        Assert.assertEquals(bean.getRetrofitClients().get(0).getRetrofitApiServiceBeans().size(), 7);
+        Assert.assertEquals(bean.getRetrofitApiServiceBean(MixedApi.class).getParentClazz().getSimpleName(), "BaseApi");
+        Assert.assertEquals(2, retrofitClients.size());
+
     }
 }

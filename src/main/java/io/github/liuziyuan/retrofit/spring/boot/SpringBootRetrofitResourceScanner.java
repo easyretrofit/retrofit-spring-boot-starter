@@ -1,5 +1,6 @@
 package io.github.liuziyuan.retrofit.spring.boot;
 
+import io.github.liuziyuan.retrofit.core.GlobalParamConfig;
 import io.github.liuziyuan.retrofit.core.RetrofitResourceScanner;
 import org.reflections.Reflections;
 
@@ -29,15 +30,13 @@ public class SpringBootRetrofitResourceScanner extends RetrofitResourceScanner {
         return results;
     }
 
-    public <T> T getRetrofitComponentGlobalParamConfigInstance(){
+    public <T extends GlobalParamConfig> T getRetrofitComponentGlobalParamConfigInstance() {
         Set<Class<?>> retrofitResources = this.getRetrofitResource(RetrofitComponent.class);
         for (Class<?> retrofitResource : retrofitResources) {
-            if (Arrays.stream(retrofitResource.getInterfaces()).anyMatch(c -> "GlobalParamConfig".equalsIgnoreCase(c.getSimpleName()))) {
+            if (Arrays.stream(retrofitResource.getInterfaces()).anyMatch(c -> GlobalParamConfig.class.getName().equalsIgnoreCase(c.getName()))) {
                 try {
                     return (T) retrofitResource.newInstance();
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                } catch (InstantiationException e) {
+                } catch (IllegalAccessException | InstantiationException e) {
                     throw new RuntimeException(e);
                 }
             }
