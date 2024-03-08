@@ -24,7 +24,7 @@ import java.util.List;
 @Slf4j
 public class RetrofitGlobalConfigProperties {
 
-    private boolean enable = false;
+    private Boolean enable;
 
     private OverrideRule overwriteType;
 

@@ -21,8 +21,8 @@ public class SpringBootGlobalParamConfigSetting implements GlobalParamConfig {
 
     @Override
     public boolean enable() {
-        if (properties != null) {
-            return properties.isEnable();
+        if (properties.getEnable() != null) {
+            return properties.getEnable();
         }
         return customSetting != null && customSetting.enable();
     }
