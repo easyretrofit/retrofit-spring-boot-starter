@@ -1,5 +1,7 @@
 # retrofit-spring-boot-starter
 
+[中文文档](https://github.com/liuziyuan/retrofit-spring-boot-starter/blob/main/README_CN.md)
+
 **retrofit-spring-boot-starter** provides easier use and enhancement of common functions of **Retrofit** in **SpringBoot**
 project, and realizes the enhancement of common functions through more annotations.
 
