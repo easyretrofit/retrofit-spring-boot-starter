@@ -8,7 +8,7 @@ import io.github.liuziyuan.retrofit.core.util.BooleanUtil;
 /**
  * 继承core中的GlobalParamConfig实现自定义Retrofit必要的的全局配置
  * 这个类合并了自定义的配置和web的resources文件夹中配置文件中的配置
- * 合并原则是：以下优先级：resources文件夹中配置大于自定义配置
+ * 合并原则是：以下优先级：resources文件夹中配置大于自定义配置，如果resources文件夹中没有配置，则使用自定义配置
  */
 public class SpringBootGlobalParamConfigSetting implements GlobalParamConfig {
 
@@ -28,10 +28,14 @@ public class SpringBootGlobalParamConfigSetting implements GlobalParamConfig {
         return customSetting != null && customSetting.enable();
     }
 
+    private boolean propertiesEnable() {
+        return BooleanUtil.transformToBoolean(properties.getEnable());
+    }
+
     @Override
     public OverrideRule overwriteType() {
         OverrideRule overwriteType = null;
-        if (properties.getOverwriteType() != null) {
+        if (propertiesEnable() && properties.getOverwriteType() != null) {
             overwriteType = properties.getOverwriteType();
         } else {
             overwriteType = customSetting == null ? OverrideRule.GLOBAL_FIRST : customSetting.overwriteType();
@@ -44,7 +48,7 @@ public class SpringBootGlobalParamConfigSetting implements GlobalParamConfig {
 
     @Override
     public String globalBaseUrl() {
-        if (properties.getBaseUrl() != null) {
+        if (propertiesEnable() && properties.getBaseUrl() != null) {
             return properties.getBaseUrl();
         }
         return customSetting == null ? null : customSetting.globalBaseUrl();
@@ -52,7 +56,7 @@ public class SpringBootGlobalParamConfigSetting implements GlobalParamConfig {
 
     @Override
     public Class<? extends BaseCallAdapterFactoryBuilder>[] globalCallAdapterFactoryBuilderClazz() {
-        if (properties.getCallAdapterFactoryBuilderClazz() != null) {
+        if (propertiesEnable() && properties.getCallAdapterFactoryBuilderClazz() != null) {
             return properties.getCallAdapterFactoryBuilderClazz();
         }
         return customSetting == null ? null : customSetting.globalCallAdapterFactoryBuilderClazz();
@@ -60,7 +64,7 @@ public class SpringBootGlobalParamConfigSetting implements GlobalParamConfig {
 
     @Override
     public Class<? extends BaseConverterFactoryBuilder>[] globalConverterFactoryBuilderClazz() {
-        if (properties.getConverterFactoryBuilderClazz() != null) {
+        if (propertiesEnable() && properties.getConverterFactoryBuilderClazz() != null) {
             return properties.getConverterFactoryBuilderClazz();
         }
         return customSetting == null ? null : customSetting.globalConverterFactoryBuilderClazz();
@@ -68,7 +72,7 @@ public class SpringBootGlobalParamConfigSetting implements GlobalParamConfig {
 
     @Override
     public Class<? extends BaseOkHttpClientBuilder> globalOkHttpClientBuilderClazz() {
-        if (properties.getOkHttpClientBuilderClazz() != null) {
+        if (propertiesEnable() && properties.getOkHttpClientBuilderClazz() != null) {
             return properties.getOkHttpClientBuilderClazz();
         }
         return customSetting == null ? null : customSetting.globalOkHttpClientBuilderClazz();
@@ -76,7 +80,7 @@ public class SpringBootGlobalParamConfigSetting implements GlobalParamConfig {
 
     @Override
     public Class<? extends BaseCallBackExecutorBuilder> globalCallBackExecutorBuilderClazz() {
-        if (properties.getCallBackExecutorBuilderClazz() != null) {
+        if (propertiesEnable() && properties.getCallBackExecutorBuilderClazz() != null) {
             return properties.getCallBackExecutorBuilderClazz();
         }
         return customSetting == null ? null : customSetting.globalCallBackExecutorBuilderClazz();
@@ -84,7 +88,7 @@ public class SpringBootGlobalParamConfigSetting implements GlobalParamConfig {
 
     @Override
     public Class<? extends BaseCallFactoryBuilder> globalCallFactoryBuilderClazz() {
-        if (properties.getCallFactoryBuilderClazz() != null) {
+        if (propertiesEnable() && properties.getCallFactoryBuilderClazz() != null) {
             return properties.getCallFactoryBuilderClazz();
         }
         return customSetting == null ? null : customSetting.globalCallFactoryBuilderClazz();
@@ -92,7 +96,7 @@ public class SpringBootGlobalParamConfigSetting implements GlobalParamConfig {
 
     @Override
     public String globalValidateEagerly() {
-        if (properties.getValidateEagerly() != null) {
+        if (propertiesEnable() && properties.getValidateEagerly() != null) {
             return properties.getValidateEagerly();
         }
         return customSetting == null ? null : customSetting.globalValidateEagerly();
