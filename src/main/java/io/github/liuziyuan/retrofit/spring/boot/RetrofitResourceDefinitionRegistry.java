@@ -106,7 +106,7 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
     private RetrofitBuilderBean getRetrofitBuilderBean(ConfigurableListableBeanFactory beanFactory) {
         RetrofitBuilderBean retrofitBuilderBean = new RetrofitBuilderBean();
         SpringBootGlobalConfig springBootGlobalConfig;
-        RetrofitGlobalConfigProperties properties = new RetrofitGlobalConfigProperties(environment);
+        RetrofitGlobalConfigProperties properties = new RetrofitGlobalConfigProperties().generate(environment);
         RetrofitBuilderExtension globalConfigExtension = getGlobalConfigExtension(beanFactory);
         springBootGlobalConfig = new SpringBootGlobalConfig(properties, globalConfigExtension);
         if (springBootGlobalConfig.enable()) {

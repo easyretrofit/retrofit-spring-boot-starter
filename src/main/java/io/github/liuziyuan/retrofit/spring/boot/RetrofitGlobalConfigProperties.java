@@ -44,7 +44,7 @@ public class RetrofitGlobalConfigProperties {
 
     private String validateEagerly;
 
-    public RetrofitGlobalConfigProperties(Environment environment) {
+    public RetrofitGlobalConfigProperties generate(Environment environment) {
         this.enable = resolveRequiredPlaceholders(environment, "${retrofit.global.enable}");
         this.baseUrl = resolveRequiredPlaceholders(environment, "${retrofit.global.base-url}");
         this.callAdapterFactoryBuilderClazz = (Class<? extends BaseCallAdapterFactoryBuilder>[]) transformClasses(resolveRequiredPlaceholders(environment, "${retrofit.global.call-adapter-factory-builder-clazz}"));
@@ -53,6 +53,7 @@ public class RetrofitGlobalConfigProperties {
         this.callBackExecutorBuilderClazz = (Class<? extends BaseCallBackExecutorBuilder>) transformClass(resolveRequiredPlaceholders(environment, "${retrofit.global.call-back-executor-builder-clazz}"));
         this.callFactoryBuilderClazz = (Class<? extends BaseCallFactoryBuilder>) transformClass(resolveRequiredPlaceholders(environment, "${retrofit.global.call-factory-builder-clazz}"));
         this.validateEagerly = resolveRequiredPlaceholders(environment, "${retrofit.global.validate-eagerly}");
+        return this;
     }
 
     private String resolveRequiredPlaceholders(Environment environment, String text) {
