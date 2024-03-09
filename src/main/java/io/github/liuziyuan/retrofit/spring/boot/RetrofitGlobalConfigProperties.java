@@ -48,7 +48,7 @@ public class RetrofitGlobalConfigProperties {
     public RetrofitGlobalConfigProperties generate(Environment environment) {
         this.enable = resolveRequiredPlaceholders(environment, "${retrofit.global.enable}");
         this.baseUrl = resolveRequiredPlaceholders(environment, "${retrofit.global.base-url}");
-        this.overwriteType = OverrideRule.valueOf(Objects.requireNonNull(resolveRequiredPlaceholders(environment, "${retrofit.global.overwrite-type}")).toUpperCase());
+        this.overwriteType = OverrideRule.valueOf(resolveRequiredPlaceholders(environment, "${retrofit.global.overwrite-type}") == null ? "GLOBAL_FIRST" : resolveRequiredPlaceholders(environment, "${retrofit.global.overwrite-type}").toUpperCase());
         this.callAdapterFactoryBuilderClazz = (Class<? extends BaseCallAdapterFactoryBuilder>[]) transformClasses(resolveRequiredPlaceholders(environment, "${retrofit.global.call-adapter-factory-builder-clazz}"));
         this.converterFactoryBuilderClazz = (Class<? extends BaseConverterFactoryBuilder>[]) transformClasses(resolveRequiredPlaceholders(environment, "${retrofit.global.converter-factory-builder-clazz}"));
         this.okHttpClientBuilderClazz = (Class<? extends BaseOkHttpClientBuilder>) transformClass(resolveRequiredPlaceholders(environment, "${retrofit.global.ok-http-client-builder-clazz}"));
