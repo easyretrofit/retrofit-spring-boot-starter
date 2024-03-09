@@ -18,10 +18,4 @@ public class RetrofitConfig {
     public static RetrofitResourceDefinitionRegistry retrofitResourceDefinitionRegistry() {
         return new RetrofitResourceDefinitionRegistry();
     }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public RetrofitGlobalConfigProperties retrofitGlobalConfigProperties() {
-        return new RetrofitGlobalConfigProperties();
-    }
 }

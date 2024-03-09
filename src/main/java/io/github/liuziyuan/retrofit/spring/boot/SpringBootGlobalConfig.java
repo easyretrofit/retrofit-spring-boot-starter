@@ -1,7 +1,7 @@
 package io.github.liuziyuan.retrofit.spring.boot;
 
-import io.github.liuziyuan.retrofit.core.GlobalParamConfig;
 import io.github.liuziyuan.retrofit.core.OverrideRule;
+import io.github.liuziyuan.retrofit.core.RetrofitBuilderExtension;
 import io.github.liuziyuan.retrofit.core.builder.*;
 import io.github.liuziyuan.retrofit.core.util.BooleanUtil;
 
@@ -10,14 +10,14 @@ import io.github.liuziyuan.retrofit.core.util.BooleanUtil;
  * 这个类合并了自定义的配置和web的resources文件夹中配置文件中的配置
  * 合并原则是：以下优先级：resources文件夹中配置大于自定义配置，如果resources文件夹中没有配置，则使用自定义配置
  */
-public class SpringBootGlobalParamConfigSetting implements GlobalParamConfig {
+public class SpringBootGlobalConfig implements RetrofitBuilderExtension {
 
     private final RetrofitGlobalConfigProperties properties;
-    private final GlobalParamConfig customSetting;
+    private final RetrofitBuilderExtension customConfig;
 
-    public SpringBootGlobalParamConfigSetting(RetrofitGlobalConfigProperties properties, GlobalParamConfig customSetting) {
+    public SpringBootGlobalConfig(RetrofitGlobalConfigProperties properties, RetrofitBuilderExtension customConfig) {
         this.properties = properties;
-        this.customSetting = customSetting;
+        this.customConfig = customConfig;
     }
 
     @Override
@@ -25,7 +25,7 @@ public class SpringBootGlobalParamConfigSetting implements GlobalParamConfig {
         if (properties.getEnable() != null) {
             return BooleanUtil.transformToBoolean(properties.getEnable());
         }
-        return customSetting != null && customSetting.enable();
+        return customConfig != null && customConfig.enable();
     }
 
     private boolean propertiesEnable() {
@@ -38,7 +38,7 @@ public class SpringBootGlobalParamConfigSetting implements GlobalParamConfig {
         if (propertiesEnable() && properties.getOverwriteType() != null) {
             overwriteType = properties.getOverwriteType();
         } else {
-            overwriteType = customSetting == null ? OverrideRule.GLOBAL_FIRST : customSetting.overwriteType();
+            overwriteType = customConfig == null ? OverrideRule.GLOBAL_FIRST : customConfig.overwriteType();
         }
         if (overwriteType == null) {
             overwriteType = OverrideRule.GLOBAL_FIRST;
@@ -51,7 +51,7 @@ public class SpringBootGlobalParamConfigSetting implements GlobalParamConfig {
         if (propertiesEnable() && properties.getBaseUrl() != null) {
             return properties.getBaseUrl();
         }
-        return customSetting == null ? null : customSetting.globalBaseUrl();
+        return customConfig == null ? null : customConfig.globalBaseUrl();
     }
 
     @Override
@@ -59,7 +59,7 @@ public class SpringBootGlobalParamConfigSetting implements GlobalParamConfig {
         if (propertiesEnable() && properties.getCallAdapterFactoryBuilderClazz() != null) {
             return properties.getCallAdapterFactoryBuilderClazz();
         }
-        return customSetting == null ? null : customSetting.globalCallAdapterFactoryBuilderClazz();
+        return customConfig == null ? null : customConfig.globalCallAdapterFactoryBuilderClazz();
     }
 
     @Override
@@ -67,7 +67,7 @@ public class SpringBootGlobalParamConfigSetting implements GlobalParamConfig {
         if (propertiesEnable() && properties.getConverterFactoryBuilderClazz() != null) {
             return properties.getConverterFactoryBuilderClazz();
         }
-        return customSetting == null ? null : customSetting.globalConverterFactoryBuilderClazz();
+        return customConfig == null ? null : customConfig.globalConverterFactoryBuilderClazz();
     }
 
     @Override
@@ -75,7 +75,7 @@ public class SpringBootGlobalParamConfigSetting implements GlobalParamConfig {
         if (propertiesEnable() && properties.getOkHttpClientBuilderClazz() != null) {
             return properties.getOkHttpClientBuilderClazz();
         }
-        return customSetting == null ? null : customSetting.globalOkHttpClientBuilderClazz();
+        return customConfig == null ? null : customConfig.globalOkHttpClientBuilderClazz();
     }
 
     @Override
@@ -83,7 +83,7 @@ public class SpringBootGlobalParamConfigSetting implements GlobalParamConfig {
         if (propertiesEnable() && properties.getCallBackExecutorBuilderClazz() != null) {
             return properties.getCallBackExecutorBuilderClazz();
         }
-        return customSetting == null ? null : customSetting.globalCallBackExecutorBuilderClazz();
+        return customConfig == null ? null : customConfig.globalCallBackExecutorBuilderClazz();
     }
 
     @Override
@@ -91,7 +91,7 @@ public class SpringBootGlobalParamConfigSetting implements GlobalParamConfig {
         if (propertiesEnable() && properties.getCallFactoryBuilderClazz() != null) {
             return properties.getCallFactoryBuilderClazz();
         }
-        return customSetting == null ? null : customSetting.globalCallFactoryBuilderClazz();
+        return customConfig == null ? null : customConfig.globalCallFactoryBuilderClazz();
     }
 
     @Override
@@ -99,6 +99,6 @@ public class SpringBootGlobalParamConfigSetting implements GlobalParamConfig {
         if (propertiesEnable() && properties.getValidateEagerly() != null) {
             return properties.getValidateEagerly();
         }
-        return customSetting == null ? null : customSetting.globalValidateEagerly();
+        return customConfig == null ? null : customConfig.globalValidateEagerly();
     }
 }

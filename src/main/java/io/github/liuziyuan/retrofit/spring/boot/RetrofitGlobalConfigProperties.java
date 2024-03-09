@@ -44,7 +44,7 @@ public class RetrofitGlobalConfigProperties {
 
     private String validateEagerly;
 
-    public void setByEnvironment(Environment environment) {
+    public RetrofitGlobalConfigProperties(Environment environment) {
         this.enable = resolveRequiredPlaceholders(environment, "${retrofit.global.enable}");
         this.baseUrl = resolveRequiredPlaceholders(environment, "${retrofit.global.base-url}");
         this.callAdapterFactoryBuilderClazz = (Class<? extends BaseCallAdapterFactoryBuilder>[]) transformClasses(resolveRequiredPlaceholders(environment, "${retrofit.global.call-adapter-factory-builder-clazz}"));
