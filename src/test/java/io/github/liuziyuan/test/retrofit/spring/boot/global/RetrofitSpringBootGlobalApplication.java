@@ -17,9 +17,9 @@ import java.util.List;
  */
 @EnableRetrofit({"io.github.liuziyuan.test.retrofit.spring.boot.global"})
 @SpringBootApplication
-public class RetrofitSpringBootQuickGlobalApplication {
+public class RetrofitSpringBootGlobalApplication {
     public static void main(String[] args) {
-        ConfigurableApplicationContext run = SpringApplication.run(RetrofitSpringBootQuickGlobalApplication.class, args);
+        ConfigurableApplicationContext run = SpringApplication.run(RetrofitSpringBootGlobalApplication.class, args);
         BeanFactory beanFactory = run.getBeanFactory();
         RetrofitResourceContext bean = beanFactory.getBean(RetrofitResourceContext.class);
         List<RetrofitClientBean> retrofitClients = bean.getRetrofitClients();
