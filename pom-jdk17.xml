@@ -38,7 +38,7 @@
         <java.source.version>${java.version}</java.source.version>
         <java.target.version>${java.version}</java.target.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.boot.version>3.2.3</spring.boot.version>
+        <spring.boot.version>3.0.0</spring.boot.version>
         <retrofit-core.version>1.1.2</retrofit-core.version>
         <retrofit.version>2.9.0</retrofit.version>
         <reflections.version>0.10.2</reflections.version>
