@@ -1,5 +1,16 @@
 # retrofit-spring-boot-starter
 
+
+
+| jdk version | Springboot2 version    |
+|-------------|------------------------|
+| jdk8        | 2.0.0.RELEASE -- 2.7.x |
+| jdk11       | 2.0.0.RELEASE -- 2.7.x |
+| jdk17       | 2.4.2 -- 2.7.x         |
+| jdk21       | 2.7.16 -- 2.7.x        |
+
+**_ `x`是Springboot2最后一个版本号._**
+
 ## 快速开始
 
 前提条件：你已经掌握了Retrofit的基本用法

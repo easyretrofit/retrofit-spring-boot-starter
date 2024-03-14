@@ -1,9 +1,20 @@
 # retrofit-spring-boot-starter
 
-[中文文档](https://github.com/liuziyuan/retrofit-spring-boot-starter/blob/main/README_CN.md)
+[中文文档](https://github.com/liuziyuan/retrofit-spring-boot-starter/blob/main/README.zh_CN.md)
 
 **retrofit-spring-boot-starter** provides easier use and enhancement of common functions of **Retrofit** in **SpringBoot**
 project, and realizes the enhancement of common functions through more annotations.
+
+
+
+| jdk version | Springboot2 version    |
+|-------------|------------------------|
+| jdk8        | 2.0.0.RELEASE -- 2.7.x |
+| jdk11       | 2.0.0.RELEASE -- 2.7.x |
+| jdk17       | 2.4.2 -- 2.7.x         |
+| jdk21       | 2.7.16 -- 2.7.x        |
+
+**_ The `x` is the Springboot2 latest version._**
 
 _Feature_
 
