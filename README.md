@@ -2,49 +2,59 @@
 
 [中文文档](https://github.com/liuziyuan/retrofit-spring-boot-starter/blob/main/README.zh_CN.md)
 
-**retrofit-spring-boot-starter** provides easier use and enhancement of common functions of **Retrofit** in **SpringBoot**
-project, and realizes the enhancement of common functions through more annotations.
-
-
-
-| jdk version | Springboot2 version    |
-|-------------|------------------------|
-| jdk8        | 2.0.0.RELEASE -- 2.7.x |
-| jdk11       | 2.0.0.RELEASE -- 2.7.x |
-| jdk17       | 2.4.2 -- 2.7.x         |
-| jdk21       | 2.7.16 -- 2.7.x        |
-
-**_ The `x` is the Springboot2 latest version._**
-
-_Feature_
-
-1. **Single Instance**, When the properties of the `Retrofit.Builder()` object are the same, only **one instance** of
-   Retrofit will be generated.
-2. **Interface inheritance**,When there are many Retrofit APIs in the project, the API interface file can be decomposed
-   more structurally through Interface inheritance
-3. **DynamicURL**, When using `@RetrofitDynamicBaseUrl` annotation, the entire API interface file uses dynamic base url,
-   while other API interface files are not affected
-4. **Spring Cloud Web Client**, When using `@RetrofitCloudService(name = "xxx")` annotation, and set name is `micro services nameing`,
-   entire API interface will call that micro services API.
 ## Table of contents
 
 - [Quick Start](#quick-start)
-- [Advanced Usage](#advanced-usage)
+- [Advanced Configuration](#advanced-configuration)
 - [Interface Inheritance](#interface-inheritance)
+- [URL Prefix](#url-prefix)
 - [Single Retrofit Instance](#single-retrofit-instance)
+- [Dynamic URL](#dynamic-url)
+- [Global Configuration](#global-configuration)
+- [Interceptor Extension](#interceptor-extension)
+- [Why is there another retrofit-spring-boot-starter](#why-is-there-another-retrofit-spring-boot-starter)
+- [Maintainers](#maintainers)
+- [Contributing](#contributing)
+- [License](#license)
 
-## Quick Start
+## Introduction
 
-### Add retrofit-spring-boot-starter dependency to maven pom.xml
+**retrofit-spring-boot-starter** provides easier use and enhancement of common functions of **Retrofit** in **SpringBoot
+**
+project, and realizes the enhancement of common functions through more annotations.
+
+## Install
+
+**Maven:**
 
 ```xml
 
 <dependency>
     <groupId>io.github.liuziyuan</groupId>
     <artifactId>retrofit-spring-boot-starter</artifactId>
-    <version>0.0.19</version>
+    <version>${latest-version}</version>
 </dependency>
 ```
+
+**Gradle:**
+
+```groovy
+dependencies {
+    implementation 'io.github.liuziyuan:retrofit-spring-boot-starter:${latest-version}'
+}
+```
+
+The maximum compatible stable version number for this project is `1.3.1` and subsequent versions. This version is
+compatible with SpringBoot2 and Springboot3 versions under different JDKs as follows:
+
+| jdk version | Springboot2 version    | Springboot3 version |
+|-------------|------------------------|---------------------|
+| jdk8        | 2.0.0.RELEASE - 2.7.18 | NA                  |
+| jdk11       | 2.0.0.RELEASE - 2.7.18 | NA                  |
+| jdk17       | 2.4.2 - 2.7.18         | 3.0.0 - latest      |
+| jdk21       | 2.7.16 - 2.7.18        | 3.1.0 - latest      |
+
+## Quick Start
 
 ### Add `@EnableRetrofit` Annotation
 
@@ -55,9 +65,9 @@ The `@EnableRetrofit` Annotation will enable to use retrofit-spring-boot-stater.
 @EnableRetrofit
 @SpringBootApplication
 public class QuickStartApplication {
-   public static void main(String[] args) {
-      SpringApplication.run(QuickStartApplication.class, args);
-   }
+    public static void main(String[] args) {
+        SpringApplication.run(QuickStartApplication.class, args);
+    }
 }
 
 ```
@@ -123,7 +133,7 @@ to [retrofit-spring-boot-starter-sample-quickstart](https://github.com/liuziyuan
 
 ### Yes, Congratulations, your code should work normally.
 
-## Advanced Usage
+## Advanced Configuration
 
 ### Add other Retrofit attributes to `@RetrofitBuilder`, if you need
 
@@ -366,9 +376,10 @@ public interface HelloApi {
 }
 ```
 
-if `HelloApi` use `extends BaseApi` and used `@RetrofitBase(baseInterface = BaseApi.class)`, The starter first to use `@RetrofitBase(baseInterface = BaseApi.class)`
+if `HelloApi` use `extends BaseApi` and used `@RetrofitBase(baseInterface = BaseApi.class)`, The starter first to
+use `@RetrofitBase(baseInterface = BaseApi.class)`
 
-#### @RetrofitUrlPrefix Annotation
+## URL Prefix
 
 You can use `@RetrofitUrlPrefix` to define the prefix of URL, just like using `@RequestMapping` of springboot
 
@@ -445,7 +456,7 @@ public class HelloController {
 }
 ```
 
-### Single Retrofit Instance
+## Single Retrofit Instance
 
 Create a single Retrofit instance When the Retrofit configuration is the same and only the SUFFIX part of the `baseUrl`
 is different
@@ -463,16 +474,20 @@ to [retrofit-spring-boot-starter-sample-awesome](https://github.com/liuziyuan/re
 & [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-backend-services)
 
 ### @RetrofitCloudService Annotation (v0.0.20 temporary discard)
+
 In spring cloud micro services cluster, You can use `@RetrofitCloudService` to call another micro service.
 This function depends on `spring-cloud-starter-loadbalancer`,so adding to pom.xml
+
 ```xml
+
 <dependency>
-   <groupId>org.springframework.cloud</groupId>
-   <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-loadbalancer</artifactId>
 </dependency>
 ```
 
 ```java
+
 @RetrofitBuilder
 @RetrofitCloudService(name = "catalog")
 public interface RetrofitApi {
@@ -483,6 +498,145 @@ public interface RetrofitApi {
 ```
 
 the `catalog` is name of provider micro service. That's the name in the registry center.
+
+## Dynamic URL
+
+you could use`@RetrofitDynamicBaseUrl` dynamic change `baseUrl`of`@RetrofitBuilder`
+
+You can refer to  [retrofit-spring-boot-starter-sample-awesome](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-awesome)
+& [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-backend-services)
+
+## Global Configuration
+
+You can configure the `retrofit-spring-boot-starter` global configuration in the Spring Boot project's configuration file `application.yml`. 
+When global configuration is enabled, all the configurations in the `@RetrofitBuilder` will use the global configuration.
+
+```yaml
+retrofit:
+  global:
+    enable: true
+    overwrite-type: global_first
+    base-url: http://localhost:8080
+    converter-factory-builder-clazz: io.github.liuziyuan.test.retrofit.spring.boot.common.JacksonConverterFactoryBuilder,io.github.liuziyuan.test.retrofit.spring.boot.common.GsonConverterFactoryBuilder
+    call-adapter-factory-builder-clazz: io.github.liuziyuan.test.retrofit.spring.boot.common.RxJavaCallAdapterFactoryBuilder
+    validate-eagerly: false
+```
+
+The properties here are exactly the same as those in `@RetrofitBuilder`. You can refer to the comments in `@RetrofitBuilder` for explanation.
+
+The `overwrite-type` provides two modes: `global_first` and `local_first`.
+
+When `global_first`, the global configuration will be merged with the `@RetrofitBuilder` configuration and use the properties of the global configuration. The properties of the global configuration will be used if they are empty.
+
+When `local_first`, the global configuration will be merged with the `@RetrofitBuilder` configuration and use the properties of the `@RetrofitBuilder` configuration. The properties of the `@RetrofitBuilder` configuration will be used if they are empty.
+
+Provide a `denyGlobalConfig = true` in `@RetrofitBuilder` to refuse the global configuration and keep its independence without being polluted by the global configuration.
+
+```java
+
+@RetrofitBuilder(baseUrl = "http://localhost:8080/", denyGlobalConfig = true)
+public interface HelloApi {
+}
+```
+
+You can refer to [retrofit-spring-boot-starter-sample-global-config](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-global-config)
+
+## Interceptor Extension
+
+You can write Interceptor-based extensions for Retrofit,
+
+Take for example `@RetrofitCloudService`, an Interceptor-based extension that implements load balancing for Retrofit in Spring Cloud
+```java
+
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.TYPE})
+@RetrofitDynamicBaseUrl
+@RetrofitInterceptor(handler = RetrofitCloudInterceptor.class)
+public @interface RetrofitCloudService {
+    @AliasFor(
+            annotation = RetrofitDynamicBaseUrl.class,
+            attribute = "value"
+    )
+    String name() default "";
+}
+
+@Component
+public class RetrofitCloudInterceptor extends BaseInterceptor {
+
+    @Autowired
+    private LoadBalancerClient loadBalancerClient;
+
+    @Autowired
+    private RetrofitResourceContext context;
+
+    @SneakyThrows
+    @Override
+    protected Response executeIntercept(Chain chain) {
+        Request request = chain.request();
+        final Method method = super.getRequestMethod(request);
+        String clazzName = super.getClazzNameByMethod(method);
+        final RetrofitApiServiceBean currentServiceBean = context.getRetrofitApiServiceBean(clazzName);
+        RetrofitCloudService annotation = null;
+        annotation = currentServiceBean.getSelfClazz().getAnnotation(RetrofitCloudService.class);
+        if (annotation == null) {
+            annotation = currentServiceBean.getParentClazz().getAnnotation(RetrofitCloudService.class);
+        }
+        final String serviceName = annotation.name();
+        if (StringUtils.isNotEmpty(serviceName)) {
+            final URI uri = loadBalancerClient.choose(serviceName).getUri();
+            final HttpUrl httpUrl = HttpUrl.get(uri);
+            HttpUrl newUrl = request.url().newBuilder()
+                    .scheme(httpUrl.scheme())
+                    .host(httpUrl.host())
+                    .port(httpUrl.port())
+                    .build();
+            request = request.newBuilder().url(newUrl).build();
+        }
+        return chain.proceed(request);
+    }
+}
+
+public class RetrofitCloudServiceExtension implements RetrofitInterceptorExtension {
+    @Override
+    public Class<? extends Annotation> createAnnotation() {
+        return RetrofitCloudService.class;
+    }
+
+    @Override
+    public Class<? extends BaseInterceptor> createInterceptor() {
+        return RetrofitCloudInterceptor.class;
+    }
+}
+
+
+@Configuration
+public class RetrofitSpringCouldWebConfig {
+    @Bean
+    @ConditionalOnMissingBean
+    public RetrofitCloudServiceExtension retrofitSpringCouldWebConfig() {
+        return new RetrofitCloudServiceExtension();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public RetrofitCloudInterceptor retrofitCloudInterceptor() {
+        return new RetrofitCloudInterceptor();
+    }
+}
+
+
+@RetrofitBuilder
+@RetrofitCloudService(name = "catalog")
+public interface RetrofitApi {
+
+    @GET("echo/{string}")
+    Call<ResponseBody> echo(@Path("string") String string);
+}
+
+```
+
+You can refer to [retrofit-spring-boot-starter-sample-plugin](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-plugin)
 
 
 ## Why is there another retrofit-spring-boot-starter
@@ -498,3 +652,19 @@ In my work, the team will use retrofit as the API of BFF layer HTTP client to re
 will be hundreds of interface files in BFF. Therefore, I improved the time of creating retrofit instance, allowing one
 retrofit interface to inherit one base interface, which can define and configure retrofit attributes
 
+## Maintainers
+
+[@liuziyuan](https://github.com/liuziyuan)
+
+## Contributing
+
+Feel free to dive in! [Open an issue](https://github.com/liuziyuan/retrofit-spring-boot-starter/issues/new) or submit
+PRs.
+
+Standard Readme follows the [Contributor Covenant](http://contributor-covenant.org/version/1/3/0/) Code of Conduct.
+
+This project exists thanks to all the people who contribute.
+
+## License
+
+[MIT](LICENSE) © liuziyuan
