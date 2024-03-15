@@ -38,12 +38,12 @@ dependencies {
 ```
 本项目的最多兼容稳定版本号为 `1.3.1`,以及后续版本。该版本在不同JDK下兼容SpringBoot2和Springboot3版本如下:
 
-| jdk version | Springboot2 version    | Springboot3 version |
-|-------------|------------------------|---------------------|
-| jdk8        | 2.0.0.RELEASE - 2.7.18 | NA                  |
-| jdk11       | 2.0.0.RELEASE - 2.7.18 | NA                  |
-| jdk17       | 2.4.2 - 2.7.18         | 3.0.0 - latest      |
-| jdk21       | 2.7.16 - 2.7.18        | 3.1.0 - latest(*)   |
+| jdk version | Springboot2 version   | Springboot3 version |
+|-------------|-----------------------|---------------------|
+| jdk8        | 2.0.0.RELEASE - 2.7.x | NA                  |
+| jdk11       | 2.0.0.RELEASE - 2.7.x | NA                  |
+| jdk17       | 2.4.2 - 2.7.x         | 3.0.0 - latest      |
+| jdk21       | 2.7.16 - 2.7.x        | 3.1.0 - latest(*)   |
 
 注意：如果你需要在jdk21的Springboot3.1.0-3.1.2中使用Lombok，请注意lombok的版本号为1.18.30 +
 ```xml

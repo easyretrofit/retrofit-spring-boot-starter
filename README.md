@@ -18,10 +18,7 @@
 - [License](#license)
 
 ## Introduction
-
-**retrofit-spring-boot-starter** provides easier use and enhancement of common functions of **Retrofit** in **SpringBoot
-**
-project, and realizes the enhancement of common functions through more annotations.
+`retrofit-spring-boot-starter` provides easier use and enhancement of common functions of **Retrofit** in SpringBoot project, and realizes the enhancement of common functions through more annotations.
 
 ## Install
 
@@ -47,12 +44,12 @@ dependencies {
 The maximum compatible stable version number for this project is `1.3.1` and subsequent versions. This version is
 compatible with SpringBoot2 and Springboot3 versions under different JDKs as follows:
 
-| jdk version | Springboot2 version    | Springboot3 version |
-|-------------|------------------------|---------------------|
-| jdk8        | 2.0.0.RELEASE - 2.7.18 | NA                  |
-| jdk11       | 2.0.0.RELEASE - 2.7.18 | NA                  |
-| jdk17       | 2.4.2 - 2.7.18         | 3.0.0 - latest      |
-| jdk21       | 2.7.16 - 2.7.18        | 3.1.0 - latest      |
+| jdk version | Springboot2 version   | Springboot3 version |
+|-------------|-----------------------|---------------------|
+| jdk8        | 2.0.0.RELEASE - 2.7.x | NA                  |
+| jdk11       | 2.0.0.RELEASE - 2.7.x | NA                  |
+| jdk17       | 2.4.2 - 2.7.x         | 3.0.0 - latest      |
+| jdk21       | 2.7.16 - 2.7.x        | 3.1.0 - latest      |
 
 Note: If you need to use Lombok in Springboot 3.1.0-3.1.2 of jdk21, please note that the version number of Lombok is 1.18.30+
 
