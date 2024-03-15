@@ -18,7 +18,7 @@
 - [License](#license)
 
 ## Introduction
-`retrofit-spring-boot-starter` provides easier use and enhancement of common functions of **Retrofit** in SpringBoot project, and realizes the enhancement of common functions through more annotations.
+`retrofit-spring-boot-starter` provides easier use and enhancement of common functions of Retrofit2 in SpringBoot project, and realizes the enhancement of common functions through more annotations.
 
 ## Install
 
