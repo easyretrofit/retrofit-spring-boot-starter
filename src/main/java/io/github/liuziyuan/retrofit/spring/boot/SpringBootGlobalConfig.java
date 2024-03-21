@@ -31,19 +31,6 @@ public class SpringBootGlobalConfig implements RetrofitBuilderExtension {
         return BooleanUtil.transformToBoolean(properties.getEnable());
     }
 
-    @Override
-    public OverrideRule overwriteType() {
-        OverrideRule overwriteType = null;
-        if (propertiesEnable() && properties.getOverwriteType() != null) {
-            overwriteType = properties.getOverwriteType();
-        } else {
-            overwriteType = customConfig == null ? OverrideRule.GLOBAL_FIRST : customConfig.overwriteType();
-        }
-        if (overwriteType == null) {
-            overwriteType = OverrideRule.GLOBAL_FIRST;
-        }
-        return overwriteType;
-    }
 
     @Override
     public String globalBaseUrl() {

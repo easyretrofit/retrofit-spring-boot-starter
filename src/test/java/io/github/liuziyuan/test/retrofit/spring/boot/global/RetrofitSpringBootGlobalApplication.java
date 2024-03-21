@@ -23,6 +23,6 @@ public class RetrofitSpringBootGlobalApplication {
         BeanFactory beanFactory = run.getBeanFactory();
         RetrofitResourceContext bean = beanFactory.getBean(RetrofitResourceContext.class);
         List<RetrofitClientBean> retrofitClients = bean.getRetrofitClients();
-        Assert.assertEquals(2, retrofitClients.size());
+        Assert.assertEquals(4, retrofitClients.size());
     }
 }

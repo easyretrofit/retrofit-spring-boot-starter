@@ -1,5 +1,6 @@
 package io.github.liuziyuan.test.retrofit.spring.boot.inject.builder;
 
+import io.github.liuziyuan.retrofit.core.OverrideRule;
 import io.github.liuziyuan.retrofit.core.annotation.RetrofitBuilder;
 import io.github.liuziyuan.retrofit.core.annotation.RetrofitInterceptor;
 
@@ -8,7 +9,7 @@ import io.github.liuziyuan.retrofit.core.annotation.RetrofitInterceptor;
         addConverterFactory = {GsonConverterFactoryBuilder.class, JacksonConverterFactoryBuilder.class},
         callbackExecutor = MyCallBackExecutorBuilder.class,
         client = MyOkHttpClient.class,
-        validateEagerly = "0", denyGlobalConfig = true)
+        validateEagerly = false, globalOverwriteRule = OverrideRule.LOCAL_ONLY)
 @RetrofitInterceptor(handler = MyRetrofitInterceptor1.class)
 @RetrofitInterceptor(handler = MyRetrofitInterceptor2.class)
 @RetrofitInterceptor(handler = MyRetrofitInterceptor3.class)

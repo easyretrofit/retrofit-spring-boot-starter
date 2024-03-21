@@ -15,7 +15,6 @@ logging:
 retrofit:
   global:
     enable: true
-    overwrite-type: global_first
     base-url: http://localhost:8080
     converter-factory-builder-clazz: io.github.liuziyuan.test.retrofit.spring.boot.common.JacksonConverterFactoryBuilder,io.github.liuziyuan.test.retrofit.spring.boot.common.GsonConverterFactoryBuilder
     call-adapter-factory-builder-clazz: io.github.liuziyuan.test.retrofit.spring.boot.common.RxJavaCallAdapterFactoryBuilder

@@ -13,11 +13,6 @@ public class CustomConfigSetting implements RetrofitBuilderExtension {
     }
 
     @Override
-    public OverrideRule overwriteType() {
-        return null;
-    }
-
-    @Override
     public String globalBaseUrl() {
         return null;
     }
