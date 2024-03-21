@@ -6,7 +6,6 @@ import io.github.liuziyuan.retrofit.core.builder.*;
 import io.github.liuziyuan.retrofit.core.util.BooleanUtil;
 
 /**
- * 继承core中的GlobalParamConfig实现自定义Retrofit必要的的全局配置
  * 这个类合并了自定义的配置和web的resources文件夹中配置文件中的配置
  * 合并原则是：以下优先级：resources文件夹中配置大于自定义配置，如果resources文件夹中没有配置，则使用自定义配置
  */
