@@ -40,7 +40,6 @@ public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefin
     public void registerBeanDefinitions(AnnotationMetadata metadata, BeanDefinitionRegistry registry) {
         AnnotationAttributes enableRetrofitAnnoAttr = AnnotationAttributes.fromMap(metadata.getAnnotationAttributes(EnableRetrofit.class.getName()));
         if (enableRetrofitAnnoAttr != null) {
-//            this.registerRetrofitResourceBeanDefinitions(enableRetrofitAnnoAttr, registry);
             registerRetrofitAnnotationDefinitions(enableRetrofitAnnoAttr, registry);
         }
     }
@@ -55,55 +54,6 @@ public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefin
             registry.registerBeanDefinition(RetrofitAnnotationBean.class.getName(), definition);
         }
     }
-
-//    void registerRetrofitResourceBeanDefinitions(AnnotationAttributes annoAttrs, BeanDefinitionRegistry registry) {
-//        // scan RetrofitResource
-//        final Set<Class<?>> retrofitBuilderClassSet = scanRetrofitResource(annoAttrs);
-//        if (!retrofitBuilderClassSet.isEmpty()) {
-//            RetrofitBuilderBean globalRetrofitBuilderBean = setRetrofitBuilderBean();
-//            // init RetrofitResourceContext by RetrofitResourceContextBuilder
-//            RetrofitResourceContext context = initRetrofitResourceContext(retrofitBuilderClassSet, globalRetrofitBuilderBean);
-//            //registry RetrofitResourceContext
-//            registryRetrofitResourceContext(registry, context);
-//        }
-//    }
-//
-//    private RetrofitBuilderBean setRetrofitBuilderBean() {
-//        RetrofitBuilderBean retrofitBuilderBean = new RetrofitBuilderBean();
-//        SpringBootGlobalParamConfigSetting springBootGlobalParamConfigSetting;
-//        RetrofitGlobalConfigProperties properties = new RetrofitGlobalConfigProperties();
-//        properties.setByEnvironment(environment);
-//        springBootGlobalParamConfigSetting = new SpringBootGlobalParamConfigSetting(properties, scanner.getRetrofitComponentGlobalParamConfigInstance());
-//        if (springBootGlobalParamConfigSetting.enable()) {
-//            retrofitBuilderBean.setEnable(springBootGlobalParamConfigSetting.enable());
-//            retrofitBuilderBean.setOverwriteType(springBootGlobalParamConfigSetting.overwriteType());
-//            retrofitBuilderBean.setBaseUrl(springBootGlobalParamConfigSetting.globalBaseUrl());
-//            retrofitBuilderBean.setClient(springBootGlobalParamConfigSetting.globalOkHttpClientBuilderClazz());
-//            retrofitBuilderBean.setCallFactory(springBootGlobalParamConfigSetting.globalCallFactoryBuilderClazz());
-//            retrofitBuilderBean.setCallbackExecutor(springBootGlobalParamConfigSetting.globalCallBackExecutorBuilderClazz());
-//            retrofitBuilderBean.setAddConverterFactory(springBootGlobalParamConfigSetting.globalConverterFactoryBuilderClazz());
-//            retrofitBuilderBean.setAddCallAdapterFactory(springBootGlobalParamConfigSetting.globalCallAdapterFactoryBuilderClazz());
-//            retrofitBuilderBean.setValidateEagerly(springBootGlobalParamConfigSetting.globalValidateEagerly());
-//        }
-//        return retrofitBuilderBean;
-//    }
-//
-//    private void registryRetrofitResourceContext(BeanDefinitionRegistry registry, RetrofitResourceContext context) {
-//        BeanDefinitionBuilder builder;
-//        builder = BeanDefinitionBuilder.genericBeanDefinition(RetrofitResourceContext.class, () -> context);
-//        GenericBeanDefinition definition = (GenericBeanDefinition) builder.getRawBeanDefinition();
-//        registry.registerBeanDefinition(RetrofitResourceContext.class.getName(), definition);
-//    }
-//
-//    private RetrofitResourceContext initRetrofitResourceContext(Set<Class<?>> retrofitBuilderClassSet, RetrofitBuilderBean globalRetrofitBuilderBean) {
-//
-//        Env env = new SpringBootEnv(environment);
-//        SpringBootRetrofitResourceContextBuilder retrofitResourceContextBuilder = new SpringBootRetrofitResourceContextBuilder(env, scanner);
-//        retrofitResourceContextBuilder.build(retrofitBuilderClassSet, globalRetrofitBuilderBean);
-//        final List<RetrofitClientBean> retrofitClientBeanList = retrofitResourceContextBuilder.getRetrofitClientBeanList();
-//        final Map<String, RetrofitApiServiceBean> retrofitServiceBeanHashMap = retrofitResourceContextBuilder.getRetrofitServiceBeanHashMap();
-//        return new RetrofitResourceContext(retrofitClientBeanList, retrofitServiceBeanHashMap);
-//    }
 
     private Set<Class<?>> scanRetrofitResource(AnnotationAttributes annoAttrs) {
         // scan RetrofitResource
