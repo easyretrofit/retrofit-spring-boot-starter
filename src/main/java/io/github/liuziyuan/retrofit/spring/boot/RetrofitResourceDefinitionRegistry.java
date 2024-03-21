@@ -62,11 +62,15 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
         try {
             // get RetrofitAnnotationBean
             RetrofitAnnotationBean retrofitAnnotationBean = (RetrofitAnnotationBean) beanFactory.getBean(RetrofitAnnotationBean.class.getName());
+            // get RetrofitInterceptorExtension
             List<RetrofitInterceptorExtension> retrofitInterceptorExtensions = getRetrofitInterceptorExtensions(beanFactory);
-            RetrofitBuilderBean globalRetrofitBuilderBean = getRetrofitBuilderBean(beanFactory);
-            context = initRetrofitResourceContext(retrofitAnnotationBean.retrofitBuilderClassSet, globalRetrofitBuilderBean, retrofitInterceptorExtensions);
+            // get RetrofitBuilderExtension
+            RetrofitBuilderExtension retrofitBuilderExtension = getRetrofitBuilderExtension(beanFactory);
+            // init RetrofitResourceContext
+            context = initRetrofitResourceContext(retrofitAnnotationBean.getRetrofitBuilderClassSet(), retrofitBuilderExtension, retrofitInterceptorExtensions);
             // registry RetrofitResourceContext
             registryRetrofitResourceContext(beanDefinitionRegistry, context);
+            // get RetrofitClientBean
             List<RetrofitClientBean> retrofitClientBeanList = context.getRetrofitClients();
             // registry Retrofit object
             registryRetrofitInstance(beanDefinitionRegistry, retrofitClientBeanList, context);
@@ -103,24 +107,10 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
         return bean;
     }
 
-    private RetrofitBuilderBean getRetrofitBuilderBean(ConfigurableListableBeanFactory beanFactory) {
-        RetrofitBuilderBean retrofitBuilderBean = new RetrofitBuilderBean();
-        SpringBootGlobalConfig springBootGlobalConfig;
+    private RetrofitBuilderExtension getRetrofitBuilderExtension(ConfigurableListableBeanFactory beanFactory) {
         RetrofitGlobalConfigProperties properties = new RetrofitGlobalConfigProperties().generate(environment);
         RetrofitBuilderExtension globalConfigExtension = getGlobalConfigExtension(beanFactory);
-        springBootGlobalConfig = new SpringBootGlobalConfig(properties, globalConfigExtension);
-        if (springBootGlobalConfig.enable()) {
-            retrofitBuilderBean.setEnable(springBootGlobalConfig.enable());
-            retrofitBuilderBean.setOverwriteType(springBootGlobalConfig.overwriteType());
-            retrofitBuilderBean.setBaseUrl(springBootGlobalConfig.globalBaseUrl());
-            retrofitBuilderBean.setClient(springBootGlobalConfig.globalOkHttpClientBuilderClazz());
-            retrofitBuilderBean.setCallFactory(springBootGlobalConfig.globalCallFactoryBuilderClazz());
-            retrofitBuilderBean.setCallbackExecutor(springBootGlobalConfig.globalCallBackExecutorBuilderClazz());
-            retrofitBuilderBean.setAddConverterFactory(springBootGlobalConfig.globalConverterFactoryBuilderClazz());
-            retrofitBuilderBean.setAddCallAdapterFactory(springBootGlobalConfig.globalCallAdapterFactoryBuilderClazz());
-            retrofitBuilderBean.setValidateEagerly(springBootGlobalConfig.globalValidateEagerly());
-        }
-        return retrofitBuilderBean;
+        return new SpringBootGlobalConfig(properties, globalConfigExtension);
     }
 
     private void registryRetrofitResourceContext(BeanDefinitionRegistry registry, RetrofitResourceContext context) {
@@ -130,10 +120,10 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
         registry.registerBeanDefinition(RetrofitResourceContext.class.getName(), definition);
     }
 
-    private RetrofitResourceContext initRetrofitResourceContext(Set<Class<?>> retrofitBuilderClassSet, RetrofitBuilderBean globalRetrofitBuilderBean, List<RetrofitInterceptorExtension> retrofitInterceptorExtensions) {
+    private RetrofitResourceContext initRetrofitResourceContext(Set<Class<?>> retrofitBuilderClassSet, RetrofitBuilderExtension retrofitBuilderExtension, List<RetrofitInterceptorExtension> retrofitInterceptorExtensions) {
         Env env = new SpringBootEnv(environment);
         RetrofitResourceContextBuilder retrofitResourceContextBuilder = new RetrofitResourceContextBuilder(env);
-        retrofitResourceContextBuilder.build(retrofitBuilderClassSet, globalRetrofitBuilderBean, retrofitInterceptorExtensions);
+        retrofitResourceContextBuilder.build(retrofitBuilderClassSet, retrofitBuilderExtension, retrofitInterceptorExtensions);
         final List<RetrofitClientBean> retrofitClientBeanList = retrofitResourceContextBuilder.getRetrofitClientBeanList();
         final Map<String, RetrofitApiServiceBean> retrofitServiceBeanHashMap = retrofitResourceContextBuilder.getRetrofitServiceBeanHashMap();
         return new RetrofitResourceContext(retrofitClientBeanList, retrofitServiceBeanHashMap);
@@ -215,7 +205,7 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
         String callbackExecutorString = retrofitBuilder.getCallbackExecutor().getSimpleName();
         String clientString = retrofitBuilder.getClient().getSimpleName();
         String callFactoryString = retrofitBuilder.getCallFactory().getSimpleName();
-        String validateEagerlyString = retrofitBuilder.getValidateEagerly();
+        String validateEagerlyString = retrofitBuilder.isValidateEagerly() ? "true" : "false";
         String inheritedInterceptor = retrofitClient.getInheritedInterceptors().toString();
         String interceptor = retrofitClient.getInterceptors().toString();
         log.debug("RetrofitClientBean: HostURL: {}; UrlStatus: {}; globalEnable: {}; CallAdapterFactory: {}; ConverterFactory:{}; callbackExecutor: {}; client: {}; callFactory: {}; validateEagerly: {}; inheritedInterceptor: {}; interceptor: {}",
