@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
  * When @EnableRetrofit is used, this class will generate the RetrofitResourceContext object according to the Annotation, and define and register it in the spring container
  * 当@EnableRetrofit注解被使用时，会根据注解生成RetrofitResourceContext对象，然后将它注册到spring容器中，后续会在RetrofitResourceDefinitionRegistry类中注册真正的API接口
  * 非常重要的，这里是无法获取到Spring上下文中的bean
+ *
  * @author liuziyuan
  */
 @Slf4j
@@ -46,7 +47,8 @@ public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefin
 
     void registerRetrofitAnnotationDefinitions(AnnotationAttributes annoAttrs, BeanDefinitionRegistry registry) {
         final Set<Class<?>> retrofitBuilderClassSet = scanRetrofitResource(annoAttrs);
-        RetrofitAnnotationBean annotationBean = new RetrofitAnnotationBean(retrofitBuilderClassSet);
+        final List<String> basePackages = getBasePackages(annoAttrs);
+        RetrofitAnnotationBean annotationBean = new RetrofitAnnotationBean(basePackages, retrofitBuilderClassSet);
         if (!retrofitBuilderClassSet.isEmpty()) {
             BeanDefinitionBuilder builder;
             builder = BeanDefinitionBuilder.genericBeanDefinition(RetrofitAnnotationBean.class, () -> annotationBean);
@@ -58,11 +60,16 @@ public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefin
     private Set<Class<?>> scanRetrofitResource(AnnotationAttributes annoAttrs) {
         // scan RetrofitResource
         scanner = new RetrofitResourceScanner();
+        List<String> basePackages = getBasePackages(annoAttrs);
+        return scanner.doScan(StringUtils.toStringArray(basePackages));
+    }
+
+    private List<String> getBasePackages(AnnotationAttributes annoAttrs) {
         List<String> basePackages = new ArrayList<>();
         basePackages.addAll(Arrays.stream(annoAttrs.getStringArray("value")).filter(StringUtils::hasText).collect(Collectors.toList()));
         basePackages.addAll(Arrays.stream(annoAttrs.getStringArray("basePackages")).filter(StringUtils::hasText).collect(Collectors.toList()));
         basePackages.addAll(Arrays.stream(annoAttrs.getClassArray("basePackageClasses")).map(ClassUtils::getPackageName).collect(Collectors.toList()));
-        return scanner.doScan(StringUtils.toStringArray(basePackages));
+        return basePackages;
     }
 
     @Override

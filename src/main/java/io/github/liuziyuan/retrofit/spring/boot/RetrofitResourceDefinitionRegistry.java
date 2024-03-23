@@ -62,12 +62,12 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
         try {
             // get RetrofitAnnotationBean
             RetrofitAnnotationBean retrofitAnnotationBean = (RetrofitAnnotationBean) beanFactory.getBean(RetrofitAnnotationBean.class.getName());
-            // get RetrofitInterceptorExtension
-            List<RetrofitInterceptorExtension> retrofitInterceptorExtensions = getRetrofitInterceptorExtensions(beanFactory);
             // get RetrofitBuilderExtension
             RetrofitBuilderExtension retrofitBuilderExtension = getRetrofitBuilderExtension(beanFactory);
+            // get RetrofitInterceptorExtensions
+            List<RetrofitInterceptorExtension> retrofitInterceptorExtensions = getBeansOfType(beanFactory, RetrofitInterceptorExtension.class);
             // init RetrofitResourceContext
-            context = initRetrofitResourceContext(retrofitAnnotationBean.getRetrofitBuilderClassSet(), retrofitBuilderExtension, retrofitInterceptorExtensions);
+            context = initRetrofitResourceContext(retrofitAnnotationBean, retrofitBuilderExtension, retrofitInterceptorExtensions);
             // registry RetrofitResourceContext
             registryRetrofitResourceContext(beanDefinitionRegistry, context);
             // get RetrofitClientBean
@@ -83,33 +83,56 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
         }
     }
 
-    private List<RetrofitInterceptorExtension> getRetrofitInterceptorExtensions(ConfigurableListableBeanFactory beanFactory) {
-        String[] interceptorExtensionBeanNames = beanFactory.getBeanNamesForType(RetrofitInterceptorExtension.class);
-        List<RetrofitInterceptorExtension> beans = new ArrayList<>();
-        for (String beanName : interceptorExtensionBeanNames) {
-            RetrofitInterceptorExtension myBean = beanFactory.getBean(beanName, RetrofitInterceptorExtension.class);
+    private <T> T getSingleBeanOfType(ConfigurableListableBeanFactory beanFactory, Class<T> clazz) {
+        List<T> beansOfTypes = getBeansOfType(beanFactory, clazz);
+        if (beansOfTypes.size() > 1) {
+            log.warn("There are multiple {}, please check your configuration", clazz.getSimpleName());
+            return null;
+        } else if (beansOfTypes.size() == 1) {
+            return beansOfTypes.get(0);
+        } else {
+            return null;
+        }
+    }
+
+    private <T> List<T> getBeansOfType(ConfigurableListableBeanFactory beanFactory, Class<T> clazz) {
+        String[] annotationExtensionBeanNames = beanFactory.getBeanNamesForType(clazz);
+        List<T> beans = new ArrayList<>();
+        for (String beanName : annotationExtensionBeanNames) {
+            T myBean = beanFactory.getBean(beanName, clazz);
             beans.add(myBean);
         }
         return beans;
     }
 
-    private RetrofitBuilderExtension getGlobalConfigExtension(ConfigurableListableBeanFactory beanFactory) {
-        String[] globalConfigExtensionBeanNames = beanFactory.getBeanNamesForType(RetrofitBuilderExtension.class);
-        RetrofitBuilderExtension bean = null;
-        if (globalConfigExtensionBeanNames.length > 1) {
-            log.warn("Multiple GlobalConfigExtension interface found, please check your configuration.");
-        } else if (globalConfigExtensionBeanNames.length == 1) {
-            bean = beanFactory.getBean(globalConfigExtensionBeanNames[0], RetrofitBuilderExtension.class);
 
-        } else {
-            return null;
-        }
-        return bean;
-    }
+//    private List<RetrofitInterceptorExtension> getRetrofitInterceptorExtensions(ConfigurableListableBeanFactory beanFactory) {
+//        String[] interceptorExtensionBeanNames = beanFactory.getBeanNamesForType(RetrofitInterceptorExtension.class);
+//        List<RetrofitInterceptorExtension> beans = new ArrayList<>();
+//        for (String beanName : interceptorExtensionBeanNames) {
+//            RetrofitInterceptorExtension myBean = beanFactory.getBean(beanName, RetrofitInterceptorExtension.class);
+//            beans.add(myBean);
+//        }
+//        return beans;
+//    }
+//
+//    private RetrofitBuilderExtension getGlobalConfigExtension(ConfigurableListableBeanFactory beanFactory) {
+//        String[] globalConfigExtensionBeanNames = beanFactory.getBeanNamesForType(RetrofitBuilderExtension.class);
+//        RetrofitBuilderExtension bean = null;
+//        if (globalConfigExtensionBeanNames.length > 1) {
+//            log.warn("Multiple GlobalConfigExtension interface found, please check your configuration.");
+//        } else if (globalConfigExtensionBeanNames.length == 1) {
+//            bean = beanFactory.getBean(globalConfigExtensionBeanNames[0], RetrofitBuilderExtension.class);
+//
+//        } else {
+//            return null;
+//        }
+//        return bean;
+//    }
 
     private RetrofitBuilderExtension getRetrofitBuilderExtension(ConfigurableListableBeanFactory beanFactory) {
         RetrofitGlobalConfigProperties properties = new RetrofitGlobalConfigProperties().generate(environment);
-        RetrofitBuilderExtension globalConfigExtension = getGlobalConfigExtension(beanFactory);
+        RetrofitBuilderExtension globalConfigExtension = getSingleBeanOfType(beanFactory, RetrofitBuilderExtension.class);
         return new SpringBootGlobalConfig(properties, globalConfigExtension);
     }
 
@@ -120,13 +143,15 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
         registry.registerBeanDefinition(RetrofitResourceContext.class.getName(), definition);
     }
 
-    private RetrofitResourceContext initRetrofitResourceContext(Set<Class<?>> retrofitBuilderClassSet, RetrofitBuilderExtension retrofitBuilderExtension, List<RetrofitInterceptorExtension> retrofitInterceptorExtensions) {
+    private RetrofitResourceContext initRetrofitResourceContext(RetrofitAnnotationBean retrofitAnnotationBean,
+                                                                RetrofitBuilderExtension retrofitBuilderExtension,
+                                                                List<RetrofitInterceptorExtension> retrofitInterceptorExtensions) {
         Env env = new SpringBootEnv(environment);
-        RetrofitResourceContextBuilder retrofitResourceContextBuilder = new RetrofitResourceContextBuilder(env);
-        retrofitResourceContextBuilder.build(retrofitBuilderClassSet, retrofitBuilderExtension, retrofitInterceptorExtensions);
-        final List<RetrofitClientBean> retrofitClientBeanList = retrofitResourceContextBuilder.getRetrofitClientBeanList();
-        final Map<String, RetrofitApiServiceBean> retrofitServiceBeanHashMap = retrofitResourceContextBuilder.getRetrofitServiceBeanHashMap();
-        return new RetrofitResourceContext(retrofitClientBeanList, retrofitServiceBeanHashMap);
+        return new RetrofitResourceContextBuilder(env).build(retrofitAnnotationBean.getBasePackages().toArray(new String[0]),
+                retrofitAnnotationBean.getRetrofitBuilderClassSet(),
+                retrofitBuilderExtension,
+                retrofitInterceptorExtensions);
+
     }
 
     private void registryRetrofitInstance(BeanDefinitionRegistry beanDefinitionRegistry, List<RetrofitClientBean> retrofitClientBeanList, RetrofitResourceContext context) {
