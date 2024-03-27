@@ -5,6 +5,8 @@ import io.github.liuziyuan.retrofit.core.resource.RetrofitBuilderBean;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean;
 import io.github.liuziyuan.retrofit.core.resource.UrlStatus;
+import io.github.liuziyuan.retrofit.spring.boot.global.RetrofitBuilderGlobalConfigProperties;
+import io.github.liuziyuan.retrofit.spring.boot.global.RetrofitBuilderGlobalConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeansException;
@@ -131,9 +133,9 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
 //    }
 
     private RetrofitBuilderExtension getRetrofitBuilderExtension(ConfigurableListableBeanFactory beanFactory) {
-        RetrofitGlobalConfigProperties properties = new RetrofitGlobalConfigProperties().generate(environment);
+        RetrofitBuilderGlobalConfigProperties properties = new RetrofitBuilderGlobalConfigProperties().generate(environment);
         RetrofitBuilderExtension globalConfigExtension = getSingleBeanOfType(beanFactory, RetrofitBuilderExtension.class);
-        return new SpringBootGlobalConfig(properties, globalConfigExtension);
+        return new RetrofitBuilderGlobalConfig(properties, globalConfigExtension);
     }
 
     private void registryRetrofitResourceContext(BeanDefinitionRegistry registry, RetrofitResourceContext context) {
@@ -157,7 +159,7 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
     private void registryRetrofitInstance(BeanDefinitionRegistry beanDefinitionRegistry, List<RetrofitClientBean> retrofitClientBeanList, RetrofitResourceContext context) {
         for (RetrofitClientBean clientBean : retrofitClientBeanList) {
             BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(Retrofit.class, () -> {
-                SpringBootRetrofitBuilderGenerator retrofitBuilderGenerator = new SpringBootRetrofitBuilderGenerator(clientBean, context, applicationContext);
+                SpringBootRetrofitBuilderGenerator retrofitBuilderGenerator = new SpringBootRetrofitBuilderGenerator(clientBean, context);
                 final Retrofit.Builder retrofitBuilder = retrofitBuilderGenerator.generate();
                 return retrofitBuilder.build();
             });

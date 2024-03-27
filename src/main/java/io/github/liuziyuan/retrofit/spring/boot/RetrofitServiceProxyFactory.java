@@ -1,5 +1,8 @@
 package io.github.liuziyuan.retrofit.spring.boot;
 
+import io.github.liuziyuan.retrofit.core.exception.RetrofitExtensionException;
+import io.github.liuziyuan.retrofit.core.proxy.BaseExceptionDelegate;
+import io.github.liuziyuan.retrofit.core.proxy.ExceptionDelegate;
 import io.github.liuziyuan.retrofit.core.proxy.RetrofitServiceProxy;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean;
 import lombok.extern.slf4j.Slf4j;
@@ -11,10 +14,15 @@ import retrofit2.Retrofit;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * The proxy factory of RetrofitServiceBean
  * SpringBoot的FactoryBean实现，在这里，从Spring上下文中获取Retrofit实例，生成代理对象
+ *
  * @author liuziyuan
  */
 @Slf4j
@@ -31,11 +39,18 @@ public class RetrofitServiceProxyFactory<T> implements FactoryBean<T>, Applicati
     @Override
     public T getObject() {
         String retrofitInstanceName = retrofitApiServiceBean.getRetrofitClientBean().getRetrofitInstanceName();
+        Set<BaseExceptionDelegate<? extends RetrofitExtensionException>> exceptionDelegates = new HashSet<>();
+        Set<Class<? extends BaseExceptionDelegate<? extends RetrofitExtensionException>>> exceptionDelegateSet = retrofitApiServiceBean.getExceptionDelegates();
+        if (exceptionDelegateSet != null) {
+            for (Class<? extends BaseExceptionDelegate<? extends RetrofitExtensionException>> entry : exceptionDelegateSet) {
+                BaseExceptionDelegate<? extends RetrofitExtensionException> exceptionDelegate = applicationContext.getBean(entry);
+                exceptionDelegates.add(exceptionDelegate);
+            }
+        }
         Retrofit retrofit = (Retrofit) applicationContext.getBean(retrofitInstanceName);
         T t = retrofit.create(interfaceType);
-        InvocationHandler handler = new RetrofitServiceProxy<>(t);
-        return (T) Proxy.newProxyInstance(interfaceType.getClassLoader(),
-                new Class[]{interfaceType}, handler);
+        InvocationHandler handler = new RetrofitServiceProxy<>(t, exceptionDelegates);
+        return (T) Proxy.newProxyInstance(interfaceType.getClassLoader(), new Class[]{interfaceType}, handler);
     }
 
     @Override

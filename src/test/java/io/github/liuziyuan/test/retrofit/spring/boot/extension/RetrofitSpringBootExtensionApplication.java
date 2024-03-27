@@ -9,6 +9,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,7 +21,7 @@ import java.util.List;
 @EnableRetrofit({"io.github.liuziyuan.test.retrofit.spring.boot.extension"})
 @SpringBootApplication
 public class RetrofitSpringBootExtensionApplication {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NoSuchMethodException {
         ConfigurableApplicationContext run = SpringApplication.run(RetrofitSpringBootExtensionApplication.class, args);
         ListableBeanFactory beanFactory = run.getBeanFactory();
 

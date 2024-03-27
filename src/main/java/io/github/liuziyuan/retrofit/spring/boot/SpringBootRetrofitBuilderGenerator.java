@@ -5,6 +5,7 @@ import io.github.liuziyuan.retrofit.core.builder.*;
 import io.github.liuziyuan.retrofit.core.extension.BaseInterceptor;
 import io.github.liuziyuan.retrofit.core.generator.RetrofitBuilderGenerator;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
+import io.github.liuziyuan.retrofit.spring.boot.util.SpringContextUtil;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 
@@ -13,17 +14,15 @@ import org.springframework.context.ApplicationContext;
  * 当用户定义Builder，且使用@Component注入这个Builder类到SpringBoot容器中，这里就可以通过SpringBoot的ApplicationContext获取
  */
 public class SpringBootRetrofitBuilderGenerator extends RetrofitBuilderGenerator {
-    private final ApplicationContext applicationContext;
 
-    public SpringBootRetrofitBuilderGenerator(RetrofitClientBean clientBean, RetrofitResourceContext context, ApplicationContext applicationContext) {
+    public SpringBootRetrofitBuilderGenerator(RetrofitClientBean clientBean, RetrofitResourceContext context) {
         super(clientBean, context);
-        this.applicationContext = applicationContext;
     }
 
     @Override
     public BaseCallFactoryBuilder buildInjectionCallFactory(Class<? extends BaseCallFactoryBuilder> clazz) {
         try {
-            return applicationContext.getBean(clazz);
+            return SpringContextUtil.getBean(clazz);
         } catch (NoSuchBeanDefinitionException e) {
             return null;
         }
@@ -32,7 +31,7 @@ public class SpringBootRetrofitBuilderGenerator extends RetrofitBuilderGenerator
     @Override
     public BaseCallBackExecutorBuilder buildInjectionCallBackExecutor(Class<? extends BaseCallBackExecutorBuilder> clazz) {
         try {
-            return applicationContext.getBean(clazz);
+            return SpringContextUtil.getBean(clazz);
         } catch (NoSuchBeanDefinitionException e) {
             return null;
         }
@@ -41,7 +40,7 @@ public class SpringBootRetrofitBuilderGenerator extends RetrofitBuilderGenerator
     @Override
     public BaseOkHttpClientBuilder buildInjectionOkHttpClient(Class<? extends BaseOkHttpClientBuilder> clazz) {
         try {
-            return applicationContext.getBean(clazz);
+            return SpringContextUtil.getBean(clazz);
         } catch (NoSuchBeanDefinitionException e) {
             return null;
         }
@@ -50,7 +49,7 @@ public class SpringBootRetrofitBuilderGenerator extends RetrofitBuilderGenerator
     @Override
     public BaseInterceptor buildInjectionInterceptor(Class<? extends BaseInterceptor> clazz) {
         try {
-            return applicationContext.getBean(clazz);
+            return SpringContextUtil.getBean(clazz);
         } catch (NoSuchBeanDefinitionException e) {
             return null;
         }
@@ -59,7 +58,7 @@ public class SpringBootRetrofitBuilderGenerator extends RetrofitBuilderGenerator
     @Override
     public BaseCallAdapterFactoryBuilder buildInjectionCallAdapterFactor(Class<? extends BaseCallAdapterFactoryBuilder> clazz) {
         try {
-            return applicationContext.getBean(clazz);
+            return SpringContextUtil.getBean(clazz);
         } catch (NoSuchBeanDefinitionException e) {
             return null;
         }
@@ -68,7 +67,7 @@ public class SpringBootRetrofitBuilderGenerator extends RetrofitBuilderGenerator
     @Override
     public BaseConverterFactoryBuilder buildInjectionConverterFactory(Class<? extends BaseConverterFactoryBuilder> clazz) {
         try {
-            return applicationContext.getBean(clazz);
+            return SpringContextUtil.getBean(clazz);
         } catch (NoSuchBeanDefinitionException e) {
             return null;
         }

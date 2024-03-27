@@ -1,6 +1,5 @@
-package io.github.liuziyuan.retrofit.spring.boot;
+package io.github.liuziyuan.retrofit.spring.boot.global;
 
-import io.github.liuziyuan.retrofit.core.OverrideRule;
 import io.github.liuziyuan.retrofit.core.RetrofitBuilderExtension;
 import io.github.liuziyuan.retrofit.core.builder.*;
 import io.github.liuziyuan.retrofit.core.util.BooleanUtil;
@@ -9,12 +8,12 @@ import io.github.liuziyuan.retrofit.core.util.BooleanUtil;
  * 这个类合并了自定义的配置和web的resources文件夹中配置文件中的配置
  * 合并原则是：以下优先级：resources文件夹中配置大于自定义配置，如果resources文件夹中没有配置，则使用自定义配置
  */
-public class SpringBootGlobalConfig implements RetrofitBuilderExtension {
+public class RetrofitBuilderGlobalConfig implements RetrofitBuilderExtension {
 
-    private final RetrofitGlobalConfigProperties properties;
+    private final RetrofitBuilderGlobalConfigProperties properties;
     private final RetrofitBuilderExtension customConfig;
 
-    public SpringBootGlobalConfig(RetrofitGlobalConfigProperties properties, RetrofitBuilderExtension customConfig) {
+    public RetrofitBuilderGlobalConfig(RetrofitBuilderGlobalConfigProperties properties, RetrofitBuilderExtension customConfig) {
         this.properties = properties;
         this.customConfig = customConfig;
     }

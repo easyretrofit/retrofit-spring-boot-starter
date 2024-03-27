@@ -1,8 +1,6 @@
-package io.github.liuziyuan.retrofit.spring.boot;
+package io.github.liuziyuan.retrofit.spring.boot.global;
 
-import io.github.liuziyuan.retrofit.core.OverrideRule;
 import io.github.liuziyuan.retrofit.core.builder.*;
-import io.github.liuziyuan.retrofit.core.util.BooleanUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Spring boot web配置文件中声明的全局配置
@@ -25,7 +22,7 @@ import java.util.Objects;
         prefix = "retrofit.global"
 )
 @Slf4j
-public class RetrofitGlobalConfigProperties {
+public class RetrofitBuilderGlobalConfigProperties {
 
     private String enable;
 
@@ -43,7 +40,7 @@ public class RetrofitGlobalConfigProperties {
 
     private String validateEagerly;
 
-    public RetrofitGlobalConfigProperties generate(Environment environment) {
+    public RetrofitBuilderGlobalConfigProperties generate(Environment environment) {
         this.enable = resolveRequiredPlaceholders(environment, "${retrofit.global.enable}");
         this.baseUrl = resolveRequiredPlaceholders(environment, "${retrofit.global.base-url}");
         this.callAdapterFactoryBuilderClazz = (Class<? extends BaseCallAdapterFactoryBuilder>[]) transformClasses(resolveRequiredPlaceholders(environment, "${retrofit.global.call-adapter-factory-builder-clazz}"));
