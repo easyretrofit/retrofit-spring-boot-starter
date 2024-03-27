@@ -1,4 +1,4 @@
-# retrofit-spring-boot-starter
+# _EASY_ retrofit-spring-boot-starter
 
 [中文文档](https://github.com/liuziyuan/retrofit-spring-boot-starter/blob/main/README.zh_CN.md)
 

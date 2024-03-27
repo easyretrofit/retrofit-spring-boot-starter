@@ -1,4 +1,4 @@
-# retrofit-spring-boot-starter
+# _EASY_ retrofit-spring-boot-starter
 
 ## 目录
 - [介绍](#介绍)
