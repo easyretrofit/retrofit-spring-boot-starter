@@ -159,7 +159,7 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
     private void registryRetrofitInstance(BeanDefinitionRegistry beanDefinitionRegistry, List<RetrofitClientBean> retrofitClientBeanList, RetrofitResourceContext context) {
         for (RetrofitClientBean clientBean : retrofitClientBeanList) {
             BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(Retrofit.class, () -> {
-                SpringBootRetrofitBuilderGenerator retrofitBuilderGenerator = new SpringBootRetrofitBuilderGenerator(clientBean, context);
+                SpringBootRetrofitBuilderGenerator retrofitBuilderGenerator = new SpringBootRetrofitBuilderGenerator(clientBean, context, applicationContext);
                 final Retrofit.Builder retrofitBuilder = retrofitBuilderGenerator.generate();
                 return retrofitBuilder.build();
             });
