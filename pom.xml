@@ -74,9 +74,7 @@
     <modules>
         <module>retrofit-core</module>
         <module>retrofit-spring-boot-starter</module>
-        <module>retrofit-extension/retrofit-extension-loadbalancer-spring-cloud-starter</module>
-        <module>retrofit-extension/retrofit-extension-sentinel-core</module>
-        <module>retrofit-extension/retrofit-extension-sentinel-spring-boot-starter</module>
+        <module>retrofit-extension</module>
     </modules>
 
     <build>

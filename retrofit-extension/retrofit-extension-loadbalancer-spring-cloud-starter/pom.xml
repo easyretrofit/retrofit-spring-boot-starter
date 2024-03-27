@@ -6,7 +6,7 @@
 
     <parent>
         <groupId>io.github.liuziyuan</groupId>
-        <artifactId>retrofit-parent</artifactId>
+        <artifactId>retrofit-extension</artifactId>
         <version>1.0.0</version>
     </parent>
 
