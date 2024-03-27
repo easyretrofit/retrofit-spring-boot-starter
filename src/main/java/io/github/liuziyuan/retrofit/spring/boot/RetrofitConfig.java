@@ -1,9 +1,12 @@
 package io.github.liuziyuan.retrofit.spring.boot;
 
 import io.github.liuziyuan.retrofit.spring.boot.util.SpringContextUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 
 /**
  * 全局配置，随@EnableRetrofit 启动
@@ -12,7 +15,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class RetrofitConfig {
-
 
     @Bean
     @ConditionalOnMissingBean
