@@ -5,12 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>io.github.liuziyuan</groupId>
-        <artifactId>retrofit-parent</artifactId>
+        <artifactId>retrofit-extension-sentinel</artifactId>
         <version>1.0.0</version>
     </parent>
 
-    <packaging>pom</packaging>
-    <artifactId>retrofit-extension</artifactId>
+    <artifactId>retrofit-extension-sentinel-core</artifactId>
 
     <properties>
         <java.version>8</java.version>
@@ -21,9 +20,25 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <modules>
-        <module>retrofit-extension-loadbalancer-spring-cloud-starter</module>
-        <module>retrofit-extension-sentinel</module>
-    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>com.alibaba.csp</groupId>
+            <artifactId>sentinel-core</artifactId>
+            <version>${sentinel.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.liuziyuan</groupId>
+            <artifactId>retrofit-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 
 </project>

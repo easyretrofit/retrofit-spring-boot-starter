@@ -3,24 +3,29 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <parent>
         <groupId>io.github.liuziyuan</groupId>
-        <artifactId>retrofit-extension</artifactId>
+        <artifactId>retrofit-extension-sentinel</artifactId>
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>retrofit-extension-loadbalancer-spring-cloud-starter</artifactId>
-    <version>1.0.0</version>
-
-    <packaging>jar</packaging>
+    <artifactId>retrofit-extension-sentinel-spring-boot-starter</artifactId>
 
     <properties>
-        <retrofit.spring.boot.version>1.3.2</retrofit.spring.boot.version>
-        <loadbalancer.version>3.1.7</loadbalancer.version>
+        <java.version>8</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <java.source.version>${java.version}</java.source.version>
+        <java.target.version>${java.version}</java.target.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>io.github.liuziyuan</groupId>
+            <artifactId>retrofit-spring-boot-starter</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
@@ -30,16 +35,12 @@
 
         <dependency>
             <groupId>io.github.liuziyuan</groupId>
-            <artifactId>retrofit-spring-boot-starter</artifactId>
-
-            <scope>provided</scope>
+            <artifactId>retrofit-extension-sentinel-core</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-commons</artifactId>
-            <version>${loadbalancer.version}</version>
-            <scope>provided</scope>
+            <groupId>com.alibaba.csp</groupId>
+            <artifactId>sentinel-core</artifactId>
         </dependency>
 
         <dependency>
@@ -48,21 +49,6 @@
             <version>${lombok.version}</version>
             <scope>provided</scope>
         </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <version>${spring.boot.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-
     </dependencies>
 
 </project>
