@@ -10,8 +10,6 @@
     </parent>
 
     <packaging>pom</packaging>
-
-    <groupId>org.example</groupId>
     <artifactId>retrofit-extension</artifactId>
 
     <properties>
@@ -22,5 +20,9 @@
         <java.target.version>${java.version}</java.target.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <modules>
+        <module>retrofit-extension-loadbalancer-spring-cloud-starter</module>
+    </modules>
 
 </project>
