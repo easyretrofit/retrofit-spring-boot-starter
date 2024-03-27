@@ -9,7 +9,10 @@
         <version>1.0.0</version>
     </parent>
 
+    <packaging>jar</packaging>
+
     <artifactId>retrofit-extension-sentinel-spring-boot-starter</artifactId>
+    <version>1.0.0</version>
 
     <properties>
         <java.version>8</java.version>
@@ -18,12 +21,21 @@
         <java.source.version>${java.version}</java.source.version>
         <java.target.version>${java.version}</java.target.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <retrofit.sentinel.core.version>1.0.0</retrofit.sentinel.core.version>
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>com.alibaba.csp</groupId>
+            <artifactId>sentinel-core</artifactId>
+            <version>${sentinel.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>io.github.liuziyuan</groupId>
-            <artifactId>retrofit-spring-boot-starter</artifactId>
+            <artifactId>retrofit-extension-sentinel-core</artifactId>
+            <version>${retrofit.sentinel.core.version}</version>
         </dependency>
 
         <dependency>
@@ -35,13 +47,10 @@
 
         <dependency>
             <groupId>io.github.liuziyuan</groupId>
-            <artifactId>retrofit-extension-sentinel-core</artifactId>
+            <artifactId>retrofit-spring-boot-starter</artifactId>
+            <scope>provided</scope>
         </dependency>
 
-        <dependency>
-            <groupId>com.alibaba.csp</groupId>
-            <artifactId>sentinel-core</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>

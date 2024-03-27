@@ -26,22 +26,7 @@
         <java.target.version>${java.version}</java.target.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sentinel.version>1.8.6</sentinel.version>
-        <sentinel.core.version>1.0.0</sentinel.core.version>
     </properties>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.alibaba.csp</groupId>
-                <artifactId>sentinel-core</artifactId>
-                <version>${sentinel.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.github.liuziyuan</groupId>
-                <artifactId>retrofit-extension-sentinel-core</artifactId>
-                <version>${sentinel.core.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
 </project>
