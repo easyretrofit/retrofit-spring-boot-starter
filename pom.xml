@@ -34,13 +34,14 @@
     <packaging>pom</packaging>
 
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>8</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <java.source.version>${java.version}</java.source.version>
         <java.target.version>${java.version}</java.target.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <retrofit.core.version>1.1.4</retrofit.core.version>
+        <spring.boot.version>2.0.0.RELEASE</spring.boot.version>
         <retrofit.version>2.9.0</retrofit.version>
         <reflections.version>0.10.2</reflections.version>
         <lombok.version>1.18.22</lombok.version>
@@ -67,6 +68,7 @@
     <modules>
         <module>retrofit-core</module>
         <module>retrofit-spring-boot-starter</module>
+        <module>retrofit-extension</module>
     </modules>
 
     <!--    <dependencies>-->
