@@ -17,13 +17,6 @@ public class RetrofitSentinelSpringBootConfig implements ApplicationContextAware
 
     private ApplicationContext applicationContext;
 
-    @PostConstruct
-    public void init() {
-        RetrofitResourceContext retrofitResourceContext = applicationContext.getBean(RetrofitResourceContext.class);
-        RetrofitSentinelAnnotationProcessor processor = new RetrofitSentinelAnnotationProcessor(retrofitResourceContext);
-        processor.process();
-    }
-
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
