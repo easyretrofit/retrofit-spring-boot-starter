@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>io.github.liuziyuan</groupId>
+        <artifactId>retrofit-extension</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <packaging>pom</packaging>
+
+    <artifactId>retrofit-extension-sentinel</artifactId>
+
+    <modules>
+        <module>retrofit-extension-sentinel-core</module>
+        <module>retrofit-extension-sentinel-spring-boot-starter</module>
+    </modules>
+
+    <properties>
+        <java.version>8</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <java.source.version>${java.version}</java.source.version>
+        <java.target.version>${java.version}</java.target.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <sentinel.version>1.8.6</sentinel.version>
+        <sentinel.core.version>1.0.0</sentinel.core.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.alibaba.csp</groupId>
+                <artifactId>sentinel-core</artifactId>
+                <version>${sentinel.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.liuziyuan</groupId>
+                <artifactId>retrofit-extension-sentinel-core</artifactId>
+                <version>${sentinel.core.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+</project>
