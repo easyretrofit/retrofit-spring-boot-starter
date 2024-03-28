@@ -59,7 +59,7 @@ dependencies {
 
 _前提条件：你已经掌握了Retrofit的基本用法_
 
-如下代码展示了在在传统Retrofit2的使用中，GitHubService接口需要被显示的创建。
+如下代码展示了在在传统Retrofit2的使用中，GitHubService接口需要被显式的创建。
 ```java
 public interface GitHubService {
   @GET("users/{user}/repos")
@@ -73,9 +73,9 @@ Retrofit retrofit = new Retrofit.Builder()
 
 GitHubService service = retrofit.create(GitHubService.class);
 ```
-在传统Retrofit2的使用中，GitHubService接口需要被显示的创建。
+在传统Retrofit2的使用中，GitHubService接口需要被显式的创建。
 
-通过`retrofit-spring-boot-starter`, `GitHubService`不再需要显示的创建,而是被Spring容器动态代理创建。
+通过`retrofit-spring-boot-starter`, `GitHubService`不再需要显式的创建,而是被Spring容器动态代理创建。
 
 如下展示了如何使用`retrofit-spring-boot-starter`快速使用Retrofit2的方式。
 
@@ -97,7 +97,7 @@ public class QuickStartApplication {
 文件夹名。默认情况下，将扫描starter类文件所在目录中的所有文件
 
 ### 创建一个接口文件, 并且使用`@RetrofitBuilder`
-`@RetrofitBuilder` 注解可以用来配置Retrofit2的配置信息，如baseUrl等。他完整的代替了显示的`Retrofit.Builder()`来创建Retrofit实例。
+`@RetrofitBuilder` 注解可以用来配置Retrofit2的配置信息，如baseUrl等。他完整的代替了显式的`Retrofit.Builder()`来创建Retrofit实例。
 ```java
 
 @RetrofitBuilder(baseUrl = "${app.hello.url}")
@@ -123,7 +123,7 @@ app:
 
 请保持`app.hello.url` 在你的资源配置文件中, baseUrl 也可以是一个URL, 就像 `http://localhost:8080/` 一样。
 
-当然你也可以直接在写成`@RetrofitBuilder(baseUrl = "http://localhost:8080/")`。
+当然你也可以直接写成`@RetrofitBuilder(baseUrl = "http://localhost:8080/")`。
 
 ### 注入 Retrofit API 接口
 可以在Spring的Controller中注入Retrofit API接口。
