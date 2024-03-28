@@ -44,18 +44,8 @@ public class RetrofitApiServiceBeanGenerator implements Generator<RetrofitApiSer
         Set<RetrofitInterceptor> myInterceptors = getInterceptors(clazz);
         if (interceptorExtensions != null) {
             for (RetrofitInterceptorExtension interceptorExtension : interceptorExtensions) {
-                try {
-                    boolean hasAnnotation = Arrays.stream(clazz.getDeclaredAnnotations()).anyMatch(annotation -> annotation.annotationType().getName().equals(interceptorExtension.createAnnotation().getName()));
-                    if (hasAnnotation) {
-                        RetrofitInterceptor annotation = interceptorExtension.createAnnotation().getAnnotation(RetrofitInterceptor.class);
-                        assert annotation.handler().getName().equals(interceptorExtension.createInterceptor().getName());
-                        if (interceptorExtension.createExceptionDelegate() != null) {
-                            retrofitApiServiceBean.addExceptionDelegate(interceptorExtension.createExceptionDelegate());
-                        }
-                        myInterceptors.add(annotation);
-                    }
-                } catch (NullPointerException ignored) {
-                }
+                addExtensionInterceptors(interceptorExtension, retrofitApiServiceBean, retrofitBuilderClazz, myInterceptors);
+                addExtensionInterceptors(interceptorExtension, retrofitApiServiceBean, clazz, myInterceptors);
             }
         }
         retrofitApiServiceBean.setMyInterceptors(myInterceptors);
@@ -63,6 +53,21 @@ public class RetrofitApiServiceBeanGenerator implements Generator<RetrofitApiSer
         RetrofitUrl retrofitUrl = getRetrofitUrl(retrofitBuilderBean);
         retrofitApiServiceBean.setRetrofitUrl(retrofitUrl);
         return retrofitApiServiceBean;
+    }
+
+    private void addExtensionInterceptors(RetrofitInterceptorExtension interceptorExtension, RetrofitApiServiceBean retrofitApiServiceBean, Class<?> clazz, Set<RetrofitInterceptor> interceptors) {
+        try {
+            boolean hasAnnotation = Arrays.stream(clazz.getDeclaredAnnotations()).anyMatch(annotation -> annotation.annotationType().getName().equals(interceptorExtension.createAnnotation().getName()));
+            if (hasAnnotation) {
+                RetrofitInterceptor annotation = interceptorExtension.createAnnotation().getAnnotation(RetrofitInterceptor.class);
+                assert annotation.handler().getName().equals(interceptorExtension.createInterceptor().getName());
+                if (interceptorExtension.createExceptionDelegate() != null) {
+                    retrofitApiServiceBean.addExceptionDelegate(interceptorExtension.createExceptionDelegate());
+                }
+                interceptors.add(annotation);
+            }
+        } catch (NullPointerException ignored) {
+        }
     }
 
 
