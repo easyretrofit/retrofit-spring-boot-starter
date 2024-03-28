@@ -7,6 +7,7 @@ import io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean;
 import io.github.liuziyuan.retrofit.extension.sentinel.core.BaseFallBack;
 import io.github.liuziyuan.retrofit.extension.sentinel.core.annotation.RetrofitSentinelResource;
 import lombok.extern.slf4j.Slf4j;
+import lombok.var;
 import okhttp3.Request;
 import retrofit2.Invocation;
 
@@ -18,6 +19,7 @@ import java.util.Objects;
 public class SentinelBlockExceptionFallBackHandler extends BaseExceptionDelegate<SentinelBlockException> {
 
     private final CDIBeanManager cdiBeanManager;
+
     public SentinelBlockExceptionFallBackHandler(Class<SentinelBlockException> exceptionClassName, CDIBeanManager cdiBeanManager) {
         super(exceptionClassName);
         this.cdiBeanManager = cdiBeanManager;
@@ -31,11 +33,12 @@ public class SentinelBlockExceptionFallBackHandler extends BaseExceptionDelegate
             Request request = throwable.getRequest();
             Method blockMethod = Objects.requireNonNull(request.tag(Invocation.class)).method();
             assert retrofitSentinelResource != null;
-            Class<? extends BaseFallBack> fallbackClazz = retrofitSentinelResource.fallback();
+            var fallbackClazz = retrofitSentinelResource.fallback();
             if (fallbackClazz.getName().equals(BaseFallBack.class.getName())) {
                 log.warn("Without the implementation of BaseFallback, there will be no degrade processing");
             } else {
-                BaseFallBack fallBack = cdiBeanManager.getBean(fallbackClazz);
+                var fallBack = cdiBeanManager.getBean(fallbackClazz);
+                fallBack.setException(throwable);
                 try {
                     Method fallbackMethod = fallbackClazz.getDeclaredMethod(blockMethod.getName(), blockMethod.getParameterTypes());
                     if (fallbackMethod.getName().equals(method.getName())) {

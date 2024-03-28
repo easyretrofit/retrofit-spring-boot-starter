@@ -6,4 +6,8 @@ public abstract class BaseFallBack<T extends RetrofitExtensionException> {
 
     protected abstract void getFallBackException(T e);
 
+    public void setException(T exception) {
+        getFallBackException(exception);
+    }
+
 }
