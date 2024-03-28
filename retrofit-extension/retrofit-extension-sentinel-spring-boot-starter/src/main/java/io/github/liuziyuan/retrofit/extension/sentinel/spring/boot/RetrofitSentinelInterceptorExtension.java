@@ -6,6 +6,7 @@ import io.github.liuziyuan.retrofit.core.extension.BaseInterceptor;
 import io.github.liuziyuan.retrofit.core.proxy.BaseExceptionDelegate;
 import io.github.liuziyuan.retrofit.extension.sentinel.core.annotation.RetrofitSentinelResource;
 import io.github.liuziyuan.retrofit.extension.sentinel.core.interceptor.RetrofitSentinelInterceptor;
+import io.github.liuziyuan.retrofit.extension.sentinel.core.interceptor.SentinelBlockExceptionFallBackHandler;
 
 import java.lang.annotation.Annotation;
 

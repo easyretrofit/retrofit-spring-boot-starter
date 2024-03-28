@@ -1,16 +1,15 @@
 package io.github.liuziyuan.retrofit.extension.sentinel.spring.boot;
 
-import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
-import io.github.liuziyuan.retrofit.extension.sentinel.core.RetrofitSentinelAnnotationProcessor;
 import io.github.liuziyuan.retrofit.extension.sentinel.core.interceptor.SentinelBlockException;
+import io.github.liuziyuan.retrofit.extension.sentinel.core.interceptor.SentinelBlockExceptionFallBackHandler;
+import io.github.liuziyuan.retrofit.spring.boot.SpringCDIBeanManager;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import javax.annotation.PostConstruct;
 
 @Configuration
 public class RetrofitSentinelSpringBootConfig implements ApplicationContextAware {
@@ -36,7 +35,7 @@ public class RetrofitSentinelSpringBootConfig implements ApplicationContextAware
     @Bean
     @ConditionalOnMissingBean
     public SentinelBlockExceptionFallBackHandler exceptionFallBackHandler() {
-        return new SentinelBlockExceptionFallBackHandler(SentinelBlockException.class);
+        return new SentinelBlockExceptionFallBackHandler(SentinelBlockException.class, new SpringCDIBeanManager(applicationContext));
     }
 
     /**

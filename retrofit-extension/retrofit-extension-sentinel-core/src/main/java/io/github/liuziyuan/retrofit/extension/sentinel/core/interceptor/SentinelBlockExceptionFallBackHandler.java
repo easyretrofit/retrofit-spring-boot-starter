@@ -1,19 +1,13 @@
-package io.github.liuziyuan.retrofit.extension.sentinel.spring.boot;
+package io.github.liuziyuan.retrofit.extension.sentinel.core.interceptor;
 
+import io.github.liuziyuan.retrofit.core.CDIBeanManager;
 import io.github.liuziyuan.retrofit.core.exception.RetrofitExtensionException;
 import io.github.liuziyuan.retrofit.core.proxy.BaseExceptionDelegate;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean;
-
 import io.github.liuziyuan.retrofit.extension.sentinel.core.BaseFallBack;
 import io.github.liuziyuan.retrofit.extension.sentinel.core.annotation.RetrofitSentinelResource;
-import io.github.liuziyuan.retrofit.extension.sentinel.core.interceptor.SentinelBlockException;
-import io.github.liuziyuan.retrofit.spring.boot.util.SpringContextUtil;
-
-
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Request;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import retrofit2.Invocation;
 
 import java.lang.reflect.InvocationTargetException;
@@ -22,8 +16,11 @@ import java.util.Objects;
 
 @Slf4j
 public class SentinelBlockExceptionFallBackHandler extends BaseExceptionDelegate<SentinelBlockException> {
-    public SentinelBlockExceptionFallBackHandler(Class<SentinelBlockException> exceptionClassName) {
+
+    private final CDIBeanManager cdiBeanManager;
+    public SentinelBlockExceptionFallBackHandler(Class<SentinelBlockException> exceptionClassName, CDIBeanManager cdiBeanManager) {
         super(exceptionClassName);
+        this.cdiBeanManager = cdiBeanManager;
     }
 
     @Override
@@ -33,11 +30,12 @@ public class SentinelBlockExceptionFallBackHandler extends BaseExceptionDelegate
             RetrofitSentinelResource retrofitSentinelResource = retrofitApiServiceBean.getAnnotationResource(RetrofitSentinelResource.class);
             Request request = throwable.getRequest();
             Method blockMethod = Objects.requireNonNull(request.tag(Invocation.class)).method();
+            assert retrofitSentinelResource != null;
             Class<? extends BaseFallBack> fallbackClazz = retrofitSentinelResource.fallback();
             if (fallbackClazz.getName().equals(BaseFallBack.class.getName())) {
                 log.warn("Without the implementation of BaseFallback, there will be no degrade processing");
             } else {
-                BaseFallBack fallBack = SpringContextUtil.getBean(fallbackClazz);
+                BaseFallBack fallBack = cdiBeanManager.getBean(fallbackClazz);
                 try {
                     Method fallbackMethod = fallbackClazz.getDeclaredMethod(blockMethod.getName(), blockMethod.getParameterTypes());
                     if (fallbackMethod.getName().equals(method.getName())) {

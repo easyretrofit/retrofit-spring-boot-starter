@@ -16,6 +16,9 @@ import org.springframework.core.env.Environment;
 @Configuration
 public class RetrofitConfig {
 
+    @Autowired
+    private ApplicationContext applicationContext;
+
     @Bean
     @ConditionalOnMissingBean
     public static RetrofitResourceDefinitionRegistry retrofitResourceDefinitionRegistry() {
@@ -27,4 +30,5 @@ public class RetrofitConfig {
     public static SpringContextUtil springContextUtil() {
         return new SpringContextUtil();
     }
+
 }
