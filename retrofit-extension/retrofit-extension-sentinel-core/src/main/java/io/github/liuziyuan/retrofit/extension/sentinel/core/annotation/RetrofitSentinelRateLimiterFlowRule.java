@@ -7,6 +7,7 @@ import java.lang.annotation.*;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
+@Repeatable(RetrofitSentinelRateLimiters.class)
 public @interface RetrofitSentinelRateLimiterFlowRule {
     int count() default 4000;
 

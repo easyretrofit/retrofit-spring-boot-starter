@@ -7,6 +7,7 @@ import java.lang.annotation.*;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
+@Repeatable(RetrofitSentinelWarmUps.class)
 public @interface RetrofitSentinelWarmUpFlowRule {
 
     int count() default 4000;

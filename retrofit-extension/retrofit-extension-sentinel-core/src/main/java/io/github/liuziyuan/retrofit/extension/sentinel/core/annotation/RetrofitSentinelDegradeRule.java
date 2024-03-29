@@ -6,6 +6,7 @@ import java.lang.annotation.*;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
+@Repeatable(RetrofitSentinelDegrades.class)
 public @interface RetrofitSentinelDegradeRule {
     int grade() default 0;
     double count() default 0;

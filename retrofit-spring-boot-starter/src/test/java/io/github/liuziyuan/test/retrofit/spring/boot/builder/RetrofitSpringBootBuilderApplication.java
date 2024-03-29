@@ -27,5 +27,6 @@ public class RetrofitSpringBootBuilderApplication {
         Assert.assertEquals(1, retrofitClients.size());
         RetrofitBuilderBean retrofitBuilder = retrofitClients.get(0).getRetrofitBuilder();
         Assert.assertEquals(1, retrofitBuilder.getAddCallAdapterFactory().length);
+        SpringApplication.exit(run);
     }
 }

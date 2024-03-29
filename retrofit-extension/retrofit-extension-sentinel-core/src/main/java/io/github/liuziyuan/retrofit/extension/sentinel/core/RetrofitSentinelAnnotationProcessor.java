@@ -117,9 +117,15 @@ public class RetrofitSentinelAnnotationProcessor {
             } else if (annotation instanceof RetrofitSentinelFlowRule) {
                 RetrofitSentinelFlowRuleBean flowRuleBean = getRetrofitSentinelFlowRuleBean((RetrofitSentinelFlowRule) annotation);
                 flowRuleList.add(flowRuleBean);
+            } else if (annotation instanceof RetrofitSentinelRateLimiters) {
+                RetrofitSentinelRateLimiterFlowRule[] floatRuleValues = ((RetrofitSentinelRateLimiters) annotation).value();
+                Arrays.stream(floatRuleValues).forEach(value -> flowRuleList.add(getRetrofitSentinelReteLimitFlowRuleBean(value)));
             } else if (annotation instanceof RetrofitSentinelRateLimiterFlowRule) {
                 RetrofitSentinelFlowRuleBean flowRuleBean = getRetrofitSentinelReteLimitFlowRuleBean((RetrofitSentinelRateLimiterFlowRule) annotation);
                 flowRuleList.add(flowRuleBean);
+            } else if (annotation instanceof RetrofitSentinelWarmUps) {
+                RetrofitSentinelWarmUpFlowRule[] floatRuleValues = ((RetrofitSentinelWarmUps) annotation).value();
+                Arrays.stream(floatRuleValues).forEach(value -> flowRuleList.add(getRetrofitSentinelWarmUpFlowRuleBean(value)));
             } else if (annotation instanceof RetrofitSentinelWarmUpFlowRule) {
                 RetrofitSentinelFlowRuleBean flowRuleBean = getRetrofitSentinelWarmUpFlowRuleBean((RetrofitSentinelWarmUpFlowRule) annotation);
                 flowRuleList.add(flowRuleBean);
@@ -132,7 +138,10 @@ public class RetrofitSentinelAnnotationProcessor {
     private Set<RetrofitSentinelDegradeRuleBean> getDegradeRules(Annotation[] annotations) {
         Set<RetrofitSentinelDegradeRuleBean> degradeRuleList = new HashSet<>();
         for (Annotation annotation : annotations) {
-            if (annotation instanceof RetrofitSentinelDegradeRule) {
+            if (annotation instanceof RetrofitSentinelDegrades) {
+                RetrofitSentinelDegradeRule[] floatRuleValues = ((RetrofitSentinelDegrades) annotation).value();
+                Arrays.stream(floatRuleValues).forEach(value -> degradeRuleList.add(getRetrofitSentinelDegradeRuleBean(value)));
+            } else if (annotation instanceof RetrofitSentinelDegradeRule) {
                 RetrofitSentinelDegradeRuleBean degradeRuleBean = getRetrofitSentinelDegradeRuleBean((RetrofitSentinelDegradeRule) annotation);
                 degradeRuleList.add(degradeRuleBean);
             }
