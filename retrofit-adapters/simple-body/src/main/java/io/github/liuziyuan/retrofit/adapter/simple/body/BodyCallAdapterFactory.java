@@ -1,4 +1,4 @@
-package io.github.liuziyuan.retrofit.adapter.simple;
+package io.github.liuziyuan.retrofit.adapter.simple.body;
 
 import okhttp3.ResponseBody;
 import retrofit2.*;
