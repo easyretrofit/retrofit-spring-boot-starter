@@ -8,7 +8,7 @@
     <version>1.0.0</version>
 
     <name>${project.groupId}:${project.artifactId}</name>
-    <description>easy to use retrofit2 in spring boot project</description>
+    <description>Through annotation and configuration, based on DI, it is easy to use retrofit2</description>
     <url>https://github.com/liuziyuan/easy-retrofit</url>
 
     <licenses>
@@ -74,7 +74,8 @@
     <modules>
         <module>retrofit-core</module>
         <module>retrofit-spring-boot-starter</module>
-        <module>retrofit-extension</module>
+        <module>retrofit-extensions</module>
+        <module>retrofit-adapters</module>
     </modules>
 
     <build>
