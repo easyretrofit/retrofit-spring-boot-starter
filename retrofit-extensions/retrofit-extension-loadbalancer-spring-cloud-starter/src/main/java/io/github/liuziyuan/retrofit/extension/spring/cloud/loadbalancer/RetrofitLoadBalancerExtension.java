@@ -10,7 +10,7 @@ import java.lang.annotation.Annotation;
 public class RetrofitLoadBalancerExtension implements RetrofitInterceptorExtension {
     @Override
     public Class<? extends Annotation> createAnnotation() {
-        return RetrofitCloudLoadBalancer.class;
+        return RetrofitLoadBalancer.class;
     }
 
     @Override

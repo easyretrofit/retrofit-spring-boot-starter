@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 @RetrofitDynamicBaseUrl
 @RetrofitInterceptor(handler = RetrofitLoadBalancerInterceptor.class)
-public @interface RetrofitCloudLoadBalancer {
+public @interface RetrofitLoadBalancer {
     @AliasFor(
             annotation = RetrofitDynamicBaseUrl.class,
             attribute = "value"

@@ -32,10 +32,10 @@ public class RetrofitLoadBalancerInterceptor extends BaseInterceptor {
         final Method method = super.getRequestMethod(request);
         String clazzName = super.getClazzNameByMethod(method);
         final RetrofitApiServiceBean currentServiceBean = context.getRetrofitApiServiceBean(clazzName);
-        RetrofitCloudLoadBalancer annotation = null;
-        annotation = currentServiceBean.getSelfClazz().getAnnotation(RetrofitCloudLoadBalancer.class);
+        RetrofitLoadBalancer annotation = null;
+        annotation = currentServiceBean.getSelfClazz().getAnnotation(RetrofitLoadBalancer.class);
         if (annotation == null) {
-            annotation = currentServiceBean.getParentClazz().getAnnotation(RetrofitCloudLoadBalancer.class);
+            annotation = currentServiceBean.getParentClazz().getAnnotation(RetrofitLoadBalancer.class);
         }
         final String serviceName = annotation.name();
         if (StringUtils.isNotEmpty(serviceName)) {
