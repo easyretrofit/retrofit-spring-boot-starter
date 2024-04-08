@@ -15,7 +15,6 @@
     <packaging>pom</packaging>
 
     <modules>
-<!--        <module>simple-body</module>-->
         <module>simple-body</module>
         <module>reactor</module>
     </modules>
