@@ -14,6 +14,8 @@ import java.lang.annotation.*;
 @RetrofitInterceptor(handler = RetrofitSentinelInterceptor.class)
 public @interface RetrofitSentinelResource {
 
+    boolean customResourceName() default false;
+
     int resourceType() default ResourceTypeConstants.COMMON_WEB;
 
     EntryType entryType() default EntryType.OUT;

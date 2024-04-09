@@ -8,13 +8,15 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode
-public class RetrofitSentinelDegradeRuleBean {
+public class CustomizeFlowRuleBean {
 
-    private int grade = 0;
+    private int grade = 1;
     private double count = 0;
-    private int timeWindow = 0;
-    private int minRequestAmount = 5;
-    private double slowRatioThreshold = 1.0;
-    private int statIntervalMs = 1000;
+    private int strategy = 0;
+    private int controlBehavior = 0;
+    private int warmUpPeriodSec = 10;
+    private int maxQueueingTimeMs = 500;
     private String limitApp = RuleConstant.LIMIT_APP_DEFAULT;
+
+
 }

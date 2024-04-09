@@ -1,6 +1,6 @@
 package io.github.liuziyuan.retrofit.extension.sentinel.core.annotation;
 
-import com.alibaba.csp.sentinel.slots.block.RuleConstant;
+import io.github.liuziyuan.retrofit.extension.sentinel.core.resource.BaseFlowRuleConfig;
 
 import java.lang.annotation.*;
 
@@ -9,19 +9,14 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Repeatable(RetrofitSentinelFlowRules.class)
 public @interface RetrofitSentinelFlowRule {
-    int grade() default 1;
+    /**
+     * if default, use class_name.method_name
+     *
+     * @return resource name
+     */
+    String resourceName() default "";
 
-    double count() default 0;
-
-    String limitApp() default RuleConstant.LIMIT_APP_DEFAULT;
-
-    int strategy() default 0;
-
-    int controlBehavior() default 0;
-
-    int warmUpPeriodSec() default 10;
-
-    int maxQueueingTimeMs() default 500;
+    Class<? extends BaseFlowRuleConfig> config() default BaseFlowRuleConfig.class;
 
     String fallbackMethod();
 }

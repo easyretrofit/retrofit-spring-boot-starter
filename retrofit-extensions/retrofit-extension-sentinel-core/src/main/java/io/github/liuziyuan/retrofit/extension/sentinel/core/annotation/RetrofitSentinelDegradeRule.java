@@ -1,19 +1,23 @@
 package io.github.liuziyuan.retrofit.extension.sentinel.core.annotation;
 
-import com.alibaba.csp.sentinel.slots.block.RuleConstant;
+import io.github.liuziyuan.retrofit.extension.sentinel.core.resource.BaseDegradeRuleConfig;
 
 import java.lang.annotation.*;
+
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Repeatable(RetrofitSentinelDegrades.class)
 public @interface RetrofitSentinelDegradeRule {
-    int grade() default 0;
-    double count() default 0;
-    int timeWindow() default 0;
-    String limitApp() default RuleConstant.LIMIT_APP_DEFAULT;
-    int minRequestAmount() default 5;
-    double slowRatioThreshold() default 1.0;
-    int statIntervalMs() default 1000;
+
+    /**
+     * if default, use class_name.method_name
+     *
+     * @return resource name
+     */
+    String resourceName() default "";
+
+    Class<? extends BaseDegradeRuleConfig> config() default BaseDegradeRuleConfig.class;
+
     String fallbackMethod();
 }
