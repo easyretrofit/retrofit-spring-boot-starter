@@ -30,7 +30,7 @@ public class RetrofitResourceContextBuilder {
         setRetrofitServiceBeanList(retrofitBuilderClassSet, globalRetrofitBuilderExtension, interceptorExtensions);
         setRetrofitClientBeanList();
         setRetrofitServiceBeanHashMap();
-        return new RetrofitResourceContext(basePackages, retrofitClientBeanList, retrofitServiceBeanHashMap);
+        return new RetrofitResourceContext(basePackages, retrofitClientBeanList, retrofitServiceBeanHashMap, env);
     }
 
     public List<RetrofitClientBean> getRetrofitClientBeanList() {

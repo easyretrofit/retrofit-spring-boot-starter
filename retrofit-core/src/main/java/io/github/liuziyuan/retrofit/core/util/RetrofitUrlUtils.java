@@ -19,6 +19,10 @@ public class RetrofitUrlUtils {
     private RetrofitUrlUtils() {
     }
 
+    public static String convertDollarPattern(String dollarPatternStr, Function<String, String> resolveRequiredPlaceholders) {
+        return resolveRequiredPlaceholders.apply(dollarPatternStr);
+    }
+
 
     public static String convertBaseUrl(String baseUrl, Function<String, String> resolveRequiredPlaceholders, boolean checkUrl) {
         String currentUrl = baseUrl;

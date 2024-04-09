@@ -21,14 +21,20 @@ public class RetrofitResourceContext {
     private String[] basePackages;
     private List<RetrofitClientBean> retrofitClients;
     private Map<String, RetrofitApiServiceBean> retrofitApiServices;
+    private Env env;
 
     public RetrofitResourceContext() {
 
     }
-    public RetrofitResourceContext(String[] basePackages, List<RetrofitClientBean> retrofitClients, Map<String, RetrofitApiServiceBean> retrofitApiServices) {
+
+    public RetrofitResourceContext(String[] basePackages,
+                                   List<RetrofitClientBean> retrofitClients,
+                                   Map<String, RetrofitApiServiceBean> retrofitApiServices,
+                                   Env env) {
         this.retrofitApiServices = retrofitApiServices;
         this.retrofitClients = retrofitClients;
         this.basePackages = basePackages;
+        this.env = env;
     }
 
     public List<RetrofitClientBean> getRetrofitClients() {
