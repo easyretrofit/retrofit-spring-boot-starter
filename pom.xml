@@ -60,10 +60,12 @@
     </dependencyManagement>
 
     <modules>
+        <module>retrofit-adapters/simple-body</module>
+        <module>retrofit-adapters/reactor</module>
         <module>retrofit-core</module>
         <module>retrofit-spring-boot-starter</module>
         <module>retrofit-extensions</module>
-        <module>retrofit-adapters</module>
+
     </modules>
 
     <build>
