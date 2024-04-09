@@ -3,6 +3,7 @@ package io.github.liuziyuan.retrofit.extension.spring.cloud.loadbalancer;
 import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
 import io.github.liuziyuan.retrofit.core.extension.BaseInterceptor;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean;
+import io.github.liuziyuan.retrofit.core.util.RetrofitUrlUtils;
 import lombok.SneakyThrows;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
@@ -37,7 +38,7 @@ public class RetrofitLoadBalancerInterceptor extends BaseInterceptor {
         if (annotation == null) {
             annotation = currentServiceBean.getParentClazz().getAnnotation(RetrofitLoadBalancer.class);
         }
-        final String serviceName = annotation.name();
+        final String serviceName = RetrofitUrlUtils.convertDollarPattern(annotation.name(), context.getEnv()::resolveRequiredPlaceholders);
         if (StringUtils.isNotEmpty(serviceName)) {
             final URI uri = loadBalancerClient.choose(serviceName).getUri();
             final HttpUrl httpUrl = HttpUrl.get(uri);
