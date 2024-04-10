@@ -1,15 +1,16 @@
 package io.github.liuziyuan.retrofit.extension.sentinel.core.resource;
 
-import lombok.EqualsAndHashCode;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper = true)
-public class FlowRuleBean extends CustomizeFlowRuleBean {
+@NoArgsConstructor
+@AllArgsConstructor
+public class FallBackBean {
     private String resourceName;
-    private String defaultResourceName;
     private String fallBackMethodName;
-    private String annotationName;
+    private String configClazzName;
 }

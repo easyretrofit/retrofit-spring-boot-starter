@@ -11,6 +11,7 @@ import io.github.liuziyuan.retrofit.extension.sentinel.core.annotation.RetrofitS
 import io.github.liuziyuan.retrofit.extension.sentinel.core.properties.RetrofitSentinelDegradeRuleProperties;
 import io.github.liuziyuan.retrofit.extension.sentinel.core.properties.RetrofitSentinelFlowRuleProperties;
 import io.github.liuziyuan.retrofit.extension.sentinel.core.resource.DegradeRuleBean;
+import io.github.liuziyuan.retrofit.extension.sentinel.core.resource.RetrofitSentinelResourceContext;
 import lombok.Getter;
 
 import java.lang.annotation.Annotation;
@@ -23,8 +24,14 @@ public class RetrofitSentinelPropertiesProcessor {
 
     @Getter
     Set<DegradeRule> degradeRules = new HashSet<>();
+    @Getter
+    private RetrofitSentinelResourceContext sentinelResourceContext;
+
     private final RetrofitResourceContext retrofitResourceContext;
     private final CDIBeanManager cdiBeanManager;
+
+    @Getter
+    private RetrofitSentinelResourceContext sentinelResourceContext;
 
     public RetrofitSentinelPropertiesProcessor(RetrofitResourceContext retrofitResourceContext,
                                                CDIBeanManager cdiBeanManager,
@@ -32,10 +39,6 @@ public class RetrofitSentinelPropertiesProcessor {
                                                RetrofitSentinelFlowRuleProperties flowRuleProperties) {
         this.retrofitResourceContext = retrofitResourceContext;
         this.cdiBeanManager = cdiBeanManager;
-    }
-
-    public void process() {
-        List<RetrofitClientBean> retrofitClients = retrofitResourceContext.getRetrofitClients();
     }
 
     private void registFlowRules(List<RetrofitClientBean> retrofitClients) {

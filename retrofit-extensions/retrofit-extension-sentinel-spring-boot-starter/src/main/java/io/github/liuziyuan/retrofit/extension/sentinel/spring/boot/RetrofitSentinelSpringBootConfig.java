@@ -1,9 +1,13 @@
 package io.github.liuziyuan.retrofit.extension.sentinel.spring.boot;
 
+import com.alibaba.csp.sentinel.slots.block.degrade.DegradeRuleManager;
+import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
 import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
+import io.github.liuziyuan.retrofit.extension.sentinel.core.RetrofitSentinelAnnotationProcessor;
 import io.github.liuziyuan.retrofit.extension.sentinel.core.RetrofitSentinelPropertiesProcessor;
 import io.github.liuziyuan.retrofit.extension.sentinel.core.interceptor.SentinelBlockException;
 import io.github.liuziyuan.retrofit.extension.sentinel.core.interceptor.SentinelBlockExceptionFallBackHandler;
+import io.github.liuziyuan.retrofit.extension.sentinel.core.resource.RetrofitSentinelResourceContext;
 import io.github.liuziyuan.retrofit.extension.sentinel.spring.boot.config.RetrofitSpringSentinelDegradeRuleProperties;
 import io.github.liuziyuan.retrofit.extension.sentinel.spring.boot.config.RetrofitSpringSentinelFlowRuleProperties;
 import io.github.liuziyuan.retrofit.spring.boot.SpringCDIBeanManager;
@@ -15,6 +19,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.ArrayList;
 
 @Configuration
 @EnableConfigurationProperties({RetrofitSpringSentinelFlowRuleProperties.class, RetrofitSpringSentinelDegradeRuleProperties.class})
@@ -46,10 +52,24 @@ public class RetrofitSentinelSpringBootConfig implements ApplicationContextAware
 
     @Bean
     @ConditionalOnMissingBean
-    public RetrofitSentinelPropertiesProcessor retrofitSentinelPropertiesProcessor(
+    public RetrofitSentinelResourceContext retrofitSentinelResourceContext(
             @Autowired RetrofitSpringSentinelDegradeRuleProperties degradeRuleProperties,
             @Autowired RetrofitSpringSentinelFlowRuleProperties flowRuleProperties) {
-        return new RetrofitSentinelPropertiesProcessor(applicationContext.getBean(RetrofitResourceContext.class), new SpringCDIBeanManager(applicationContext), degradeRuleProperties, flowRuleProperties);
+        RetrofitSentinelPropertiesProcessor propertiesProcessor = new RetrofitSentinelPropertiesProcessor(applicationContext.getBean(RetrofitResourceContext.class), new SpringCDIBeanManager(applicationContext), degradeRuleProperties, flowRuleProperties);
+        RetrofitSentinelAnnotationProcessor annotationProcessor = new RetrofitSentinelAnnotationProcessor(applicationContext.getBean(RetrofitResourceContext.class), new SpringCDIBeanManager(applicationContext));
+
+        RetrofitSentinelResourceContext propertiesContext = propertiesProcessor.getSentinelResourceContext();
+        propertiesContext.check();
+        RetrofitSentinelResourceContext annotationContext = annotationProcessor.getSentinelResourceContext();
+        annotationContext.check();
+        RetrofitSentinelResourceContext result = new RetrofitSentinelResourceContext();
+        propertiesContext.merge(annotationContext);
+
+        FlowRuleManager.loadRules(new ArrayList<>(annotationProcessor.getFlowRules()));
+        FlowRuleManager.loadRules(new ArrayList<>(propertiesProcessor.getFlowRules()));
+        DegradeRuleManager.loadRules(new ArrayList<>(annotationProcessor.getDegradeRules()));
+        DegradeRuleManager.loadRules(new ArrayList<>(propertiesProcessor.getDegradeRules()));
+        return result;
     }
 
 }
