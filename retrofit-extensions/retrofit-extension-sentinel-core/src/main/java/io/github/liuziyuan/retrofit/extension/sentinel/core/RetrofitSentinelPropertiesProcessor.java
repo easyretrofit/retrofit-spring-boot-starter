@@ -35,6 +35,7 @@ public class RetrofitSentinelPropertiesProcessor {
                                                RetrofitSentinelDegradeRuleProperties degradeRuleProperties,
                                                RetrofitSentinelFlowRuleProperties flowRuleProperties) {
         this.retrofitResourceContext = retrofitResourceContext;
+        this.sentinelResourceContext = new RetrofitSentinelResourceContext();
         this.cdiBeanManager = cdiBeanManager;
     }
 

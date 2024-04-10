@@ -62,14 +62,13 @@ public class RetrofitSentinelSpringBootConfig implements ApplicationContextAware
         propertiesContext.check();
         RetrofitSentinelResourceContext annotationContext = annotationProcessor.getSentinelResourceContext();
         annotationContext.check();
-        RetrofitSentinelResourceContext result = new RetrofitSentinelResourceContext();
         propertiesContext.merge(annotationContext);
 
         FlowRuleManager.loadRules(new ArrayList<>(annotationProcessor.getFlowRules()));
         FlowRuleManager.loadRules(new ArrayList<>(propertiesProcessor.getFlowRules()));
         DegradeRuleManager.loadRules(new ArrayList<>(annotationProcessor.getDegradeRules()));
         DegradeRuleManager.loadRules(new ArrayList<>(propertiesProcessor.getDegradeRules()));
-        return result;
+        return propertiesContext;
     }
 
 }
