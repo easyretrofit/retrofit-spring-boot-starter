@@ -30,9 +30,6 @@ public class RetrofitSentinelPropertiesProcessor {
     private final RetrofitResourceContext retrofitResourceContext;
     private final CDIBeanManager cdiBeanManager;
 
-    @Getter
-    private RetrofitSentinelResourceContext sentinelResourceContext;
-
     public RetrofitSentinelPropertiesProcessor(RetrofitResourceContext retrofitResourceContext,
                                                CDIBeanManager cdiBeanManager,
                                                RetrofitSentinelDegradeRuleProperties degradeRuleProperties,
