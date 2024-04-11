@@ -47,6 +47,7 @@ public class SentinelBlockExceptionFallBackHandler extends BaseExceptionDelegate
             } else {
                 var fallBack = cdiBeanManager.getBean(fallbackClazz);
                 try {
+                    fallBack.setException(throwable);
                     RetrofitSentinelResourceContext context = cdiBeanManager.getBean(RetrofitSentinelResourceContext.class);
                     SentinelExceptionBean exceptionBean = getSentinelResourceId(throwable);
                     FallBackBean fallBackBean = context.getFallBackBeanById(exceptionBean.getId());
