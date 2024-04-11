@@ -24,7 +24,8 @@
     </properties>
 
     <modules>
-
+        <module>retrofit-spring-boot-reactor-starter</module>
+        <module>retrofit-spring-boot-web-starter</module>
     </modules>
 
     <dependencyManagement>
