@@ -6,6 +6,9 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+/**
+ * the configs is same as RetrofitSentinelDegradeRuleProperties
+ */
 @Getter
 @Setter
 @ConfigurationProperties(prefix = "retrofit.sentinel.degrade")

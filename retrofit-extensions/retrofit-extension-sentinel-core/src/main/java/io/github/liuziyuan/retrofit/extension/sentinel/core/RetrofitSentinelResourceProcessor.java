@@ -7,6 +7,8 @@ import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
 import io.github.liuziyuan.retrofit.extension.sentinel.core.annotation.*;
+import io.github.liuziyuan.retrofit.extension.sentinel.core.properties.RetrofitSentinelDegradeRuleProperties;
+import io.github.liuziyuan.retrofit.extension.sentinel.core.properties.RetrofitSentinelFlowRuleProperties;
 import io.github.liuziyuan.retrofit.extension.sentinel.core.resource.*;
 import io.github.liuziyuan.retrofit.extension.sentinel.core.util.ResourceNameUtil;
 import lombok.Getter;
@@ -20,7 +22,7 @@ import java.util.*;
 
 
 @Slf4j
-public class RetrofitSentinelAnnotationProcessor {
+public class RetrofitSentinelResourceProcessor {
     @Getter
     private Set<FlowRule> flowRules = new HashSet<>();
     @Getter
@@ -30,15 +32,18 @@ public class RetrofitSentinelAnnotationProcessor {
 
     private final CDIBeanManager cdiBeanManager;
 
-    public RetrofitSentinelAnnotationProcessor(RetrofitResourceContext retrofitResourceContext, CDIBeanManager cdiBeanManager) {
+    public RetrofitSentinelResourceProcessor(RetrofitResourceContext retrofitResourceContext,
+                                             CDIBeanManager cdiBeanManager,
+                                             RetrofitSentinelDegradeRuleProperties degradeRuleProperties,
+                                             RetrofitSentinelFlowRuleProperties flowRuleProperties) {
         this.cdiBeanManager = cdiBeanManager;
         this.sentinelResourceContext = new RetrofitSentinelResourceContext();
         List<RetrofitClientBean> retrofitClients = retrofitResourceContext.getRetrofitClients();
-        setFlowRules(retrofitClients);
-        setDegradeRules(retrofitClients);
+        setFlowRules(retrofitClients, flowRuleProperties);
+        setDegradeRules(retrofitClients, degradeRuleProperties);
     }
 
-    private void setFlowRules(List<RetrofitClientBean> retrofitClients) {
+    private void setFlowRules(List<RetrofitClientBean> retrofitClients, RetrofitSentinelFlowRuleProperties flowRuleProperties) {
         for (RetrofitClientBean retrofitClient : retrofitClients) {
             for (RetrofitApiServiceBean retrofitApiServiceBean : retrofitClient.getRetrofitApiServiceBeans()) {
                 Class<?> apiClazz = retrofitApiServiceBean.getSelfClazz();
@@ -59,7 +64,7 @@ public class RetrofitSentinelAnnotationProcessor {
 //        FlowRuleManager.loadRules(new ArrayList<>(flowRules));
     }
 
-    private void setDegradeRules(List<RetrofitClientBean> retrofitClients) {
+    private void setDegradeRules(List<RetrofitClientBean> retrofitClients, RetrofitSentinelDegradeRuleProperties degradeRuleProperties) {
         for (RetrofitClientBean retrofitClient : retrofitClients) {
             for (RetrofitApiServiceBean retrofitApiServiceBean : retrofitClient.getRetrofitApiServiceBeans()) {
                 Class<?> apiClazz = retrofitApiServiceBean.getSelfClazz();
@@ -83,7 +88,7 @@ public class RetrofitSentinelAnnotationProcessor {
     private void setToFlowRules(Set<FlowRule> flowRules, Method method, Set<FlowRuleBean> flowRuleBeans) {
         for (FlowRuleBean flowRuleBean : flowRuleBeans) {
             sentinelResourceContext.addFallBackBean(flowRuleBean.getDefaultResourceName(),
-                    new FallBackBean(flowRuleBean.getResourceName(), flowRuleBean.getFallBackMethodName(), flowRuleBean.getAnnotationName()));
+                    new FallBackBean(flowRuleBean.getResourceName(), flowRuleBean.getFallBackMethodName(), flowRuleBean.getConfigClazz()));
             FlowRule flowRule = new FlowRule();
             flowRule.setResource(flowRuleBean.getDefaultResourceName());
             flowRule.setCount(flowRuleBean.getCount());
@@ -100,7 +105,7 @@ public class RetrofitSentinelAnnotationProcessor {
     private void setToDegradeRules(Set<DegradeRule> degradeRules, Method method, Set<DegradeRuleBean> degradeRuleBeans) {
         for (DegradeRuleBean degradeRuleBean : degradeRuleBeans) {
             sentinelResourceContext.addFallBackBean(degradeRuleBean.getDefaultResourceName(),
-                    new FallBackBean(degradeRuleBean.getResourceName(), degradeRuleBean.getFallBackMethodName(), degradeRuleBean.getAnnotationName()));
+                    new FallBackBean(degradeRuleBean.getResourceName(), degradeRuleBean.getFallBackMethodName(), degradeRuleBean.getConfigClazz()));
             DegradeRule degradeRule = new DegradeRule();
             degradeRule.setResource(degradeRuleBean.getDefaultResourceName());
             degradeRule.setCount(degradeRuleBean.getCount());
@@ -187,7 +192,7 @@ public class RetrofitSentinelAnnotationProcessor {
         }
         flowRuleBean.setResourceName(annotation.resourceName());
         flowRuleBean.setFallBackMethodName(annotation.fallbackMethod());
-        flowRuleBean.setAnnotationName(configClazz.getName());
+        flowRuleBean.setConfigClazz(configClazz);
         return flowRuleBean;
     }
 
@@ -216,7 +221,7 @@ public class RetrofitSentinelAnnotationProcessor {
         }
         degradeRuleBean.setResourceName(annotation.resourceName());
         degradeRuleBean.setFallBackMethodName(annotation.fallbackMethod());
-        degradeRuleBean.setAnnotationName(configClazz.getName());
+        degradeRuleBean.setConfigClazz(configClazz);
         return degradeRuleBean;
     }
 

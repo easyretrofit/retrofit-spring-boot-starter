@@ -12,5 +12,5 @@ import lombok.Setter;
 public class FallBackBean {
     private String resourceName;
     private String fallBackMethodName;
-    private String configClazzName;
+    private Class<?> configClazz;
 }

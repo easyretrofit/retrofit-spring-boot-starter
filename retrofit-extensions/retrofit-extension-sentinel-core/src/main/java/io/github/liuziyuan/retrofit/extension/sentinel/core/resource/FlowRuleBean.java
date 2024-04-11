@@ -11,5 +11,5 @@ public class FlowRuleBean extends CustomizeFlowRuleBean {
     private String resourceName;
     private String defaultResourceName;
     private String fallBackMethodName;
-    private String annotationName;
+    private Class<?> configClazz;
 }

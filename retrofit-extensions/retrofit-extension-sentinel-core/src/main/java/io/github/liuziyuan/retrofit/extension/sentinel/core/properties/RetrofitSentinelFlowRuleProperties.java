@@ -8,6 +8,10 @@ import lombok.Setter;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * RetrofitSentinelFlowRuleProperties configs have the same function as RetrofitSentinelFlowRule declared on a class <br>
+ * The configs key need same name as RetrofitSentinelFlowRule resourceName<br>
+ */
 @Getter
 @Setter
 public class RetrofitSentinelFlowRuleProperties {
@@ -16,16 +20,6 @@ public class RetrofitSentinelFlowRuleProperties {
 
     private Map<String, InstanceProperties> instances = new HashMap<>();
     private Map<String, ConfigProperties> configs = new HashMap<>();
-
-//    public Optional<InstanceProperties> findDegradeRuleProperties(String name) {
-//        InstanceProperties instanceProperties = instances.get(name);
-//        if (instanceProperties == null) {
-//            instanceProperties = configs.get(DEFAULT);
-//        } else if (configs.get(DEFAULT) != null) {
-//            ConfigUtil.mergePropertiesIfAny(instanceProperties, configs.get(DEFAULT));
-//        }
-//        return Optional.ofNullable(instanceProperties);
-//    }
 
     @Getter
     @Setter
@@ -36,7 +30,6 @@ public class RetrofitSentinelFlowRuleProperties {
     @Getter
     @Setter
     public static class ConfigProperties extends CustomizeFlowRuleBean {
-        private Class<?>[] interfaceClazz;
     }
 
 }

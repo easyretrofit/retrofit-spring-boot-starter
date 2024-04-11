@@ -1,58 +1,63 @@
-package io.github.liuziyuan.retrofit.extension.sentinel.core;
-
-import com.alibaba.csp.sentinel.slots.block.degrade.DegradeRule;
-import com.alibaba.csp.sentinel.slots.block.flow.FlowRule;
-import io.github.liuziyuan.retrofit.core.CDIBeanManager;
-import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
-import io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean;
-import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
-import io.github.liuziyuan.retrofit.extension.sentinel.core.annotation.RetrofitSentinelDegradeRule;
-import io.github.liuziyuan.retrofit.extension.sentinel.core.annotation.RetrofitSentinelDegrades;
-import io.github.liuziyuan.retrofit.extension.sentinel.core.properties.RetrofitSentinelDegradeRuleProperties;
-import io.github.liuziyuan.retrofit.extension.sentinel.core.properties.RetrofitSentinelFlowRuleProperties;
-import io.github.liuziyuan.retrofit.extension.sentinel.core.resource.DegradeRuleBean;
-import io.github.liuziyuan.retrofit.extension.sentinel.core.resource.RetrofitSentinelResourceContext;
-import lombok.Getter;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.*;
-
-public class RetrofitSentinelPropertiesProcessor {
-    @Getter
-    Set<FlowRule> flowRules = new HashSet<>();
-
-    @Getter
-    Set<DegradeRule> degradeRules = new HashSet<>();
-    @Getter
-    private RetrofitSentinelResourceContext sentinelResourceContext;
-
-    private final RetrofitResourceContext retrofitResourceContext;
-    private final CDIBeanManager cdiBeanManager;
-
-    public RetrofitSentinelPropertiesProcessor(RetrofitResourceContext retrofitResourceContext,
-                                               CDIBeanManager cdiBeanManager,
-                                               RetrofitSentinelDegradeRuleProperties degradeRuleProperties,
-                                               RetrofitSentinelFlowRuleProperties flowRuleProperties) {
-        this.retrofitResourceContext = retrofitResourceContext;
-        this.sentinelResourceContext = new RetrofitSentinelResourceContext();
-        this.cdiBeanManager = cdiBeanManager;
-    }
-
-    private void registFlowRules(List<RetrofitClientBean> retrofitClients) {
-
-    }
-
-    private void registDegradeRules(List<RetrofitClientBean> retrofitClients) {
-    }
-
-    private void setToDegradeRules(String name, String name1, Set<DegradeRuleBean> methodAllDegradeRules) {
-
-    }
-
-    private Set<DegradeRuleBean> getDegradeRuleBeansByAnnotation(Annotation[] annotations, boolean isMethod) {
-        return null;
-    }
-
-
-}
+//package io.github.liuziyuan.retrofit.extension.sentinel.core;
+//
+//import com.alibaba.csp.sentinel.slots.block.degrade.DegradeRule;
+//import com.alibaba.csp.sentinel.slots.block.flow.FlowRule;
+//import io.github.liuziyuan.retrofit.core.CDIBeanManager;
+//import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
+//import io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean;
+//import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
+//import io.github.liuziyuan.retrofit.extension.sentinel.core.annotation.RetrofitSentinelDegradeRule;
+//import io.github.liuziyuan.retrofit.extension.sentinel.core.annotation.RetrofitSentinelDegrades;
+//import io.github.liuziyuan.retrofit.extension.sentinel.core.properties.RetrofitSentinelDegradeRuleProperties;
+//import io.github.liuziyuan.retrofit.extension.sentinel.core.properties.RetrofitSentinelFlowRuleProperties;
+//import io.github.liuziyuan.retrofit.extension.sentinel.core.resource.DegradeRuleBean;
+//import io.github.liuziyuan.retrofit.extension.sentinel.core.RetrofitSentinelResourceContext;
+//import lombok.Getter;
+//
+//import java.lang.annotation.Annotation;
+//import java.lang.reflect.Method;
+//import java.util.*;
+//
+//public class RetrofitSentinelPropertiesProcessor {
+//    @Getter
+//    private Set<FlowRule> flowRules = new HashSet<>();
+//    @Getter
+//    private Set<DegradeRule> degradeRules = new HashSet<>();
+//    @Getter
+//    private RetrofitSentinelResourceContext sentinelResourceContext;
+//
+//    private final CDIBeanManager cdiBeanManager;
+//
+//    public RetrofitSentinelPropertiesProcessor(RetrofitResourceContext retrofitResourceContext,
+//                                               CDIBeanManager cdiBeanManager,
+//                                               RetrofitSentinelDegradeRuleProperties degradeRuleProperties,
+//                                               RetrofitSentinelFlowRuleProperties flowRuleProperties) {
+//        this.cdiBeanManager = cdiBeanManager;
+//        this.sentinelResourceContext = new RetrofitSentinelResourceContext();
+//        List<RetrofitClientBean> retrofitClients = retrofitResourceContext.getRetrofitClients();
+//        setFlowRules(retrofitClients, flowRuleProperties);
+//        setDegradeRules(retrofitClients, degradeRuleProperties);
+//    }
+//
+//    private void setDegradeRules(List<RetrofitClientBean> retrofitClients, RetrofitSentinelDegradeRuleProperties degradeRuleProperties) {
+//        for (RetrofitClientBean retrofitClient : retrofitClients) {
+//            for (RetrofitApiServiceBean retrofitApiServiceBean : retrofitClient.getRetrofitApiServiceBeans()) {
+//                degradeRuleProperties.getConfigs().forEach((k, v) -> {
+//                    for (Class<?> interfaceClazz : v.getInterfaceClazz()) {
+//                        if (interfaceClazz.isAssignableFrom(retrofitApiServiceBean.getSelfClazz())) {
+//                            Class<?> selfClazz = retrofitApiServiceBean.getSelfClazz();
+//                            Class<?> parentClazz = retrofitApiServiceBean.getParentClazz();
+//
+//                        }
+//                    }
+//                });
+//            }
+//        }
+//    }
+//
+//    private void setFlowRules(List<RetrofitClientBean> retrofitClients, RetrofitSentinelFlowRuleProperties flowRuleProperties) {
+//
+//    }
+//
+//
+//}

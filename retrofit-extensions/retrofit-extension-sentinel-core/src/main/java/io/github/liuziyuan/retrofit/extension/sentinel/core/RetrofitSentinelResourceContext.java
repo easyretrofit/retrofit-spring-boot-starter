@@ -1,5 +1,6 @@
-package io.github.liuziyuan.retrofit.extension.sentinel.core.resource;
+package io.github.liuziyuan.retrofit.extension.sentinel.core;
 
+import io.github.liuziyuan.retrofit.extension.sentinel.core.resource.FallBackBean;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;

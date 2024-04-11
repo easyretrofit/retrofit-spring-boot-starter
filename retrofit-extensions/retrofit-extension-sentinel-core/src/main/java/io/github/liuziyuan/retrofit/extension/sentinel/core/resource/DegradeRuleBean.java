@@ -11,5 +11,5 @@ public class DegradeRuleBean extends CustomizeDegradeRuleBean {
     private String resourceName;
     private String defaultResourceName;
     private String fallBackMethodName;
-    private String annotationName;
+    private Class<?> configClazz;
 }
