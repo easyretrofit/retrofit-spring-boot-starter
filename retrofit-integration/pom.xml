@@ -11,7 +11,7 @@
 
     <packaging>pom</packaging>
 
-    <artifactId>retrofit-extensions</artifactId>
+    <artifactId>retrofit-integration</artifactId>
     <version>1.0.0</version>
 
     <properties>
@@ -21,14 +21,11 @@
         <java.source.version>${java.version}</java.source.version>
         <java.target.version>${java.version}</java.target.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <retrofit.core.version>1.1.4</retrofit.core.version>
         <retrofit.spring.boot.version>1.3.3</retrofit.spring.boot.version>
     </properties>
 
     <modules>
-        <module>retrofit-extension-loadbalancer-spring-cloud-starter</module>
-        <module>retrofit-extension-sentinel-core</module>
-        <module>retrofit-extension-sentinel-spring-boot-starter</module>
+
     </modules>
 
     <dependencyManagement>
