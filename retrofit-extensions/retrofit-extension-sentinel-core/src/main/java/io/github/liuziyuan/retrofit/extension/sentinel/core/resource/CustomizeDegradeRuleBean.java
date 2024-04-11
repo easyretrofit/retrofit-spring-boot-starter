@@ -5,16 +5,18 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import static io.github.liuziyuan.retrofit.extension.sentinel.core.AppConstants.DEFAULT;
+
 @Getter
 @Setter
 @EqualsAndHashCode
 public class CustomizeDegradeRuleBean {
 
-    private int grade = 0;
-    private double count = 0;
-    private int timeWindow = 0;
-    private int minRequestAmount = 5;
-    private double slowRatioThreshold = 1.0;
-    private int statIntervalMs = 1000;
+    private int grade = DEFAULT;
+    private double count = DEFAULT;
+    private int timeWindow = DEFAULT;
+    private int minRequestAmount = DEFAULT;
+    private double slowRatioThreshold = DEFAULT;
+    private int statIntervalMs = DEFAULT;
     private String limitApp = RuleConstant.LIMIT_APP_DEFAULT;
 }

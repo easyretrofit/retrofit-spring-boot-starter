@@ -43,6 +43,15 @@ public class RetrofitSentinelResourceProcessor {
         setDegradeRules(retrofitClients, degradeRuleProperties);
     }
 
+    private void checkProperties(RetrofitSentinelFlowRuleProperties flowRuleProperties, RetrofitSentinelDegradeRuleProperties degradeRuleProperties) {
+//        if (flowRuleProperties.getInstances().size() != flowRuleProperties.getConfigs().size()) {
+//            throw new RuntimeException("flow rule properties instances and configs size not equal");
+//        }
+//        if (degradeRuleProperties.getInstances().size() != degradeRuleProperties.getConfigs().size()) {
+//            throw new RuntimeException("degrade rule properties instances and configs size not equal");
+//        }
+    }
+
     private void setFlowRules(List<RetrofitClientBean> retrofitClients, RetrofitSentinelFlowRuleProperties flowRuleProperties) {
         for (RetrofitClientBean retrofitClient : retrofitClients) {
             for (RetrofitApiServiceBean retrofitApiServiceBean : retrofitClient.getRetrofitApiServiceBeans()) {
@@ -51,9 +60,9 @@ public class RetrofitSentinelResourceProcessor {
                 for (Method declaredMethod : apiClazz.getDeclaredMethods()) {
                     Set<FlowRuleBean> methodAllFlowRules = new HashSet<>();
                     Annotation[] annotations = declaredMethod.getAnnotations();
-                    Set<FlowRuleBean> apiClazzFlowRules = getFlowRuleBeansByAnnotation(apiClazz.getDeclaredAnnotations(), declaredMethod);
-                    Set<FlowRuleBean> clientClazzFlowRules = getFlowRuleBeansByAnnotation(clientClazz.getDeclaredAnnotations(), declaredMethod);
-                    Set<FlowRuleBean> methodFlowRules = getFlowRuleBeansByAnnotation(annotations, declaredMethod);
+                    Set<FlowRuleBean> apiClazzFlowRules = getFlowRuleBeans(apiClazz.getDeclaredAnnotations(), declaredMethod, false, flowRuleProperties);
+                    Set<FlowRuleBean> clientClazzFlowRules = getFlowRuleBeans(clientClazz.getDeclaredAnnotations(), declaredMethod, false, flowRuleProperties);
+                    Set<FlowRuleBean> methodFlowRules = getFlowRuleBeans(annotations, declaredMethod, false, flowRuleProperties);
                     methodAllFlowRules.addAll(apiClazzFlowRules);
                     methodAllFlowRules.addAll(clientClazzFlowRules);
                     methodAllFlowRules.addAll(methodFlowRules);
@@ -61,7 +70,40 @@ public class RetrofitSentinelResourceProcessor {
                 }
             }
         }
-//        FlowRuleManager.loadRules(new ArrayList<>(flowRules));
+    }
+
+    private Set<FlowRuleBean> getFlowRuleBeans(Annotation[] annotations, Method declaredMethod, boolean isMethod, RetrofitSentinelFlowRuleProperties flowRuleProperties) {
+        Set<FlowRuleBean> flowRuleList = new HashSet<>();
+        for (Annotation annotation : annotations) {
+            if (annotation instanceof RetrofitSentinelFlowRules) {
+                RetrofitSentinelFlowRule[] floatRuleValues = ((RetrofitSentinelFlowRules) annotation).value();
+                Arrays.stream(floatRuleValues).forEach(value -> {
+                    if (!isMethod) {
+                        Map<String, RetrofitSentinelFlowRuleProperties.ConfigProperties> configs = flowRuleProperties.getConfigs();
+                        configs.get(value.resourceName());
+                    } else {
+                        Map<String, RetrofitSentinelFlowRuleProperties.InstanceProperties> instances = flowRuleProperties.getInstances();
+                    }
+                    FlowRuleBean flowRuleBean = getFlowRuleBean(value);
+                    if (flowRuleBean != null) {
+                        flowRuleBean.setDefaultResourceName(ResourceNameUtil.getConventionResourceName(declaredMethod));
+                        flowRuleList.add(flowRuleBean);
+                    }
+                });
+            } else if (annotation instanceof RetrofitSentinelFlowRule) {
+                if (!isMethod) {
+                    Map<String, RetrofitSentinelFlowRuleProperties.ConfigProperties> configs = flowRuleProperties.getConfigs();
+                } else {
+                    Map<String, RetrofitSentinelFlowRuleProperties.InstanceProperties> instances = flowRuleProperties.getInstances();
+                }
+                FlowRuleBean flowRuleBean = getFlowRuleBean((RetrofitSentinelFlowRule) annotation);
+                if (flowRuleBean != null) {
+                    flowRuleBean.setDefaultResourceName(ResourceNameUtil.getConventionResourceName(declaredMethod));
+                    flowRuleList.add(flowRuleBean);
+                }
+            }
+        }
+        return flowRuleList;
     }
 
     private void setDegradeRules(List<RetrofitClientBean> retrofitClients, RetrofitSentinelDegradeRuleProperties degradeRuleProperties) {
@@ -117,29 +159,6 @@ public class RetrofitSentinelResourceProcessor {
             degradeRule.setLimitApp(degradeRuleBean.getLimitApp());
             degradeRules.add(degradeRule);
         }
-    }
-
-    private Set<FlowRuleBean> getFlowRuleBeansByAnnotation(Annotation[] annotations, Method declaredMethod) {
-        Set<FlowRuleBean> flowRuleList = new HashSet<>();
-        for (Annotation annotation : annotations) {
-            if (annotation instanceof RetrofitSentinelFlowRules) {
-                RetrofitSentinelFlowRule[] floatRuleValues = ((RetrofitSentinelFlowRules) annotation).value();
-                Arrays.stream(floatRuleValues).forEach(value -> {
-                    FlowRuleBean flowRuleBean = getFlowRuleBean(value);
-                    if (flowRuleBean != null) {
-                        flowRuleBean.setDefaultResourceName(ResourceNameUtil.getConventionResourceName(declaredMethod));
-                        flowRuleList.add(flowRuleBean);
-                    }
-                });
-            } else if (annotation instanceof RetrofitSentinelFlowRule) {
-                FlowRuleBean flowRuleBean = getFlowRuleBean((RetrofitSentinelFlowRule) annotation);
-                if (flowRuleBean != null) {
-                    flowRuleBean.setDefaultResourceName(ResourceNameUtil.getConventionResourceName(declaredMethod));
-                    flowRuleList.add(flowRuleBean);
-                }
-            }
-        }
-        return flowRuleList;
     }
 
 
