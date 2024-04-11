@@ -52,6 +52,9 @@ public class RetrofitSentinelDegradeRuleProperties {
         if (instanceProperties.getStatIntervalMs() == DEFAULT) {
             instanceProperties.setStatIntervalMs(configProperties.getStatIntervalMs());
         }
+        if (instanceProperties.getTimeWindow() == DEFAULT) {
+            instanceProperties.setTimeWindow(configProperties.getTimeWindow());
+        }
     }
 
     @Getter

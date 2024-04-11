@@ -30,6 +30,8 @@ import java.util.*;
  */
 @Slf4j
 public class RetrofitSentinelResourceProcessor {
+
+    private long index = 1;
     @Getter
     private Set<FlowRule> flowRules = new HashSet<>();
     @Getter
@@ -45,6 +47,8 @@ public class RetrofitSentinelResourceProcessor {
                                              RetrofitSentinelFlowRuleProperties flowRuleProperties) {
         this.cdiBeanManager = cdiBeanManager;
         this.sentinelResourceContext = new RetrofitSentinelResourceContext();
+        degradeRuleProperties.checkAndMerge();
+        flowRuleProperties.checkAndMerge();
         List<RetrofitClientBean> retrofitClients = retrofitResourceContext.getRetrofitClients();
         setFlowRules(retrofitClients, flowRuleProperties);
         setDegradeRules(retrofitClients, degradeRuleProperties);
@@ -82,7 +86,7 @@ public class RetrofitSentinelResourceProcessor {
     private void setToDegradeRules(Set<DegradeRuleBean> degradeRuleBeans) {
         for (DegradeRuleBean degradeRuleBean : degradeRuleBeans) {
             sentinelResourceContext.addFallBackBean(degradeRuleBean.getDefaultResourceName(),
-                    new FallBackBean(degradeRuleBean.getResourceName(), degradeRuleBean.getFallBackMethodName(), degradeRuleBean.getConfigClazz()));
+                    new FallBackBean(index, degradeRuleBean.getResourceName(), degradeRuleBean.getFallBackMethodName(), degradeRuleBean));
             DegradeRule degradeRule = new DegradeRule();
             degradeRule.setResource(degradeRuleBean.getDefaultResourceName());
             if (degradeRuleBean.getCount() != AppConstants.DEFAULT) {
@@ -103,10 +107,12 @@ public class RetrofitSentinelResourceProcessor {
             if (degradeRuleBean.getSlowRatioThreshold() != AppConstants.DEFAULT) {
                 degradeRule.setSlowRatioThreshold(degradeRuleBean.getSlowRatioThreshold());
             }
-            if (degradeRule.getLimitApp() != null) {
+            if (degradeRuleBean.getLimitApp() != null) {
                 degradeRule.setLimitApp(degradeRuleBean.getLimitApp());
             }
+            degradeRule.setId(index);
             degradeRules.add(degradeRule);
+            index++;
         }
     }
 
@@ -133,7 +139,7 @@ public class RetrofitSentinelResourceProcessor {
     private void setToFlowRules(Set<FlowRuleBean> flowRuleBeans) {
         for (FlowRuleBean flowRuleBean : flowRuleBeans) {
             sentinelResourceContext.addFallBackBean(flowRuleBean.getDefaultResourceName(),
-                    new FallBackBean(flowRuleBean.getResourceName(), flowRuleBean.getFallBackMethodName(), flowRuleBean.getConfigClazz()));
+                    new FallBackBean(index, flowRuleBean.getResourceName(), flowRuleBean.getFallBackMethodName(), flowRuleBean));
             FlowRule flowRule = new FlowRule();
             flowRule.setResource(flowRuleBean.getDefaultResourceName());
             if (flowRuleBean.getStrategy() != AppConstants.DEFAULT) {
@@ -157,7 +163,9 @@ public class RetrofitSentinelResourceProcessor {
             if (flowRuleBean.getWarmUpPeriodSec() != AppConstants.DEFAULT) {
                 flowRule.setWarmUpPeriodSec(flowRuleBean.getWarmUpPeriodSec());
             }
+            flowRule.setId(index);
             flowRules.add(flowRule);
+            index++;
         }
     }
 

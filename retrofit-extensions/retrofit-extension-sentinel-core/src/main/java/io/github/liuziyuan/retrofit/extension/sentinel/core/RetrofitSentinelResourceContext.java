@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter(AccessLevel.MODULE)
@@ -36,8 +37,15 @@ public final class RetrofitSentinelResourceContext {
                 .findFirst().orElse(null);
     }
 
-    public void merge(RetrofitSentinelResourceContext otherContext) {
-
+    public FallBackBean getFallBackBeanById(long id) {
+        for (Map.Entry<String, List<FallBackBean>> entry : fallBackBeanMap.entrySet()) {
+            for (FallBackBean fallBackBean : entry.getValue()) {
+                if (fallBackBean.getId() == id) {
+                    return fallBackBean;
+                }
+            }
+        }
+        return null;
     }
 
     public void check() {

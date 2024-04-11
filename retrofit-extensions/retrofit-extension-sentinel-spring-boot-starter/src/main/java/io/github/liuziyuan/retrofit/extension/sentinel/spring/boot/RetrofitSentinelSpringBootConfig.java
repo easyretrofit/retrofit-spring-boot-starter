@@ -45,17 +45,9 @@ public class RetrofitSentinelSpringBootConfig implements ApplicationContextAware
 
     @Bean
     @ConditionalOnMissingBean
-    public SentinelBlockExceptionFallBackHandler exceptionFallBackHandler() {
-        return new SentinelBlockExceptionFallBackHandler(SentinelBlockException.class, new SpringCDIBeanManager(applicationContext));
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     public RetrofitSentinelResourceContext retrofitSentinelResourceContext(
             @Autowired RetrofitSpringSentinelDegradeRuleProperties degradeRuleProperties,
             @Autowired RetrofitSpringSentinelFlowRuleProperties flowRuleProperties) {
-        degradeRuleProperties.checkAndMerge();
-        flowRuleProperties.checkAndMerge();
         RetrofitSentinelResourceProcessor processor = new RetrofitSentinelResourceProcessor(applicationContext.getBean(RetrofitResourceContext.class),
                 new SpringCDIBeanManager(applicationContext), degradeRuleProperties, flowRuleProperties);
         RetrofitSentinelResourceContext context = processor.getSentinelResourceContext();
@@ -64,5 +56,12 @@ public class RetrofitSentinelSpringBootConfig implements ApplicationContextAware
         DegradeRuleManager.loadRules(new ArrayList<>(processor.getDegradeRules()));
         return context;
     }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public SentinelBlockExceptionFallBackHandler exceptionFallBackHandler() {
+        return new SentinelBlockExceptionFallBackHandler(SentinelBlockException.class, new SpringCDIBeanManager(applicationContext));
+    }
+
 
 }
