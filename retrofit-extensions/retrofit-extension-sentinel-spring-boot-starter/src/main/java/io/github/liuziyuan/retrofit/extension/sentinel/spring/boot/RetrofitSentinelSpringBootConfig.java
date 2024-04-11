@@ -1,6 +1,5 @@
 package io.github.liuziyuan.retrofit.extension.sentinel.spring.boot;
 
-import io.github.liuziyuan.retrofit.extension.sentinel.core.RetrofitSentinelPropertiesProcessor;
 import io.github.liuziyuan.retrofit.extension.sentinel.core.interceptor.SentinelBlockException;
 import io.github.liuziyuan.retrofit.extension.sentinel.core.interceptor.SentinelBlockExceptionFallBackHandler;
 import io.github.liuziyuan.retrofit.extension.sentinel.core.RetrofitSentinelResourceContext;
