@@ -12,6 +12,7 @@ import io.github.liuziyuan.retrofit.extension.sentinel.core.properties.RetrofitS
 import io.github.liuziyuan.retrofit.extension.sentinel.core.resource.*;
 import io.github.liuziyuan.retrofit.extension.sentinel.core.util.ResourceNameUtil;
 import lombok.Getter;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
 
@@ -21,6 +22,12 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 
+/**
+ * 从配置文件(properties/yml)中获取Sentinel规则，与@RetrofitSentinelResource声明的RetrofitSentinelDegradeRule和RetrofitSentinelFlowRule注解进行合并 <br>
+ * 规则如下：<br>
+ * 1. 配置文件中的规则优先级高于注解
+ * 2. 配置文件的instances key与 注解的resourceName必须相同
+ */
 @Slf4j
 public class RetrofitSentinelResourceProcessor {
     @Getter
@@ -52,6 +59,57 @@ public class RetrofitSentinelResourceProcessor {
 //        }
     }
 
+    private void setDegradeRules(List<RetrofitClientBean> retrofitClients, RetrofitSentinelDegradeRuleProperties degradeRuleProperties) {
+        for (RetrofitClientBean retrofitClient : retrofitClients) {
+            for (RetrofitApiServiceBean retrofitApiServiceBean : retrofitClient.getRetrofitApiServiceBeans()) {
+                Class<?> apiClazz = retrofitApiServiceBean.getSelfClazz();
+                Class<?> clientClazz = retrofitApiServiceBean.getParentClazz();
+                for (Method declaredMethod : apiClazz.getDeclaredMethods()) {
+                    Set<DegradeRuleBean> methodAllDegradeRules = new HashSet<>();
+                    Annotation[] annotations = declaredMethod.getAnnotations();
+                    Set<DegradeRuleBean> apiClazzDegradeRules = getDegradeRuleBeans(apiClazz.getDeclaredAnnotations(), declaredMethod, false, degradeRuleProperties);
+                    Set<DegradeRuleBean> clientClazzDegradeRules = getDegradeRuleBeans(clientClazz.getDeclaredAnnotations(), declaredMethod, false, degradeRuleProperties);
+                    Set<DegradeRuleBean> methodDegradeRules = getDegradeRuleBeans(annotations, declaredMethod, true, degradeRuleProperties);
+                    methodAllDegradeRules.addAll(apiClazzDegradeRules);
+                    methodAllDegradeRules.addAll(clientClazzDegradeRules);
+                    methodAllDegradeRules.addAll(methodDegradeRules);
+                    setToDegradeRules(methodAllDegradeRules);
+                }
+            }
+        }
+    }
+
+    private void setToDegradeRules(Set<DegradeRuleBean> degradeRuleBeans) {
+        for (DegradeRuleBean degradeRuleBean : degradeRuleBeans) {
+            sentinelResourceContext.addFallBackBean(degradeRuleBean.getDefaultResourceName(),
+                    new FallBackBean(degradeRuleBean.getResourceName(), degradeRuleBean.getFallBackMethodName(), degradeRuleBean.getConfigClazz()));
+            DegradeRule degradeRule = new DegradeRule();
+            degradeRule.setResource(degradeRuleBean.getDefaultResourceName());
+            if (degradeRuleBean.getCount() != AppConstants.DEFAULT) {
+                degradeRule.setCount(degradeRuleBean.getCount());
+            }
+            if (degradeRuleBean.getGrade() != AppConstants.DEFAULT) {
+                degradeRule.setGrade(degradeRuleBean.getGrade());
+            }
+            if (degradeRuleBean.getTimeWindow() != AppConstants.DEFAULT) {
+                degradeRule.setTimeWindow(degradeRuleBean.getTimeWindow());
+            }
+            if (degradeRuleBean.getStatIntervalMs() != AppConstants.DEFAULT) {
+                degradeRule.setStatIntervalMs(degradeRuleBean.getStatIntervalMs());
+            }
+            if (degradeRuleBean.getMinRequestAmount() != AppConstants.DEFAULT) {
+                degradeRule.setMinRequestAmount(degradeRuleBean.getMinRequestAmount());
+            }
+            if (degradeRuleBean.getSlowRatioThreshold() != AppConstants.DEFAULT) {
+                degradeRule.setSlowRatioThreshold(degradeRuleBean.getSlowRatioThreshold());
+            }
+            if (degradeRule.getLimitApp() != null) {
+                degradeRule.setLimitApp(degradeRuleBean.getLimitApp());
+            }
+            degradeRules.add(degradeRule);
+        }
+    }
+
     private void setFlowRules(List<RetrofitClientBean> retrofitClients, RetrofitSentinelFlowRuleProperties flowRuleProperties) {
         for (RetrofitClientBean retrofitClient : retrofitClients) {
             for (RetrofitApiServiceBean retrofitApiServiceBean : retrofitClient.getRetrofitApiServiceBeans()) {
@@ -62,13 +120,44 @@ public class RetrofitSentinelResourceProcessor {
                     Annotation[] annotations = declaredMethod.getAnnotations();
                     Set<FlowRuleBean> apiClazzFlowRules = getFlowRuleBeans(apiClazz.getDeclaredAnnotations(), declaredMethod, false, flowRuleProperties);
                     Set<FlowRuleBean> clientClazzFlowRules = getFlowRuleBeans(clientClazz.getDeclaredAnnotations(), declaredMethod, false, flowRuleProperties);
-                    Set<FlowRuleBean> methodFlowRules = getFlowRuleBeans(annotations, declaredMethod, false, flowRuleProperties);
+                    Set<FlowRuleBean> methodFlowRules = getFlowRuleBeans(annotations, declaredMethod, true, flowRuleProperties);
                     methodAllFlowRules.addAll(apiClazzFlowRules);
                     methodAllFlowRules.addAll(clientClazzFlowRules);
                     methodAllFlowRules.addAll(methodFlowRules);
-                    setToFlowRules(flowRules, declaredMethod, methodAllFlowRules);
+                    setToFlowRules(methodAllFlowRules);
                 }
             }
+        }
+    }
+
+    private void setToFlowRules(Set<FlowRuleBean> flowRuleBeans) {
+        for (FlowRuleBean flowRuleBean : flowRuleBeans) {
+            sentinelResourceContext.addFallBackBean(flowRuleBean.getDefaultResourceName(),
+                    new FallBackBean(flowRuleBean.getResourceName(), flowRuleBean.getFallBackMethodName(), flowRuleBean.getConfigClazz()));
+            FlowRule flowRule = new FlowRule();
+            flowRule.setResource(flowRuleBean.getDefaultResourceName());
+            if (flowRuleBean.getStrategy() != AppConstants.DEFAULT) {
+                flowRule.setStrategy(flowRuleBean.getStrategy());
+            }
+            if (flowRuleBean.getControlBehavior() != AppConstants.DEFAULT) {
+                flowRule.setControlBehavior(flowRuleBean.getControlBehavior());
+            }
+            if (flowRuleBean.getCount() != AppConstants.DEFAULT) {
+                flowRule.setCount(flowRuleBean.getCount());
+            }
+            if (flowRuleBean.getGrade() != AppConstants.DEFAULT) {
+                flowRule.setGrade(flowRuleBean.getGrade());
+            }
+            if (flowRuleBean.getLimitApp() != null) {
+                flowRule.setLimitApp(flowRuleBean.getLimitApp());
+            }
+            if (flowRuleBean.getMaxQueueingTimeMs() != AppConstants.DEFAULT) {
+                flowRule.setMaxQueueingTimeMs(flowRuleBean.getMaxQueueingTimeMs());
+            }
+            if (flowRuleBean.getWarmUpPeriodSec() != AppConstants.DEFAULT) {
+                flowRule.setWarmUpPeriodSec(flowRuleBean.getWarmUpPeriodSec());
+            }
+            flowRules.add(flowRule);
         }
     }
 
@@ -78,25 +167,16 @@ public class RetrofitSentinelResourceProcessor {
             if (annotation instanceof RetrofitSentinelFlowRules) {
                 RetrofitSentinelFlowRule[] floatRuleValues = ((RetrofitSentinelFlowRules) annotation).value();
                 Arrays.stream(floatRuleValues).forEach(value -> {
-                    if (!isMethod) {
-                        Map<String, RetrofitSentinelFlowRuleProperties.ConfigProperties> configs = flowRuleProperties.getConfigs();
-                        configs.get(value.resourceName());
-                    } else {
-                        Map<String, RetrofitSentinelFlowRuleProperties.InstanceProperties> instances = flowRuleProperties.getInstances();
-                    }
-                    FlowRuleBean flowRuleBean = getFlowRuleBean(value);
+                    CustomizeFlowRuleBean properties = getCustomizeFlowRuleBean(value, isMethod, flowRuleProperties);
+                    FlowRuleBean flowRuleBean = getFlowRuleBean(value, properties);
                     if (flowRuleBean != null) {
                         flowRuleBean.setDefaultResourceName(ResourceNameUtil.getConventionResourceName(declaredMethod));
                         flowRuleList.add(flowRuleBean);
                     }
                 });
             } else if (annotation instanceof RetrofitSentinelFlowRule) {
-                if (!isMethod) {
-                    Map<String, RetrofitSentinelFlowRuleProperties.ConfigProperties> configs = flowRuleProperties.getConfigs();
-                } else {
-                    Map<String, RetrofitSentinelFlowRuleProperties.InstanceProperties> instances = flowRuleProperties.getInstances();
-                }
-                FlowRuleBean flowRuleBean = getFlowRuleBean((RetrofitSentinelFlowRule) annotation);
+                CustomizeFlowRuleBean properties = getCustomizeFlowRuleBean((RetrofitSentinelFlowRule) annotation, isMethod, flowRuleProperties);
+                FlowRuleBean flowRuleBean = getFlowRuleBean((RetrofitSentinelFlowRule) annotation, properties);
                 if (flowRuleBean != null) {
                     flowRuleBean.setDefaultResourceName(ResourceNameUtil.getConventionResourceName(declaredMethod));
                     flowRuleList.add(flowRuleBean);
@@ -106,76 +186,22 @@ public class RetrofitSentinelResourceProcessor {
         return flowRuleList;
     }
 
-    private void setDegradeRules(List<RetrofitClientBean> retrofitClients, RetrofitSentinelDegradeRuleProperties degradeRuleProperties) {
-        for (RetrofitClientBean retrofitClient : retrofitClients) {
-            for (RetrofitApiServiceBean retrofitApiServiceBean : retrofitClient.getRetrofitApiServiceBeans()) {
-                Class<?> apiClazz = retrofitApiServiceBean.getSelfClazz();
-                Class<?> clientClazz = retrofitApiServiceBean.getParentClazz();
-                for (Method declaredMethod : apiClazz.getDeclaredMethods()) {
-                    Set<DegradeRuleBean> methodAllDegradeRules = new HashSet<>();
-                    Annotation[] annotations = declaredMethod.getAnnotations();
-                    Set<DegradeRuleBean> apiClazzDegradeRules = getDegradeRuleBeansByAnnotation(apiClazz.getDeclaredAnnotations(), declaredMethod);
-                    Set<DegradeRuleBean> clientClazzDegradeRules = getDegradeRuleBeansByAnnotation(clientClazz.getDeclaredAnnotations(), declaredMethod);
-                    Set<DegradeRuleBean> methodDegradeRules = getDegradeRuleBeansByAnnotation(annotations, declaredMethod);
-                    methodAllDegradeRules.addAll(apiClazzDegradeRules);
-                    methodAllDegradeRules.addAll(clientClazzDegradeRules);
-                    methodAllDegradeRules.addAll(methodDegradeRules);
-                    setToDegradeRules(degradeRules, declaredMethod, methodAllDegradeRules);
-                }
-            }
-        }
-//        DegradeRuleManager.loadRules(new ArrayList<>(degradeRules));
-    }
-
-    private void setToFlowRules(Set<FlowRule> flowRules, Method method, Set<FlowRuleBean> flowRuleBeans) {
-        for (FlowRuleBean flowRuleBean : flowRuleBeans) {
-            sentinelResourceContext.addFallBackBean(flowRuleBean.getDefaultResourceName(),
-                    new FallBackBean(flowRuleBean.getResourceName(), flowRuleBean.getFallBackMethodName(), flowRuleBean.getConfigClazz()));
-            FlowRule flowRule = new FlowRule();
-            flowRule.setResource(flowRuleBean.getDefaultResourceName());
-            flowRule.setCount(flowRuleBean.getCount());
-            flowRule.setWarmUpPeriodSec(flowRuleBean.getWarmUpPeriodSec());
-            flowRule.setMaxQueueingTimeMs(flowRuleBean.getMaxQueueingTimeMs());
-            flowRule.setGrade(flowRuleBean.getGrade());
-            flowRule.setStrategy(flowRuleBean.getStrategy());
-            flowRule.setControlBehavior(flowRuleBean.getControlBehavior());
-            flowRule.setLimitApp(flowRuleBean.getLimitApp());
-            flowRules.add(flowRule);
-        }
-    }
-
-    private void setToDegradeRules(Set<DegradeRule> degradeRules, Method method, Set<DegradeRuleBean> degradeRuleBeans) {
-        for (DegradeRuleBean degradeRuleBean : degradeRuleBeans) {
-            sentinelResourceContext.addFallBackBean(degradeRuleBean.getDefaultResourceName(),
-                    new FallBackBean(degradeRuleBean.getResourceName(), degradeRuleBean.getFallBackMethodName(), degradeRuleBean.getConfigClazz()));
-            DegradeRule degradeRule = new DegradeRule();
-            degradeRule.setResource(degradeRuleBean.getDefaultResourceName());
-            degradeRule.setCount(degradeRuleBean.getCount());
-            degradeRule.setGrade(degradeRuleBean.getGrade());
-            degradeRule.setSlowRatioThreshold(degradeRuleBean.getSlowRatioThreshold());
-            degradeRule.setStatIntervalMs(degradeRuleBean.getStatIntervalMs());
-            degradeRule.setTimeWindow(degradeRuleBean.getTimeWindow());
-            degradeRule.setMinRequestAmount(degradeRuleBean.getMinRequestAmount());
-            degradeRule.setLimitApp(degradeRuleBean.getLimitApp());
-            degradeRules.add(degradeRule);
-        }
-    }
-
-
-    private Set<DegradeRuleBean> getDegradeRuleBeansByAnnotation(Annotation[] annotations, Method declaredMethod) {
+    private Set<DegradeRuleBean> getDegradeRuleBeans(Annotation[] annotations, Method declaredMethod, boolean isMethod, RetrofitSentinelDegradeRuleProperties degradeRuleProperties) {
         Set<DegradeRuleBean> degradeRuleList = new HashSet<>();
         for (Annotation annotation : annotations) {
             if (annotation instanceof RetrofitSentinelDegrades) {
                 RetrofitSentinelDegradeRule[] floatRuleValues = ((RetrofitSentinelDegrades) annotation).value();
                 Arrays.stream(floatRuleValues).forEach(value -> {
-                    DegradeRuleBean degradeRuleBean = getDegradeRuleBean(value);
+                    CustomizeDegradeRuleBean properties = getCustomizeDegradeRuleBean(value, isMethod, degradeRuleProperties);
+                    DegradeRuleBean degradeRuleBean = getDegradeRuleBean(value, properties);
                     if (degradeRuleBean != null) {
                         degradeRuleBean.setDefaultResourceName(ResourceNameUtil.getConventionResourceName(declaredMethod));
                         degradeRuleList.add(degradeRuleBean);
                     }
                 });
             } else if (annotation instanceof RetrofitSentinelDegradeRule) {
-                DegradeRuleBean degradeRuleBean = getDegradeRuleBean((RetrofitSentinelDegradeRule) annotation);
+                CustomizeDegradeRuleBean properties = getCustomizeDegradeRuleBean((RetrofitSentinelDegradeRule) annotation, isMethod, degradeRuleProperties);
+                DegradeRuleBean degradeRuleBean = getDegradeRuleBean((RetrofitSentinelDegradeRule) annotation, properties);
                 if (degradeRuleBean != null) {
                     degradeRuleBean.setDefaultResourceName(ResourceNameUtil.getConventionResourceName(declaredMethod));
                     degradeRuleList.add(degradeRuleBean);
@@ -185,29 +211,76 @@ public class RetrofitSentinelResourceProcessor {
         return degradeRuleList;
     }
 
-    private FlowRuleBean getFlowRuleBean(RetrofitSentinelFlowRule annotation) {
-        Class<? extends BaseFlowRuleConfig> configClazz = annotation.config();
-        if (configClazz == BaseFlowRuleConfig.class) {
-            return null;
+    @SneakyThrows
+    private CustomizeDegradeRuleBean getCustomizeDegradeRuleBean(RetrofitSentinelDegradeRule annotation, boolean isMethod, RetrofitSentinelDegradeRuleProperties degradeRuleProperties) {
+        CustomizeDegradeRuleBean customizeDegradeRuleBean = new CustomizeDegradeRuleBean();
+        if (!isMethod) {
+            Map<String, RetrofitSentinelDegradeRuleProperties.ConfigProperties> configs = degradeRuleProperties.getConfigs();
+            RetrofitSentinelDegradeRuleProperties.ConfigProperties configProperties = configs.get(annotation.resourceName());
+            if (configProperties == null) {
+                return null;
+            }
+            BeanUtils.copyProperties(customizeDegradeRuleBean, configProperties);
+        } else {
+            Map<String, RetrofitSentinelDegradeRuleProperties.InstanceProperties> instances = degradeRuleProperties.getInstances();
+            RetrofitSentinelDegradeRuleProperties.InstanceProperties instanceProperties = instances.get(annotation.resourceName());
+            if (instanceProperties == null) {
+                return null;
+            }
+            BeanUtils.copyProperties(customizeDegradeRuleBean, instanceProperties);
         }
-        BaseFlowRuleConfig bean = cdiBeanManager.getBean(configClazz);
+        return customizeDegradeRuleBean;
+    }
+
+    @SneakyThrows
+    private CustomizeFlowRuleBean getCustomizeFlowRuleBean(RetrofitSentinelFlowRule annotation, boolean isMethod, RetrofitSentinelFlowRuleProperties flowRuleProperties) {
+        CustomizeFlowRuleBean customizeFlowRuleBean = new CustomizeFlowRuleBean();
+        if (!isMethod) {
+            Map<String, RetrofitSentinelFlowRuleProperties.ConfigProperties> configs = flowRuleProperties.getConfigs();
+            RetrofitSentinelFlowRuleProperties.ConfigProperties configProperties = configs.get(annotation.resourceName());
+            if (configProperties == null) {
+                return null;
+            }
+            BeanUtils.copyProperties(customizeFlowRuleBean, configProperties);
+        } else {
+            Map<String, RetrofitSentinelFlowRuleProperties.InstanceProperties> instances = flowRuleProperties.getInstances();
+            RetrofitSentinelFlowRuleProperties.InstanceProperties instanceProperties = instances.get(annotation.resourceName());
+            if (instanceProperties == null) {
+                return null;
+            }
+            BeanUtils.copyProperties(customizeFlowRuleBean, instanceProperties);
+        }
+        return customizeFlowRuleBean;
+    }
+
+    @SneakyThrows
+    private FlowRuleBean getFlowRuleBean(RetrofitSentinelFlowRule annotation, CustomizeFlowRuleBean properties) {
+        Class<? extends BaseFlowRuleConfig> configClazz = annotation.config();
         FlowRuleBean flowRuleBean = new FlowRuleBean();
-        CustomizeFlowRuleBean customizeFlowRuleBean;
-        if (bean != null) {
-            customizeFlowRuleBean = bean.build();
-            try {
-                BeanUtils.copyProperties(flowRuleBean, customizeFlowRuleBean);
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                throw new RuntimeException(e);
+        if (properties == null) {
+            if (configClazz == BaseFlowRuleConfig.class) {
+                return null;
+            }
+            BaseFlowRuleConfig bean = cdiBeanManager.getBean(configClazz);
+            CustomizeFlowRuleBean customizeFlowRuleBean;
+            if (bean != null) {
+                customizeFlowRuleBean = bean.build();
+                try {
+                    BeanUtils.copyProperties(flowRuleBean, customizeFlowRuleBean);
+                } catch (IllegalAccessException | InvocationTargetException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                try {
+                    bean = configClazz.newInstance();
+                    customizeFlowRuleBean = bean.build();
+                    BeanUtils.copyProperties(flowRuleBean, customizeFlowRuleBean);
+                } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
+                    throw new RuntimeException(e);
+                }
             }
         } else {
-            try {
-                bean = configClazz.newInstance();
-                customizeFlowRuleBean = bean.build();
-                BeanUtils.copyProperties(flowRuleBean, customizeFlowRuleBean);
-            } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
-                throw new RuntimeException(e);
-            }
+            BeanUtils.copyProperties(flowRuleBean, properties);
         }
         flowRuleBean.setResourceName(annotation.resourceName());
         flowRuleBean.setFallBackMethodName(annotation.fallbackMethod());
@@ -215,29 +288,36 @@ public class RetrofitSentinelResourceProcessor {
         return flowRuleBean;
     }
 
-    private DegradeRuleBean getDegradeRuleBean(RetrofitSentinelDegradeRule annotation) {
+    @SneakyThrows
+    private DegradeRuleBean getDegradeRuleBean(RetrofitSentinelDegradeRule annotation, CustomizeDegradeRuleBean properties) {
         Class<? extends BaseDegradeRuleConfig> configClazz = annotation.config();
-        if (configClazz == BaseDegradeRuleConfig.class) {
-            return null;
-        }
-        BaseDegradeRuleConfig bean = cdiBeanManager.getBean(configClazz);
         DegradeRuleBean degradeRuleBean = new DegradeRuleBean();
-        CustomizeDegradeRuleBean customizeDegradeRuleBean;
-        if (bean != null) {
-            customizeDegradeRuleBean = bean.build();
-            try {
-                BeanUtils.copyProperties(degradeRuleBean, customizeDegradeRuleBean);
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                throw new RuntimeException(e);
+        if (properties == null) {
+            if (configClazz == BaseDegradeRuleConfig.class) {
+                return null;
             }
-            try {
-                bean = configClazz.newInstance();
+            BaseDegradeRuleConfig bean = cdiBeanManager.getBean(configClazz);
+
+            CustomizeDegradeRuleBean customizeDegradeRuleBean;
+            if (bean != null) {
                 customizeDegradeRuleBean = bean.build();
-                BeanUtils.copyProperties(degradeRuleBean, customizeDegradeRuleBean);
-            } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
-                throw new RuntimeException(e);
+                try {
+                    BeanUtils.copyProperties(degradeRuleBean, customizeDegradeRuleBean);
+                } catch (IllegalAccessException | InvocationTargetException e) {
+                    throw new RuntimeException(e);
+                }
+                try {
+                    bean = configClazz.newInstance();
+                    customizeDegradeRuleBean = bean.build();
+                    BeanUtils.copyProperties(degradeRuleBean, customizeDegradeRuleBean);
+                } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
+                    throw new RuntimeException(e);
+                }
             }
+        } else {
+            BeanUtils.copyProperties(degradeRuleBean, properties);
         }
+
         degradeRuleBean.setResourceName(annotation.resourceName());
         degradeRuleBean.setFallBackMethodName(annotation.fallbackMethod());
         degradeRuleBean.setConfigClazz(configClazz);
