@@ -495,7 +495,6 @@ public class HelloController {
 retrofit:
   global:
     enable: true
-    overwrite-type: global_first
     base-url: http://localhost:8080
     converter-factory-builder-clazz: io.github.liuziyuan.test.retrofit.spring.boot.common.JacksonConverterFactoryBuilder,io.github.liuziyuan.test.retrofit.spring.boot.common.GsonConverterFactoryBuilder
     call-adapter-factory-builder-clazz: io.github.liuziyuan.test.retrofit.spring.boot.common.RxJavaCallAdapterFactoryBuilder
@@ -516,6 +515,53 @@ public interface HelloApi {
 }
 ```
 可以参考 [retrofit-spring-boot-starter-sample-global-config](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-global-config)
+
+## 简化集成
+可以在retrofit-integration文件夹中看到[retrofit-spring-boot-web-starter](retrofit-integration%2Fretrofit-spring-boot-web-starter) 和 [retrofit-spring-boot-reactor-starter](retrofit-integration%2Fretrofit-spring-boot-reactor-starter)两个starter.
+
+`retrofit-spring-boot-web-starter` 是一个基于Spring Web的Retrofit集成. 在starter中默认支持了[simple-body](retrofit-adapters%2Fsimple-body)类型和guava ListenableFuture类型的响应体解析
+pom.xml如下，
+```xml
+<dependencies>
+    <!--spring boot components-->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+        <version>${spring-boot.version}</version>
+    </dependency>
+    
+    <dependency>
+        <groupId>io.github.liuziyuan</groupId>
+        <artifactId>retrofit-spring-boot-web-starter</artifactId>
+        <version>${retrofit-web.version}</version>
+    </dependency>
+</dependencies>
+```
+可以参考demo [retrofit-spring-boot-web-starter-sample](https://github.com/liuziyuan/easy-retrofit-demo/tree/main/retrofit-spring-boot-web-starter-sample)
+
+
+`retrofit-spring-boot-reactor-starter`是一个基于Spring WebFlux的Retrofit集成.在starter中默认支持了[reactor](retrofit-adapters%2Freactor) Mono, Flux类型的响应体解析, 和RxJava2/3 的类型支持
+
+pom.xml如下，
+```xml
+<dependencies>
+    <!--spring boot components-->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-webflux</artifactId>
+    </dependency>
+    
+    <dependency>
+        <groupId>io.github.liuziyuan</groupId>
+        <artifactId>retrofit-spring-boot-reactor-starter</artifactId>
+        <version>${retrofit-reactor.version}</version>
+    </dependency>
+
+
+</dependencies>
+```
+可以参考demo [retrofit-spring-boot-reactor-starter-sample](https://github.com/liuziyuan/easy-retrofit-demo/tree/main/retrofit-spring-boot-reactor-starter-sample)
+
 
 ## 插件扩展功能
 你可以为Retrofit编写基于Interceptor的扩展功能，
