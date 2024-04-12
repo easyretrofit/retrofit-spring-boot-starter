@@ -520,24 +520,26 @@ public interface HelloApi {
 ## 插件扩展功能
 你可以为Retrofit编写基于Interceptor的扩展功能，
 
-以@RetrofitCloudService 为例，这是一个基于Interceptor的扩展功能，可以实现Retrofit在Spring Cloud中的负载均衡
+以@RetrofitLoadBalancer 为例，这是一个基于Interceptor的扩展功能，可以实现Retrofit在Spring Cloud中的负载均衡
 
 ```java
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
 @RetrofitDynamicBaseUrl
-@RetrofitInterceptor(handler = RetrofitCloudInterceptor.class)
-public @interface RetrofitCloudService {
+public @interface RetrofitLoadBalancer {
     @AliasFor(
             annotation = RetrofitDynamicBaseUrl.class,
             attribute = "value"
     )
     String name() default "";
+
+    RetrofitInterceptor extensions() default @RetrofitInterceptor(handler = RetrofitLoadBalancerInterceptor.class);
 }
 
+
 @Component
-public class RetrofitCloudInterceptor extends BaseInterceptor {
+public class RetrofitLoadBalancerInterceptor extends BaseInterceptor {
 
     @Autowired
     private LoadBalancerClient loadBalancerClient;
@@ -552,12 +554,12 @@ public class RetrofitCloudInterceptor extends BaseInterceptor {
         final Method method = super.getRequestMethod(request);
         String clazzName = super.getClazzNameByMethod(method);
         final RetrofitApiServiceBean currentServiceBean = context.getRetrofitApiServiceBean(clazzName);
-        RetrofitCloudService annotation = null;
-        annotation = currentServiceBean.getSelfClazz().getAnnotation(RetrofitCloudService.class);
+        RetrofitLoadBalancer annotation = null;
+        annotation = currentServiceBean.getSelfClazz().getAnnotation(RetrofitLoadBalancer.class);
         if (annotation == null) {
-            annotation = currentServiceBean.getParentClazz().getAnnotation(RetrofitCloudService.class);
+            annotation = currentServiceBean.getParentClazz().getAnnotation(RetrofitLoadBalancer.class);
         }
-        final String serviceName = annotation.name();
+        final String serviceName = RetrofitUrlUtils.convertDollarPattern(annotation.name(), context.getEnv()::resolveRequiredPlaceholders);
         if (StringUtils.isNotEmpty(serviceName)) {
             final URI uri = loadBalancerClient.choose(serviceName).getUri();
             final HttpUrl httpUrl = HttpUrl.get(uri);
@@ -572,37 +574,42 @@ public class RetrofitCloudInterceptor extends BaseInterceptor {
     }
 }
 
-public class RetrofitCloudServiceExtension implements RetrofitInterceptorExtension {
+public class RetrofitLoadBalancerExtension implements RetrofitInterceptorExtension {
     @Override
     public Class<? extends Annotation> createAnnotation() {
-        return RetrofitCloudService.class;
+        return RetrofitLoadBalancer.class;
     }
 
     @Override
     public Class<? extends BaseInterceptor> createInterceptor() {
-        return RetrofitCloudInterceptor.class;
+        return RetrofitLoadBalancerInterceptor.class;
+    }
+
+    @Override
+    public Class<? extends BaseExceptionDelegate<? extends RetrofitExtensionException>> createExceptionDelegate() {
+        return null;
     }
 }
 
 
 @Configuration
-public class RetrofitSpringCouldWebConfig {
+public class RetrofitLoadBalancerSpringCloudConfig {
     @Bean
     @ConditionalOnMissingBean
-    public RetrofitCloudServiceExtension retrofitSpringCouldWebConfig() {
-        return new RetrofitCloudServiceExtension();
+    public RetrofitLoadBalancerExtension retrofitSpringCouldWebConfig() {
+        return new RetrofitLoadBalancerExtension();
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public RetrofitCloudInterceptor retrofitCloudInterceptor() {
-        return new RetrofitCloudInterceptor();
+    public RetrofitLoadBalancerInterceptor retrofitCloudInterceptor() {
+        return new RetrofitLoadBalancerInterceptor();
     }
 }
 
 
 @RetrofitBuilder
-@RetrofitCloudService(name = "catalog")
+@RetrofitLoadBalancer(name = "catalog")
 public interface RetrofitApi {
 
     @GET("echo/{string}")
@@ -612,34 +619,8 @@ public interface RetrofitApi {
 ```
 如上代码其实也就是下面移除章节的重构后成为组件的Spring Cloud负载均衡功能。
 
-可以参考 [retrofit-spring-boot-starter-sample-plugin](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-plugin)
+可以参考 [retrofit-spring-boot-starter-sample-plugin](https://github.com/liuziyuan/easy-retrofit-demo/tree/main/retrofit-spring-loadbalancer-samples)
 
-
-### ~~@RetrofitCloudService Annotation~~ (v0.0.20 移除)
-此功能已从`retrofit-spring-boot-starter`移除，考虑的原因是`retrofit-spring-boot-starter`只作为SpringBoot或者说SpringFramework对Retrofit的封装和动态代理实现。
-
-此功能属于一个附加的Spring Cloud功能，依赖了Spring Cloud相关的组件。在未来，将会以插件的方式提供扩展，并以`retrofit-spring-cloud-starter`的方式，重新支持
-
-在 Spring Cloud 微服务集群, 你可以使用`@RetrofitCloudService`去调用其他方微服务的API。
-
-这个功能依赖`spring-cloud-starter-loadbalancer`,将以下加入 pom.xml
-```xml
-<dependency>
-   <groupId>org.springframework.cloud</groupId>
-   <artifactId>spring-cloud-starter-loadbalancer</artifactId>
-</dependency>
-```
-
-```java
-@RetrofitBuilder
-@RetrofitCloudService(name = "catalog")
-public interface RetrofitApi {
-
-    @GET("echo/{string}")
-    Call<ResponseBody> echo(@Path("string") String string);
-}
-```
-`catalog`是其他微服务的服务名称，也就是在注册中心的名称
 
 ## 为什么这里会有另一个 retrofit-spring-boot-starter
 
