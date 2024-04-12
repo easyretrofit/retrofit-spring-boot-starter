@@ -14,11 +14,6 @@ public class CustomRetrofitBuilderExtension implements RetrofitBuilderExtension 
     }
 
     @Override
-    public OverrideRule overwriteType() {
-        return null;
-    }
-
-    @Override
     public String globalBaseUrl() {
         return null;
     }
