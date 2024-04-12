@@ -15,11 +15,6 @@
     <artifactId>retrofit-core</artifactId>
     <version>1.1.4</version>
 
-    <name>${project.groupId}:${project.artifactId}</name>
-    <description>retrofit-core</description>
-    <url>https://github.com/liuziyuan/${project.artifactId}</url>
-
-
     <properties>
         <java.version>8</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
