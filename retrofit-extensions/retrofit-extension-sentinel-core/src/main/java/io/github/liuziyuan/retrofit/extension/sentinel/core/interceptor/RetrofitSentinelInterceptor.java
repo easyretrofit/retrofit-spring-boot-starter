@@ -37,7 +37,13 @@ public class RetrofitSentinelInterceptor extends BaseInterceptor {
             try {
                 String name = ResourceNameUtil.getConventionResourceName(request);
                 entry = SphU.entry(name, retrofitSentinelResource.resourceType(), retrofitSentinelResource.entryType());
-                return chain.proceed(request);
+                Response proceed = chain.proceed(request);
+                if (!proceed.isSuccessful()) {
+                    IOException ioException = new IOException("response is not successful");
+                    Tracer.traceEntry(ioException, entry);
+                    throw ioException;
+                }
+                return proceed;
             } catch (BlockException e) {
                 // 资源访问阻止，被限流或被降级
                 throw new SentinelBlockException(e, currentServiceBean, request);
