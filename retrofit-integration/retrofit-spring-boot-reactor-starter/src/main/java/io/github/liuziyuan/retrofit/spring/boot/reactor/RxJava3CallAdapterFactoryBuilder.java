@@ -1,6 +1,5 @@
 package io.github.liuziyuan.retrofit.spring.boot.reactor;
 
-import com.jakewharton.retrofit2.adapter.reactor.ReactorCallAdapterFactory;
 import io.github.liuziyuan.retrofit.core.builder.BaseCallAdapterFactoryBuilder;
 import retrofit2.CallAdapter;
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
