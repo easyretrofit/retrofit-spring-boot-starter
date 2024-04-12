@@ -11,6 +11,7 @@
 - [动态URL](#动态URL)
 - [全局配置功能](#全局配置功能)
 - [插件扩展功能](#插件扩展功能)
+- [简化集成](#简化集成)
 - [为什么这里会有另一个 retrofit-spring-boot-starter](#为什么这里会有另一个-retrofit-spring-boot-starter)
 - [Maintainers](#maintainers)
 - [Contributing](#contributing)
