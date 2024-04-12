@@ -6,8 +6,11 @@ import io.github.liuziyuan.retrofit.core.RetrofitInterceptorExtension;
 import io.github.liuziyuan.retrofit.core.annotation.*;
 import io.github.liuziyuan.retrofit.core.exception.RetrofitStarterException;
 import io.github.liuziyuan.retrofit.core.generator.Generator;
+import io.github.liuziyuan.retrofit.core.util.ReflectUtils;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.*;
 
 /**
@@ -55,19 +58,32 @@ public class RetrofitApiServiceBeanGenerator implements Generator<RetrofitApiSer
         return retrofitApiServiceBean;
     }
 
-    private void addExtensionInterceptors(RetrofitInterceptorExtension interceptorExtension, RetrofitApiServiceBean retrofitApiServiceBean, Class<?> clazz, Set<RetrofitInterceptor> interceptors) {
+    private void addExtensionInterceptors(RetrofitInterceptorExtension interceptorExtension, RetrofitApiServiceBean retrofitApiServiceBean, Class<?> apiClazz, Set<RetrofitInterceptor> interceptors) {
         try {
-            boolean hasAnnotation = Arrays.stream(clazz.getDeclaredAnnotations()).anyMatch(annotation -> annotation.annotationType().getName().equals(interceptorExtension.createAnnotation().getName()));
-            if (hasAnnotation) {
-                RetrofitInterceptor annotation = interceptorExtension.createAnnotation().getAnnotation(RetrofitInterceptor.class);
-                assert annotation.handler().getName().equals(interceptorExtension.createInterceptor().getName());
+            RetrofitInterceptor retrofitInterceptor = getInterceptorExtensionAnnotation(interceptorExtension, apiClazz);
+            if (retrofitInterceptor != null) {
+                assert retrofitInterceptor.handler() == interceptorExtension.createInterceptor();
                 if (interceptorExtension.createExceptionDelegate() != null) {
                     retrofitApiServiceBean.addExceptionDelegate(interceptorExtension.createExceptionDelegate());
                 }
-                interceptors.add(annotation);
+                interceptors.add(retrofitInterceptor);
             }
         } catch (NullPointerException ignored) {
         }
+    }
+
+    private RetrofitInterceptor getInterceptorExtensionAnnotation(RetrofitInterceptorExtension interceptorExtension, Class<?> apiClazz) {
+        Annotation declaredAnnotation = apiClazz.getDeclaredAnnotation(interceptorExtension.createAnnotation());
+        Method[] methods = declaredAnnotation.getClass().getMethods();
+        for (Method method : methods) {
+            Type genericReturnType = method.getGenericReturnType();
+            if (genericReturnType == RetrofitInterceptor.class) {
+                String paramsName = method.getName();
+                Object extensionObj = ReflectUtils.getMethodReturnValue(declaredAnnotation, paramsName);
+                return (RetrofitInterceptor) extensionObj;
+            }
+        }
+        return null;
     }
 
 

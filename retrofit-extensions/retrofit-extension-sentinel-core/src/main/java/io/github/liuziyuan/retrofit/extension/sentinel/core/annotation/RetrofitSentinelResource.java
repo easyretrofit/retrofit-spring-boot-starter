@@ -14,7 +14,6 @@ import java.lang.annotation.*;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@RetrofitInterceptor(handler = RetrofitSentinelInterceptor.class)
 public @interface RetrofitSentinelResource {
 
     /**
@@ -39,4 +38,6 @@ public @interface RetrofitSentinelResource {
      * @return a class that implements BaseFallBack
      */
     Class<? extends BaseFallBack> fallback() default BaseFallBack.class;
+
+    RetrofitInterceptor extensions() default @RetrofitInterceptor(handler = RetrofitSentinelInterceptor.class);
 }
