@@ -145,8 +145,8 @@ public class HelloController {
 }
 ```
 
-你可以参考 [retrofit-spring-boot-starter-sample-quickstart](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-quickstart)
-& [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-backend-services)
+你可以参考 [retrofit-spring-boot-starter-sample-quickstart](https://github.com/liuziyuan/easy-retrofit-demo/tree/main/retrofit-spring-boot-starter-sample-quickstart)
+& [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/easy-retrofit-demo/tree/main/backend-service)
 
 **是的，恭喜你，你的代码应该能正常工作。**
 
@@ -334,9 +334,9 @@ like `@RetrofitInterceptor(handler = MyRetrofitInterceptor.class, exclude = {"/v
 
 当使用`type`, type是一个Interceptor的枚举类, 你可以指定此拦截器是OkHttpClient 的`addInterceptor()`方式或`addNetworkInterceptor()`方式
 
-你可以参考 [retrofit-spring-boot-starter-sample-retrofitbuilder](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-retrofitbuilder)
+你可以参考 [retrofit-spring-boot-starter-sample-builder](https://github.com/liuziyuan/easy-retrofit-demo/tree/main/retrofit-spring-boot-starter-sample-builder)
 &
-[retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-backend-services)
+[retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/easy-retrofit-demo/tree/main/backend-service)
 
 ## 接口继承
 
@@ -429,9 +429,8 @@ public interface HelloApi extends BaseApi {
 
 **在运行中，这两个接口会生成相同的URL `/v1/hello/{message}`**
 
-你可以参考 [retrofit-spring-boot-starter-sample-inherit](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-inherit)
-& [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-backend-services)
-
+你可以参考 [retrofit-spring-boot-starter-sample-inherit](https://github.com/liuziyuan/easy-retrofit-demo/tree/main/retrofit-spring-boot-starter-sample-inherit)
+& [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/easy-retrofit-demo/tree/main/backend-service)
 _**Warning:**_
 如果在同一Controller注入父接口和子接口，可能会发生以下错误
 
@@ -480,15 +479,14 @@ public class HelloController {
 
 通过这样的方式，可以减少Retrofit实例的数量，降低内存占用。
 
-你可以参考 [retrofit-spring-boot-starter-sample-single-instance](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-single-instance)
-& [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-backend-services)
-
+你可以参考 [retrofit-spring-boot-starter-sample-single-instance](https://github.com/liuziyuan/easy-retrofit-demo/tree/main/retrofit-spring-boot-starter-sample-single-instance)
+& [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/easy-retrofit-demo/tree/main/backend-service)
 ## 动态URL
 
 你可以使用`@RetrofitDynamicBaseUrl` 动态的改变`@RetrofitBuilder`中的`baseUrl`
 
-你可以参考 [retrofit-spring-boot-starter-sample-awesome](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-awesome)
-& [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-backend-services)
+你可以参考 [retrofit-spring-boot-starter-sample-dynamic-url](https://github.com/liuziyuan/easy-retrofit-demo/tree/main/retrofit-spring-boot-starter-sample-dynamic-url)
+& [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/easy-retrofit-demo/tree/main/backend-service)
 
 ## 全局配置功能
 你可以在Springboot项目中的配置文件中application.yml中配置`retrofit-spring-boot-starter`的全局配置,当开启全局配置后，所有的`@RetrofitBuilder`中的配置将使用全局配置
@@ -503,19 +501,36 @@ retrofit:
 ```
 这里的属性与`@RetrofitBuilder`中的属性完全相同，可以参考`@RetrofitBuilder`的注解说明
 
-`overwrite-type` 提供了`global_first`和`local_first`两种模式，
-
-当为`global_first`时，全局配置将会与`@RetrofitBuilder`配置合并,使用全局配置的属性，全局配置为空的属性将会使用`@RetrofitBuilder`配置中的属性
-
-当为`local_first`时，全局配置将会与`@RetrofitBuilder`配置合并, 使用`@RetrofitBuilder`配置的属性，`@RetrofitBuilder`配置为空的将会使用全局配置的属性
-
-在`@RetrofitBuilder`中提供`denyGlobalConfig = true`的配置，可以拒绝全局的配置，保持自己的独立性而不被全局配置污染
+在`RetrofitBuilder`注解中提供了`OverrideRule globalOverwriteRule()`方法，可以设置Global与Local配置配置的merge策略。默认是GLOBAL_FIRST，你可以修改`RetrofitBuilder`适当的模式，来保证配置的优先级。
 ```java
-@RetrofitBuilder(baseUrl = "http://localhost:8080/", denyGlobalConfig = true)
-public interface HelloApi {
+public enum OverrideRule {
+    /**
+     * if GLOBAL_ONLY, use global resource only
+     */
+    GLOBAL_ONLY,
+    /**
+     * if GLOBAL_FIRST, use global resource first, if not found, use local resource
+     */
+    GLOBAL_FIRST,
+
+    /**
+     * if MERGE, merge global and local resource
+     */
+    MERGE,
+    /**
+     * if LOCAL_FIRST, use local resource first, if not found, use global resource
+     */
+    LOCAL_FIRST,
+
+    /**
+     * if LOCAL_ONLY, use local resource only
+     */
+    LOCAL_ONLY;
 }
+
 ```
-可以参考 [retrofit-spring-boot-starter-sample-global-config](https://github.com/liuziyuan/retrofit-spring-boot-starter-samples/tree/main/retrofit-spring-boot-starter-sample-global-config)
+
+可以参考 [retrofit-spring-boot-starter-sample-global-config](https://github.com/liuziyuan/easy-retrofit-demo/tree/main/retrofit-spring-boot-starter-sample-global-config)
 
 ## 简化集成
 可以在retrofit-integration文件夹中看到[retrofit-spring-boot-web-starter](retrofit-integration%2Fretrofit-spring-boot-web-starter) 和 [retrofit-spring-boot-reactor-starter](retrofit-integration%2Fretrofit-spring-boot-reactor-starter)两个starter.
