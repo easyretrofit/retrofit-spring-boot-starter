@@ -9,7 +9,7 @@
     <version>1.1.0</version>
 
     <name>${project.groupId}:${project.artifactId}</name>
-    <description>Through annotation and configuration, based on DI, it is easy to use retrofit2</description>
+    <description>easy retrofit parent pom</description>
     <url>https://github.com/liuziyuan/easy-retrofit</url>
 
     <licenses>
@@ -129,30 +129,30 @@
                 </executions>
             </plugin>
             <!-- GPG -->
-            <!--            <plugin>-->
-            <!--                <groupId>org.apache.maven.plugins</groupId>-->
-            <!--                <artifactId>maven-gpg-plugin</artifactId>-->
-            <!--                <version>3.1.0</version>-->
-            <!--                <executions>-->
-            <!--                    <execution>-->
-            <!--                        <id>sign-artifacts</id>-->
-            <!--                        <phase>verify</phase>-->
-            <!--                        <goals>-->
-            <!--                            <goal>sign</goal>-->
-            <!--                        </goals>-->
-            <!--                    </execution>-->
-            <!--                </executions>-->
-            <!--            </plugin>-->
-            <!--            <plugin>-->
-            <!--                <groupId>org.sonatype.central</groupId>-->
-            <!--                <artifactId>central-publishing-maven-plugin</artifactId>-->
-            <!--                <version>0.4.0</version>-->
-            <!--                <extensions>true</extensions>-->
-            <!--                <configuration>-->
-            <!--                    <publishingServerId>central</publishingServerId>-->
-            <!--                    <tokenAuth>true</tokenAuth>-->
-            <!--                </configuration>-->
-            <!--            </plugin>-->
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-gpg-plugin</artifactId>
+                            <version>3.1.0</version>
+                            <executions>
+                                <execution>
+                                    <id>sign-artifacts</id>
+                                    <phase>verify</phase>
+                                    <goals>
+                                        <goal>sign</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
+                        </plugin>
+                        <plugin>
+                            <groupId>org.sonatype.central</groupId>
+                            <artifactId>central-publishing-maven-plugin</artifactId>
+                            <version>0.4.0</version>
+                            <extensions>true</extensions>
+                            <configuration>
+                                <publishingServerId>central</publishingServerId>
+                                <tokenAuth>true</tokenAuth>
+                            </configuration>
+                        </plugin>
         </plugins>
     </build>
 

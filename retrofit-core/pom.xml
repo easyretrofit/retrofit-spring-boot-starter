@@ -9,9 +9,9 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-
+    <description>easy retrofit core project, to create a retrofit context for retrofit-spring-boot-starter or others </description>
     <artifactId>retrofit-core</artifactId>
-    <version>1.1.4</version>
+    <version>1.2.0</version>
     <packaging>jar</packaging>
 
     <properties>

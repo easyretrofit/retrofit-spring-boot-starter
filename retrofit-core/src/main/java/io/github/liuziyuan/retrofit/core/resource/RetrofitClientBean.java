@@ -23,8 +23,8 @@ public final class RetrofitClientBean {
     private String realHostUrl;
     private UrlStatus urlStatus;
     private RetrofitBuilderBean retrofitBuilder;
-    private Set<RetrofitInterceptor> interceptors;
-    private Set<RetrofitInterceptor> inheritedInterceptors;
+    private Set<RetrofitInterceptorBean> interceptors;
+    private Set<RetrofitInterceptorBean> inheritedInterceptors;
     private List<RetrofitApiServiceBean> retrofitApiServiceBeans;
 
     public RetrofitClientBean() {
@@ -42,7 +42,7 @@ public final class RetrofitClientBean {
         retrofitApiServiceBean.setRetrofitClientBean(this);
     }
 
-    public void addInheritedInterceptors(Set<RetrofitInterceptor> serviceInheritedInterceptors) {
+    public void addInheritedInterceptors(Set<RetrofitInterceptorBean> serviceInheritedInterceptors) {
         inheritedInterceptors.addAll(serviceInheritedInterceptors);
     }
 

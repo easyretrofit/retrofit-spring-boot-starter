@@ -72,9 +72,9 @@ public class RetrofitResourceComparer {
 
     public boolean interceptorsCompare() {
         List<String> clientBeanInterceptorNameList = new ArrayList<>();
-        clientBean.getInterceptors().forEach(i -> clientBeanInterceptorNameList.add(i.handler().getName()));
+        clientBean.getInterceptors().forEach(i -> clientBeanInterceptorNameList.add(i.getHandler().getName()));
         List<String> serviceBeanInterceptorNameList = new ArrayList<>();
-        serviceBean.getInterceptors().forEach(i -> serviceBeanInterceptorNameList.add(i.handler().getName()));
+        serviceBean.getInterceptors().forEach(i -> serviceBeanInterceptorNameList.add(i.getHandler().getName()));
         return new HashSet<>(clientBeanInterceptorNameList).equals(new HashSet<>(serviceBeanInterceptorNameList));
     }
 
