@@ -14,6 +14,7 @@ easy retrofit 在设计之初，就考虑到了retrofit的Interceptor的扩展�
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
 @RetrofitDynamicBaseUrl
+@RetrofitInterceptor(handler = RetrofitLoadBalancerInterceptor.class)
 public @interface RetrofitLoadBalancer {
     @AliasFor(
             annotation = RetrofitDynamicBaseUrl.class,
@@ -21,12 +22,11 @@ public @interface RetrofitLoadBalancer {
     )
     String name() default "";
 
-    RetrofitInterceptor extensions() default @RetrofitInterceptor(handler = RetrofitLoadBalancerInterceptor.class);
+    RetrofitInterceptorParam extensions() default @RetrofitInterceptorParam();
 }
 ```
 
-需要强调的，必须要在Annotation中加上`RetrofitInterceptor extensions() default @RetrofitInterceptor(handler = RetrofitLoadBalancerInterceptor.class);`
-其中handler的值就是这个Annotation对应的Interceptor。
+需要强调的，你可以在Annotation中加上`RetrofitInterceptorParam extensions() default @RetrofitInterceptorParam();`，这里可以将`RetrofitInterceptorParam`中的属性值，传递给`RetrofitInterceptor`。
 
 ### 创建一个Interceptor
 
