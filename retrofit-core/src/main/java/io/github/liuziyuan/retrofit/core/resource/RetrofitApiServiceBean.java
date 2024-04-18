@@ -27,8 +27,8 @@ public final class RetrofitApiServiceBean {
     /**
      * parent Interface interceptors
      */
-    private Set<RetrofitInterceptor> interceptors;
-    private Set<RetrofitInterceptor> myInterceptors;
+    private Set<RetrofitInterceptorBean> interceptors;
+    private Set<RetrofitInterceptorBean> myInterceptors;
     private RetrofitClientBean retrofitClientBean;
     private Set<Class<? extends BaseExceptionDelegate<? extends RetrofitExtensionException>>> exceptionDelegates;
 

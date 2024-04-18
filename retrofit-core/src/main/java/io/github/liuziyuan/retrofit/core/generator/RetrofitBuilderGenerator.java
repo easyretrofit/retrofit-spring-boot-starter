@@ -10,6 +10,7 @@ import io.github.liuziyuan.retrofit.core.extension.DynamicBaseUrlInterceptor;
 import io.github.liuziyuan.retrofit.core.extension.UrlOverWriteInterceptor;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitBuilderBean;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
+import io.github.liuziyuan.retrofit.core.resource.RetrofitInterceptorBean;
 import io.github.liuziyuan.retrofit.core.util.CollectionUtils;
 import lombok.SneakyThrows;
 import okhttp3.Call;
@@ -126,10 +127,10 @@ public final class RetrofitBuilderGenerator implements Generator<Retrofit.Builde
     @SneakyThrows
     private void setRetrofitOkHttpClient() {
         final RetrofitBuilderBean retrofitBuilder = clientBean.getRetrofitBuilder();
-        Set<RetrofitInterceptor> allInterceptors = new LinkedHashSet<>();
+        Set<RetrofitInterceptorBean> allInterceptors = new LinkedHashSet<>();
         allInterceptors.addAll(clientBean.getInterceptors());
         allInterceptors.addAll(clientBean.getInheritedInterceptors());
-        final List<RetrofitInterceptor> interceptors = new ArrayList<>(allInterceptors);
+        final List<RetrofitInterceptorBean> interceptors = new ArrayList<>(allInterceptors);
         OkHttpClient.Builder okHttpClientBuilder;
         if (retrofitBuilder.getClient() != null) {
             final OkHttpClientBuilderGenerator clientBuilderGenerator = new OkHttpClientBuilderGenerator(retrofitBuilder.getClient()) {
@@ -153,12 +154,12 @@ public final class RetrofitBuilderGenerator implements Generator<Retrofit.Builde
     }
 
     @SneakyThrows
-    private List<Interceptor> getOkHttpInterceptors(List<RetrofitInterceptor> interceptors, InterceptorType type) {
+    private List<Interceptor> getOkHttpInterceptors(List<RetrofitInterceptorBean> interceptors, InterceptorType type) {
         List<Interceptor> interceptorList = new ArrayList<>();
         OkHttpInterceptorGenerator okHttpInterceptorGenerator;
-        interceptors.sort(Comparator.comparing(RetrofitInterceptor::sort));
-        for (RetrofitInterceptor interceptor : interceptors) {
-            if (interceptor.type() == type) {
+        interceptors.sort(Comparator.comparing(RetrofitInterceptorBean::getSort));
+        for (RetrofitInterceptorBean interceptor : interceptors) {
+            if (interceptor.getType() == type) {
                 okHttpInterceptorGenerator = new OkHttpInterceptorGenerator(interceptor, context) {
                     @Override
                     public BaseInterceptor buildInjectionObject(Class<? extends BaseInterceptor> clazz) {
