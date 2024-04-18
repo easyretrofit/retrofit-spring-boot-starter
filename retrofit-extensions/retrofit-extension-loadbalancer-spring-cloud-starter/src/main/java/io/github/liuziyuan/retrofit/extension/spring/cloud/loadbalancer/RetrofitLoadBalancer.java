@@ -11,6 +11,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
 @RetrofitDynamicBaseUrl
+@RetrofitInterceptor(handler = RetrofitLoadBalancerInterceptor.class)
 public @interface RetrofitLoadBalancer {
     @AliasFor(
             annotation = RetrofitDynamicBaseUrl.class,
