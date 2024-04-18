@@ -12,7 +12,7 @@
     <packaging>pom</packaging>
 
     <artifactId>retrofit-extensions</artifactId>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
 
     <properties>
         <java.version>8</java.version>
