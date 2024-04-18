@@ -13,7 +13,7 @@
 
     <artifactId>retrofit-spring-boot-starter</artifactId>
     <version>1.3.4</version>
-
+    <description>Through annotation and configuration, based on DI, it is easy to use retrofit2 in SpringBoot</description>
 
     <properties>
         <java.version>1.8</java.version>

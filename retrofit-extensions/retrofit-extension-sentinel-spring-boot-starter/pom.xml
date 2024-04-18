@@ -13,7 +13,7 @@
 
     <artifactId>retrofit-extension-sentinel-spring-boot-starter</artifactId>
     <version>1.1.0</version>
-
+    <description>easy retrofit extension for sentinel spring boot starter</description>
     <properties>
         <java.version>8</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>

@@ -11,7 +11,7 @@
 
     <artifactId>retrofit-spring-boot-web-starter</artifactId>
     <version>1.4.0</version>
-
+    <description>easy retrofit retrofit-spring-boot-web-starter if use springboot web , you can use this starter</description>
     <properties>
         <java.version>1.8</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>

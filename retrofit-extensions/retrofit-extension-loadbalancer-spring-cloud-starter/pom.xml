@@ -12,7 +12,7 @@
 
     <artifactId>retrofit-extension-loadbalancer-spring-cloud-starter</artifactId>
     <version>1.1.0</version>
-
+    <description>easy retrofit extension for spring cloud loadbalancer</description>
     <packaging>jar</packaging>
 
     <properties>

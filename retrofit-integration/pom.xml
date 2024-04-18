@@ -10,7 +10,7 @@
     </parent>
 
     <packaging>pom</packaging>
-
+    <description>easy retrofit integration</description>
     <artifactId>retrofit-integration</artifactId>
     <version>1.0.0</version>
 
