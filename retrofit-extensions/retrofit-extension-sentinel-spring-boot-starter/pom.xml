@@ -12,7 +12,7 @@
     <packaging>jar</packaging>
 
     <artifactId>retrofit-extension-sentinel-spring-boot-starter</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
     <description>easy retrofit extension for sentinel spring boot starter</description>
     <properties>
         <java.version>8</java.version>
@@ -21,7 +21,7 @@
         <java.source.version>${java.version}</java.source.version>
         <java.target.version>${java.version}</java.target.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <retrofit.sentinel.core.version>1.1.0</retrofit.sentinel.core.version>
+        <retrofit.sentinel.core.version>1.1.2</retrofit.sentinel.core.version>
         <sentinel.version>1.8.6</sentinel.version>
         <spring.boot.version>2.0.0.RELEASE</spring.boot.version>
     </properties>

@@ -15,6 +15,7 @@ import java.lang.annotation.*;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
+@RetrofitInterceptor(handler = RetrofitSentinelInterceptor.class)
 public @interface RetrofitSentinelResource {
 
     /**
