@@ -5,7 +5,7 @@ import io.github.liuziyuan.retrofit.core.annotation.RetrofitInterceptor;
 import io.github.liuziyuan.retrofit.core.annotation.RetrofitInterceptorParam;
 
 @RetrofitBuilder()
-@RetrofitTestAnno(params = @RetrofitInterceptorParam(sort = 10))
+@RetrofitTestAnno(extension = @RetrofitInterceptorParam(sort = 10))
 @RetrofitInterceptor(handler = RetrofitTestInterceptor.class, sort = 10)
 public interface HelloApi {
 }

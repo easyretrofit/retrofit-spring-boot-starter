@@ -22,7 +22,7 @@
         <java.source.version>${java.version}</java.source.version>
         <java.target.version>${java.version}</java.target.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <retrofit.core.version>1.2.0</retrofit.core.version>
+        <retrofit.core.version>1.2.1</retrofit.core.version>
     </properties>
 
     <dependencies>

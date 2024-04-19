@@ -1,6 +1,7 @@
 package io.github.liuziyuan.test.retrofit.spring.boot.extension;
 
 import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
+import io.github.liuziyuan.retrofit.core.annotation.RetrofitInterceptor;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
 import io.github.liuziyuan.retrofit.spring.boot.EnableRetrofit;
 import org.junit.Assert;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.annotation.AnnotationUtils;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
