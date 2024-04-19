@@ -6,13 +6,13 @@
     <parent>
         <groupId>io.github.liuziyuan</groupId>
         <artifactId>retrofit-extensions</artifactId>
-        <version>1.1.0</version>
+        <version>1.1.1</version>
     </parent>
 
     <packaging>jar</packaging>
 
     <artifactId>retrofit-extension-sentinel-spring-boot-starter</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
     <description>easy retrofit extension for sentinel spring boot starter</description>
     <properties>
         <java.version>8</java.version>
