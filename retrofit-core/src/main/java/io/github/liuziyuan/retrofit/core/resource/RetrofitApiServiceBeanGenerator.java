@@ -60,23 +60,24 @@ public class RetrofitApiServiceBeanGenerator implements Generator<RetrofitApiSer
 
     private void addExtensionInterceptors(RetrofitInterceptorExtension interceptorExtension, RetrofitApiServiceBean retrofitApiServiceBean, Class<?> apiClazz, Set<RetrofitInterceptorBean> interceptors) {
         try {
-            boolean hasAnnotation = Arrays.stream(clazz.getDeclaredAnnotations()).anyMatch(annotation -> annotation.annotationType() == interceptorExtension.createAnnotation());
-            if (hasAnnotation) {
-                RetrofitInterceptor annotation = interceptorExtension.createAnnotation().getAnnotation(RetrofitInterceptor.class);
-                RetrofitInterceptorBean retrofitInterceptor = getInterceptorParamsAnnotation(interceptorExtension, apiClazz, annotation);
-                if (retrofitInterceptor != null) {
-                    assert retrofitInterceptor.getHandler() == interceptorExtension.createInterceptor();
+            Annotation extensionAnnotation = Arrays.stream(apiClazz.getDeclaredAnnotations()).filter(annotation -> annotation.annotationType() == interceptorExtension.createAnnotation()).findFirst().orElse(null);
+            if (extensionAnnotation != null) {
+                RetrofitInterceptor interceptorAnnotation = extensionAnnotation.annotationType().getAnnotation(RetrofitInterceptor.class);
+                if (interceptorAnnotation != null) {
+                    RetrofitInterceptorBean retrofitInterceptorBean = new RetrofitInterceptorBean(interceptorAnnotation);
+                    retrofitInterceptorBean = getInterceptorParamsAnnotation(interceptorExtension, apiClazz, interceptorAnnotation, retrofitInterceptorBean);
+                    assert Objects.requireNonNull(retrofitInterceptorBean).getHandler() == interceptorExtension.createInterceptor();
                     if (interceptorExtension.createExceptionDelegate() != null) {
                         retrofitApiServiceBean.addExceptionDelegate(interceptorExtension.createExceptionDelegate());
                     }
-                    interceptors.add(retrofitInterceptor);
+                    interceptors.add(retrofitInterceptorBean);
                 }
             }
         } catch (NullPointerException ignored) {
         }
     }
 
-    private RetrofitInterceptorBean getInterceptorParamsAnnotation(RetrofitInterceptorExtension interceptorExtension, Class<?> apiClazz, RetrofitInterceptor interceptorAnnotation) {
+    private RetrofitInterceptorBean getInterceptorParamsAnnotation(RetrofitInterceptorExtension interceptorExtension, Class<?> apiClazz, RetrofitInterceptor interceptorAnnotation, RetrofitInterceptorBean retrofitInterceptorBean) {
         Annotation declaredAnnotation = apiClazz.getDeclaredAnnotation(interceptorExtension.createAnnotation());
         Method[] methods = declaredAnnotation.getClass().getMethods();
         for (Method method : methods) {
@@ -88,7 +89,7 @@ public class RetrofitApiServiceBeanGenerator implements Generator<RetrofitApiSer
                 return new RetrofitInterceptorBean(interceptorAnnotation, extensionObj);
             }
         }
-        return null;
+        return retrofitInterceptorBean;
     }
 
 

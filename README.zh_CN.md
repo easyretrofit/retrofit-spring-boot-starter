@@ -1,6 +1,7 @@
 # _EASY_ retrofit-spring-boot-starter
 
 ## 目录
+
 - [介绍](#介绍)
 - [安装](#安装)
 - [快速开始](#快速开始)
@@ -18,11 +19,14 @@
 - [License](#license)
 
 ## 介绍
+
 在SpringBoot项目中快速使用Retrofit2,`retrofit-spring-boot-starter`提供了一个基于注解的配置创建Retrofit实例，并通过更多的注释实现了通用功能的增强。
 本项目使用Springboot的动态代理机制，在Spring上下文的生命周期前期，将Retrofit实例注入到Spring上下文。
 
 ## 安装
+
 **Maven:**
+
 ```xml
 
 <dependency>
@@ -31,13 +35,24 @@
     <version>${latest-version}</version>
 </dependency>
 ```
+
 **Gradle:**
+
 ```groovy
 dependencies {
     implementation 'io.github.liuziyuan:retrofit-spring-boot-starter:${latest-version}'
 }
 ```
-本项目的最多兼容稳定版本号为 `1.3.1`,以及后续版本。该版本在不同JDK下兼容SpringBoot2和Springboot3版本如下:
+
+### 最后发布版本对应
+
+| retrofit-core | retrofit-spring-boot-starter | retrofit-spring-boot-reactor-starter<br/>retrofit-spring-boot-web-starter | retrofit-extension-loadbalancer-spring-cloud-starter | retrofit-extension-sentinel-spring-boot-starter |
+|---------------|------------------------------|---------------------------------------------------------------------------|------------------------------------------------------|-------------------------------------------------|
+| 1.2.1         | 1.3.5                        | 1.4.1                                                                     | 1.1.1                                                | 1.1.2                                           |
+| 1.2.0         | 1.3.4                        | 1.4.0                                                                     | 1.1.0                                                | 1.1.0                                           |                           |                                                                           |
+| 1.1.4         | 1.3.3                        | 1.3.0                                                                     | 1.0.0                                                | 1.0.0                                           |
+
+### retrofit-spring-boot-starter与 JDK和Springboot版本对应关系
 
 | jdk version | Springboot2 version   | Springboot3 version |
 |-------------|-----------------------|---------------------|
@@ -47,7 +62,9 @@ dependencies {
 | jdk21       | 2.7.16 - 2.7.x        | 3.1.0 - latest(*)   |
 
 注意：如果你需要在jdk21的Springboot3.1.0-3.1.2中使用Lombok，请注意lombok的版本号为1.18.30 +
+
 ```xml
+
 <dependency>
     <groupId>org.projectlombok</groupId>
     <artifactId>lombok</artifactId>
@@ -61,10 +78,11 @@ dependencies {
 _前提条件：你已经掌握了Retrofit的基本用法_
 
 如下代码展示了在在传统Retrofit2的使用中，GitHubService接口需要被显式的创建。
+
 ```java
 public interface GitHubService {
-  @GET("users/{user}/repos")
-  Call<List<Repo>> listRepos(@Path("user") String user);
+    @GET("users/{user}/repos")
+    Call<List<Repo>> listRepos(@Path("user") String user);
 }
 
 
@@ -74,6 +92,7 @@ Retrofit retrofit = new Retrofit.Builder()
 
 GitHubService service = retrofit.create(GitHubService.class);
 ```
+
 在传统Retrofit2的使用中，GitHubService接口需要被显式的创建。
 
 通过`retrofit-spring-boot-starter`, `GitHubService`不再需要显式的创建,而是被Spring容器动态代理创建。
@@ -81,7 +100,9 @@ GitHubService service = retrofit.create(GitHubService.class);
 如下展示了如何使用`retrofit-spring-boot-starter`快速使用Retrofit2的方式。
 
 ### 添加 `@EnableRetrofit`
+
 在Springboot的启动类上增加`@EnableRetrofit`注解，代表可以开启Retrofit2的自动配置。
+
 ```java
 
 @EnableRetrofit
@@ -98,7 +119,10 @@ public class QuickStartApplication {
 文件夹名。默认情况下，将扫描starter类文件所在目录中的所有文件
 
 ### 创建一个接口文件, 并且使用`@RetrofitBuilder`
-`@RetrofitBuilder` 注解可以用来配置Retrofit2的配置信息，如baseUrl等。他完整的代替了显式的`Retrofit.Builder()`来创建Retrofit实例。
+
+`@RetrofitBuilder` 注解可以用来配置Retrofit2的配置信息，如baseUrl等。他完整的代替了显式的`Retrofit.Builder()`
+来创建Retrofit实例。
+
 ```java
 
 @RetrofitBuilder(baseUrl = "${app.hello.url}")
@@ -127,7 +151,9 @@ app:
 当然你也可以直接写成`@RetrofitBuilder(baseUrl = "http://localhost:8080/")`。
 
 ### 注入 Retrofit API 接口
+
 可以在Spring的Controller中注入Retrofit API接口。
+
 ```java
 
 @RestController
@@ -259,7 +285,8 @@ okhttpclient:
 
 ### 创建自定义的 OKHttpClient Interceptor
 
-创建一个自定义的 OKHttpClient Interceptor 需要继承`BaseInterceptor`，并且在接口名上声明如`@RetrofitInterceptor(handler = MyRetrofitInterceptor.class)`
+创建一个自定义的 OKHttpClient Interceptor 需要继承`BaseInterceptor`
+，并且在接口名上声明如`@RetrofitInterceptor(handler = MyRetrofitInterceptor.class)`
 
 ```java
 
@@ -321,7 +348,8 @@ public class LoggingInterceptor extends BaseInterceptor {
 
 _**小贴士:**_
 
-如果只想设置拦截器，而不想对OKHttpClient对象进行其他修改，则可以从`@RetrofitBuilder`删除`client = OkHttpClientBuilder.class`属性，无需自定义OKHttpClient
+如果只想设置拦截器，而不想对OKHttpClient对象进行其他修改，则可以从`@RetrofitBuilder`
+删除`client = OkHttpClientBuilder.class`属性，无需自定义OKHttpClient
 
 ### 为@RetrofitInterceptor 设置 include,exclude,type 和 sort
 
@@ -330,9 +358,11 @@ like `@RetrofitInterceptor(handler = MyRetrofitInterceptor.class, exclude = {"/v
 
 当使用`exclude`, 相应的API将忽略此拦截器
 
-当使用`sort`, 请确保所有拦截器都使用了sort属性,因为默认情况下,sort为0. 您可以通过int类型的值确保拦截器的执行顺序。**_默认的,拦截器从上到下装载。_**
+当使用`sort`, 请确保所有拦截器都使用了sort属性,因为默认情况下,sort为0. 您可以通过int类型的值确保拦截器的执行顺序。*
+*_默认的,拦截器从上到下装载。_**
 
-当使用`type`, type是一个Interceptor的枚举类, 你可以指定此拦截器是OkHttpClient 的`addInterceptor()`方式或`addNetworkInterceptor()`方式
+当使用`type`, type是一个Interceptor的枚举类, 你可以指定此拦截器是OkHttpClient 的`addInterceptor()`
+方式或`addNetworkInterceptor()`方式
 
 你可以参考 [retrofit-spring-boot-starter-sample-builder](https://github.com/liuziyuan/easy-retrofit-demo/tree/main/retrofit-spring-boot-starter-sample-builder)
 &
@@ -393,7 +423,8 @@ public interface HelloApi {
 }
 ```
 
-如果 `HelloApi` 使用 `extends BaseApi` 并且使用了 `@RetrofitBase(baseInterface = BaseApi.class)`, starter会优先去使用 `@RetrofitBase(baseInterface = BaseApi.class)`
+如果 `HelloApi` 使用 `extends BaseApi` 并且使用了 `@RetrofitBase(baseInterface = BaseApi.class)`,
+starter会优先去使用 `@RetrofitBase(baseInterface = BaseApi.class)`
 
 ## URL前缀
 
@@ -473,7 +504,8 @@ public class HelloController {
 
 当Retrofit配置相同且仅为`baseUrl`的后缀部分不同时，会只创建一个Retrofit实例。
 
-在`retrofit-spring-boot-starter`中可以看到,一个retrofit实例被称之为`RetrofitClient`，一个Retrofit实例的接口被称之为`RetrofitApiService`。
+在`retrofit-spring-boot-starter`中可以看到,一个retrofit实例被称之为`RetrofitClient`
+，一个Retrofit实例的接口被称之为`RetrofitApiService`。
 
 你可以通过Demo中的Log查看到RetrofitClient和RetrofitApiService之间的关系。
 
@@ -481,6 +513,7 @@ public class HelloController {
 
 你可以参考 [retrofit-spring-boot-starter-sample-single-instance](https://github.com/liuziyuan/easy-retrofit-demo/tree/main/retrofit-spring-boot-starter-sample-single-instance)
 & [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/easy-retrofit-demo/tree/main/backend-service)
+
 ## 动态URL
 
 你可以使用`@RetrofitDynamicBaseUrl` 动态的改变`@RetrofitBuilder`中的`baseUrl`
@@ -489,7 +522,10 @@ public class HelloController {
 & [retrofit-spring-boot-starter-sample-backend-services](https://github.com/liuziyuan/easy-retrofit-demo/tree/main/backend-service)
 
 ## 全局配置功能
-你可以在Springboot项目中的配置文件中application.yml中配置`retrofit-spring-boot-starter`的全局配置,当开启全局配置后，所有的`@RetrofitBuilder`中的配置将使用全局配置
+
+你可以在Springboot项目中的配置文件中application.yml中配置`retrofit-spring-boot-starter`
+的全局配置,当开启全局配置后，所有的`@RetrofitBuilder`中的配置将使用全局配置
+
 ```yaml
 retrofit:
   global:
@@ -499,9 +535,12 @@ retrofit:
     call-adapter-factory-builder-clazz: io.github.liuziyuan.test.retrofit.spring.boot.common.RxJavaCallAdapterFactoryBuilder
     validate-eagerly: false
 ```
+
 这里的属性与`@RetrofitBuilder`中的属性完全相同，可以参考`@RetrofitBuilder`的注解说明
 
-在`RetrofitBuilder`注解中提供了`OverrideRule globalOverwriteRule()`方法，可以设置Global与Local配置配置的merge策略。默认是GLOBAL_FIRST，你可以修改`RetrofitBuilder`适当的模式，来保证配置的优先级。
+在`RetrofitBuilder`注解中提供了`OverrideRule globalOverwriteRule()`
+方法，可以设置Global与Local配置配置的merge策略。默认是GLOBAL_FIRST，你可以修改`RetrofitBuilder`适当的模式，来保证配置的优先级。
+
 ```java
 public enum OverrideRule {
     /**
@@ -533,11 +572,16 @@ public enum OverrideRule {
 可以参考 [retrofit-spring-boot-starter-sample-global-config](https://github.com/liuziyuan/easy-retrofit-demo/tree/main/retrofit-spring-boot-starter-sample-global-config)
 
 ## 简化集成
-可以在retrofit-integration文件夹中看到[retrofit-spring-boot-web-starter](retrofit-integration%2Fretrofit-spring-boot-web-starter) 和 [retrofit-spring-boot-reactor-starter](retrofit-integration%2Fretrofit-spring-boot-reactor-starter)两个starter.
 
-`retrofit-spring-boot-web-starter` 是一个基于Spring Web的Retrofit集成. 在starter中默认支持了[simple-body](retrofit-adapters%2Fsimple-body)类型和guava ListenableFuture类型的响应体解析
+可以在retrofit-integration文件夹中看到[retrofit-spring-boot-web-starter](retrofit-integration%2Fretrofit-spring-boot-web-starter)
+和 [retrofit-spring-boot-reactor-starter](retrofit-integration%2Fretrofit-spring-boot-reactor-starter)两个starter.
+
+`retrofit-spring-boot-web-starter` 是一个基于Spring Web的Retrofit集成.
+在starter中默认支持了[simple-body](retrofit-adapters%2Fsimple-body)类型和guava ListenableFuture类型的响应体解析
 pom.xml如下，
+
 ```xml
+
 <dependencies>
     <!--spring boot components-->
     <dependency>
@@ -545,7 +589,7 @@ pom.xml如下，
         <artifactId>spring-boot-starter-web</artifactId>
         <version>${spring-boot.version}</version>
     </dependency>
-    
+
     <dependency>
         <groupId>io.github.liuziyuan</groupId>
         <artifactId>retrofit-spring-boot-web-starter</artifactId>
@@ -553,20 +597,24 @@ pom.xml如下，
     </dependency>
 </dependencies>
 ```
+
 可以参考demo [retrofit-spring-boot-web-starter-sample](https://github.com/liuziyuan/easy-retrofit-demo/tree/main/retrofit-spring-boot-web-starter-sample)
 
-
-`retrofit-spring-boot-reactor-starter`是一个基于Spring WebFlux的Retrofit集成.在starter中默认支持了[reactor](retrofit-adapters%2Freactor) Mono, Flux类型的响应体解析, 和RxJava2/3 的类型支持
+`retrofit-spring-boot-reactor-starter`是一个基于Spring
+WebFlux的Retrofit集成.在starter中默认支持了[reactor](retrofit-adapters%2Freactor) Mono, Flux类型的响应体解析, 和RxJava2/3
+的类型支持
 
 pom.xml如下，
+
 ```xml
+
 <dependencies>
     <!--spring boot components-->
     <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-webflux</artifactId>
     </dependency>
-    
+
     <dependency>
         <groupId>io.github.liuziyuan</groupId>
         <artifactId>retrofit-spring-boot-reactor-starter</artifactId>
@@ -576,15 +624,17 @@ pom.xml如下，
 
 </dependencies>
 ```
+
 可以参考demo [retrofit-spring-boot-reactor-starter-sample](https://github.com/liuziyuan/easy-retrofit-demo/tree/main/retrofit-spring-boot-reactor-starter-sample)
 
-
 ## 插件扩展功能
+
 你可以为Retrofit编写基于Interceptor的扩展功能，
 
 以@RetrofitLoadBalancer 为例，这是一个基于Interceptor的扩展功能，可以实现Retrofit在Spring Cloud中的负载均衡
 
 ```java
+
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
@@ -679,10 +729,10 @@ public interface RetrofitApi {
 }
 
 ```
+
 如上代码其实也就是下面移除章节的重构后成为组件的Spring Cloud负载均衡功能。
 
 可以参考 [retrofit-spring-boot-starter-sample-plugin](https://github.com/liuziyuan/easy-retrofit-demo/tree/main/retrofit-spring-loadbalancer-samples)
-
 
 ## 为什么这里会有另一个 retrofit-spring-boot-starter
 
@@ -694,14 +744,17 @@ public interface RetrofitApi {
 
 在我的工作中，团队将使用Retrofit作为BFF层的HTTP客户端请求微服务,因此,有成百上千个API接口文件在BFF项目中.
 
-最终我改进了创建Retrofit实例的时间以及按照RetrofitBuilder的属性合并了Retrofit一个实例的创建，并且允许一个Retrofit API接口继承一个基本接口，它可以定义和配置Retrofit属性.
+最终我改进了创建Retrofit实例的时间以及按照RetrofitBuilder的属性合并了Retrofit一个实例的创建，并且允许一个Retrofit
+API接口继承一个基本接口，它可以定义和配置Retrofit属性.
 
 ## Maintainers
 
 [@liuziyuan](https://github.com/liuziyuan)
 
 ## Contributing
-Feel free to dive in! [Open an issue](https://github.com/liuziyuan/retrofit-spring-boot-starter/issues/new) or submit PRs.
+
+Feel free to dive in! [Open an issue](https://github.com/liuziyuan/retrofit-spring-boot-starter/issues/new) or submit
+PRs.
 
 Standard Readme follows the [Contributor Covenant](http://contributor-covenant.org/version/1/3/0/) Code of Conduct.
 
