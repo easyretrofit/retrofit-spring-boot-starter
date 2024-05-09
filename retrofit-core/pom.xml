@@ -11,7 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
     <description>easy retrofit core project, to create a retrofit context for retrofit-spring-boot-starter or others </description>
     <artifactId>retrofit-core</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.2</version>
     <packaging>jar</packaging>
 
     <properties>
