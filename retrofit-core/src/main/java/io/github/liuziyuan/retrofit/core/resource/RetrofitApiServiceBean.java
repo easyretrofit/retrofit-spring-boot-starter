@@ -1,11 +1,7 @@
 package io.github.liuziyuan.retrofit.core.resource;
 
-import io.github.liuziyuan.retrofit.core.annotation.RetrofitInterceptor;
 import io.github.liuziyuan.retrofit.core.proxy.BaseExceptionDelegate;
 import io.github.liuziyuan.retrofit.core.exception.RetrofitExtensionException;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.lang.annotation.Annotation;
 import java.util.HashSet;
@@ -16,9 +12,7 @@ import java.util.Set;
  *
  * @author liuziyuan
  */
-@Getter
-@Setter(AccessLevel.PACKAGE)
-public final class RetrofitApiServiceBean {
+public class RetrofitApiServiceBean {
 
     private Class<?> selfClazz;
     private Class<?> parentClazz;
@@ -32,6 +26,9 @@ public final class RetrofitApiServiceBean {
     private String retrofitClientBeanInstanceName;
     private Set<Class<? extends BaseExceptionDelegate<? extends RetrofitExtensionException>>> exceptionDelegates;
 
+
+    public RetrofitApiServiceBean() {
+    }
     public void setRetrofitClientBean(RetrofitClientBean retrofitClientBean) {
         this.retrofitClientBeanInstanceName = retrofitClientBean.getRetrofitInstanceName();
         this.retrofitBuilder = retrofitClientBean.getRetrofitBuilder();
@@ -63,4 +60,67 @@ public final class RetrofitApiServiceBean {
         return null;
     }
 
+    public Class<?> getSelfClazz() {
+        return selfClazz;
+    }
+
+    public void setSelfClazz(Class<?> selfClazz) {
+        this.selfClazz = selfClazz;
+    }
+
+    public Class<?> getParentClazz() {
+        return parentClazz;
+    }
+
+    public void setParentClazz(Class<?> parentClazz) {
+        this.parentClazz = parentClazz;
+    }
+
+    public RetrofitUrl getRetrofitUrl() {
+        return retrofitUrl;
+    }
+
+    public void setRetrofitUrl(RetrofitUrl retrofitUrl) {
+        this.retrofitUrl = retrofitUrl;
+    }
+
+    public RetrofitBuilderBean getRetrofitBuilder() {
+        return retrofitBuilder;
+    }
+
+    public void setRetrofitBuilder(RetrofitBuilderBean retrofitBuilder) {
+        this.retrofitBuilder = retrofitBuilder;
+    }
+
+    public Set<RetrofitInterceptorBean> getInterceptors() {
+        return interceptors;
+    }
+
+    public void setInterceptors(Set<RetrofitInterceptorBean> interceptors) {
+        this.interceptors = interceptors;
+    }
+
+    public Set<RetrofitInterceptorBean> getMyInterceptors() {
+        return myInterceptors;
+    }
+
+    public void setMyInterceptors(Set<RetrofitInterceptorBean> myInterceptors) {
+        this.myInterceptors = myInterceptors;
+    }
+
+    public String getRetrofitClientBeanInstanceName() {
+        return retrofitClientBeanInstanceName;
+    }
+
+    public void setRetrofitClientBeanInstanceName(String retrofitClientBeanInstanceName) {
+        this.retrofitClientBeanInstanceName = retrofitClientBeanInstanceName;
+    }
+
+    public Set<Class<? extends BaseExceptionDelegate<? extends RetrofitExtensionException>>> getExceptionDelegates() {
+        return exceptionDelegates;
+    }
+
+    public void setExceptionDelegates(Set<Class<? extends BaseExceptionDelegate<? extends RetrofitExtensionException>>> exceptionDelegates) {
+        this.exceptionDelegates = exceptionDelegates;
+    }
 }

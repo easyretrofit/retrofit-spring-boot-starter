@@ -2,9 +2,6 @@ package io.github.liuziyuan.retrofit.core.resource;
 
 import io.github.liuziyuan.retrofit.core.Env;
 import io.github.liuziyuan.retrofit.core.util.RetrofitUrlUtils;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.function.Function;
@@ -14,17 +11,17 @@ import java.util.function.Function;
  *
  * @author liuziyuan
  */
-@Slf4j
-@Getter
-@Setter
-public final class RetrofitUrl {
+public class RetrofitUrl {
 
-    private final String inputDefaultBaseUrl;
-    private final String inputDynamicBaseUrl;
+    private String inputDefaultBaseUrl;
+    private String inputDynamicBaseUrl;
     private BaseUrl defaultUrl;
     private BaseUrl dynamicUrl;
     private String retrofitUrlPrefix;
     private UrlStatus urlStatus = UrlStatus.NULL;
+
+    public RetrofitUrl() {
+    }
 
 
     public RetrofitUrl(String baseUrl, String inputDynamicBaseUrl, String retrofitUrlPrefix, Env env) {
@@ -70,4 +67,51 @@ public final class RetrofitUrl {
         defaultUrl = new BaseUrl(url);
     }
 
+    public String getInputDefaultBaseUrl() {
+        return inputDefaultBaseUrl;
+    }
+
+    public String getInputDynamicBaseUrl() {
+        return inputDynamicBaseUrl;
+    }
+
+    public BaseUrl getDefaultUrl() {
+        return defaultUrl;
+    }
+
+    public void setDefaultUrl(BaseUrl defaultUrl) {
+        this.defaultUrl = defaultUrl;
+    }
+
+    public BaseUrl getDynamicUrl() {
+        return dynamicUrl;
+    }
+
+    public void setDynamicUrl(BaseUrl dynamicUrl) {
+        this.dynamicUrl = dynamicUrl;
+    }
+
+    public String getRetrofitUrlPrefix() {
+        return retrofitUrlPrefix;
+    }
+
+    public void setRetrofitUrlPrefix(String retrofitUrlPrefix) {
+        this.retrofitUrlPrefix = retrofitUrlPrefix;
+    }
+
+    public UrlStatus getUrlStatus() {
+        return urlStatus;
+    }
+
+    public void setUrlStatus(UrlStatus urlStatus) {
+        this.urlStatus = urlStatus;
+    }
+
+    public void setInputDefaultBaseUrl(String inputDefaultBaseUrl) {
+        this.inputDefaultBaseUrl = inputDefaultBaseUrl;
+    }
+
+    public void setInputDynamicBaseUrl(String inputDynamicBaseUrl) {
+        this.inputDynamicBaseUrl = inputDynamicBaseUrl;
+    }
 }

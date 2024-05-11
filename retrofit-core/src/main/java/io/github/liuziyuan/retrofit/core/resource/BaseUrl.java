@@ -2,8 +2,6 @@ package io.github.liuziyuan.retrofit.core.resource;
 
 import io.github.liuziyuan.retrofit.core.exception.BaseUrlException;
 import io.github.liuziyuan.retrofit.core.util.RetrofitUrlUtils;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 
@@ -12,12 +10,10 @@ import java.net.URL;
 /**
  * @author liuziyuan
  */
-@Setter
-@Getter
-public final class BaseUrl {
-    private final String realBaseUrl;
-    private final String realHostUrl;
-    private final String realPrefixUrl;
+public class BaseUrl {
+    private String realBaseUrl;
+    private String realHostUrl;
+    private String realPrefixUrl;
     private static final String BASE_URL_NULL = "Retrofit base URL is null";
 
     public BaseUrl() {
@@ -51,5 +47,27 @@ public final class BaseUrl {
         return "/".equals(url.getPath()) ? "" : url.getPath();
     }
 
+    public String getRealBaseUrl() {
+        return realBaseUrl;
+    }
 
+    public void setRealBaseUrl(String realBaseUrl) {
+        this.realBaseUrl = realBaseUrl;
+    }
+
+    public String getRealHostUrl() {
+        return realHostUrl;
+    }
+
+    public void setRealHostUrl(String realHostUrl) {
+        this.realHostUrl = realHostUrl;
+    }
+
+    public String getRealPrefixUrl() {
+        return realPrefixUrl;
+    }
+
+    public void setRealPrefixUrl(String realPrefixUrl) {
+        this.realPrefixUrl = realPrefixUrl;
+    }
 }

@@ -5,15 +5,12 @@ import io.github.liuziyuan.retrofit.core.RetrofitBuilderExtension;
 import io.github.liuziyuan.retrofit.core.annotation.RetrofitBuilder;
 import io.github.liuziyuan.retrofit.core.builder.*;
 import io.github.liuziyuan.retrofit.core.util.BooleanUtil;
-import lombok.Getter;
-import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 
-@Getter
-@Setter
-public final class RetrofitBuilderBean {
+
+public class RetrofitBuilderBean {
     private boolean enable = false;
 
     private OverrideRule overwriteType = OverrideRule.GLOBAL_FIRST;
@@ -31,6 +28,9 @@ public final class RetrofitBuilderBean {
     private Class<? extends BaseCallFactoryBuilder> callFactory;
 
     private boolean validateEagerly;
+
+    public RetrofitBuilderBean() {
+    }
 
     public RetrofitBuilderBean(Class<?> retrofitBuilderClazz, RetrofitBuilderExtension globalRetrofitBuilderExtension) {
         RetrofitBuilder retrofitBuilderAnnotation = retrofitBuilderClazz.getDeclaredAnnotation(RetrofitBuilder.class);
@@ -153,5 +153,75 @@ public final class RetrofitBuilderBean {
         return clazz;
     }
 
+    public boolean isEnable() {
+        return enable;
+    }
 
+    public void setEnable(boolean enable) {
+        this.enable = enable;
+    }
+
+    public OverrideRule getOverwriteType() {
+        return overwriteType;
+    }
+
+    public void setOverwriteType(OverrideRule overwriteType) {
+        this.overwriteType = overwriteType;
+    }
+
+    public String getBaseUrl() {
+        return baseUrl;
+    }
+
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
+
+    public Class<? extends BaseCallAdapterFactoryBuilder>[] getAddCallAdapterFactory() {
+        return addCallAdapterFactory;
+    }
+
+    public void setAddCallAdapterFactory(Class<? extends BaseCallAdapterFactoryBuilder>[] addCallAdapterFactory) {
+        this.addCallAdapterFactory = addCallAdapterFactory;
+    }
+
+    public Class<? extends BaseConverterFactoryBuilder>[] getAddConverterFactory() {
+        return addConverterFactory;
+    }
+
+    public void setAddConverterFactory(Class<? extends BaseConverterFactoryBuilder>[] addConverterFactory) {
+        this.addConverterFactory = addConverterFactory;
+    }
+
+    public Class<? extends BaseOkHttpClientBuilder> getClient() {
+        return client;
+    }
+
+    public void setClient(Class<? extends BaseOkHttpClientBuilder> client) {
+        this.client = client;
+    }
+
+    public Class<? extends BaseCallBackExecutorBuilder> getCallbackExecutor() {
+        return callbackExecutor;
+    }
+
+    public void setCallbackExecutor(Class<? extends BaseCallBackExecutorBuilder> callbackExecutor) {
+        this.callbackExecutor = callbackExecutor;
+    }
+
+    public Class<? extends BaseCallFactoryBuilder> getCallFactory() {
+        return callFactory;
+    }
+
+    public void setCallFactory(Class<? extends BaseCallFactoryBuilder> callFactory) {
+        this.callFactory = callFactory;
+    }
+
+    public boolean isValidateEagerly() {
+        return validateEagerly;
+    }
+
+    public void setValidateEagerly(boolean validateEagerly) {
+        this.validateEagerly = validateEagerly;
+    }
 }

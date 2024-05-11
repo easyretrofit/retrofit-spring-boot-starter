@@ -4,16 +4,10 @@ import io.github.liuziyuan.retrofit.core.annotation.InterceptorType;
 import io.github.liuziyuan.retrofit.core.annotation.RetrofitInterceptor;
 import io.github.liuziyuan.retrofit.core.annotation.RetrofitInterceptorParam;
 import io.github.liuziyuan.retrofit.core.extension.BaseInterceptor;
-import lombok.*;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.util.Arrays;
 import java.util.Objects;
 
-@Getter
-@Setter
-@ToString
 public class RetrofitInterceptorBean {
     private Class<? extends BaseInterceptor> handler;
 
@@ -24,6 +18,9 @@ public class RetrofitInterceptorBean {
     private String[] exclude;
 
     private int sort;
+
+    public RetrofitInterceptorBean() {
+    }
 
     public RetrofitInterceptorBean(RetrofitInterceptor retrofitInterceptor, RetrofitInterceptorParam retrofitInterceptorParam) {
         this.handler = retrofitInterceptor.handler();
@@ -65,4 +62,54 @@ public class RetrofitInterceptorBean {
         return result;
     }
 
+    public Class<? extends BaseInterceptor> getHandler() {
+        return handler;
+    }
+
+    public void setHandler(Class<? extends BaseInterceptor> handler) {
+        this.handler = handler;
+    }
+
+    public InterceptorType getType() {
+        return type;
+    }
+
+    public void setType(InterceptorType type) {
+        this.type = type;
+    }
+
+    public String[] getInclude() {
+        return include;
+    }
+
+    public void setInclude(String[] include) {
+        this.include = include;
+    }
+
+    public String[] getExclude() {
+        return exclude;
+    }
+
+    public void setExclude(String[] exclude) {
+        this.exclude = exclude;
+    }
+
+    public int getSort() {
+        return sort;
+    }
+
+    public void setSort(int sort) {
+        this.sort = sort;
+    }
+
+    @Override
+    public String toString() {
+        return "RetrofitInterceptorBean{" +
+                "handler=" + handler +
+                ", type=" + type +
+                ", include=" + Arrays.toString(include) +
+                ", exclude=" + Arrays.toString(exclude) +
+                ", sort=" + sort +
+                '}';
+    }
 }

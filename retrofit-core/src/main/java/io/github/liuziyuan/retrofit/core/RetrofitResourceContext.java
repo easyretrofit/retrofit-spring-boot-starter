@@ -14,8 +14,6 @@ import java.util.Map;
  *
  * @author liuziyuan
  */
-@Getter
-@Setter
 public class RetrofitResourceContext {
 
     private String[] basePackages;
@@ -52,4 +50,39 @@ public class RetrofitResourceContext {
         return retrofitApiServices.get(clazz.getName());
     }
 
+    public String[] getBasePackages() {
+        return basePackages;
+    }
+
+    public void setBasePackages(String[] basePackages) {
+        this.basePackages = basePackages;
+    }
+
+    public Class<?> getRetrofitBuilderExtensionClazz() {
+        return retrofitBuilderExtensionClazz;
+    }
+
+    public void setRetrofitBuilderExtensionClazz(Class<?> retrofitBuilderExtensionClazz) {
+        this.retrofitBuilderExtensionClazz = retrofitBuilderExtensionClazz;
+    }
+
+    public List<Class<?>> getInterceptorExtensionsClasses() {
+        return interceptorExtensionsClasses;
+    }
+
+    public void setInterceptorExtensionsClasses(List<Class<?>> interceptorExtensionsClasses) {
+        this.interceptorExtensionsClasses = interceptorExtensionsClasses;
+    }
+
+    public void setRetrofitClients(List<RetrofitClientBean> retrofitClients) {
+        this.retrofitClients = retrofitClients;
+    }
+
+    public Map<String, RetrofitApiServiceBean> getRetrofitApiServices() {
+        return retrofitApiServices;
+    }
+
+    public void setRetrofitApiServices(Map<String, RetrofitApiServiceBean> retrofitApiServices) {
+        this.retrofitApiServices = retrofitApiServices;
+    }
 }
