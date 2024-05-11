@@ -15,7 +15,7 @@ import java.util.*;
  * @author liuziyuan
  */
 @Getter
-@Setter(AccessLevel.PACKAGE)
+@Setter
 @ToString
 public final class RetrofitClientBean {
 
@@ -34,7 +34,7 @@ public final class RetrofitClientBean {
     }
 
     public void setRetrofitInstanceName(String retrofitInstanceName) {
-        this.retrofitInstanceName = retrofitInstanceName + "-" + UUID.randomUUID();
+        this.retrofitInstanceName = retrofitInstanceName + "@" + UUID.randomUUID();
     }
 
     public void addRetrofitServiceBean(RetrofitApiServiceBean retrofitApiServiceBean) {

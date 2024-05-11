@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 @Getter
-@Setter(AccessLevel.PACKAGE)
+@Setter
 @ToString
 public class RetrofitInterceptorBean {
     private Class<? extends BaseInterceptor> handler;

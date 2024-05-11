@@ -29,11 +29,11 @@ public final class RetrofitApiServiceBean {
      */
     private Set<RetrofitInterceptorBean> interceptors;
     private Set<RetrofitInterceptorBean> myInterceptors;
-    private RetrofitClientBean retrofitClientBean;
+    private String retrofitClientBeanInstanceName;
     private Set<Class<? extends BaseExceptionDelegate<? extends RetrofitExtensionException>>> exceptionDelegates;
 
     public void setRetrofitClientBean(RetrofitClientBean retrofitClientBean) {
-        this.retrofitClientBean = retrofitClientBean;
+        this.retrofitClientBeanInstanceName = retrofitClientBean.getRetrofitInstanceName();
         this.retrofitBuilder = retrofitClientBean.getRetrofitBuilder();
         this.interceptors = retrofitClientBean.getInterceptors();
     }

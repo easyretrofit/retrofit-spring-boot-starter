@@ -1,21 +1,14 @@
 package io.github.liuziyuan.retrofit.spring.boot;
 
-import io.github.liuziyuan.retrofit.core.Env;
-import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
 import io.github.liuziyuan.retrofit.core.RetrofitResourceScanner;
-import io.github.liuziyuan.retrofit.core.resource.RetrofitBuilderBean;
-import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
-import io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean;
+
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
-import org.springframework.context.EnvironmentAware;
-import org.springframework.context.ResourceLoaderAware;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.annotation.AnnotationAttributes;
-import org.springframework.core.env.Environment;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
@@ -31,12 +24,10 @@ import java.util.stream.Collectors;
  * @author liuziyuan
  */
 @Slf4j
-public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefinitionRegistrar, EnvironmentAware, ResourceLoaderAware {
+public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefinitionRegistrar {
 
-    private Environment environment;
-    private ResourceLoader resourceLoader;
-    private RetrofitResourceScanner scanner;
 
+    @SneakyThrows
     @Override
     public void registerBeanDefinitions(AnnotationMetadata metadata, BeanDefinitionRegistry registry) {
         AnnotationAttributes enableRetrofitAnnoAttr = AnnotationAttributes.fromMap(metadata.getAnnotationAttributes(EnableRetrofit.class.getName()));
@@ -48,7 +39,8 @@ public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefin
     void registerRetrofitAnnotationDefinitions(AnnotationAttributes annoAttrs, BeanDefinitionRegistry registry) {
         final Set<Class<?>> retrofitBuilderClassSet = scanRetrofitResource(annoAttrs);
         final List<String> basePackages = getBasePackages(annoAttrs);
-        RetrofitAnnotationBean annotationBean = new RetrofitAnnotationBean(basePackages, retrofitBuilderClassSet);
+        RetrofitResourceScanner.RetrofitExtension retrofitExtension = scanRetrofitExtension(annoAttrs);
+        RetrofitAnnotationBean annotationBean = new RetrofitAnnotationBean(basePackages, retrofitBuilderClassSet, retrofitExtension);
         if (!retrofitBuilderClassSet.isEmpty()) {
             BeanDefinitionBuilder builder;
             builder = BeanDefinitionBuilder.genericBeanDefinition(RetrofitAnnotationBean.class, () -> annotationBean);
@@ -59,9 +51,16 @@ public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefin
 
     private Set<Class<?>> scanRetrofitResource(AnnotationAttributes annoAttrs) {
         // scan RetrofitResource
-        scanner = new RetrofitResourceScanner();
+        RetrofitResourceScanner scanner = new RetrofitResourceScanner();
         List<String> basePackages = getBasePackages(annoAttrs);
         return scanner.doScan(StringUtils.toStringArray(basePackages));
+    }
+
+    private RetrofitResourceScanner.RetrofitExtension scanRetrofitExtension(AnnotationAttributes annoAttrs) {
+        // scan RetrofitExtension
+        RetrofitResourceScanner scanner = new RetrofitResourceScanner();
+        List<String> basePackages = getExtensionBasePackages(annoAttrs);
+        return scanner.doScanExtension(StringUtils.toStringArray(basePackages));
     }
 
     private List<String> getBasePackages(AnnotationAttributes annoAttrs) {
@@ -72,13 +71,10 @@ public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefin
         return basePackages;
     }
 
-    @Override
-    public void setEnvironment(Environment environment) {
-        this.environment = environment;
-    }
-
-    @Override
-    public void setResourceLoader(ResourceLoader resourceLoader) {
-        this.resourceLoader = resourceLoader;
+    private List<String> getExtensionBasePackages(AnnotationAttributes annoAttrs) {
+        List<String> basePackages = new ArrayList<>();
+        basePackages.addAll(Arrays.stream(annoAttrs.getStringArray("extensionPackages")).filter(StringUtils::hasText).collect(Collectors.toList()));
+        basePackages.addAll(Arrays.stream(annoAttrs.getClassArray("extensionPackagesClasses")).map(ClassUtils::getPackageName).collect(Collectors.toList()));
+        return basePackages;
     }
 }

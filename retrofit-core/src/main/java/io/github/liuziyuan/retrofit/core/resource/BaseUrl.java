@@ -3,6 +3,7 @@ package io.github.liuziyuan.retrofit.core.resource;
 import io.github.liuziyuan.retrofit.core.exception.BaseUrlException;
 import io.github.liuziyuan.retrofit.core.util.RetrofitUrlUtils;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 
@@ -11,7 +12,7 @@ import java.net.URL;
 /**
  * @author liuziyuan
  */
-
+@Setter
 @Getter
 public final class BaseUrl {
     private final String realBaseUrl;

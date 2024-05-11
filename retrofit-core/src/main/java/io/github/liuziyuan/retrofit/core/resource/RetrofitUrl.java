@@ -3,6 +3,7 @@ package io.github.liuziyuan.retrofit.core.resource;
 import io.github.liuziyuan.retrofit.core.Env;
 import io.github.liuziyuan.retrofit.core.util.RetrofitUrlUtils;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -15,6 +16,7 @@ import java.util.function.Function;
  */
 @Slf4j
 @Getter
+@Setter
 public final class RetrofitUrl {
 
     private final String inputDefaultBaseUrl;

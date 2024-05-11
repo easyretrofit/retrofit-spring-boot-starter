@@ -1,6 +1,9 @@
 package io.github.liuziyuan.retrofit.core;
 
 import io.github.liuziyuan.retrofit.core.resource.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.*;
 
@@ -10,10 +13,12 @@ import java.util.*;
  * @author liuziyuan
  */
 public class RetrofitResourceContextBuilder {
-
-    private List<RetrofitClientBean> retrofitClientBeanList;
-    private List<RetrofitApiServiceBean> retrofitApiServiceBeanList;
+    private String[] basePackages;
+    private final List<RetrofitClientBean> retrofitClientBeanList;
+    private final List<RetrofitApiServiceBean> retrofitApiServiceBeanList;
     private final Map<String, RetrofitApiServiceBean> retrofitServiceBeanHashMap;
+    private Class<?> retrofitBuilderExtensionClazz;
+    private List<Class<?>> interceptorExtensionsClasses;
     private final Env env;
 
     public RetrofitResourceContextBuilder(Env env) {
@@ -23,15 +28,20 @@ public class RetrofitResourceContextBuilder {
         this.env = env;
     }
 
-    public RetrofitResourceContext build(String[] basePackages,
-                                         Set<Class<?>> retrofitBuilderClassSet,
-                                         RetrofitBuilderExtension globalRetrofitBuilderExtension,
-                                         List<RetrofitInterceptorExtension> interceptorExtensions) {
+    public RetrofitResourceContext buildContextInstance(String[] basePackages,
+                                                        Set<Class<?>> retrofitBuilderClassSet,
+                                                        RetrofitBuilderExtension globalRetrofitBuilderExtension,
+                                                        List<RetrofitInterceptorExtension> interceptorExtensions) {
+        this.basePackages = basePackages;
         setRetrofitServiceBeanList(retrofitBuilderClassSet, globalRetrofitBuilderExtension, interceptorExtensions);
         setRetrofitClientBeanList();
         setRetrofitServiceBeanHashMap();
-        return new RetrofitResourceContext(basePackages, retrofitClientBeanList, retrofitServiceBeanHashMap, env);
+
+        setRetrofitBuilderExtensionClazz(globalRetrofitBuilderExtension);
+        setInterceptorExtensionsClasses(interceptorExtensions);
+        return new RetrofitResourceContext(this.basePackages, retrofitClientBeanList, retrofitServiceBeanHashMap, retrofitBuilderExtensionClazz, interceptorExtensionsClasses);
     }
+
 
     public List<RetrofitClientBean> getRetrofitClientBeanList() {
         return retrofitClientBeanList;
@@ -74,6 +84,21 @@ public class RetrofitResourceContextBuilder {
             if (retrofitClientBean != null && retrofitClientBeanList.stream().noneMatch(clientBean -> clientBean.getRetrofitInstanceName().equals(retrofitClientBean.getRetrofitInstanceName()))) {
                 retrofitClientBeanList.add(retrofitClientBean);
             }
+        }
+    }
+
+
+    private void setInterceptorExtensionsClasses(List<RetrofitInterceptorExtension> interceptorExtensions) {
+        if (interceptorExtensions != null) {
+            for (RetrofitInterceptorExtension interceptorExtension : interceptorExtensions) {
+                this.interceptorExtensionsClasses.add(interceptorExtension.getClass());
+            }
+        }
+    }
+
+    private void setRetrofitBuilderExtensionClazz(RetrofitBuilderExtension globalRetrofitBuilderExtension) {
+        if (globalRetrofitBuilderExtension != null) {
+            this.retrofitBuilderExtensionClazz = globalRetrofitBuilderExtension.getClass();
         }
     }
 
