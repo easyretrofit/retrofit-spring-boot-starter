@@ -87,7 +87,7 @@ public class RetrofitResourceScanner {
         Set<Class<? extends RetrofitInterceptorExtension>> retrofitInterceptorClasses;
 
         public RetrofitExtension() {
-            retrofitBuilderClasses = new HashSet<>();
+            retrofitInterceptorClasses = new HashSet<>();
             retrofitBuilderClasses = new HashSet<>();
         }
 

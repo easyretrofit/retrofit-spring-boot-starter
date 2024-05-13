@@ -48,8 +48,7 @@ public class RetrofitServiceProxyFactory<T> implements FactoryBean<T>, Applicati
             }
         }
         Retrofit retrofit = (Retrofit) applicationContext.getBean(retrofitInstanceName);
-        T t = retrofit.create(interfaceType);
-        InvocationHandler handler = new RetrofitServiceProxy<>(t, exceptionDelegates);
+        InvocationHandler handler = new RetrofitServiceProxy<>(retrofit.create(interfaceType), exceptionDelegates);
         return (T) Proxy.newProxyInstance(interfaceType.getClassLoader(), new Class[]{interfaceType}, handler);
     }
 
