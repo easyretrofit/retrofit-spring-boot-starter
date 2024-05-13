@@ -25,6 +25,7 @@ public class RetrofitResourceContextBuilder {
         retrofitClientBeanList = new ArrayList<>();
         retrofitApiServiceBeanList = new ArrayList<>();
         retrofitServiceBeanHashMap = new HashMap<>();
+        interceptorExtensionsClasses = new ArrayList<>();
         this.env = env;
     }
 

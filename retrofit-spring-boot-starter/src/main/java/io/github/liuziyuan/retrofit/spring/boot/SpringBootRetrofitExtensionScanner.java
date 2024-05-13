@@ -24,7 +24,7 @@ public class SpringBootRetrofitExtensionScanner {
         // 获取类路径下的所有META-INF/spring.factories文件
         Set<String> extensionNames = new HashSet<>();
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-        String pattern = ResourceUtils.CLASSPATH_URL_PREFIX + RETROFIT_EXTENSION_PROPERTIES;
+        String pattern = "classpath*:" + RETROFIT_EXTENSION_PROPERTIES;
         Resource[] resources = null;
         try {
             resources = resolver.getResources(pattern);
