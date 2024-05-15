@@ -19,13 +19,13 @@ public final class RetrofitClientBean implements UniqueKey {
     private UrlStatus urlStatus;
     private RetrofitBuilderBean retrofitBuilder;
     private Set<RetrofitInterceptorBean> interceptors;
-    private Set<RetrofitInterceptorBean> inheritedInterceptors;
+    //    private Set<RetrofitInterceptorBean> inheritedInterceptors;
     private List<RetrofitApiServiceBean> retrofitApiServiceBeans;
 
 
     public RetrofitClientBean(RetrofitApiServiceBean serviceBean) {
         this.interceptors = new LinkedHashSet<>();
-        this.inheritedInterceptors = new LinkedHashSet<>();
+//        this.inheritedInterceptors = new LinkedHashSet<>();
         this.retrofitApiServiceBeans = new ArrayList<>();
         this.setRetrofitBuilder(serviceBean.getRetrofitBuilder());
         this.setRealHostUrl(serviceBean.getRetrofitUrl().getDefaultUrl().getRealHostUrl());
@@ -41,7 +41,7 @@ public final class RetrofitClientBean implements UniqueKey {
     }
 
     public void addInheritedInterceptors(Set<RetrofitInterceptorBean> serviceInheritedInterceptors) {
-        inheritedInterceptors.addAll(serviceInheritedInterceptors);
+        this.interceptors.addAll(serviceInheritedInterceptors);
     }
 
     public String getRetrofitInstanceName() {
@@ -77,15 +77,7 @@ public final class RetrofitClientBean implements UniqueKey {
     }
 
     void setInterceptors(Set<RetrofitInterceptorBean> interceptors) {
-        this.interceptors = interceptors;
-    }
-
-    public Set<RetrofitInterceptorBean> getInheritedInterceptors() {
-        return inheritedInterceptors;
-    }
-
-    void setInheritedInterceptors(Set<RetrofitInterceptorBean> inheritedInterceptors) {
-        this.inheritedInterceptors = inheritedInterceptors;
+        this.interceptors.addAll(interceptors);
     }
 
     public List<RetrofitApiServiceBean> getRetrofitApiServiceBeans() {
@@ -102,17 +94,11 @@ public final class RetrofitClientBean implements UniqueKey {
         if (interceptors != null) {
             interceptorsStr = interceptors.stream().map(RetrofitInterceptorBean::toString).collect(Collectors.joining(","));
         }
-        String inheritedInterceptorsStr = null;
-        if (inheritedInterceptors != null) {
-            inheritedInterceptorsStr = inheritedInterceptors.stream().map(RetrofitInterceptorBean::toString).collect(Collectors.joining(","));
-        }
-
         return "RetrofitClientBean{" +
                 "realHostUrl='" + realHostUrl + '\'' +
                 ", urlStatus=" + urlStatus.toString() +
                 ", retrofitBuilder=" + retrofitBuilder.toString() +
                 ", interceptors=" + interceptorsStr +
-                ", inheritedInterceptors=" + inheritedInterceptorsStr +
                 '}';
     }
 

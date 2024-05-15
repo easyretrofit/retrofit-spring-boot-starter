@@ -57,6 +57,7 @@ public final class RetrofitBuilderGenerator implements Generator<Retrofit.Builde
     private void setBaseUrl() {
         builder.baseUrl(clientBean.getRealHostUrl());
     }
+
     private void setValidateEagerly() {
         final RetrofitBuilderBean retrofitBuilder = clientBean.getRetrofitBuilder();
         builder.validateEagerly(retrofitBuilder.isValidateEagerly());
@@ -110,9 +111,7 @@ public final class RetrofitBuilderGenerator implements Generator<Retrofit.Builde
 
     private void setRetrofitOkHttpClient() {
         final RetrofitBuilderBean retrofitBuilder = clientBean.getRetrofitBuilder();
-        Set<RetrofitInterceptorBean> allInterceptors = new LinkedHashSet<>();
-        allInterceptors.addAll(clientBean.getInterceptors());
-        allInterceptors.addAll(clientBean.getInheritedInterceptors());
+        Set<RetrofitInterceptorBean> allInterceptors = new LinkedHashSet<>(clientBean.getInterceptors());
         final List<RetrofitInterceptorBean> interceptors = new ArrayList<>(allInterceptors);
         OkHttpClient.Builder okHttpClientBuilder;
         if (retrofitBuilder.getClient() != null) {

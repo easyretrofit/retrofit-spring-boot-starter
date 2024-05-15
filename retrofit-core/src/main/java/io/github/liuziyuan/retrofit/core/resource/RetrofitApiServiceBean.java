@@ -119,11 +119,11 @@ public final class RetrofitApiServiceBean implements UniqueKey {
     public String toString() {
         String interceptorStr = null;
         if (interceptors != null) {
-            interceptorStr = interceptors.stream().map(RetrofitInterceptorBean::generateUniqueKey).collect(Collectors.joining(","));
+            interceptorStr = interceptors.stream().map(RetrofitInterceptorBean::toString).collect(Collectors.joining(","));
         }
         String myInterceptorStr = null;
         if (myInterceptors != null) {
-            myInterceptorStr = myInterceptors.stream().map(RetrofitInterceptorBean::generateUniqueKey).collect(Collectors.joining(","));
+            myInterceptorStr = myInterceptors.stream().map(RetrofitInterceptorBean::toString).collect(Collectors.joining(","));
         }
         String exceptionDelegateStr = null;
         if (exceptionDelegates != null) {
@@ -132,8 +132,8 @@ public final class RetrofitApiServiceBean implements UniqueKey {
         return "RetrofitApiServiceBean{" +
                 "selfClazz=" + selfClazz +
                 ", parentClazz=" + parentClazz +
-                ", retrofitUrl=" + retrofitUrl +
-                ", retrofitBuilder=" + retrofitBuilder +
+                ", retrofitUrl=" + retrofitUrl.toString() +
+                ", retrofitBuilder=" + retrofitBuilder.toString() +
                 ", interceptors=" + interceptorStr +
                 ", myInterceptors=" + myInterceptorStr +
                 ", exceptionDelegates=" + exceptionDelegateStr +

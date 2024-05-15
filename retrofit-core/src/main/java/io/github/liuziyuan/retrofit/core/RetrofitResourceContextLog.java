@@ -38,13 +38,15 @@ public class RetrofitResourceContextLog {
                     parentClazzName = parentClazz.getName();
                 }
                 log.info("|--API Services: Interface name: {} , Parent Interface name: {}", selfClazz.getName(), parentClazzName);
+                log.debug(retrofitService.toString());
             }
         }
     }
 
+
     private void retrofitClientDebugLog(RetrofitClientBean retrofitClient) {
-        final String realHostUrl = retrofitClient.getRealHostUrl();
         RetrofitBuilderBean retrofitBuilder = retrofitClient.getRetrofitBuilder();
+        final String realHostUrl = retrofitClient.getRealHostUrl();
         final String globalEnable = retrofitBuilder.isEnable() ? "true" : "false";
         String CallAdapterFactoryString = StringUtils.join(Arrays.stream(retrofitBuilder.getAddCallAdapterFactory()).map(Class::getSimpleName).collect(Collectors.toList()), ",");
         String ConverterFactoryString = StringUtils.join(Arrays.stream(retrofitBuilder.getAddConverterFactory()).map(Class::getSimpleName).collect(Collectors.toList()), ",");
@@ -52,10 +54,9 @@ public class RetrofitResourceContextLog {
         String clientString = retrofitBuilder.getClient().getSimpleName();
         String callFactoryString = retrofitBuilder.getCallFactory().getSimpleName();
         String validateEagerlyString = retrofitBuilder.isValidateEagerly() ? "true" : "false";
-        String inheritedInterceptor = retrofitClient.getInheritedInterceptors().toString();
         String interceptor = retrofitClient.getInterceptors().toString();
-        log.debug("RetrofitClientBean: HostURL: {}; UrlStatus: {}; globalEnable: {}; CallAdapterFactory: {}; ConverterFactory:{}; callbackExecutor: {}; client: {}; callFactory: {}; validateEagerly: {}; inheritedInterceptor: {}; interceptor: {}",
-                realHostUrl, retrofitClient.getUrlStatus(), globalEnable, CallAdapterFactoryString, ConverterFactoryString, callbackExecutorString, clientString, callFactoryString, validateEagerlyString, inheritedInterceptor, interceptor);
+        log.debug("RetrofitClientBean: HostURL: {}; UrlStatus: {}; globalEnable: {}; CallAdapterFactory: {}; ConverterFactory:{}; callbackExecutor: {}; client: {}; callFactory: {}; validateEagerly: {}; interceptor: {}",
+                realHostUrl, retrofitClient.getUrlStatus(), globalEnable, CallAdapterFactoryString, ConverterFactoryString, callbackExecutorString, clientString, callFactoryString, validateEagerlyString, interceptor);
 
     }
 }
