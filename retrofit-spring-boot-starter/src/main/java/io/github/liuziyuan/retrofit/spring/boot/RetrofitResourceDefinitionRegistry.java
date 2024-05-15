@@ -136,7 +136,7 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
         return retrofitResourceContextBuilder.buildContextInstance(retrofitAnnotationBean.getBasePackages().toArray(new String[0]),
                 retrofitAnnotationBean.getRetrofitBuilderClassSet(),
                 retrofitBuilderExtension,
-                retrofitInterceptorExtensions);
+                retrofitInterceptorExtensions, env);
     }
 
     private void registryRetrofitInstance(BeanDefinitionRegistry beanDefinitionRegistry, List<RetrofitClientBean> retrofitClientBeanList, RetrofitResourceContext context) {

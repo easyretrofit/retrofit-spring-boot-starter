@@ -18,6 +18,7 @@ public class RetrofitResourceContext {
     private List<Class<?>> interceptorExtensionsClasses;
     private List<RetrofitClientBean> retrofitClients;
     private Map<String, RetrofitApiServiceBean> retrofitApiServices;
+    private Env env;
 
     public RetrofitResourceContext() {
 
@@ -27,12 +28,14 @@ public class RetrofitResourceContext {
                                    List<RetrofitClientBean> retrofitClients,
                                    Map<String, RetrofitApiServiceBean> retrofitApiServices,
                                    Class<?> retrofitBuilderExtensionClazz,
-                                   List<Class<?>> interceptorExtensionsClasses) {
+                                   List<Class<?>> interceptorExtensionsClasses,
+                                   Env env) {
         this.retrofitApiServices = retrofitApiServices;
         this.retrofitClients = retrofitClients;
         this.basePackages = basePackages;
         this.retrofitBuilderExtensionClazz = retrofitBuilderExtensionClazz;
         this.interceptorExtensionsClasses = interceptorExtensionsClasses;
+        this.env = env;
     }
 
     public List<RetrofitClientBean> getRetrofitClients() {
@@ -58,5 +61,9 @@ public class RetrofitResourceContext {
 
     public Class<?> getRetrofitBuilderExtensionClazz() {
         return retrofitBuilderExtensionClazz;
+    }
+
+    public Env getEnv() {
+        return env;
     }
 }

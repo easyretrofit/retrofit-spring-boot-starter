@@ -29,7 +29,8 @@ public class RetrofitResourceContextBuilder {
     public RetrofitResourceContext buildContextInstance(String[] basePackages,
                                                         Set<Class<?>> retrofitBuilderClassSet,
                                                         RetrofitBuilderExtension globalRetrofitBuilderExtension,
-                                                        List<RetrofitInterceptorExtension> interceptorExtensions) {
+                                                        List<RetrofitInterceptorExtension> interceptorExtensions,
+                                                        Env env) {
         this.basePackages = basePackages;
         setRetrofitServiceBeanList(retrofitBuilderClassSet, globalRetrofitBuilderExtension, interceptorExtensions);
         setRetrofitClientBeanList();
@@ -37,7 +38,8 @@ public class RetrofitResourceContextBuilder {
 
         setRetrofitBuilderExtensionClazz(globalRetrofitBuilderExtension);
         setInterceptorExtensionsClasses(interceptorExtensions);
-        return new RetrofitResourceContext(this.basePackages, retrofitClientBeanList, retrofitServiceBeanHashMap, retrofitBuilderExtensionClazz, interceptorExtensionsClasses);
+        return new RetrofitResourceContext(this.basePackages,
+                retrofitClientBeanList, retrofitServiceBeanHashMap, retrofitBuilderExtensionClazz, interceptorExtensionsClasses, env);
     }
 
 
