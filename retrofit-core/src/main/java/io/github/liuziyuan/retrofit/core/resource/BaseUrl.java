@@ -2,6 +2,7 @@ package io.github.liuziyuan.retrofit.core.resource;
 
 import io.github.liuziyuan.retrofit.core.exception.BaseUrlException;
 import io.github.liuziyuan.retrofit.core.util.RetrofitUrlUtils;
+import io.github.liuziyuan.retrofit.core.util.UniqueKeyUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.net.URL;
@@ -9,10 +10,10 @@ import java.net.URL;
 /**
  * @author liuziyuan
  */
-public class BaseUrl {
-    private String realBaseUrl;
-    private String realHostUrl;
-    private String realPrefixUrl;
+public final class BaseUrl implements UniqueKey {
+    private final String realBaseUrl;
+    private final String realHostUrl;
+    private final String realPrefixUrl;
     private static final String BASE_URL_NULL = "Retrofit base URL is null";
 
     public BaseUrl() {
@@ -26,7 +27,6 @@ public class BaseUrl {
         this.realHostUrl = getRealHostUrl(realBaseUrl);
         this.realPrefixUrl = getRealPrefixUrl(realBaseUrl);
     }
-
 
     private String getRealHostUrl(String realBaseUrl) {
         if (realBaseUrl == null) {
@@ -49,23 +49,25 @@ public class BaseUrl {
         return realBaseUrl;
     }
 
-    public void setRealBaseUrl(String realBaseUrl) {
-        this.realBaseUrl = realBaseUrl;
-    }
-
     public String getRealHostUrl() {
         return realHostUrl;
-    }
-
-    public void setRealHostUrl(String realHostUrl) {
-        this.realHostUrl = realHostUrl;
     }
 
     public String getRealPrefixUrl() {
         return realPrefixUrl;
     }
 
-    public void setRealPrefixUrl(String realPrefixUrl) {
-        this.realPrefixUrl = realPrefixUrl;
+    @Override
+    public String toString() {
+        return "BaseUrl{" +
+                "realBaseUrl='" + realBaseUrl + '\'' +
+                ", realHostUrl='" + realHostUrl + '\'' +
+                ", realPrefixUrl='" + realPrefixUrl + '\'' +
+                '}';
+    }
+
+    @Override
+    public String generateUniqueKey() {
+        return UniqueKeyUtils.generateUniqueKey(this.toString());
     }
 }

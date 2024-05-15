@@ -2,6 +2,7 @@ package io.github.liuziyuan.retrofit.core.resource;
 
 import io.github.liuziyuan.retrofit.core.Env;
 import io.github.liuziyuan.retrofit.core.util.RetrofitUrlUtils;
+import io.github.liuziyuan.retrofit.core.util.UniqueKeyUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.function.Function;
@@ -11,18 +12,14 @@ import java.util.function.Function;
  *
  * @author liuziyuan
  */
-public class RetrofitUrl {
+public class RetrofitUrl implements UniqueKey {
 
-    private String inputDefaultBaseUrl;
-    private String inputDynamicBaseUrl;
+    private final String inputDefaultBaseUrl;
+    private final String inputDynamicBaseUrl;
     private BaseUrl defaultUrl;
     private BaseUrl dynamicUrl;
     private String retrofitUrlPrefix;
     private UrlStatus urlStatus = UrlStatus.NULL;
-
-    public RetrofitUrl() {
-    }
-
 
     public RetrofitUrl(String baseUrl, String inputDynamicBaseUrl, String retrofitUrlPrefix, Env env) {
         this.inputDefaultBaseUrl = RetrofitUrlUtils.convertBaseUrl(baseUrl, env::resolveRequiredPlaceholders, false);
@@ -79,39 +76,32 @@ public class RetrofitUrl {
         return defaultUrl;
     }
 
-    public void setDefaultUrl(BaseUrl defaultUrl) {
-        this.defaultUrl = defaultUrl;
-    }
-
     public BaseUrl getDynamicUrl() {
         return dynamicUrl;
-    }
-
-    public void setDynamicUrl(BaseUrl dynamicUrl) {
-        this.dynamicUrl = dynamicUrl;
     }
 
     public String getRetrofitUrlPrefix() {
         return retrofitUrlPrefix;
     }
 
-    public void setRetrofitUrlPrefix(String retrofitUrlPrefix) {
-        this.retrofitUrlPrefix = retrofitUrlPrefix;
-    }
-
     public UrlStatus getUrlStatus() {
         return urlStatus;
     }
 
-    public void setUrlStatus(UrlStatus urlStatus) {
-        this.urlStatus = urlStatus;
+    @Override
+    public String toString() {
+        return "RetrofitUrl{" +
+                "inputDefaultBaseUrl='" + inputDefaultBaseUrl + '\'' +
+                ", inputDynamicBaseUrl='" + inputDynamicBaseUrl + '\'' +
+                ", defaultUrl=" + defaultUrl.toString() +
+                ", dynamicUrl=" + dynamicUrl.toString() +
+                ", retrofitUrlPrefix='" + retrofitUrlPrefix + '\'' +
+                ", urlStatus=" + urlStatus +
+                '}';
     }
 
-    public void setInputDefaultBaseUrl(String inputDefaultBaseUrl) {
-        this.inputDefaultBaseUrl = inputDefaultBaseUrl;
-    }
-
-    public void setInputDynamicBaseUrl(String inputDynamicBaseUrl) {
-        this.inputDynamicBaseUrl = inputDynamicBaseUrl;
+    @Override
+    public String generateUniqueKey() {
+        return UniqueKeyUtils.generateUniqueKey(this.toString());
     }
 }

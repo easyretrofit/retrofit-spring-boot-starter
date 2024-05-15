@@ -1,6 +1,10 @@
 package io.github.liuziyuan.retrofit.core.resource;
 
+import io.github.liuziyuan.retrofit.core.util.UniqueKeyUtils;
+import retrofit2.Retrofit;
+
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * RetrofitServiceBean with the same @RetrofitBuilder are aggregated into RetrofitClientBean
@@ -8,7 +12,7 @@ import java.util.*;
  * @author liuziyuan
  */
 
-public class RetrofitClientBean {
+public class RetrofitClientBean implements UniqueKey {
 
     private String retrofitInstanceName;
     private String realHostUrl;
@@ -19,17 +23,19 @@ public class RetrofitClientBean {
     private List<RetrofitApiServiceBean> retrofitApiServiceBeans;
 
 
-    public RetrofitClientBean() {
+    public RetrofitClientBean(RetrofitApiServiceBean serviceBean) {
         this.interceptors = new LinkedHashSet<>();
         this.inheritedInterceptors = new LinkedHashSet<>();
         this.retrofitApiServiceBeans = new ArrayList<>();
+        this.setRetrofitBuilder(serviceBean.getRetrofitBuilder());
+        this.setRealHostUrl(serviceBean.getRetrofitUrl().getDefaultUrl().getRealHostUrl());
+        this.setUrlStatus(serviceBean.getRetrofitUrl().getUrlStatus());
+        this.setInterceptors(serviceBean.getInterceptors());
+        this.addInheritedInterceptors(serviceBean.getMyInterceptors());
+        this.setRetrofitInstanceName();
     }
 
-    public void setRetrofitInstanceName(String retrofitInstanceName) {
-        this.retrofitInstanceName = retrofitInstanceName + "@" + UUID.randomUUID();
-    }
-
-    public void addRetrofitServiceBean(RetrofitApiServiceBean retrofitApiServiceBean) {
+    public void addRetrofitApiServiceBean(RetrofitApiServiceBean retrofitApiServiceBean) {
         retrofitApiServiceBeans.add(retrofitApiServiceBean);
         retrofitApiServiceBean.setRetrofitClientBean(this);
     }
@@ -46,7 +52,7 @@ public class RetrofitClientBean {
         return realHostUrl;
     }
 
-    public void setRealHostUrl(String realHostUrl) {
+    void setRealHostUrl(String realHostUrl) {
         this.realHostUrl = realHostUrl;
     }
 
@@ -54,7 +60,7 @@ public class RetrofitClientBean {
         return urlStatus;
     }
 
-    public void setUrlStatus(UrlStatus urlStatus) {
+    void setUrlStatus(UrlStatus urlStatus) {
         this.urlStatus = urlStatus;
     }
 
@@ -62,7 +68,7 @@ public class RetrofitClientBean {
         return retrofitBuilder;
     }
 
-    public void setRetrofitBuilder(RetrofitBuilderBean retrofitBuilder) {
+    void setRetrofitBuilder(RetrofitBuilderBean retrofitBuilder) {
         this.retrofitBuilder = retrofitBuilder;
     }
 
@@ -70,7 +76,7 @@ public class RetrofitClientBean {
         return interceptors;
     }
 
-    public void setInterceptors(Set<RetrofitInterceptorBean> interceptors) {
+    void setInterceptors(Set<RetrofitInterceptorBean> interceptors) {
         this.interceptors = interceptors;
     }
 
@@ -78,7 +84,7 @@ public class RetrofitClientBean {
         return inheritedInterceptors;
     }
 
-    public void setInheritedInterceptors(Set<RetrofitInterceptorBean> inheritedInterceptors) {
+    void setInheritedInterceptors(Set<RetrofitInterceptorBean> inheritedInterceptors) {
         this.inheritedInterceptors = inheritedInterceptors;
     }
 
@@ -86,20 +92,40 @@ public class RetrofitClientBean {
         return retrofitApiServiceBeans;
     }
 
-    public void setRetrofitApiServiceBeans(List<RetrofitApiServiceBean> retrofitApiServiceBeans) {
+    void setRetrofitApiServiceBeans(List<RetrofitApiServiceBean> retrofitApiServiceBeans) {
         this.retrofitApiServiceBeans = retrofitApiServiceBeans;
     }
 
     @Override
     public String toString() {
+        String interceptorsStr = null;
+        if (interceptors != null) {
+            interceptorsStr = interceptors.stream().map(RetrofitInterceptorBean::toString).collect(Collectors.joining(","));
+        }
+        String inheritedInterceptorsStr = null;
+        if (inheritedInterceptors != null) {
+            inheritedInterceptorsStr = inheritedInterceptors.stream().map(RetrofitInterceptorBean::toString).collect(Collectors.joining(","));
+        }
+
         return "RetrofitClientBean{" +
-                "retrofitInstanceName='" + retrofitInstanceName + '\'' +
-                ", realHostUrl='" + realHostUrl + '\'' +
-                ", urlStatus=" + urlStatus +
-                ", retrofitBuilder=" + retrofitBuilder +
-                ", interceptors=" + interceptors +
-                ", inheritedInterceptors=" + inheritedInterceptors +
-                ", retrofitApiServiceBeans=" + retrofitApiServiceBeans +
+                "realHostUrl='" + realHostUrl + '\'' +
+                ", urlStatus=" + urlStatus.toString() +
+                ", retrofitBuilder=" + retrofitBuilder.toString() +
+                ", interceptors=" + interceptorsStr +
+                ", inheritedInterceptors=" + inheritedInterceptorsStr +
                 '}';
+    }
+
+    @Override
+    public String generateUniqueKey() {
+        return UniqueKeyUtils.generateUniqueKey(this.toString());
+    }
+
+    /**
+     * set retrofit instance name when RetrofitClientBean instance created, the retrofitInstanceName need whole attributes filled.
+     * important
+     */
+    public void setRetrofitInstanceName() {
+        this.retrofitInstanceName = Retrofit.class.getSimpleName().concat("@" + this.generateUniqueKey());
     }
 }

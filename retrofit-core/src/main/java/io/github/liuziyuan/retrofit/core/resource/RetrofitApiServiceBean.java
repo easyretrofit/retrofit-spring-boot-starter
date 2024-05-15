@@ -2,17 +2,19 @@ package io.github.liuziyuan.retrofit.core.resource;
 
 import io.github.liuziyuan.retrofit.core.proxy.BaseExceptionDelegate;
 import io.github.liuziyuan.retrofit.core.exception.RetrofitExtensionException;
+import io.github.liuziyuan.retrofit.core.util.UniqueKeyUtils;
 
 import java.lang.annotation.Annotation;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Each API interface file corresponds to a RetrofitServiceBean
  *
  * @author liuziyuan
  */
-public class RetrofitApiServiceBean {
+public class RetrofitApiServiceBean implements UniqueKey {
 
     private Class<?> selfClazz;
     private Class<?> parentClazz;
@@ -29,6 +31,7 @@ public class RetrofitApiServiceBean {
 
     public RetrofitApiServiceBean() {
     }
+
     public void setRetrofitClientBean(RetrofitClientBean retrofitClientBean) {
         this.retrofitClientBeanInstanceName = retrofitClientBean.getRetrofitInstanceName();
         this.retrofitBuilder = retrofitClientBean.getRetrofitBuilder();
@@ -64,7 +67,7 @@ public class RetrofitApiServiceBean {
         return selfClazz;
     }
 
-    public void setSelfClazz(Class<?> selfClazz) {
+    void setSelfClazz(Class<?> selfClazz) {
         this.selfClazz = selfClazz;
     }
 
@@ -72,7 +75,7 @@ public class RetrofitApiServiceBean {
         return parentClazz;
     }
 
-    public void setParentClazz(Class<?> parentClazz) {
+    void setParentClazz(Class<?> parentClazz) {
         this.parentClazz = parentClazz;
     }
 
@@ -80,7 +83,7 @@ public class RetrofitApiServiceBean {
         return retrofitUrl;
     }
 
-    public void setRetrofitUrl(RetrofitUrl retrofitUrl) {
+    void setRetrofitUrl(RetrofitUrl retrofitUrl) {
         this.retrofitUrl = retrofitUrl;
     }
 
@@ -88,7 +91,7 @@ public class RetrofitApiServiceBean {
         return retrofitBuilder;
     }
 
-    public void setRetrofitBuilder(RetrofitBuilderBean retrofitBuilder) {
+    void setRetrofitBuilder(RetrofitBuilderBean retrofitBuilder) {
         this.retrofitBuilder = retrofitBuilder;
     }
 
@@ -96,7 +99,7 @@ public class RetrofitApiServiceBean {
         return interceptors;
     }
 
-    public void setInterceptors(Set<RetrofitInterceptorBean> interceptors) {
+    void setInterceptors(Set<RetrofitInterceptorBean> interceptors) {
         this.interceptors = interceptors;
     }
 
@@ -104,7 +107,7 @@ public class RetrofitApiServiceBean {
         return myInterceptors;
     }
 
-    public void setMyInterceptors(Set<RetrofitInterceptorBean> myInterceptors) {
+    void setMyInterceptors(Set<RetrofitInterceptorBean> myInterceptors) {
         this.myInterceptors = myInterceptors;
     }
 
@@ -112,15 +115,37 @@ public class RetrofitApiServiceBean {
         return retrofitClientBeanInstanceName;
     }
 
-    public void setRetrofitClientBeanInstanceName(String retrofitClientBeanInstanceName) {
-        this.retrofitClientBeanInstanceName = retrofitClientBeanInstanceName;
-    }
-
     public Set<Class<? extends BaseExceptionDelegate<? extends RetrofitExtensionException>>> getExceptionDelegates() {
         return exceptionDelegates;
     }
 
-    public void setExceptionDelegates(Set<Class<? extends BaseExceptionDelegate<? extends RetrofitExtensionException>>> exceptionDelegates) {
-        this.exceptionDelegates = exceptionDelegates;
+    @Override
+    public String toString() {
+        String interceptorStr = null;
+        if (interceptors != null) {
+            interceptorStr = interceptors.stream().map(RetrofitInterceptorBean::generateUniqueKey).collect(Collectors.joining(","));
+        }
+        String myInterceptorStr = null;
+        if (myInterceptors != null) {
+            myInterceptorStr = myInterceptors.stream().map(RetrofitInterceptorBean::generateUniqueKey).collect(Collectors.joining(","));
+        }
+        String exceptionDelegateStr = null;
+        if (exceptionDelegates != null) {
+            exceptionDelegateStr = exceptionDelegates.stream().map(Class::getName).collect(Collectors.joining(","));
+        }
+        return "RetrofitApiServiceBean{" +
+                "selfClazz=" + selfClazz +
+                ", parentClazz=" + parentClazz +
+                ", retrofitUrl=" + retrofitUrl +
+                ", retrofitBuilder=" + retrofitBuilder +
+                ", interceptors=" + interceptorStr +
+                ", myInterceptors=" + myInterceptorStr +
+                ", exceptionDelegates=" + exceptionDelegateStr +
+                '}';
+    }
+
+    @Override
+    public String generateUniqueKey() {
+        return UniqueKeyUtils.generateUniqueKey(this.toString());
     }
 }

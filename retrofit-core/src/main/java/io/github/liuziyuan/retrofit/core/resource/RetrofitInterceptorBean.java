@@ -4,11 +4,12 @@ import io.github.liuziyuan.retrofit.core.annotation.InterceptorType;
 import io.github.liuziyuan.retrofit.core.annotation.RetrofitInterceptor;
 import io.github.liuziyuan.retrofit.core.annotation.RetrofitInterceptorParam;
 import io.github.liuziyuan.retrofit.core.extension.BaseInterceptor;
+import io.github.liuziyuan.retrofit.core.util.UniqueKeyUtils;
 
 import java.util.Arrays;
 import java.util.Objects;
 
-public class RetrofitInterceptorBean {
+public final class RetrofitInterceptorBean implements UniqueKey {
     private Class<? extends BaseInterceptor> handler;
 
     private InterceptorType type;
@@ -19,8 +20,6 @@ public class RetrofitInterceptorBean {
 
     private int sort;
 
-    public RetrofitInterceptorBean() {
-    }
 
     public RetrofitInterceptorBean(RetrofitInterceptor retrofitInterceptor, RetrofitInterceptorParam retrofitInterceptorParam) {
         this.handler = retrofitInterceptor.handler();
@@ -66,10 +65,6 @@ public class RetrofitInterceptorBean {
         return handler;
     }
 
-    public void setHandler(Class<? extends BaseInterceptor> handler) {
-        this.handler = handler;
-    }
-
     public InterceptorType getType() {
         return type;
     }
@@ -82,24 +77,13 @@ public class RetrofitInterceptorBean {
         return include;
     }
 
-    public void setInclude(String[] include) {
-        this.include = include;
-    }
-
     public String[] getExclude() {
         return exclude;
     }
 
-    public void setExclude(String[] exclude) {
-        this.exclude = exclude;
-    }
 
     public int getSort() {
         return sort;
-    }
-
-    public void setSort(int sort) {
-        this.sort = sort;
     }
 
     @Override
@@ -111,5 +95,10 @@ public class RetrofitInterceptorBean {
                 ", exclude=" + Arrays.toString(exclude) +
                 ", sort=" + sort +
                 '}';
+    }
+
+    @Override
+    public String generateUniqueKey() {
+        return UniqueKeyUtils.generateUniqueKey(this.toString());
     }
 }
