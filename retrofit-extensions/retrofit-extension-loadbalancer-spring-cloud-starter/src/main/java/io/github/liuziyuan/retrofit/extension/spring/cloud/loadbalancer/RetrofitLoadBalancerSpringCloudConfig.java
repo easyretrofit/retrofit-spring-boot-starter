@@ -6,11 +6,11 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RetrofitLoadBalancerSpringCloudConfig {
-    @Bean
-    @ConditionalOnMissingBean
-    public RetrofitLoadBalancerExtension retrofitSpringCouldWebConfig() {
-        return new RetrofitLoadBalancerExtension();
-    }
+//    @Bean
+//    @ConditionalOnMissingBean
+//    public RetrofitLoadBalancerExtension retrofitSpringCouldWebConfig() {
+//        return new RetrofitLoadBalancerExtension();
+//    }
 
     @Bean
     @ConditionalOnMissingBean

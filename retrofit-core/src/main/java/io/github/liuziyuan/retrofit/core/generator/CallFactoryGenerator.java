@@ -1,7 +1,6 @@
 package io.github.liuziyuan.retrofit.core.generator;
 
 import io.github.liuziyuan.retrofit.core.builder.BaseCallFactoryBuilder;
-import lombok.SneakyThrows;
 import okhttp3.Call;
 
 /**
@@ -16,7 +15,6 @@ public abstract class CallFactoryGenerator implements Generator<Call.Factory> {
 
     public abstract BaseCallFactoryBuilder buildInjectionObject(Class<? extends BaseCallFactoryBuilder> clazz);
 
-    @SneakyThrows
     @Override
     public Call.Factory generate() {
         BaseCallFactoryBuilder baseCallFactoryBuilder = buildInjectionObject(callFactoryBuilderClazz);
@@ -29,7 +27,12 @@ public abstract class CallFactoryGenerator implements Generator<Call.Factory> {
             if (baseCallFactoryBuilderClazzName.equals(callFactoryBuilderClazzName)) {
                 return null;
             } else {
-                final BaseCallFactoryBuilder builder = callFactoryBuilderClazz.newInstance();
+                final BaseCallFactoryBuilder builder;
+                try {
+                    builder = callFactoryBuilderClazz.newInstance();
+                } catch (IllegalAccessException | InstantiationException e) {
+                    throw new RuntimeException(e);
+                }
                 return builder.executeBuild();
             }
         }

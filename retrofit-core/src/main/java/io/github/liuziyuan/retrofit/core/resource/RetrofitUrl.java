@@ -2,8 +2,7 @@ package io.github.liuziyuan.retrofit.core.resource;
 
 import io.github.liuziyuan.retrofit.core.Env;
 import io.github.liuziyuan.retrofit.core.util.RetrofitUrlUtils;
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
+import io.github.liuziyuan.retrofit.core.util.UniqueKeyUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.function.Function;
@@ -13,9 +12,7 @@ import java.util.function.Function;
  *
  * @author liuziyuan
  */
-@Slf4j
-@Getter
-public final class RetrofitUrl {
+public final class RetrofitUrl implements UniqueKey {
 
     private final String inputDefaultBaseUrl;
     private final String inputDynamicBaseUrl;
@@ -23,7 +20,6 @@ public final class RetrofitUrl {
     private BaseUrl dynamicUrl;
     private String retrofitUrlPrefix;
     private UrlStatus urlStatus = UrlStatus.NULL;
-
 
     public RetrofitUrl(String baseUrl, String inputDynamicBaseUrl, String retrofitUrlPrefix, Env env) {
         this.inputDefaultBaseUrl = RetrofitUrlUtils.convertBaseUrl(baseUrl, env::resolveRequiredPlaceholders, false);
@@ -68,4 +64,44 @@ public final class RetrofitUrl {
         defaultUrl = new BaseUrl(url);
     }
 
+    public String getInputDefaultBaseUrl() {
+        return inputDefaultBaseUrl;
+    }
+
+    public String getInputDynamicBaseUrl() {
+        return inputDynamicBaseUrl;
+    }
+
+    public BaseUrl getDefaultUrl() {
+        return defaultUrl;
+    }
+
+    public BaseUrl getDynamicUrl() {
+        return dynamicUrl;
+    }
+
+    public String getRetrofitUrlPrefix() {
+        return retrofitUrlPrefix;
+    }
+
+    public UrlStatus getUrlStatus() {
+        return urlStatus;
+    }
+
+    @Override
+    public String toString() {
+        return "RetrofitUrl{" +
+                "inputDefaultBaseUrl='" + inputDefaultBaseUrl + '\'' +
+                ", inputDynamicBaseUrl='" + inputDynamicBaseUrl + '\'' +
+                ", defaultUrl=" + defaultUrl.toString() +
+                ", dynamicUrl=" + dynamicUrl.toString() +
+                ", retrofitUrlPrefix='" + retrofitUrlPrefix + '\'' +
+                ", urlStatus=" + urlStatus +
+                '}';
+    }
+
+    @Override
+    public String generateUniqueKey() {
+        return UniqueKeyUtils.generateUniqueKey(this.toString());
+    }
 }

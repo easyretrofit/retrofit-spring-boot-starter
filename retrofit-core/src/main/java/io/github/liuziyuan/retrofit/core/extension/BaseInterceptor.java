@@ -1,18 +1,14 @@
 package io.github.liuziyuan.retrofit.core.extension;
 
 import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
-import io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean;
 import io.github.liuziyuan.retrofit.core.util.AntPathMatcher;
 import io.github.liuziyuan.retrofit.core.util.PathMatcher;
-import lombok.SneakyThrows;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 import retrofit2.Invocation;
-import retrofit2.internal.EverythingIsNonNull;
 
 import java.io.IOException;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Objects;
 

@@ -11,7 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
     <description>easy retrofit core project, to create a retrofit context for retrofit-spring-boot-starter or others </description>
     <artifactId>retrofit-core</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.2</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -41,18 +41,10 @@
             <version>${commons.lang3.version}</version>
         </dependency>
 
-
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
             <scope>provided</scope>
         </dependency>
 

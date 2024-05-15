@@ -6,6 +6,7 @@ import java.lang.annotation.*;
 
 /**
  * Enable application to use retrofit-spring-boot-starter
+ *
  * @author liuziyuan
  */
 @Documented
@@ -35,4 +36,5 @@ public @interface EnableRetrofit {
      * @return basePackages
      */
     Class<?>[] basePackageClasses() default {};
+
 }

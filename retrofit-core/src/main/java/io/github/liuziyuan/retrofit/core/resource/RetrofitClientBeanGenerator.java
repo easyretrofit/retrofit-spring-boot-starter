@@ -1,7 +1,6 @@
 package io.github.liuziyuan.retrofit.core.resource;
 
 import io.github.liuziyuan.retrofit.core.generator.Generator;
-import retrofit2.Retrofit;
 
 import java.util.List;
 
@@ -23,15 +22,9 @@ public class RetrofitClientBeanGenerator implements Generator<RetrofitClientBean
     public RetrofitClientBean generate() {
         RetrofitClientBean clientBean = findExistRetrofitClientBean(serviceBean, clientBeanList);
         if (clientBean == null) {
-            clientBean = new RetrofitClientBean();
-            clientBean.setRetrofitBuilder(serviceBean.getRetrofitBuilder());
-            clientBean.setInterceptors(serviceBean.getInterceptors());
-            clientBean.setRealHostUrl(serviceBean.getRetrofitUrl().getDefaultUrl().getRealHostUrl());
-            clientBean.setRetrofitInstanceName(Retrofit.class.getSimpleName());
-            clientBean.setUrlStatus(serviceBean.getRetrofitUrl().getUrlStatus());
+            clientBean = new RetrofitClientBean(serviceBean);
         }
-        clientBean.addInheritedInterceptors(serviceBean.getMyInterceptors());
-        clientBean.addRetrofitServiceBean(serviceBean);
+        clientBean.addRetrofitApiServiceBean(serviceBean);
         return clientBean;
     }
 

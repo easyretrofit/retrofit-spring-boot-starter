@@ -1,10 +1,8 @@
 package io.github.liuziyuan.retrofit.spring.boot;
 
 import io.github.liuziyuan.retrofit.core.CDIBeanManager;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 
 public class SpringCDIBeanManager implements CDIBeanManager {
 
@@ -22,6 +20,24 @@ public class SpringCDIBeanManager implements CDIBeanManager {
             return null;
         }
 
+    }
+
+    @Override
+    public <T> T getBean(String name) {
+        try {
+            return (T) applicationContext.getBean(name);
+        } catch (NoSuchBeanDefinitionException ex) {
+            return null;
+        }
+    }
+
+    @Override
+    public <T> T getBean(String name, Class<T> clazz) {
+        try {
+            return applicationContext.getBean(name, clazz);
+        } catch (NoSuchBeanDefinitionException ex) {
+            return null;
+        }
     }
 
 }

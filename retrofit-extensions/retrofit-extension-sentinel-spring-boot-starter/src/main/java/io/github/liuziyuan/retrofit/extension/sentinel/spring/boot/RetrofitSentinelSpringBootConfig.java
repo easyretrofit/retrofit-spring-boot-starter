@@ -32,17 +32,6 @@ public class RetrofitSentinelSpringBootConfig implements ApplicationContextAware
         this.applicationContext = applicationContext;
     }
 
-    /**
-     * 注册接口扩展
-     *
-     * @return
-     */
-    @Bean
-    @ConditionalOnMissingBean
-    public RetrofitSentinelInterceptorExtension retrofitSentinelInterceptorExtension() {
-        return new RetrofitSentinelInterceptorExtension();
-    }
-
     @Bean
     @ConditionalOnMissingBean
     public RetrofitSentinelResourceContext retrofitSentinelResourceContext(

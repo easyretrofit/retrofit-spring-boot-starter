@@ -4,10 +4,10 @@ import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
 import io.github.liuziyuan.retrofit.core.annotation.RetrofitInterceptor;
 import io.github.liuziyuan.retrofit.core.extension.BaseInterceptor;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitInterceptorBean;
-import lombok.SneakyThrows;
 import okhttp3.Interceptor;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * Generate OkHttpInterceptor instance
@@ -29,7 +29,6 @@ public abstract class OkHttpInterceptorGenerator implements Generator<Intercepto
 
     public abstract BaseInterceptor buildInjectionObject(Class<? extends BaseInterceptor> clazz);
 
-    @SneakyThrows
     @Override
     public Interceptor generate() {
         interceptor = buildInjectionObject(retrofitInterceptor.getHandler());
@@ -40,7 +39,13 @@ public abstract class OkHttpInterceptorGenerator implements Generator<Intercepto
                 constructor = interceptorClass.getConstructor(RetrofitResourceContext.class);
                 interceptorInstance = constructor.newInstance(resourceContext);
             } catch (NoSuchMethodException exception) {
-                interceptorInstance = interceptorClass.newInstance();
+                try {
+                    interceptorInstance = interceptorClass.newInstance();
+                } catch (IllegalAccessException | InstantiationException e) {
+                    throw new RuntimeException(e);
+                }
+            } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
+                throw new RuntimeException(e);
             }
             interceptor = interceptorInstance;
         }

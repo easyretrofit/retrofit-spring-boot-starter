@@ -2,8 +2,7 @@ package io.github.liuziyuan.retrofit.core.resource;
 
 import io.github.liuziyuan.retrofit.core.exception.BaseUrlException;
 import io.github.liuziyuan.retrofit.core.util.RetrofitUrlUtils;
-import lombok.Getter;
-import lombok.SneakyThrows;
+import io.github.liuziyuan.retrofit.core.util.UniqueKeyUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.net.URL;
@@ -11,9 +10,7 @@ import java.net.URL;
 /**
  * @author liuziyuan
  */
-
-@Getter
-public final class BaseUrl {
+public final class BaseUrl implements UniqueKey {
     private final String realBaseUrl;
     private final String realHostUrl;
     private final String realPrefixUrl;
@@ -31,7 +28,6 @@ public final class BaseUrl {
         this.realPrefixUrl = getRealPrefixUrl(realBaseUrl);
     }
 
-    @SneakyThrows
     private String getRealHostUrl(String realBaseUrl) {
         if (realBaseUrl == null) {
             throw new BaseUrlException(BASE_URL_NULL);
@@ -41,7 +37,6 @@ public final class BaseUrl {
         return "/".equals(path) ? realBaseUrl : StringUtils.replace(realBaseUrl, path, "/");
     }
 
-    @SneakyThrows
     private String getRealPrefixUrl(String realBaseUrl) {
         if (realBaseUrl == null) {
             throw new BaseUrlException(BASE_URL_NULL);
@@ -50,5 +45,29 @@ public final class BaseUrl {
         return "/".equals(url.getPath()) ? "" : url.getPath();
     }
 
+    public String getRealBaseUrl() {
+        return realBaseUrl;
+    }
 
+    public String getRealHostUrl() {
+        return realHostUrl;
+    }
+
+    public String getRealPrefixUrl() {
+        return realPrefixUrl;
+    }
+
+    @Override
+    public String toString() {
+        return "BaseUrl{" +
+                "realBaseUrl='" + realBaseUrl + '\'' +
+                ", realHostUrl='" + realHostUrl + '\'' +
+                ", realPrefixUrl='" + realPrefixUrl + '\'' +
+                '}';
+    }
+
+    @Override
+    public String generateUniqueKey() {
+        return UniqueKeyUtils.generateUniqueKey(this.toString());
+    }
 }

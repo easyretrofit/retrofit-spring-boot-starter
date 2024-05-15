@@ -5,15 +5,14 @@ import io.github.liuziyuan.retrofit.core.RetrofitBuilderExtension;
 import io.github.liuziyuan.retrofit.core.annotation.RetrofitBuilder;
 import io.github.liuziyuan.retrofit.core.builder.*;
 import io.github.liuziyuan.retrofit.core.util.BooleanUtil;
-import lombok.Getter;
-import lombok.Setter;
+import io.github.liuziyuan.retrofit.core.util.UniqueKeyUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
-@Getter
-@Setter
-public final class RetrofitBuilderBean {
+
+public final class RetrofitBuilderBean implements UniqueKey {
     private boolean enable = false;
 
     private OverrideRule overwriteType = OverrideRule.GLOBAL_FIRST;
@@ -31,6 +30,7 @@ public final class RetrofitBuilderBean {
     private Class<? extends BaseCallFactoryBuilder> callFactory;
 
     private boolean validateEagerly;
+
 
     public RetrofitBuilderBean(Class<?> retrofitBuilderClazz, RetrofitBuilderExtension globalRetrofitBuilderExtension) {
         RetrofitBuilder retrofitBuilderAnnotation = retrofitBuilderClazz.getDeclaredAnnotation(RetrofitBuilder.class);
@@ -153,5 +153,104 @@ public final class RetrofitBuilderBean {
         return clazz;
     }
 
+    public boolean isEnable() {
+        return enable;
+    }
 
+    void setEnable(boolean enable) {
+        this.enable = enable;
+    }
+
+    public OverrideRule getOverwriteType() {
+        return overwriteType;
+    }
+
+    void setOverwriteType(OverrideRule overwriteType) {
+        this.overwriteType = overwriteType;
+    }
+
+    public String getBaseUrl() {
+        return baseUrl;
+    }
+
+    void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
+
+    public Class<? extends BaseCallAdapterFactoryBuilder>[] getAddCallAdapterFactory() {
+        return addCallAdapterFactory;
+    }
+
+    void setAddCallAdapterFactory(Class<? extends BaseCallAdapterFactoryBuilder>[] addCallAdapterFactory) {
+        this.addCallAdapterFactory = addCallAdapterFactory;
+    }
+
+    public Class<? extends BaseConverterFactoryBuilder>[] getAddConverterFactory() {
+        return addConverterFactory;
+    }
+
+    void setAddConverterFactory(Class<? extends BaseConverterFactoryBuilder>[] addConverterFactory) {
+        this.addConverterFactory = addConverterFactory;
+    }
+
+    public Class<? extends BaseOkHttpClientBuilder> getClient() {
+        return client;
+    }
+
+    void setClient(Class<? extends BaseOkHttpClientBuilder> client) {
+        this.client = client;
+    }
+
+    public Class<? extends BaseCallBackExecutorBuilder> getCallbackExecutor() {
+        return callbackExecutor;
+    }
+
+    void setCallbackExecutor(Class<? extends BaseCallBackExecutorBuilder> callbackExecutor) {
+        this.callbackExecutor = callbackExecutor;
+    }
+
+    public Class<? extends BaseCallFactoryBuilder> getCallFactory() {
+        return callFactory;
+    }
+
+    void setCallFactory(Class<? extends BaseCallFactoryBuilder> callFactory) {
+        this.callFactory = callFactory;
+    }
+
+    public boolean isValidateEagerly() {
+        return validateEagerly;
+    }
+
+    void setValidateEagerly(boolean validateEagerly) {
+        this.validateEagerly = validateEagerly;
+    }
+
+    @Override
+    public String toString() {
+        String addCallAdapterFactoryStr = null;
+        if (addCallAdapterFactory != null) {
+            addCallAdapterFactoryStr = Arrays.stream(addCallAdapterFactory).map(Class::getName).collect(Collectors.joining(","));
+        }
+        String addConverterFactoryStr = null;
+        if (addConverterFactory != null) {
+            addConverterFactoryStr = Arrays.stream(addConverterFactory).map(Class::getName).collect(Collectors.joining(","));
+        }
+        return "RetrofitBuilderBean{" +
+                "enable=" + enable +
+                ", overwriteType=" + overwriteType +
+                ", baseUrl='" + baseUrl + '\'' +
+                ", addCallAdapterFactory=" + addCallAdapterFactoryStr +
+                ", addConverterFactory=" + addConverterFactoryStr +
+                ", client=" + client +
+                ", callbackExecutor=" + callbackExecutor +
+                ", callFactory=" + callFactory +
+                ", validateEagerly=" + validateEagerly +
+                '}';
+    }
+
+    @Override
+    public String generateUniqueKey() {
+
+        return UniqueKeyUtils.generateUniqueKey(this.toString());
+    }
 }

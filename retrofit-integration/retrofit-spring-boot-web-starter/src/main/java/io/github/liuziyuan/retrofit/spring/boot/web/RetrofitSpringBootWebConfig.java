@@ -6,9 +6,5 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RetrofitSpringBootWebConfig {
-    @Bean
-    @ConditionalOnMissingBean
-    public CustomRetrofitBuilderExtension customRetrofitBuilderExtension() {
-        return new CustomRetrofitBuilderExtension();
-    }
+
 }
