@@ -1,7 +1,6 @@
 package io.github.liuziyuan.retrofit.core.generator;
 
 import io.github.liuziyuan.retrofit.core.builder.BaseCallAdapterFactoryBuilder;
-import lombok.SneakyThrows;
 import retrofit2.CallAdapter;
 
 /**
@@ -18,7 +17,6 @@ public abstract class CallAdapterFactoryGenerator implements Generator<CallAdapt
 
     public abstract BaseCallAdapterFactoryBuilder buildInjectionObject(Class<? extends BaseCallAdapterFactoryBuilder> clazz);
 
-    @SneakyThrows
     @Override
     public CallAdapter.Factory generate() {
         final BaseCallAdapterFactoryBuilder baseCallAdapterFactoryBuilder = buildInjectionObject(baseCallAdapterFactoryBuilderClazz);
@@ -31,7 +29,12 @@ public abstract class CallAdapterFactoryGenerator implements Generator<CallAdapt
             if (baseCallAdapterFactoryBuilderClazzName.equals(callAdapterFactoryBuilderClazzName)) {
                 return null;
             } else {
-                final BaseCallAdapterFactoryBuilder builder = baseCallAdapterFactoryBuilderClazz.newInstance();
+                final BaseCallAdapterFactoryBuilder builder;
+                try {
+                    builder = baseCallAdapterFactoryBuilderClazz.newInstance();
+                } catch (IllegalAccessException | InstantiationException e) {
+                    throw new RuntimeException(e);
+                }
                 return builder.executeBuild();
             }
         }

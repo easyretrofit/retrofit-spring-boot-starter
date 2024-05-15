@@ -2,7 +2,6 @@ package io.github.liuziyuan.retrofit.core.resource;
 
 import io.github.liuziyuan.retrofit.core.exception.BaseUrlException;
 import io.github.liuziyuan.retrofit.core.util.RetrofitUrlUtils;
-import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 
 import java.net.URL;
@@ -28,7 +27,7 @@ public class BaseUrl {
         this.realPrefixUrl = getRealPrefixUrl(realBaseUrl);
     }
 
-    @SneakyThrows
+
     private String getRealHostUrl(String realBaseUrl) {
         if (realBaseUrl == null) {
             throw new BaseUrlException(BASE_URL_NULL);
@@ -38,7 +37,6 @@ public class BaseUrl {
         return "/".equals(path) ? realBaseUrl : StringUtils.replace(realBaseUrl, path, "/");
     }
 
-    @SneakyThrows
     private String getRealPrefixUrl(String realBaseUrl) {
         if (realBaseUrl == null) {
             throw new BaseUrlException(BASE_URL_NULL);

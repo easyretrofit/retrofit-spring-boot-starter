@@ -1,7 +1,6 @@
 package io.github.liuziyuan.retrofit.core.generator;
 
 import io.github.liuziyuan.retrofit.core.builder.BaseConverterFactoryBuilder;
-import lombok.SneakyThrows;
 import retrofit2.Converter;
 
 /**
@@ -18,7 +17,6 @@ public abstract class ConverterFactoryGenerator implements Generator<Converter.F
 
     public abstract BaseConverterFactoryBuilder buildInjectionObject(Class<? extends BaseConverterFactoryBuilder> clazz);
 
-    @SneakyThrows
     @Override
     public Converter.Factory generate() {
 
@@ -32,7 +30,12 @@ public abstract class ConverterFactoryGenerator implements Generator<Converter.F
             if (baseConverterFactoryBuilderClazzName.equals(converterFactoryBuilderClazzName)) {
                 return null;
             } else {
-                final BaseConverterFactoryBuilder builder = baseConverterFactoryBuilderClazz.newInstance();
+                final BaseConverterFactoryBuilder builder;
+                try {
+                    builder = baseConverterFactoryBuilderClazz.newInstance();
+                } catch (IllegalAccessException | InstantiationException e) {
+                    throw new RuntimeException(e);
+                }
                 return builder.executeBuild();
             }
         }

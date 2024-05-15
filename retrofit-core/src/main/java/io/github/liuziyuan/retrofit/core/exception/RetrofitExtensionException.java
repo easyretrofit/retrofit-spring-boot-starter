@@ -1,10 +1,8 @@
 package io.github.liuziyuan.retrofit.core.exception;
 
 import io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean;
-import lombok.Getter;
 import okhttp3.Request;
 
-@Getter
 public class RetrofitExtensionException extends RuntimeException {
 
     protected final RetrofitApiServiceBean retrofitApiServiceBean;
@@ -27,5 +25,13 @@ public class RetrofitExtensionException extends RuntimeException {
         super(cause);
         this.retrofitApiServiceBean = retrofitApiServiceBean;
         this.request = request;
+    }
+
+    public RetrofitApiServiceBean getRetrofitApiServiceBean() {
+        return retrofitApiServiceBean;
+    }
+
+    public Request getRequest() {
+        return request;
     }
 }

@@ -1,9 +1,6 @@
 package io.github.liuziyuan.retrofit.core;
 
 import io.github.liuziyuan.retrofit.core.resource.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.*;
 

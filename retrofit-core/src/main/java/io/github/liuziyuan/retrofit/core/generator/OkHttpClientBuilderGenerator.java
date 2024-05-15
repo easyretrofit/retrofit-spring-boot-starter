@@ -1,7 +1,6 @@
 package io.github.liuziyuan.retrofit.core.generator;
 
 import io.github.liuziyuan.retrofit.core.builder.BaseOkHttpClientBuilder;
-import lombok.SneakyThrows;
 import okhttp3.OkHttpClient;
 
 /**
@@ -18,7 +17,6 @@ public abstract class OkHttpClientBuilderGenerator implements Generator<OkHttpCl
 
     public abstract BaseOkHttpClientBuilder buildInjectionObject(Class<? extends BaseOkHttpClientBuilder> clazz);
 
-    @SneakyThrows
     @Override
     public OkHttpClient.Builder generate() {
 
@@ -32,7 +30,11 @@ public abstract class OkHttpClientBuilderGenerator implements Generator<OkHttpCl
             if (okHttpClientBuilderClazzName.equals(baseOkHttpClientBuilderClazzName)) {
                 return new OkHttpClient.Builder();
             } else {
-                return this.okHttpClientBuilderClazz.newInstance().executeBuild();
+                try {
+                    return this.okHttpClientBuilderClazz.newInstance().executeBuild();
+                } catch (IllegalAccessException | InstantiationException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
         return null;

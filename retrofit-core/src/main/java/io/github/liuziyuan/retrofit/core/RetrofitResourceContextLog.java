@@ -4,15 +4,16 @@ import io.github.liuziyuan.retrofit.core.resource.RetrofitApiServiceBean;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitBuilderBean;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
 import io.github.liuziyuan.retrofit.core.resource.UrlStatus;
-import lombok.extern.slf4j.Slf4j;
+import io.github.liuziyuan.retrofit.core.util.RetrofitUrlUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-@Slf4j
 public class RetrofitResourceContextLog {
-
+    private static final Logger log = LoggerFactory.getLogger(RetrofitResourceContextLog.class);
     private final RetrofitResourceContext context;
 
     public RetrofitResourceContextLog(RetrofitResourceContext context) {

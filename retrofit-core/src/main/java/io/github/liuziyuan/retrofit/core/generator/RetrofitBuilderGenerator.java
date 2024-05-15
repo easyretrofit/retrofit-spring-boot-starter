@@ -3,7 +3,6 @@ package io.github.liuziyuan.retrofit.core.generator;
 import io.github.liuziyuan.retrofit.core.CDIBeanManager;
 import io.github.liuziyuan.retrofit.core.RetrofitResourceContext;
 import io.github.liuziyuan.retrofit.core.annotation.InterceptorType;
-import io.github.liuziyuan.retrofit.core.annotation.RetrofitInterceptor;
 import io.github.liuziyuan.retrofit.core.builder.*;
 import io.github.liuziyuan.retrofit.core.extension.BaseInterceptor;
 import io.github.liuziyuan.retrofit.core.extension.DynamicBaseUrlInterceptor;
@@ -12,7 +11,6 @@ import io.github.liuziyuan.retrofit.core.resource.RetrofitBuilderBean;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitClientBean;
 import io.github.liuziyuan.retrofit.core.resource.RetrofitInterceptorBean;
 import io.github.liuziyuan.retrofit.core.util.CollectionUtils;
-import lombok.SneakyThrows;
 import okhttp3.Call;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -124,7 +122,6 @@ public final class RetrofitBuilderGenerator implements Generator<Retrofit.Builde
         }
     }
 
-    @SneakyThrows
     private void setRetrofitOkHttpClient() {
         final RetrofitBuilderBean retrofitBuilder = clientBean.getRetrofitBuilder();
         Set<RetrofitInterceptorBean> allInterceptors = new LinkedHashSet<>();
@@ -153,7 +150,6 @@ public final class RetrofitBuilderGenerator implements Generator<Retrofit.Builde
         builder.client(okHttpClientBuilder.build());
     }
 
-    @SneakyThrows
     private List<Interceptor> getOkHttpInterceptors(List<RetrofitInterceptorBean> interceptors, InterceptorType type) {
         List<Interceptor> interceptorList = new ArrayList<>();
         OkHttpInterceptorGenerator okHttpInterceptorGenerator;
@@ -174,7 +170,6 @@ public final class RetrofitBuilderGenerator implements Generator<Retrofit.Builde
         return interceptorList;
     }
 
-    @SneakyThrows
     private List<CallAdapter.Factory> getCallAdapterFactories(Class<? extends BaseCallAdapterFactoryBuilder>[] callAdapterFactoryClasses) {
         List<CallAdapter.Factory> callAdapterFactories = new ArrayList<>();
         CallAdapterFactoryGenerator callAdapterFactoryGenerator;
@@ -191,7 +186,6 @@ public final class RetrofitBuilderGenerator implements Generator<Retrofit.Builde
         return callAdapterFactories;
     }
 
-    @SneakyThrows
     private List<Converter.Factory> getConverterFactories(Class<? extends BaseConverterFactoryBuilder>[] converterFactoryBuilderClasses) {
         List<Converter.Factory> converterFactories = new ArrayList<>();
         ConverterFactoryGenerator converterFactoryGenerator;

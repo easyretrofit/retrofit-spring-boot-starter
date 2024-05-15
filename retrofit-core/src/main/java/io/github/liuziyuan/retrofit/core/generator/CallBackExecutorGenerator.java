@@ -1,7 +1,6 @@
 package io.github.liuziyuan.retrofit.core.generator;
 
 import io.github.liuziyuan.retrofit.core.builder.BaseCallBackExecutorBuilder;
-import lombok.SneakyThrows;
 
 import java.util.concurrent.Executor;
 
@@ -17,7 +16,6 @@ public abstract class CallBackExecutorGenerator implements Generator<Executor> {
 
     public abstract BaseCallBackExecutorBuilder buildInjectionObject(Class<? extends BaseCallBackExecutorBuilder> clazz);
 
-    @SneakyThrows
     @Override
     public Executor generate() {
 
@@ -31,7 +29,12 @@ public abstract class CallBackExecutorGenerator implements Generator<Executor> {
             if (baseCallBackExecutorClazzName.equals(callBackExecutorClazzName)) {
                 return null;
             } else {
-                final BaseCallBackExecutorBuilder builder = callBackExecutorBuilderClazz.newInstance();
+                final BaseCallBackExecutorBuilder builder;
+                try {
+                    builder = callBackExecutorBuilderClazz.newInstance();
+                } catch (IllegalAccessException | InstantiationException e) {
+                    throw new RuntimeException(e);
+                }
                 return builder.executeBuild();
             }
         }

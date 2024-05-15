@@ -2,11 +2,10 @@ package io.github.liuziyuan.retrofit.core;
 
 import io.github.liuziyuan.retrofit.core.annotation.RetrofitBase;
 import io.github.liuziyuan.retrofit.core.annotation.RetrofitBuilder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
@@ -21,9 +20,9 @@ import java.util.stream.Collectors;
  *
  * @author liuziyuan
  */
-@Slf4j
-public class RetrofitResourceScanner {
 
+public class RetrofitResourceScanner {
+    private static final Logger log = LoggerFactory.getLogger(RetrofitResourceScanner.class);
     public Set<Class<?>> doScan(String... basePackages) {
         Reflections reflections = getReflections(basePackages);
         final Set<Class<?>> retrofitBuilderClasses = getRetrofitResourceClasses(reflections, RetrofitBuilder.class);
@@ -80,8 +79,7 @@ public class RetrofitResourceScanner {
         return new Reflections(configuration);
     }
 
-    @Getter
-    @Setter
+
     public static class RetrofitExtension {
         Set<Class<? extends RetrofitBuilderExtension>> retrofitBuilderClasses;
         Set<Class<? extends RetrofitInterceptorExtension>> retrofitInterceptorClasses;
@@ -91,6 +89,22 @@ public class RetrofitResourceScanner {
             retrofitBuilderClasses = new HashSet<>();
         }
 
+
+        public Set<Class<? extends RetrofitBuilderExtension>> getRetrofitBuilderClasses() {
+            return retrofitBuilderClasses;
+        }
+
+        public void setRetrofitBuilderClasses(Set<Class<? extends RetrofitBuilderExtension>> retrofitBuilderClasses) {
+            this.retrofitBuilderClasses = retrofitBuilderClasses;
+        }
+
+        public Set<Class<? extends RetrofitInterceptorExtension>> getRetrofitInterceptorClasses() {
+            return retrofitInterceptorClasses;
+        }
+
+        public void setRetrofitInterceptorClasses(Set<Class<? extends RetrofitInterceptorExtension>> retrofitInterceptorClasses) {
+            this.retrofitInterceptorClasses = retrofitInterceptorClasses;
+        }
     }
 
 }
