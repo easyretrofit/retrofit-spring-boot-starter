@@ -12,7 +12,7 @@ import java.util.function.Function;
  *
  * @author liuziyuan
  */
-public class RetrofitUrl implements UniqueKey {
+public final class RetrofitUrl implements UniqueKey {
 
     private final String inputDefaultBaseUrl;
     private final String inputDynamicBaseUrl;

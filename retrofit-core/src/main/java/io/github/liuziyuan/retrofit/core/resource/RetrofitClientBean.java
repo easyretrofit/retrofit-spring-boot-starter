@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
  * @author liuziyuan
  */
 
-public class RetrofitClientBean implements UniqueKey {
+public final class RetrofitClientBean implements UniqueKey {
 
     private String retrofitInstanceName;
     private String realHostUrl;

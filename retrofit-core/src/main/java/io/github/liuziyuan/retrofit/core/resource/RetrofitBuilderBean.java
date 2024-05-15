@@ -12,7 +12,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 
-public class RetrofitBuilderBean implements UniqueKey {
+public final class RetrofitBuilderBean implements UniqueKey {
     private boolean enable = false;
 
     private OverrideRule overwriteType = OverrideRule.GLOBAL_FIRST;
@@ -31,8 +31,6 @@ public class RetrofitBuilderBean implements UniqueKey {
 
     private boolean validateEagerly;
 
-    public RetrofitBuilderBean() {
-    }
 
     public RetrofitBuilderBean(Class<?> retrofitBuilderClazz, RetrofitBuilderExtension globalRetrofitBuilderExtension) {
         RetrofitBuilder retrofitBuilderAnnotation = retrofitBuilderClazz.getDeclaredAnnotation(RetrofitBuilder.class);
