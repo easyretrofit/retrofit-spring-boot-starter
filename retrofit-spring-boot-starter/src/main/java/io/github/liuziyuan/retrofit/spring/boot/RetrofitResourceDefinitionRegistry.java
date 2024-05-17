@@ -106,6 +106,12 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
     }
 
     private RetrofitBuilderExtension getRetrofitBuilderExtension(Set<Class<? extends RetrofitBuilderExtension>> retrofitBuilderClasses) {
+        RetrofitBuilderGlobalConfigProperties properties = new RetrofitBuilderGlobalConfigProperties().generate(environment);
+        RetrofitBuilderExtension globalConfigExtension = getExtensionRetrofitBuilderExtension(retrofitBuilderClasses);
+        return new RetrofitBuilderGlobalConfig(properties, globalConfigExtension);
+    }
+
+    private RetrofitBuilderExtension getExtensionRetrofitBuilderExtension(Set<Class<? extends RetrofitBuilderExtension>> retrofitBuilderClasses) {
         if (retrofitBuilderClasses.size() > 1) {
             log.warn("There are multiple RetrofitBuilderExtension class, please check your configuration");
             return null;
