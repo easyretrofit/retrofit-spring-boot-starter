@@ -6,7 +6,7 @@
     <parent>
         <groupId>io.github.liuziyuan</groupId>
         <artifactId>retrofit-extensions</artifactId>
-        <version>1.1.1</version>
+        <version>1.2.0</version>
     </parent>
 
     <packaging>jar</packaging>
@@ -55,6 +55,10 @@
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.liuziyuan</groupId>
+            <artifactId>retrofit-core</artifactId>
         </dependency>
     </dependencies>
 

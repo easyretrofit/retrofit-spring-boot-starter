@@ -36,6 +36,7 @@ public class RetrofitServiceProxy<T> implements InvocationHandler {
                         Object invoke = delegator.invoke(proxy, method, args, (RetrofitExtensionException) cause);
                         if (invoke != null) {
                             exObj = invoke;
+                            break;
                         }
                     }
                 }

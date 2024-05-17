@@ -6,7 +6,7 @@
     <parent>
         <groupId>io.github.liuziyuan</groupId>
         <artifactId>retrofit-parent</artifactId>
-        <version>1.1.0</version>
+        <version>1.1.1</version>
     </parent>
 
     <packaging>pom</packaging>
@@ -21,7 +21,7 @@
         <java.source.version>${java.version}</java.source.version>
         <java.target.version>${java.version}</java.target.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <retrofit.core.version>1.2.2</retrofit.core.version>
+        <retrofit.core.version>1.2.3</retrofit.core.version>
         <retrofit.spring.boot.version>1.4.0</retrofit.spring.boot.version>
     </properties>
 
