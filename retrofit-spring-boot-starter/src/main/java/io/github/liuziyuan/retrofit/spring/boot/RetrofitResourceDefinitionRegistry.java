@@ -189,7 +189,7 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
                         "::Retrofit Spring Boot Starter ::          ({})\n" +
                         "::Retrofit ::                              ({})\n",
                 this.getClass().getPackage().getImplementationVersion(),
-                "v2.9.0");
+                "v2.11.0");
 
         RetrofitResourceContextLog retrofitResourceContextLog = new RetrofitResourceContextLog(context);
         retrofitResourceContextLog.showLog();
