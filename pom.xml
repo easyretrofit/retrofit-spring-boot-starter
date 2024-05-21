@@ -6,7 +6,7 @@
     <groupId>io.github.liuziyuan</groupId>
     <artifactId>retrofit-parent</artifactId>
     <!--版本号说明: 第一位非颠覆性引用不会升级主版本号，第二位引入新的modules会升级版本号，第三位为升级依赖库的版本号-->
-    <version>1.1.0</version>
+    <version>1.1.1</version>
 
     <name>${project.groupId}:${project.artifactId}</name>
     <description>easy retrofit parent pom</description>
@@ -42,12 +42,12 @@
         <java.target.version>${java.version}</java.target.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.boot.version>2.0.0.RELEASE</spring.boot.version>
-        <retrofit.version>2.9.0</retrofit.version>
+        <retrofit.version>2.11.0</retrofit.version>
         <reflections.version>0.10.2</reflections.version>
         <lombok.version>1.18.22</lombok.version>
-        <commons.lang3.version>3.12.0</commons.lang3.version>
+        <commons.lang3.version>3.14.0</commons.lang3.version>
         <junit.version>4.13.2</junit.version>
-        <slf4j.version>1.7.32</slf4j.version>
+        <slf4j.version>2.0.13</slf4j.version>
     </properties>
 
     <dependencyManagement>
