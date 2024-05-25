@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.github.liuziyuan</groupId>
         <artifactId>retrofit-parent</artifactId>
-        <version>1.1.1</version>
+        <version>1.1.2</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -21,6 +21,10 @@
         <java.source.version>${java.version}</java.source.version>
         <java.target.version>${java.version}</java.target.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <reflections.version>0.10.2</reflections.version>
+        <commons.lang3.version>3.14.0</commons.lang3.version>
+        <junit.version>4.13.2</junit.version>
+        <slf4j.version>1.7.36</slf4j.version>
     </properties>
 
     <dependencies>

@@ -22,6 +22,8 @@
         <java.target.version>${java.version}</java.target.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sentinel.version>1.8.6</sentinel.version>
+        <lombok.version>1.18.22</lombok.version>
+        <commons.lang3.version>3.14.0</commons.lang3.version>
     </properties>
 
     <dependencies>

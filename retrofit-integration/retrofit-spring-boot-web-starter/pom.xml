@@ -20,6 +20,9 @@
         <java.target.version>${java.version}</java.target.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.boot.version>2.0.0.RELEASE</spring.boot.version>
+        <lombok.version>1.18.22</lombok.version>
+        <commons.lang3.version>3.14.0</commons.lang3.version>
+        <junit.version>4.13.2</junit.version>
         <retrofit.spring.boot.starter.version>1.4.0</retrofit.spring.boot.starter.version>
         <retrofit.adapter.simple.body.version>1.0.0</retrofit.adapter.simple.body.version>
     </properties>

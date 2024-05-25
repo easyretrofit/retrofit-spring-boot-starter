@@ -18,6 +18,9 @@
     <properties>
         <loadbalancer.version>3.1.7</loadbalancer.version>
         <spring.boot.version>2.0.0.RELEASE</spring.boot.version>
+        <lombok.version>1.18.22</lombok.version>
+        <commons.lang3.version>3.14.0</commons.lang3.version>
+        <junit.version>4.13.2</junit.version>
     </properties>
 
     <dependencies>
