@@ -8,6 +8,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Retrofit2 Sync Call Adapter, Response a ResponseBody
@@ -16,8 +18,11 @@ public class BodyCallAdapterFactory extends CallAdapter.Factory {
 
     private final Class<?>[] excludeCallTypes;
 
-    public BodyCallAdapterFactory(Class<?>[] excludeCallTypes) {
+    private final Function<ResponseBody, ?> function;
+
+    public BodyCallAdapterFactory(Class<?>[] excludeCallTypes, Function<ResponseBody, ?> function) {
         this.excludeCallTypes = excludeCallTypes;
+        this.function = function;
     }
 
     /**
@@ -27,7 +32,7 @@ public class BodyCallAdapterFactory extends CallAdapter.Factory {
      * @return BodyCallAdapterFactory
      */
     public static BodyCallAdapterFactory create() {
-        return new BodyCallAdapterFactory(null);
+        return new BodyCallAdapterFactory(null, null);
     }
 
     /**
@@ -37,7 +42,15 @@ public class BodyCallAdapterFactory extends CallAdapter.Factory {
      * @return BodyCallAdapterFactory
      */
     public static BodyCallAdapterFactory create(Class<?>[] exclude) {
-        return new BodyCallAdapterFactory(exclude);
+        return new BodyCallAdapterFactory(exclude, null);
+    }
+
+    public static BodyCallAdapterFactory create(Class<?>[] exclude, Function<ResponseBody, ?> function) {
+        return new BodyCallAdapterFactory(exclude, function);
+    }
+
+    public static BodyCallAdapterFactory create(Function<ResponseBody, ?> function) {
+        return new BodyCallAdapterFactory(null, function);
     }
 
     @Override
@@ -78,7 +91,7 @@ public class BodyCallAdapterFactory extends CallAdapter.Factory {
             return null;
         }
 
-        return new BodyCallAdapter<>(rawType, annotations, retrofit);
+        return new BodyCallAdapter<>(rawType, annotations, retrofit, function);
     }
 
     static final class BodyCallAdapter<R> implements CallAdapter<R, R> {
@@ -89,10 +102,13 @@ public class BodyCallAdapterFactory extends CallAdapter.Factory {
 
         private final Annotation[] annotations;
 
-        BodyCallAdapter(Type returnType, Annotation[] annotations, Retrofit retrofit) {
+        private final Function<ResponseBody,?> function;
+
+        BodyCallAdapter(Type returnType, Annotation[] annotations, Retrofit retrofit, Function<ResponseBody, ?> function) {
             this.returnType = returnType;
             this.retrofit = retrofit;
             this.annotations = annotations;
+            this.function = function;
         }
 
         @Override
@@ -116,6 +132,10 @@ public class BodyCallAdapterFactory extends CallAdapter.Factory {
             ResponseBody errorBody = response.errorBody();
             if (errorBody == null) {
                 return null;
+            }
+            if (function != null) {
+                Object apply = function.apply(errorBody);
+                return (R) apply;
             }
             Converter<ResponseBody, R> converter = retrofit.responseBodyConverter(responseType(), annotations);
             try {

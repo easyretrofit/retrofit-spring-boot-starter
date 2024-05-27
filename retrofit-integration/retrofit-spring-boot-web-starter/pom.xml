@@ -24,7 +24,7 @@
         <commons.lang3.version>3.14.0</commons.lang3.version>
         <junit.version>4.13.2</junit.version>
         <retrofit.spring.boot.starter.version>1.4.0</retrofit.spring.boot.starter.version>
-        <retrofit.adapter.simple.body.version>1.0.0</retrofit.adapter.simple.body.version>
+        <retrofit.adapter.simple.body.version>1.1.0</retrofit.adapter.simple.body.version>
     </properties>
 
     <dependencies>

@@ -6,13 +6,13 @@
     <parent>
         <groupId>io.github.liuziyuan</groupId>
         <artifactId>retrofit-adapters</artifactId>
-        <version>1.0.0</version>
+        <version>1.1.0</version>
     </parent>
 
     <packaging>jar</packaging>
 
     <artifactId>retrofit-adapter-reactor</artifactId>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
 
     <properties>
         <java.version>8</java.version>
