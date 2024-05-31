@@ -7,11 +7,11 @@
     <parent>
         <groupId>io.github.liuziyuan</groupId>
         <artifactId>retrofit-extensions</artifactId>
-        <version>1.2.0</version>
+        <version>1.2.1</version>
     </parent>
 
     <artifactId>retrofit-extension-loadbalancer-spring-cloud-starter</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.1</version>
     <description>easy retrofit extension for spring cloud loadbalancer</description>
     <packaging>jar</packaging>
 
