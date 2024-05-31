@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>retrofit-spring-boot-reactor-starter</artifactId>
-    <version>1.5.0</version>
+    <version>1.5.1</version>
     <description>easy retrofit retrofit-spring-boot-web-starter, it support async http request, if use springboot webflux , you can use this starter</description>
     <properties>
         <java.version>1.8</java.version>
@@ -23,7 +23,7 @@
         <lombok.version>1.18.32</lombok.version>
         <commons.lang3.version>3.14.0</commons.lang3.version>
         <junit.version>4.13.2</junit.version>
-        <retrofit.spring.boot.starter.version>1.4.0</retrofit.spring.boot.starter.version>
+        <retrofit.spring.boot.starter.version>1.4.1</retrofit.spring.boot.starter.version>
         <retrofit.adapter.reactor.version>1.0.0</retrofit.adapter.reactor.version>
     </properties>
 
