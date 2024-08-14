@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Spring boot web配置文件中声明的全局配置
+ * Spring boot resources文件夹中application.yml(properties)配置文件中声明的全局配置
  */
 @Component
 @Getter

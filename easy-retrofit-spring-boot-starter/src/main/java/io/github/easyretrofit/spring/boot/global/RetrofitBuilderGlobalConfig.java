@@ -5,7 +5,7 @@ import io.github.easyretrofit.core.builder.*;
 import io.github.easyretrofit.core.util.BooleanUtil;
 
 /**
- * 这个类合并了自定义的配置和web的resources文件夹中配置文件中的配置
+ * 这个类合并了自定义的配置和resources文件夹中global配置文件中的配置<br>
  * 合并原则是：以下优先级：resources文件夹中配置大于自定义配置，如果resources文件夹中没有配置，则使用自定义配置
  */
 public class RetrofitBuilderGlobalConfig implements RetrofitBuilderExtension {
