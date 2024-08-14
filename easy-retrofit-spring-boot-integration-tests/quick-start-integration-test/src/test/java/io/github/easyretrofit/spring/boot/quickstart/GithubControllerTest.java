@@ -21,6 +21,7 @@ public class GithubControllerTest {
     @Test
     public void getContributors() throws IOException {
 
-        githubController.getContributors();
+        String contributors = githubController.getContributors();
+        assertNotNull(contributors);
     }
 }
