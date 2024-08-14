@@ -113,8 +113,7 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
             try {
                 return clazz.newInstance();
             } catch (IllegalAccessException | InstantiationException e) {
-                log.error("{} class create instance exception: {}", clazz, e.getMessage());
-                return null;
+                throw new RuntimeException(e);
             }
         } else {
             return null;
