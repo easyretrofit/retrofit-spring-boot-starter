@@ -470,8 +470,8 @@ _**Warning:**_
 Description:
 
 Field api in io.liuziyuan.demo.controller.HelloController required a single bean, but 2 were found:
-	- io.github.liuziyuan.retrofit.samples.inherit.api.BaseApi: defined in null
-	- io.github.liuziyuan.retrofit.samples.inherit.api.HelloApi: defined in null
+	- io.github.easyretrofit.samples.inherit.api.BaseApi: defined in null
+	- io.github.easyretrofit.samples.inherit.api.HelloApi: defined in null
 
 Action:
 
@@ -487,10 +487,10 @@ Consider marking one of the beans as @Primary, updating the consumer to accept m
 public class HelloController {
 
     @Autowired
-    @Qualifier("io.github.liuziyuan.retrofit.samples.inherit.api.BaseApi")
+    @Qualifier("io.github.easyretrofit.samples.inherit.api.BaseApi")
     private BaseApi baseApi;
     @Autowired
-    @Qualifier("io.github.liuziyuan.retrofit.samples.inherit.api.helloApi")
+    @Qualifier("io.github.easyretrofit.samples.inherit.api.helloApi")
     private HelloApi helloApi;
 
     @GetMapping("/{message}")
