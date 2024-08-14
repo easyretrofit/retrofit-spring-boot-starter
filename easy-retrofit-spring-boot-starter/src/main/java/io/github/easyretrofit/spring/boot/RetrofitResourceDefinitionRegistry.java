@@ -21,6 +21,7 @@ import org.springframework.core.env.Environment;
 import retrofit2.Retrofit;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Retrofit Resources Definition and Registry, including Retrofit objects and Retrofit API objects of dynamic proxy
@@ -103,6 +104,7 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
     }
 
     private RetrofitBuilderExtension getExtensionRetrofitBuilderExtension(Set<Class<? extends RetrofitBuilderExtension>> retrofitBuilderClasses) {
+        retrofitBuilderClasses = retrofitBuilderClasses.stream().filter(clazz -> !clazz.equals(RetrofitBuilderGlobalConfig.class)).collect(Collectors.toSet());
         if (retrofitBuilderClasses.size() > 1) {
             log.warn("There are multiple RetrofitBuilderExtension class, please check your configuration");
             return null;
@@ -111,7 +113,8 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
             try {
                 return clazz.newInstance();
             } catch (IllegalAccessException | InstantiationException e) {
-                throw new RuntimeException(e);
+                log.error("{} class create instance exception: {}", clazz, e.getMessage());
+                return null;
             }
         } else {
             return null;
