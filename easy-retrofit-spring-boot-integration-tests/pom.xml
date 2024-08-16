@@ -16,6 +16,7 @@
     <modules>
         <module>retrofit-builder-integration-test</module>
         <module>quick-start-integration-test</module>
+        <module>inherit-integration-test</module>
     </modules>
 
     <properties>
