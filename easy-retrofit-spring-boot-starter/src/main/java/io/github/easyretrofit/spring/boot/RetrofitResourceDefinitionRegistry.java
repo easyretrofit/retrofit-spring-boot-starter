@@ -1,13 +1,11 @@
 package io.github.easyretrofit.spring.boot;
 
+import io.github.easyretrofit.core.resource.RetrofitApiInterfaceBean;
 import io.github.easyretrofit.spring.boot.global.RetrofitBuilderGlobalConfig;
 import io.github.easyretrofit.spring.boot.global.RetrofitBuilderGlobalConfigProperties;
 import io.github.easyretrofit.core.*;
 import io.github.easyretrofit.core.generator.RetrofitBuilderGenerator;
-import io.github.easyretrofit.core.resource.RetrofitBuilderBean;
 import io.github.easyretrofit.core.resource.RetrofitClientBean;
-import io.github.easyretrofit.core.resource.RetrofitApiServiceBean;
-import io.github.easyretrofit.core.resource.UrlStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -131,7 +129,7 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
                                                                 RetrofitBuilderExtension retrofitBuilderExtension,
                                                                 List<RetrofitInterceptorExtension> retrofitInterceptorExtensions) {
         EnvManager env = new SpringBootEnv(environment);
-        RetrofitResourceContextBuilder retrofitResourceContextBuilder = new RetrofitResourceContextBuilder(env);
+        RetrofitResourceContextBuilder retrofitResourceContextBuilder = new RetrofitResourceContextBuilder();
         return retrofitResourceContextBuilder.buildContextInstance(retrofitAnnotationBean.getBasePackages().toArray(new String[0]),
                 retrofitAnnotationBean.getRetrofitBuilderClassSet(),
                 retrofitBuilderExtension,
@@ -153,7 +151,7 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
 
     private void registryRetrofitInterfaceProxy(BeanDefinitionRegistry beanDefinitionRegistry, List<RetrofitClientBean> retrofitClientBeanList) {
         for (RetrofitClientBean clientBean : retrofitClientBeanList) {
-            for (RetrofitApiServiceBean serviceBean : clientBean.getRetrofitApiServiceBeans()) {
+            for (RetrofitApiInterfaceBean serviceBean : clientBean.getRetrofitApiInterfaceBeans()) {
                 BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(serviceBean.getSelfClazz());
                 GenericBeanDefinition definition = (GenericBeanDefinition) builder.getRawBeanDefinition();
                 definition.getConstructorArgumentValues().addGenericArgumentValue(Objects.requireNonNull(definition.getBeanClassName()));
