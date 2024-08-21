@@ -25,7 +25,7 @@ public class InheritSpringBootApplicationTest {
 
     @Test
     public void mainTest() {
-        List<RetrofitClientBean> retrofitClients = retrofitResourceContext.getRetrofitClients();
+        Set<RetrofitClientBean> retrofitClients = retrofitResourceContext.getRetrofitClients();
         for (RetrofitClientBean retrofitClient : retrofitClients) {
             for (RetrofitApiInterfaceBean RetrofitApiInterfaceBean : retrofitClient.getRetrofitApiInterfaceBeans()) {
                 if (RetrofitApiInterfaceBean.getSelfClazz().equals(MixedApi.class)) {

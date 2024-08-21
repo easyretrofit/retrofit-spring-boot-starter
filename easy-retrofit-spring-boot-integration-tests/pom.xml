@@ -14,8 +14,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>retrofit-builder-integration-test</module>
-        <module>quick-start-integration-test</module>
         <module>inherit-integration-test</module>
         <module>single-instance-integration-test</module>
     </modules>

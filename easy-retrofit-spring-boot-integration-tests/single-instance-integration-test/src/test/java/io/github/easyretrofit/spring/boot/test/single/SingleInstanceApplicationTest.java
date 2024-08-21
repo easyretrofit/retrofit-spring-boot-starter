@@ -10,6 +10,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import javax.annotation.Resource;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 @SpringBootTest
@@ -21,8 +23,8 @@ public class SingleInstanceApplicationTest {
 
     @Test
     public void mainTest() {
-        List<RetrofitClientBean> retrofitClients = retrofitResourceContext.getRetrofitClients();
+        Set<RetrofitClientBean> retrofitClients = retrofitResourceContext.getRetrofitClients();
         assertEquals(retrofitClients.size(), 1);
-        assertEquals(retrofitClients.get(0).getRetrofitApiInterfaceBeans().size(), 2);
+        assertEquals(retrofitClients.stream().collect(Collectors.toList()).get(0).getRetrofitApiInterfaceBeans().size(), 2);
     }
 }

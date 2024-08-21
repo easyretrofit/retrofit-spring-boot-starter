@@ -71,7 +71,7 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
             // registry RetrofitResourceContext
             registryRetrofitResourceContext(beanDefinitionRegistry, context);
             // get RetrofitClientBean
-            List<RetrofitClientBean> retrofitClientBeanList = context.getRetrofitClients();
+            Set<RetrofitClientBean> retrofitClientBeanList = context.getRetrofitClients();
             // registry Retrofit object
             registryRetrofitInstance(beanDefinitionRegistry, retrofitClientBeanList, context);
             // registry proxy object of retrofit api interface
@@ -136,7 +136,7 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
                 retrofitInterceptorExtensions, env);
     }
 
-    private void registryRetrofitInstance(BeanDefinitionRegistry beanDefinitionRegistry, List<RetrofitClientBean> retrofitClientBeanList, RetrofitResourceContext context) {
+    private void registryRetrofitInstance(BeanDefinitionRegistry beanDefinitionRegistry, Set<RetrofitClientBean> retrofitClientBeanList, RetrofitResourceContext context) {
         for (RetrofitClientBean clientBean : retrofitClientBeanList) {
             BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(Retrofit.class, () -> {
                 RetrofitBuilderGenerator retrofitBuilderGenerator = new RetrofitBuilderGenerator(clientBean, context, new SpringCDIBeanManager(applicationContext));
@@ -149,7 +149,7 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
         }
     }
 
-    private void registryRetrofitInterfaceProxy(BeanDefinitionRegistry beanDefinitionRegistry, List<RetrofitClientBean> retrofitClientBeanList) {
+    private void registryRetrofitInterfaceProxy(BeanDefinitionRegistry beanDefinitionRegistry, Set<RetrofitClientBean> retrofitClientBeanList) {
         for (RetrofitClientBean clientBean : retrofitClientBeanList) {
             for (RetrofitApiInterfaceBean serviceBean : clientBean.getRetrofitApiInterfaceBeans()) {
                 BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(serviceBean.getSelfClazz());

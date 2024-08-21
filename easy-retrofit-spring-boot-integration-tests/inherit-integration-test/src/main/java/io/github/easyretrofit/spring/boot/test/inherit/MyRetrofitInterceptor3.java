@@ -8,7 +8,6 @@ import okhttp3.Response;
 
 /**
  * @author liuziyuan
- * @date 1/5/2022 5:44 PM
  */
 public class MyRetrofitInterceptor3 extends BaseInterceptor {
 
