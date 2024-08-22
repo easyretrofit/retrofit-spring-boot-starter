@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistryPostProcessor, ApplicationContextAware, EnvironmentAware {
+
     private ApplicationContext applicationContext;
 
     private Environment environment;
@@ -170,20 +171,10 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
     }
 
     private void setLog(RetrofitResourceContext context) {
-        log.info("\n" +
-                        "__________        __                 _____.__  __   \n" +
-                        "\\______   \\ _____/  |________  _____/ ____\\__|/  |_ \n" +
-                        " |       _// __ \\   __\\_  __ \\/  _ \\   __\\|  \\   __\\\n" +
-                        " |    |   \\  ___/|  |  |  | \\(  <_> )  |  |  ||  |  \n" +
-                        " |____|_  /\\___  >__|  |__|   \\____/|__|  |__||__|  \n" +
-                        "        \\/     \\/                                   \n" +
-                        "::Retrofit Spring Boot Starter ::          ({})\n" +
-                        "::Retrofit ::                              ({})\n",
-                this.getClass().getPackage().getImplementationVersion(),
-                "v2.11.0");
-
         RetrofitResourceContextLog retrofitResourceContextLog = new RetrofitResourceContextLog(context);
-        retrofitResourceContextLog.showLog();
+        RetrofitWebFramewrokInfoBean infoBean = new RetrofitWebFramewrokInfoBean(this.getClass().getPackage().getImplementationTitle(),
+                this.getClass().getPackage().getImplementationVersion());
+        retrofitResourceContextLog.showLog(infoBean);
     }
 
 
