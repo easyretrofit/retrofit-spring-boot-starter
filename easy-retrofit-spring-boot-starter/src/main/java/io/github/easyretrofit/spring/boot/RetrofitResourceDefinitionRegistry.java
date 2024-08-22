@@ -80,7 +80,8 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
             // set log
             setLog(context);
         } catch (NoSuchBeanDefinitionException exception) {
-            log.info(Constants.RETROFIT_BUILDER_NOT_FOUND);
+            log.info(Constants.RETROFIT_OBJECTS_CREATE_INJECT_ERROR);
+            throw exception;
         }
     }
 

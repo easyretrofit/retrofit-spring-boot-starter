@@ -48,12 +48,10 @@ public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefin
         RetrofitResourceScanner.RetrofitExtension retrofitExtension = scanner.doScanExtension(extensionPackages.toArray(new String[0]));
         RetrofitAnnotationBean annotationBean = new RetrofitAnnotationBean(basePackages, retrofitBuilderClassSet, retrofitExtension);
         // register RetrofitAnnotationBean
-        if (!retrofitBuilderClassSet.isEmpty()) {
-            BeanDefinitionBuilder builder;
-            builder = BeanDefinitionBuilder.genericBeanDefinition(RetrofitAnnotationBean.class, () -> annotationBean);
-            GenericBeanDefinition definition = (GenericBeanDefinition) builder.getRawBeanDefinition();
-            registry.registerBeanDefinition(RetrofitAnnotationBean.class.getName(), definition);
-        }
+        BeanDefinitionBuilder builder;
+        builder = BeanDefinitionBuilder.genericBeanDefinition(RetrofitAnnotationBean.class, () -> annotationBean);
+        GenericBeanDefinition definition = (GenericBeanDefinition) builder.getRawBeanDefinition();
+        registry.registerBeanDefinition(RetrofitAnnotationBean.class.getName(), definition);
     }
 
     private List<String> getBasePackages(AnnotationAttributes annoAttrs) {
