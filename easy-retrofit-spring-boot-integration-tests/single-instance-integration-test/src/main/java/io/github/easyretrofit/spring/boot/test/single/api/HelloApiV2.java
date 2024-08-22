@@ -25,7 +25,7 @@ public interface HelloApiV2 {
      * call hello API method of backend service
      *
      * @param message message
-     * @return
+     * @return hello bean
      */
     @GET("backend/v1/hello/{message}")
     Call<HelloBean> hello(@Path("message") String message);
