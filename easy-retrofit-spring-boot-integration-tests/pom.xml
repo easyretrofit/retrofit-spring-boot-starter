@@ -16,6 +16,7 @@
     <modules>
         <module>inherit-integration-test</module>
         <module>single-instance-integration-test</module>
+        <module>functions-integration-test</module>
     </modules>
 
     <properties>
