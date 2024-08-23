@@ -38,7 +38,7 @@ public class MyRetrofitInterceptor extends BaseInterceptor {
     protected Response executeIntercept(Chain chain) {
         Request request = chain.request();
         String clazzName = Objects.requireNonNull(request.tag(Invocation.class)).method().getDeclaringClass().getName();
-        final RetrofitApiInterfaceBean currentServiceBean = context.getRetrofitApiServiceBean(clazzName);
+        final RetrofitApiInterfaceBean currentServiceBean = context.getRetrofitApiInterfaceBean(clazzName);
         log.info("HelloService: {}", helloService.hello("retrofit"));
         log.info("time out: {}", timeout);
         // TODO if you need
