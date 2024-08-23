@@ -19,7 +19,7 @@ import java.util.List;
 @Getter
 @Setter
 @ConfigurationProperties(
-        prefix = "easy-retrofit.global.builder"
+        prefix = "retrofit.global.builder"
 )
 @Slf4j
 public class RetrofitBuilderGlobalConfigProperties {
@@ -41,14 +41,14 @@ public class RetrofitBuilderGlobalConfigProperties {
     private String validateEagerly;
 
     public RetrofitBuilderGlobalConfigProperties generate(Environment environment) {
-        this.enable = resolveRequiredPlaceholders(environment, "${easy-retrofit.global.builder.enable}");
-        this.baseUrl = resolveRequiredPlaceholders(environment, "${easy-retrofit.global.builder.base-url}");
-        this.callAdapterFactoryBuilderClazz = (Class<? extends BaseCallAdapterFactoryBuilder>[]) transformClasses(resolveRequiredPlaceholders(environment, "${easy-retrofit.global.builder.call-adapter-factory-builder-clazz}"));
-        this.converterFactoryBuilderClazz = (Class<? extends BaseConverterFactoryBuilder>[]) transformClasses(resolveRequiredPlaceholders(environment, "${easy-retrofit.global.builder.converter-factory-builder-clazz}"));
-        this.okHttpClientBuilderClazz = (Class<? extends BaseOkHttpClientBuilder>) transformClass(resolveRequiredPlaceholders(environment, "${easy-retrofit.global.builder.ok-http-client-builder-clazz}"));
-        this.callBackExecutorBuilderClazz = (Class<? extends BaseCallBackExecutorBuilder>) transformClass(resolveRequiredPlaceholders(environment, "${easy-retrofit.global.builder.call-back-executor-builder-clazz}"));
-        this.callFactoryBuilderClazz = (Class<? extends BaseCallFactoryBuilder>) transformClass(resolveRequiredPlaceholders(environment, "${easy-retrofit.global.builder.call-factory-builder-clazz}"));
-        this.validateEagerly = resolveRequiredPlaceholders(environment, "${easy-retrofit.global.builder.validate-eagerly}");
+        this.enable = resolveRequiredPlaceholders(environment, "${retrofit.global.builder.enable}");
+        this.baseUrl = resolveRequiredPlaceholders(environment, "${retrofit.global.builder.base-url}");
+        this.callAdapterFactoryBuilderClazz = (Class<? extends BaseCallAdapterFactoryBuilder>[]) transformClasses(resolveRequiredPlaceholders(environment, "${retrofit.global.builder.call-adapter-factory-builder-clazz}"));
+        this.converterFactoryBuilderClazz = (Class<? extends BaseConverterFactoryBuilder>[]) transformClasses(resolveRequiredPlaceholders(environment, "${retrofit.global.builder.converter-factory-builder-clazz}"));
+        this.okHttpClientBuilderClazz = (Class<? extends BaseOkHttpClientBuilder>) transformClass(resolveRequiredPlaceholders(environment, "${retrofit.global.builder.ok-http-client-builder-clazz}"));
+        this.callBackExecutorBuilderClazz = (Class<? extends BaseCallBackExecutorBuilder>) transformClass(resolveRequiredPlaceholders(environment, "${retrofit.global.builder.call-back-executor-builder-clazz}"));
+        this.callFactoryBuilderClazz = (Class<? extends BaseCallFactoryBuilder>) transformClass(resolveRequiredPlaceholders(environment, "${retrofit.global.builder.call-factory-builder-clazz}"));
+        this.validateEagerly = resolveRequiredPlaceholders(environment, "${retrofit.global.builder.validate-eagerly}");
         return this;
     }
 
