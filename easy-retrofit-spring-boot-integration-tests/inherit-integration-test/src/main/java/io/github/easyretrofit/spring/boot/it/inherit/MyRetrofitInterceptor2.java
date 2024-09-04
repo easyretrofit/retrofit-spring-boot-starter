@@ -21,4 +21,9 @@ public class MyRetrofitInterceptor2 extends BaseInterceptor {
         Request request = chain.request();
         return chain.proceed(request);
     }
+
+    @Override
+    protected RetrofitResourceContext getInjectedRetrofitResourceContext() {
+        return null;
+    }
 }

@@ -44,4 +44,9 @@ public class MyRetrofitInterceptor extends BaseInterceptor {
         // TODO if you need
         return chain.proceed(request);
     }
+
+    @Override
+    protected RetrofitResourceContext getInjectedRetrofitResourceContext() {
+        return context;
+    }
 }
