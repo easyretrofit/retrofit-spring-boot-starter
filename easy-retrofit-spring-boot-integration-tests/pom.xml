@@ -19,7 +19,7 @@
     </modules>
 
     <properties>
-        <esay-retrofit-starter.version>1.0.0-SNAPSHOT</esay-retrofit-starter.version>
+        <esay-retrofit-starter.version>1.0.0</esay-retrofit-starter.version>
     </properties>
 
     <dependencies>
