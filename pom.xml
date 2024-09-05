@@ -29,7 +29,7 @@
         <java.target.version>${java.version}</java.target.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.boot.version>2.0.0.RELEASE</spring.boot.version>
-        <retrofit.core.version>1.0.0-SNAPSHOT</retrofit.core.version>
+        <easy.retrofit.core.version>1.0.0</easy.retrofit.core.version>
         <lombok.version>1.18.32</lombok.version>
         <commons.lang3.version>3.14.0</commons.lang3.version>
         <junit.version>4.13.2</junit.version>
@@ -40,7 +40,7 @@
         <dependency>
             <groupId>io.github.easyretrofit</groupId>
             <artifactId>easy-retrofit-core</artifactId>
-            <version>${retrofit.core.version}</version>
+            <version>${easy.retrofit.core.version}</version>
         </dependency>
 
         <dependency>
