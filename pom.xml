@@ -10,8 +10,8 @@
 
     <packaging>pom</packaging>
 
-    <artifactId>springboot-easy-retrofit-parent</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <artifactId>easy-retrofit-spring-boot-starter-parent</artifactId>
+    <version>1.0.0</version>
     <description>
         the parent pom.xml of easy-retrofit-spring-boot-starter
     </description>
