@@ -1,0 +1,14 @@
+app:
+  hello:
+    v1:
+      url: http://localhost:9100/
+    v2:
+      url: http://localhost:9100/
+
+okhttpclient:
+  timeout: 30000
+
+logging:
+  level:
+    root: info
+    io.github.easyretrofit: debug

@@ -441,8 +441,8 @@ If you inject the parent Interface and the inherited Interface at the same place
 Description:
 
 Field api in io.liuziyuan.demo.controller.HelloController required a single bean, but 2 were found:
-	- io.github.liuziyuan.retrofit.samples.inherit.api.BaseApi: defined in null
-	- io.github.liuziyuan.retrofit.samples.inherit.api.HelloApi: defined in null
+	- io.github.easyretrofit.samples.inherit.api.BaseApi: defined in null
+	- io.github.easyretrofit.samples.inherit.api.HelloApi: defined in null
 
 Action:
 
@@ -459,10 +459,10 @@ in the injected place
 public class HelloController {
 
     @Autowired
-    @Qualifier("io.github.liuziyuan.retrofit.samples.inherit.api.BaseApi")
+    @Qualifier("io.github.easyretrofit.samples.inherit.api.BaseApi")
     private BaseApi baseApi;
     @Autowired
-    @Qualifier("io.github.liuziyuan.retrofit.samples.inherit.api.helloApi")
+    @Qualifier("io.github.easyretrofit.samples.inherit.api.helloApi")
     private HelloApi helloApi;
 
     @GetMapping("/{message}")
@@ -593,7 +593,7 @@ public class RetrofitCloudInterceptor extends BaseInterceptor {
         Request request = chain.request();
         final Method method = super.getRequestMethod(request);
         String clazzName = super.getClazzNameByMethod(method);
-        final RetrofitApiServiceBean currentServiceBean = context.getRetrofitApiServiceBean(clazzName);
+        final RetrofitApiInterfaceBean currentServiceBean = context.getRetrofitApiInterfaceBean(clazzName);
         RetrofitCloudService annotation = null;
         annotation = currentServiceBean.getSelfClazz().getAnnotation(RetrofitCloudService.class);
         if (annotation == null) {

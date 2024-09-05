@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>io.github.easyretrofit</groupId>
+        <artifactId>easy-retrofit-spring-boot-starter-parent</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <packaging>jar</packaging>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>easy-retrofit-spring-boot-starter</artifactId>
+    <version>1.0.0</version>
+    <description>Implicit creation of retrofit instances based on the Spring framework DI, providing more functionality through annotations and extensions</description>
+    <properties>
+    </properties>
+
+    <dependencies>
+
+    </dependencies>
+
+
+</project>
