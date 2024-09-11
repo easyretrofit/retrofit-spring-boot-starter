@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>io.github.easyretrofit</groupId>
-        <artifactId>easy-retrofit-spring-boot-integration-tests</artifactId>
+        <artifactId>spring-boot-integration-tests</artifactId>
         <version>1.0.0</version>
     </parent>
 

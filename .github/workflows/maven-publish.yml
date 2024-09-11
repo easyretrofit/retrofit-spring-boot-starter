@@ -21,33 +21,62 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    - name: Setup Go Environment (includes jq)
-      uses: actions/setup-go@v4
-      with:
-        go-version: '1.20' # 使用 Go 1.20 或者您需要的版本
-
     - name: Read Pull Request Title
       id: pr-title
       run: |
-        title=$(jq -r '.pull_request.title' $GITHUB_EVENT_PATH)
+        title=$(cat $GITHUB_EVENT_PATH | jq -r '.pull_request.title')
         echo "Pull Request Title: $title"
         echo "pr_title=$title" >> $GITHUB_OUTPUT
 
-    - name: Extract Version from POM
-      id: extract-version
-      run: |          # 从 pom.xml 文件中提取版本号
-        version=$(grep -oP '(?<=<version>)[^<]+' pom.xml | head -n 1)
-        echo "Version from POM: $version"
-        echo "pom_version=$version" >> $GITHUB_OUTPUT
+    - name: Extract info from pom.xml
+      id: extract-info
+      run: |
+        groupId=$(mvn help:evaluate -Dexpression=project.groupId -q -DforceStdout)
+        artifactId=$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)
+        version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+        echo "Pom GroupId: $groupId"
+        echo "Pom ArtifactId: $artifactId"
+        echo "Pom Version: $version"
+        echo "version=$version" >> $GITHUB_OUTPUT
+        echo "artifactId=$artifactId" >> $GITHUB_OUTPUT
+        echo "groupId=$groupId" >> $GITHUB_OUTPUT
+
+    - name: Check Maven Central Repository
+      id: check-maven-central
+      run: |
+        version="${{ steps.extract-info.outputs.version }}"
+        groupId="${{ steps.extract-info.outputs.groupId }}"
+        artifactId="${{ steps.extract-info.outputs.artifactId }}"
+        URL=https://repo1.maven.org/maven2/$(echo $groupId | tr . /)/${artifactId}/maven-metadata.xml
+        echo $URL
+        
+        # 检查 URL 是否存在
+        RESPONSE_CODE=$(curl -sSL -o /dev/null -w "%{http_code}" "$URL")
+        echo $RESPONSE_CODE
+        
+        if [ "$RESPONSE_CODE" == "200" ]; then
+          # 文件存在，继续检查版本
+          RESPONSE=$(curl -sSL "$URL")
+          if echo "$RESPONSE" | grep "<version>$version</version>" > /dev/null; then
+            echo "Version $version exists in Maven Central."
+            exit 1
+          else
+            echo "Version $version does not exist in Maven Central."
+          fi
+        elif [ "$RESPONSE_CODE" == "404" ]; then
+          echo "The metadata file for $groupId:$artifactId does not exist in Maven Central."
+        else
+          echo "An unexpected error occurred while checking the metadata file for $groupId:$artifactId."
+        fi
 
     - name: Validate Pull Request Title
       run: |          # 读取 Pull Request 标题和版本号
         title="${{ steps.pr-title.outputs.pr_title }}"
-        version="${{ steps.extract-version.outputs.pom_version }}"
-        
-        
-        # 验证 Pull Request 标题
-        if [[ "$title" =~ ^release-$version$ ]]; then
+        version="${{ steps.extract-info.outputs.version }}"
+        echo "Pull Request Title: $title"
+        echo "Version: $version"
+        # 转换为小写并进行条件判断
+        if [[ "${title,,}" =~ ^release-$version$ ]]; then
           echo "Pull Request title is valid."
         else
           echo "Pull Request title must be in the format 'release-$version'."
@@ -66,7 +95,7 @@ jobs:
         gpg-passphrase: MAVEN_GPG_PASSPHRASE # env variable for GPG private key passphrase
 
     - name: Publish to Apache Maven Central
-      run: mvn -B deploy -Pno-it-tests
+      run: mvn -B deploy
       env:
         MAVEN_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
         MAVEN_CENTRAL_TOKEN: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
