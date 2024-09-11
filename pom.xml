@@ -89,5 +89,22 @@
 
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.5.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <excludeArtifacts>
+                        <excludeArtifact>spring-boot-integration-tests</excludeArtifact>
+                        <excludeArtifact>single-instance-integration-test</excludeArtifact>
+                        <excludeArtifact>inherit-integration-test</excludeArtifact>
+                    </excludeArtifacts>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
