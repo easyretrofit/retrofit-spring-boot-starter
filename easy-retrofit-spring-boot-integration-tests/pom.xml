@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>io.github.easyretrofit</groupId>
-        <artifactId>easy-retrofit-spring-boot-starter-parent</artifactId>
+        <artifactId>spring-boot-starter-parent</artifactId>
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>easy-retrofit-spring-boot-integration-tests</artifactId>
+    <artifactId>spring-boot-integration-tests</artifactId>
     <version>1.0.0</version>
     <packaging>pom</packaging>
 
@@ -26,7 +26,7 @@
 
         <dependency>
             <groupId>io.github.easyretrofit</groupId>
-            <artifactId>easy-retrofit-spring-boot-starter</artifactId>
+            <artifactId>spring-boot-starter</artifactId>
             <version>${esay-retrofit-starter.version}</version>
         </dependency>
 
