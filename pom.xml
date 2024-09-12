@@ -99,7 +99,7 @@
                 <configuration>
                     <publishingServerId>central</publishingServerId>
                     <autoPublish>true</autoPublish>
-                    <waitUntil>published</waitUntil>
+                    <waitUntil>validated</waitUntil>
                     <excludeArtifacts>
                         <excludeArtifact>spring-boot-integration-tests</excludeArtifact>
                         <excludeArtifact>single-instance-integration-test</excludeArtifact>
