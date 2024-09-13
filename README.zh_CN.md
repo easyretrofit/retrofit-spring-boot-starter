@@ -1,4 +1,9 @@
-# _EASY_ retrofit-spring-boot-starter
+[![Version](https://img.shields.io/maven-central/v/io.github.easyretrofit/spring-boot-starter?logo=apache-maven&style=flat-square)](https://central.sonatype.com/artifact/io.github.easyretrofit/spring-boot-starter)
+[![Build](https://github.com/easyretrofit/spring-boot-starter/actions/workflows/build.yml/badge.svg)](https://github.com/easyretrofit/spring-boot-starter/actions/workflows/build.yml/badge.svg)
+[![License](https://img.shields.io/github/license/easyretrofit/spring-boot-starter.svg)](http://www.apache.org/licenses/LICENSE-2.0)
+
+
+# easy-retrofit-spring-boot-starter
 
 ## 目录
 
@@ -20,7 +25,7 @@
 
 ## 介绍
 
-在SpringBoot项目中快速使用Retrofit2,`retrofit-spring-boot-starter`提供了一个基于注解的配置创建Retrofit实例，并通过更多的注释实现了通用功能的增强。
+在SpringBoot项目中快速使用Retrofit2,`easy-retrofit-spring-boot-starter`提供了一个基于注解的配置创建Retrofit实例，并通过更多的注释实现了通用功能的增强。
 本项目使用Springboot的动态代理机制，在Spring上下文的生命周期前期，将Retrofit实例注入到Spring上下文。
 
 ## 安装

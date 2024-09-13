@@ -1,4 +1,9 @@
-# _EASY_ retrofit-spring-boot-starter
+[![Version](https://img.shields.io/maven-central/v/io.github.easyretrofit/spring-boot-starter?logo=apache-maven&style=flat-square)](https://central.sonatype.com/artifact/io.github.easyretrofit/spring-boot-starter)
+[![Build](https://github.com/easyretrofit/spring-boot-starter/actions/workflows/build.yml/badge.svg)](https://github.com/easyretrofit/spring-boot-starter/actions/workflows/build.yml/badge.svg)
+[![License](https://img.shields.io/github/license/easyretrofit/spring-boot-starter.svg)](http://www.apache.org/licenses/LICENSE-2.0)
+
+
+# easy-retrofit-spring-boot-starter
 
 [中文文档](https://github.com/liuziyuan/retrofit-spring-boot-starter/blob/main/README.zh_CN.md)
 
@@ -18,7 +23,7 @@
 - [License](#license)
 
 ## Introduction
-`retrofit-spring-boot-starter` provides easier use and enhancement of common functions of Retrofit2 in SpringBoot project, and realizes the enhancement of common functions through more annotations.
+`easy-retrofit-spring-boot-starter` provides easier use and enhancement of common functions of Retrofit2 in SpringBoot project, and realizes the enhancement of common functions through more annotations.
 
 ## Install
 
