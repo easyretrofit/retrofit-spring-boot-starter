@@ -32,7 +32,7 @@ on:
 jobs:
 
   release-name-check:
-    uses: ./.github/workflows/pre-release.yml
+    uses: .github/workflows/pre-release.yml
 
   build:
     runs-on: ubuntu-latest
