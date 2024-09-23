@@ -52,9 +52,9 @@ jobs:
         id: extract-info
         if: ${{ steps.check-release-name.outputs.need_release == 'true' }}
         run: |
-          groupId=$(mvn help:evaluate -Dexpression=project.groupId -X -e -DforceStdout)
-          artifactId=$(mvn help:evaluate -Dexpression=project.artifactId -DforceStdout)
-          version=$(mvn help:evaluate -Dexpression=project.version -DforceStdout)
+          groupId=$(mvn help:evaluate -Dexpression=project.groupId -q -DforceStdout)
+          artifactId=$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)
+          version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
           echo "Pom GroupId: $groupId"
           echo "Pom ArtifactId: $artifactId"
           echo "Pom Version: $version"
