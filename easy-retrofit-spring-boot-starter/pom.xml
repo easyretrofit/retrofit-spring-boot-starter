@@ -5,13 +5,13 @@
     <parent>
         <groupId>io.github.easyretrofit</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.1.0</version>
+        <version>1.1.1</version>
     </parent>
 
     <packaging>jar</packaging>
 
     <artifactId>spring-boot-starter</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
     <description>Implicit creation of retrofit instances based on the Spring framework DI, providing more functionality through annotations and extensions</description>
 
     <url>https://github.com/easyretrofit/${project.artifactId}</url>

@@ -14,6 +14,7 @@ jobs:
     outputs:
       release_name_check: ${{ steps.check.outputs.release_name_check }}
     steps:
+
       - id: check-release-name
         name: Check Release Name
         run: |
@@ -92,7 +93,7 @@ jobs:
             echo "An unexpected error occurred while checking the metadata file for $groupId:$artifactId."
             echo "release_name_check=true" >> $GITHUB_OUTPUT
           fi
-               
+
           # 检查 PR 标题
           title="${{ steps.pr-info.outputs.title }}"
           version="${{ steps.extract-info.outputs.version }}"
@@ -106,4 +107,4 @@ jobs:
             echo "Pull Request title must be in the format 'release-$version'."
             echo "release_name_check=false" >> $GITHUB_OUTPUT
           fi
-          
+

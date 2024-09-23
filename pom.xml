@@ -11,7 +11,7 @@
     <packaging>pom</packaging>
 
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
     <description>
         the parent pom.xml of easy-retrofit-spring-boot-starter
     </description>
@@ -19,9 +19,9 @@
     <url>https://github.com/easyretrofit/${project.artifactId}</url>
 
     <scm>
-        <url>https://github.com/easyretrofit/${project.artifactId}</url>
-        <connection>scm:git:git://github.com/easyretrofit/${project.artifactId}.git</connection>
-        <developerConnection>scm:git:ssh://github.com/easyretrofit/${project.artifactId}.git</developerConnection>
+        <url>https://github.com/easyretrofit/spring-boot-starter</url>
+        <connection>scm:git:git://github.com/easyretrofit/spring-boot-starter.git</connection>
+        <developerConnection>scm:git:ssh://github.com/easyretrofit/spring-boot-starter.git</developerConnection>
     </scm>
 
     <modules>
@@ -37,7 +37,7 @@
         <java.target.version>${java.version}</java.target.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.boot.version>2.0.0.RELEASE</spring.boot.version>
-        <easy.retrofit.core.version>1.1.0</easy.retrofit.core.version>
+        <easy.retrofit.core.version>1.1.1</easy.retrofit.core.version>
         <lombok.version>1.18.32</lombok.version>
         <commons.lang3.version>3.14.0</commons.lang3.version>
         <junit.version>4.13.2</junit.version>
