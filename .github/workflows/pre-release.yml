@@ -14,12 +14,6 @@ jobs:
     outputs:
       release_name_check: ${{ steps.check.outputs.release_name_check }}
     steps:
-      - name: Set up JDK 8
-        uses: actions/setup-java@v4
-        with:
-          java-version: '8'
-          distribution: 'temurin'
-          cache: maven
 
       - id: check-release-name
         name: Check Release Name
@@ -58,9 +52,9 @@ jobs:
         id: extract-info
         if: ${{ steps.check-release-name.outputs.need_release == 'true' }}
         run: |
-          groupId=$(mvn help:evaluate -Dexpression=project.groupId -q -DforceStdout)
-          artifactId=$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)
-          version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          groupId=$(mvn help:evaluate -Dexpression=project.groupId -DforceStdout)
+          artifactId=$(mvn help:evaluate -Dexpression=project.artifactId -DforceStdout)
+          version=$(mvn help:evaluate -Dexpression=project.version -DforceStdout)
           echo "Pom GroupId: $groupId"
           echo "Pom ArtifactId: $artifactId"
           echo "Pom Version: $version"
