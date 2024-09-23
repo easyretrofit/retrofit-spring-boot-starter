@@ -52,7 +52,7 @@ jobs:
         id: extract-info
         if: ${{ steps.check-release-name.outputs.need_release == 'true' }}
         run: |
-          echo "groupId $(mvn help:evaluate -Dexpression=project.groupId -DforceStdout)"
+           echo "groupId $(mvn help:evaluate -Dexpression=project.groupId -DforceStdout)"
 #          groupId=$(mvn help:evaluate -Dexpression=project.groupId -DforceStdout)
 #          artifactId=$(mvn help:evaluate -Dexpression=project.artifactId -DforceStdout)
 #          version=$(mvn help:evaluate -Dexpression=project.version -DforceStdout)
