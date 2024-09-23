@@ -53,10 +53,10 @@ jobs:
         if: ${{ steps.check-release-name.outputs.need_release == 'true' }}
         run: |
 #           echo "groupId $(mvn help:evaluate -Dexpression=project.groupId -DforceStdout)"
-            groupId=$(mvn help:evaluate -Dexpression=project.groupId -DforceStdout)
+          groupId=$(mvn help:evaluate -Dexpression=project.groupId -DforceStdout)
 #          artifactId=$(mvn help:evaluate -Dexpression=project.artifactId -DforceStdout)
 #          version=$(mvn help:evaluate -Dexpression=project.version -DforceStdout)
-            echo "Pom GroupId: $groupId"
+          echo "Pom GroupId: $groupId"
 #          echo "Pom ArtifactId: $artifactId"
 #          echo "Pom Version: $version"
 #          echo "version=$version" >> $GITHUB_OUTPUT
