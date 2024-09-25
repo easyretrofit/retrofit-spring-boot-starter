@@ -108,3 +108,18 @@ jobs:
             echo "release_name_check=false" >> $GITHUB_OUTPUT
           fi
 
+      - name: Exit
+        id: exit
+        run: |
+          need_release="${{ steps.check-release-name.outputs.need_release }}"
+          checked="${{ steps.check.outputs.release_name_check }}"
+          if [ $need_release == "false" ]; then
+            echo "::error::Release name check failed."
+            exit 1
+          elif [ $checked == "false"]; then
+            echo "::error::Release name check failed."
+            exit 1
+          else
+            echo "Release name check passed."
+          fi
+          

@@ -159,6 +159,7 @@ public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistr
                 definition.getConstructorArgumentValues().addGenericArgumentValue(Objects.requireNonNull(definition.getBeanClassName()));
                 definition.getConstructorArgumentValues().addGenericArgumentValue(serviceBean);
                 definition.addQualifier(new AutowireCandidateQualifier(Qualifier.class, serviceBean.getSelfClazz().getName()));
+                definition.setPrimary(true);
                 definition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
                 definition.setBeanClass(RetrofitServiceProxyFactory.class);
                 beanDefinitionRegistry.registerBeanDefinition(serviceBean.getSelfClazz().getName(), definition);
