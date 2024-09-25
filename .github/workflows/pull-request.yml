@@ -6,19 +6,9 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Build
+name: Pull Request
 
 on:
-  push:
-    branches: [ "main" ]
-    paths-ignore:
-      - '.gitignore'
-      - 'CODEOWNERS'
-      - 'LICENSE'
-      - '*.md'
-      - '*.adoc'
-      - '*.txt'
-      - '.all-contributorsrc'
   pull_request:
     branches: [ "main" ]
     paths-ignore:
@@ -29,20 +19,7 @@ on:
       - '*.adoc'
       - '*.txt'
       - '.all-contributorsrc'
-
-
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
 
-      - name: Set up JDK 8
-        uses: actions/setup-java@v4
-        with:
-          java-version: '8'
-          distribution: 'temurin'
-          cache: maven
-      - name: Build with Maven
-        run: mvn -B clean package
+  release-name-check:
+    uses: ./.github/workflows/pre-release.yml
