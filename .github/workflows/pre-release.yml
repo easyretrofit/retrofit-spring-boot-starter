@@ -111,8 +111,8 @@ jobs:
       - name: Exit
         id: exit
         run: |
-          need_release = ${{ steps.check-release-name.outputs.need_release }}
-          checked = ${{ steps.check.outputs.release_name_check }}
+          need_release="${{ steps.check-release-name.outputs.need_release }}"
+          checked="${{ steps.check.outputs.release_name_check }}"
           if [ $need_release == "false" ]; then
             echo "::error::Release name check failed."
             exit 1
