@@ -18,7 +18,7 @@
     </modules>
 
     <properties>
-        <esay-retrofit-starter.version>1.0.0</esay-retrofit-starter.version>
+
     </properties>
 
     <dependencies>
@@ -26,7 +26,7 @@
         <dependency>
             <groupId>io.github.easyretrofit</groupId>
             <artifactId>spring-boot-starter</artifactId>
-            <version>${esay-retrofit-starter.version}</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
