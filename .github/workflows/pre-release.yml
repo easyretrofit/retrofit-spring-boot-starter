@@ -113,10 +113,10 @@ jobs:
         run: |
           need_release = ${{ steps.check-release-name.outputs.need_release }}
           checked = ${{ steps.check.outputs.release_name_check }}
-          if [ "$need_release" == "false" ]; then
+          if [ need_release == "false" ]; then
             echo "::error::Release name check failed."
             exit 1
-          elif [ "$checked" == "false"]; then
+          elif [ checked == "false"]; then
             echo "::error::Release name check failed."
             exit 1
           else
