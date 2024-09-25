@@ -1,5 +1,6 @@
 package io.github.easyretrofit.spring.boot;
 
+import io.github.easyretrofit.core.delegate.ExceptionDelegateSetGenerator;
 import io.github.easyretrofit.core.exception.RetrofitExtensionException;
 import io.github.easyretrofit.core.delegate.BaseExceptionDelegate;
 import io.github.easyretrofit.core.proxy.JdkDynamicProxy;
@@ -13,8 +14,8 @@ import org.springframework.context.ApplicationContextAware;
 import retrofit2.Retrofit;
 
 import java.lang.reflect.InvocationHandler;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  * The proxy factory of RetrofitApiInterfaceBean
@@ -26,24 +27,25 @@ import java.util.Set;
 public class RetrofitServiceProxyFactory<T> implements FactoryBean<T>, ApplicationContextAware {
     private final Class<T> interfaceType;
     private ApplicationContext applicationContext;
-    private final RetrofitApiInterfaceBean RetrofitApiInterfaceBean;
+    private final RetrofitApiInterfaceBean retrofitApiInterfaceBean;
 
     public RetrofitServiceProxyFactory(Class<T> interfaceType, RetrofitApiInterfaceBean RetrofitApiInterfaceBean) {
         this.interfaceType = interfaceType;
-        this.RetrofitApiInterfaceBean = RetrofitApiInterfaceBean;
+        this.retrofitApiInterfaceBean = RetrofitApiInterfaceBean;
     }
 
     @Override
     public T getObject() {
-        String retrofitInstanceName = RetrofitApiInterfaceBean.getRetrofitClientBeanInstanceName();
-        Set<BaseExceptionDelegate<? extends RetrofitExtensionException>> exceptionDelegates = new HashSet<>();
-        Set<Class<? extends BaseExceptionDelegate<? extends RetrofitExtensionException>>> exceptionDelegateSet = RetrofitApiInterfaceBean.getExceptionDelegates();
-        if (exceptionDelegateSet != null) {
-            for (Class<? extends BaseExceptionDelegate<? extends RetrofitExtensionException>> entry : exceptionDelegateSet) {
-                BaseExceptionDelegate<? extends RetrofitExtensionException> exceptionDelegate = applicationContext.getBean(entry);
-                exceptionDelegates.add(exceptionDelegate);
-            }
-        }
+        String retrofitInstanceName = retrofitApiInterfaceBean.getRetrofitClientBeanInstanceName();
+        Function<Class<? extends BaseExceptionDelegate<? extends RetrofitExtensionException>>, BaseExceptionDelegate<? extends RetrofitExtensionException>> function = t -> applicationContext.getBean(t);
+        Set<BaseExceptionDelegate<? extends RetrofitExtensionException>> exceptionDelegates = ExceptionDelegateSetGenerator.generate(retrofitApiInterfaceBean.getExceptionDelegates(), function);
+//        Set<Class<? extends BaseExceptionDelegate<? extends RetrofitExtensionException>>> exceptionDelegateSet = RetrofitApiInterfaceBean.getExceptionDelegates();
+//        if (exceptionDelegateSet != null) {
+//            for (Class<? extends BaseExceptionDelegate<? extends RetrofitExtensionException>> entry : exceptionDelegateSet) {
+//                BaseExceptionDelegate<? extends RetrofitExtensionException> exceptionDelegate = applicationContext.getBean(entry);
+//                exceptionDelegates.add(exceptionDelegate);
+//            }
+//        }
         Retrofit retrofit = (Retrofit) applicationContext.getBean(retrofitInstanceName);
         InvocationHandler handler = new RetrofitApiInterfaceInvocationHandler<>(retrofit.create(interfaceType), exceptionDelegates);
         return JdkDynamicProxy.create(interfaceType.getClassLoader(), new Class[]{interfaceType}, handler);
