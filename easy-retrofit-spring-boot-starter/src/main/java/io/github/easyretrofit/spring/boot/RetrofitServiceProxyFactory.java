@@ -1,8 +1,9 @@
 package io.github.easyretrofit.spring.boot;
 
 import io.github.easyretrofit.core.exception.RetrofitExtensionException;
-import io.github.easyretrofit.core.proxy.BaseExceptionDelegate;
-import io.github.easyretrofit.core.proxy.RetrofitServiceProxy;
+import io.github.easyretrofit.core.delegate.BaseExceptionDelegate;
+import io.github.easyretrofit.core.proxy.JdkDynamicProxy;
+import io.github.easyretrofit.core.proxy.RetrofitApiInterfaceInvocationHandler;
 import io.github.easyretrofit.core.resource.RetrofitApiInterfaceBean;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
@@ -12,7 +13,6 @@ import org.springframework.context.ApplicationContextAware;
 import retrofit2.Retrofit;
 
 import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Proxy;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -45,8 +45,8 @@ public class RetrofitServiceProxyFactory<T> implements FactoryBean<T>, Applicati
             }
         }
         Retrofit retrofit = (Retrofit) applicationContext.getBean(retrofitInstanceName);
-        InvocationHandler handler = new RetrofitServiceProxy<>(retrofit.create(interfaceType), exceptionDelegates);
-        return (T) Proxy.newProxyInstance(interfaceType.getClassLoader(), new Class[]{interfaceType}, handler);
+        InvocationHandler handler = new RetrofitApiInterfaceInvocationHandler<>(retrofit.create(interfaceType), exceptionDelegates);
+        return JdkDynamicProxy.create(interfaceType.getClassLoader(), new Class[]{interfaceType}, handler);
     }
 
     @Override
