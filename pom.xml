@@ -16,7 +16,7 @@
         the parent pom.xml of easy-retrofit-spring-boot-starter
     </description>
 
-    <url>https://github.com/easyretrofit/${project.artifactId}</url>
+    <url>https://github.com/easyretrofit/spring-boot-starter</url>
 
     <scm>
         <url>https://github.com/easyretrofit/spring-boot-starter</url>
