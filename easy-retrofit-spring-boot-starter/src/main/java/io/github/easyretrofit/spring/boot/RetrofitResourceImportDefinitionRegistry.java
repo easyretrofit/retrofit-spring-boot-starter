@@ -2,6 +2,7 @@ package io.github.easyretrofit.spring.boot;
 
 import io.github.easyretrofit.core.RetrofitResourceScanner;
 
+import io.github.easyretrofit.core.resource.ext.ExtensionPropertiesBean;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
@@ -38,14 +39,21 @@ public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefin
     }
 
     void registerRetrofitAnnotationDefinitions(AnnotationAttributes annoAttrs, BeanDefinitionRegistry registry) throws IOException {
+        //scan retrofit extension properties file
+        SpringBootRetrofitExtensionScanner extensionScanner = new SpringBootRetrofitExtensionScanner();
+        Set<ExtensionPropertiesBean> extensionPropertiesBeans = extensionScanner.scanExtensionProperties();
+        Set<String> extensionPackages = extensionPropertiesBeans.stream().flatMap(extensionPropertiesBean -> extensionPropertiesBean.getExtensionClassPaths().stream()).collect(Collectors.toSet());
+        Set<String> resourcePackages = extensionPropertiesBeans.stream().flatMap(extensionPropertiesBean -> extensionPropertiesBean.getResourcePackages().stream()).collect(Collectors.toSet());
         //scan and set Retrofit resource packages
         RetrofitResourceScanner scanner = new RetrofitResourceScanner();
         List<String> basePackages = getBasePackages(annoAttrs);
+        // merge basePackages and resourcePackages
+        basePackages.addAll(resourcePackages);
+        // get retrofit builder classes
         Set<Class<?>> retrofitBuilderClassSet = scanner.doScan(StringUtils.toStringArray(basePackages));
-        //scan adn set Retrofit extension packages
-        SpringBootRetrofitExtensionScanner extensionScanner = new SpringBootRetrofitExtensionScanner();
-        Set<String> extensionPackages = extensionScanner.scan();
+        // get retrofit extension object
         RetrofitResourceScanner.RetrofitExtension retrofitExtension = scanner.doScanExtension(extensionPackages.toArray(new String[0]));
+        // create RetrofitAnnotationBean
         RetrofitAnnotationBean annotationBean = new RetrofitAnnotationBean(basePackages, retrofitBuilderClassSet, retrofitExtension);
         // register RetrofitAnnotationBean
         BeanDefinitionBuilder builder;
