@@ -6,7 +6,8 @@ import io.github.easyretrofit.spring.boot.global.RetrofitBuilderGlobalConfigProp
 import io.github.easyretrofit.core.*;
 import io.github.easyretrofit.core.generator.RetrofitBuilderGenerator;
 import io.github.easyretrofit.core.resource.RetrofitClientBean;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,9 +29,9 @@ import java.util.stream.Collectors;
  *
  * @author liuziyuan
  */
-@Slf4j
 public class RetrofitResourceDefinitionRegistry implements BeanDefinitionRegistryPostProcessor, ApplicationContextAware, EnvironmentAware {
 
+    Logger log = LoggerFactory.getLogger(RetrofitResourceDefinitionRegistry.class);
     private ApplicationContext applicationContext;
 
     private Environment environment;

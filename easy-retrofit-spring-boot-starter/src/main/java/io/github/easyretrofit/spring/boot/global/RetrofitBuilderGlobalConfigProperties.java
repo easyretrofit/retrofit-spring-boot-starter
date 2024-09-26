@@ -1,10 +1,10 @@
 package io.github.easyretrofit.spring.boot.global;
 
 import io.github.easyretrofit.core.builder.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
+import io.github.easyretrofit.spring.boot.RetrofitResourceDefinitionRegistry;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -16,13 +16,12 @@ import java.util.List;
  * Spring boot resources文件夹中application.yml(properties)配置文件中声明的全局配置
  */
 @Component
-@Getter
-@Setter
 @ConfigurationProperties(
         prefix = "retrofit.global.builder"
 )
-@Slf4j
 public class RetrofitBuilderGlobalConfigProperties {
+
+    Logger log = LoggerFactory.getLogger(RetrofitBuilderGlobalConfigProperties.class);
 
     private String enable;
 
@@ -50,6 +49,70 @@ public class RetrofitBuilderGlobalConfigProperties {
         this.callFactoryBuilderClazz = (Class<? extends BaseCallFactoryBuilder>) transformClass(resolveRequiredPlaceholders(environment, "${retrofit.global.builder.call-factory-builder-clazz}"));
         this.validateEagerly = resolveRequiredPlaceholders(environment, "${retrofit.global.builder.validate-eagerly}");
         return this;
+    }
+
+    public String getEnable() {
+        return enable;
+    }
+
+    public void setEnable(String enable) {
+        this.enable = enable;
+    }
+
+    public String getBaseUrl() {
+        return baseUrl;
+    }
+
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
+
+    public Class<? extends BaseCallAdapterFactoryBuilder>[] getCallAdapterFactoryBuilderClazz() {
+        return callAdapterFactoryBuilderClazz;
+    }
+
+    public void setCallAdapterFactoryBuilderClazz(Class<? extends BaseCallAdapterFactoryBuilder>[] callAdapterFactoryBuilderClazz) {
+        this.callAdapterFactoryBuilderClazz = callAdapterFactoryBuilderClazz;
+    }
+
+    public Class<? extends BaseConverterFactoryBuilder>[] getConverterFactoryBuilderClazz() {
+        return converterFactoryBuilderClazz;
+    }
+
+    public void setConverterFactoryBuilderClazz(Class<? extends BaseConverterFactoryBuilder>[] converterFactoryBuilderClazz) {
+        this.converterFactoryBuilderClazz = converterFactoryBuilderClazz;
+    }
+
+    public Class<? extends BaseOkHttpClientBuilder> getOkHttpClientBuilderClazz() {
+        return okHttpClientBuilderClazz;
+    }
+
+    public void setOkHttpClientBuilderClazz(Class<? extends BaseOkHttpClientBuilder> okHttpClientBuilderClazz) {
+        this.okHttpClientBuilderClazz = okHttpClientBuilderClazz;
+    }
+
+    public Class<? extends BaseCallBackExecutorBuilder> getCallBackExecutorBuilderClazz() {
+        return callBackExecutorBuilderClazz;
+    }
+
+    public void setCallBackExecutorBuilderClazz(Class<? extends BaseCallBackExecutorBuilder> callBackExecutorBuilderClazz) {
+        this.callBackExecutorBuilderClazz = callBackExecutorBuilderClazz;
+    }
+
+    public Class<? extends BaseCallFactoryBuilder> getCallFactoryBuilderClazz() {
+        return callFactoryBuilderClazz;
+    }
+
+    public void setCallFactoryBuilderClazz(Class<? extends BaseCallFactoryBuilder> callFactoryBuilderClazz) {
+        this.callFactoryBuilderClazz = callFactoryBuilderClazz;
+    }
+
+    public String getValidateEagerly() {
+        return validateEagerly;
+    }
+
+    public void setValidateEagerly(String validateEagerly) {
+        this.validateEagerly = validateEagerly;
     }
 
     private String resolveRequiredPlaceholders(Environment environment, String text) {

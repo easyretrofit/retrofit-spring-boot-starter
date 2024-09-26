@@ -18,7 +18,7 @@
     </modules>
 
     <properties>
-
+        <lombok.version>1.18.32</lombok.version>
     </properties>
 
     <dependencies>
@@ -47,6 +47,13 @@
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <optional>true</optional>
         </dependency>
 
         <dependency>

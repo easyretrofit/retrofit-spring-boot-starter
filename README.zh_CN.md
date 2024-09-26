@@ -59,17 +59,6 @@ dependencies {
 | jdk17       | 2.4.2 - 2.7.x         | 3.0.0 - latest      |
 | jdk21       | 2.7.16 - 2.7.x        | 3.1.0 - latest(*)   |
 
-注意：如果你需要在jdk21的Springboot3.1.0-3.1.2中使用Lombok，请注意lombok的版本号为1.18.30 +
-
-```xml
-
-<dependency>
-    <groupId>org.projectlombok</groupId>
-    <artifactId>lombok</artifactId>
-    <version>1.18.30</version>
-    <optional>true</optional>
-</dependency>
-```
 
 ## 快速开始
 

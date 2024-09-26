@@ -56,16 +56,6 @@ This version is compatible with SpringBoot2 and Springboot3 versions under diffe
 | jdk17       | 2.4.2 - 2.7.x         | 3.0.0 - latest      |
 | jdk21       | 2.7.16 - 2.7.x        | 3.1.0 - latest      |
 
-Note: If you need to use Lombok in Springboot 3.1.0-3.1.2 of jdk21, please note that the version number of Lombok is 1.18.30+
-
-```xml
-<dependency>
-    <groupId>org.projectlombok</groupId>
-    <artifactId>lombok</artifactId>
-    <version>1.18.30</version>
-    <optional>true</optional>
-</dependency>
-```
 
 ## Quick Start
 
