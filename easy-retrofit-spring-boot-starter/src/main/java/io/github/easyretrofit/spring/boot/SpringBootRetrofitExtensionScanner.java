@@ -22,6 +22,7 @@ public class SpringBootRetrofitExtensionScanner {
      * @return
      * @throws IOException
      */
+    @Deprecated
     public Set<String> scan() throws IOException {
         // 获取类路径下的所有META-INF/spring.factories文件
         Set<String> extensionNames = new HashSet<>();
