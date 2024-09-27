@@ -1,12 +1,10 @@
 package io.github.easyretrofit.spring.boot;
 
 import io.github.easyretrofit.core.RetrofitResourceScanner;
-import lombok.Getter;
 
 import java.util.List;
 import java.util.Set;
 
-@Getter
 public class RetrofitAnnotationBean {
 
     private final Set<Class<?>> retrofitBuilderClassSet;
@@ -19,6 +17,18 @@ public class RetrofitAnnotationBean {
         this.retrofitBuilderClassSet = retrofitBuilderClassSet;
         this.basePackages = basePackages;
         this.retrofitExtension = retrofitExtension;
+    }
+
+    public Set<Class<?>> getRetrofitBuilderClassSet() {
+        return retrofitBuilderClassSet;
+    }
+
+    public List<String> getBasePackages() {
+        return basePackages;
+    }
+
+    public RetrofitResourceScanner.RetrofitExtension getRetrofitExtension() {
+        return retrofitExtension;
     }
 
 }

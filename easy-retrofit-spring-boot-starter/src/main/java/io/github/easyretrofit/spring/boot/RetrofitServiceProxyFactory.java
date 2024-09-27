@@ -6,7 +6,6 @@ import io.github.easyretrofit.core.delegate.BaseExceptionDelegate;
 import io.github.easyretrofit.core.proxy.JdkDynamicProxy;
 import io.github.easyretrofit.core.proxy.RetrofitApiInterfaceInvocationHandler;
 import io.github.easyretrofit.core.resource.RetrofitApiInterfaceBean;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.ApplicationContext;
@@ -23,7 +22,6 @@ import java.util.function.Function;
  *
  * @author liuziyuan
  */
-@Slf4j
 public class RetrofitServiceProxyFactory<T> implements FactoryBean<T>, ApplicationContextAware {
     private final Class<T> interfaceType;
     private ApplicationContext applicationContext;

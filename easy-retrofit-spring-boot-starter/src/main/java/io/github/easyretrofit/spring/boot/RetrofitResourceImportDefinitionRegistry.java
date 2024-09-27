@@ -3,8 +3,6 @@ package io.github.easyretrofit.spring.boot;
 import io.github.easyretrofit.core.RetrofitResourceScanner;
 
 import io.github.easyretrofit.core.resource.ext.ExtensionPropertiesBean;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
@@ -25,16 +23,19 @@ import java.util.stream.Collectors;
  *
  * @author liuziyuan
  */
-@Slf4j
+
 public class RetrofitResourceImportDefinitionRegistry implements ImportBeanDefinitionRegistrar {
 
 
-    @SneakyThrows
     @Override
     public void registerBeanDefinitions(AnnotationMetadata metadata, BeanDefinitionRegistry registry) {
         AnnotationAttributes enableRetrofitAnnoAttr = AnnotationAttributes.fromMap(metadata.getAnnotationAttributes(EnableRetrofit.class.getName()));
         if (enableRetrofitAnnoAttr != null) {
-            registerRetrofitAnnotationDefinitions(enableRetrofitAnnoAttr, registry);
+            try {
+                registerRetrofitAnnotationDefinitions(enableRetrofitAnnoAttr, registry);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
