@@ -34,10 +34,9 @@
 **Maven:**
 
 ```xml
-
 <dependency>
-    <groupId>io.github.liuziyuan</groupId>
-    <artifactId>retrofit-spring-boot-starter</artifactId>
+    <groupId>io.github.easyretrofit</groupId>
+    <artifactId>spring-boot-starter</artifactId>
     <version>${latest-version}</version>
 </dependency>
 ```
@@ -46,7 +45,7 @@
 
 ```groovy
 dependencies {
-    implementation 'io.github.liuziyuan:retrofit-spring-boot-starter:${latest-version}'
+    implementation 'io.github.easyretrofit:spring-boot-starter:${latest-version}'
 }
 ```
 
