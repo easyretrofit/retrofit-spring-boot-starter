@@ -11,7 +11,7 @@
     <packaging>pom</packaging>
 
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>1.1.4</version>
+    <version>1.1.5-SNAPSHOT</version>
     <description>
         the parent pom.xml of easy-retrofit-spring-boot-starter
     </description>
@@ -37,7 +37,7 @@
         <java.target.version>${java.version}</java.target.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.boot.version>2.0.0.RELEASE</spring.boot.version>
-        <easy.retrofit.core.version>1.1.3</easy.retrofit.core.version>
+        <easy.retrofit.core.version>1.1.4-SNAPSHOT</easy.retrofit.core.version>
         <commons.lang3.version>3.14.0</commons.lang3.version>
         <junit.version>4.13.2</junit.version>
     </properties>
