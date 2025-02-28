@@ -5,13 +5,13 @@
     <parent>
         <groupId>io.github.easyretrofit</groupId>
         <artifactId>parent</artifactId>
-        <version>1.1.0</version>
+        <version>1.2.1</version>
     </parent>
 
     <packaging>pom</packaging>
 
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>1.1.5-SNAPSHOT</version>
+    <version>1.1.5</version>
     <description>
         the parent pom.xml of easy-retrofit-spring-boot-starter
     </description>
@@ -86,7 +86,7 @@
             <plugin>
                 <groupId>org.sonatype.central</groupId>
                 <artifactId>central-publishing-maven-plugin</artifactId>
-                <version>0.5.0</version>
+                <version>0.7.0</version>
                 <extensions>true</extensions>
                 <configuration>
                     <publishingServerId>central</publishingServerId>
