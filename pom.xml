@@ -37,7 +37,7 @@
         <java.target.version>${java.version}</java.target.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.boot.version>2.0.0.RELEASE</spring.boot.version>
-        <easy.retrofit.core.version>1.1.4-SNAPSHOT</easy.retrofit.core.version>
+        <easy.retrofit.core.version>1.2.0</easy.retrofit.core.version>
         <commons.lang3.version>3.14.0</commons.lang3.version>
         <junit.version>4.13.2</junit.version>
     </properties>
